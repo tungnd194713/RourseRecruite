@@ -46,8 +46,17 @@ export default {
     '@nuxtjs/i18n',
     '@nuxtjs/style-resources',
     '@nuxtjs/dotenv',
-    '@nuxtjs/auth'
+    '@nuxtjs/auth',
+    'bootstrap-vue/nuxt'
   ],
+
+  bootstrapVue: {
+    bootstrapCSS: false, // here you can disable automatic bootstrapCSS in case you are loading it yourself using sass
+    bootstrapVueCSS: false, // CSS that is specific to bootstrapVue components can also be disabled. That way you won't load css for modules that you don't use
+    componentPlugins: ['Collapse', 'Dropdown'], // Here you can specify which components you want to load and use
+    directivePlugins: [] // Here you can specify which directives you want to load and use. Look into official docs to get a list of what's available
+  },
+
   i18n: {
     locales: ['vi', 'ja'],
     defaultLocale: 'vi',
@@ -65,16 +74,20 @@ export default {
       local: {
         endpoints: {
           login: {
-            url: 'login',
+            url: 'companies/login',
             method: 'post',
             propertyName: 'access_token' // property of token in JSON data of API login
           },
           tokenRequired: false,
           logout: false,
-          user: false
+          user: {
+            url: 'companies/me',
+            method: 'get',
+            propertyName: false
+          }
         }
       },
-      facebook: { 
+      facebook: {
         endpoints: {
           userInfo: 'https://graph.facebook.com/v6.0/me?fields=id,name,picture{url}'
         },
