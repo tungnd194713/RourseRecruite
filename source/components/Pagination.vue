@@ -1,5 +1,5 @@
 <template>
-  <nav v-if="totalItems > perPage" class="mt-3 border-0">
+  <nav v-if="totalItems > perPage" class="border-0 nav-paginate">
     <ul class="pagination justify-content-end">
       <li class="page-item">
         <a :class="'btn btn-md page-link ' + isPreviousButtonDisabled"

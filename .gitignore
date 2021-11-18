@@ -91,3 +91,5 @@ sw.*
 
 *.history
 *.lh
+
+package-lock.json

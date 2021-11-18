@@ -45,13 +45,10 @@
     </div>
 </template>
 
-<style>
-  @import '../styles/layout/_header.scss';
-</style>
-
 <script>
   import routers from "~/constants/routers";
-  import 'bootstrap/dist/css/bootstrap.css'
+  import 'bootstrap/dist/css/bootstrap.css';
+
 
   export default {
     data () {
@@ -66,3 +63,7 @@
     }
   }
 </script>
+
+<style>
+  @import '../styles/layout/_header.scss';
+</style>

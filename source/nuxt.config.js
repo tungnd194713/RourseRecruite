@@ -47,15 +47,7 @@ export default {
     '@nuxtjs/style-resources',
     '@nuxtjs/dotenv',
     '@nuxtjs/auth',
-    'bootstrap-vue/nuxt'
   ],
-
-  bootstrapVue: {
-    bootstrapCSS: false, // here you can disable automatic bootstrapCSS in case you are loading it yourself using sass
-    bootstrapVueCSS: false, // CSS that is specific to bootstrapVue components can also be disabled. That way you won't load css for modules that you don't use
-    componentPlugins: ['Collapse', 'Dropdown'], // Here you can specify which components you want to load and use
-    directivePlugins: [] // Here you can specify which directives you want to load and use. Look into official docs to get a list of what's available
-  },
 
   i18n: {
     locales: ['vi', 'ja'],

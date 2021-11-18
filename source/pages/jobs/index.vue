@@ -31,7 +31,7 @@
     </div>
 
 
-    <div id="list_job" class="border-1 border-dark card-body table-responsive-lg" >
+    <div id="list_job" class="border-1 border-dark table-responsive-lg" >
       <table id="list"
              class="table table-hover"
              :current-page="currentPage"
@@ -43,7 +43,7 @@
         </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in items" :key="item.id" >
+          <tr v-for="(item, index) in items" :key="item.id" :class="totalItems === 1 ? 'only-row' : ''">
               <td>{{index + 1}}</td>
               <td>{{item.title}}</td>
               <td>{{item.date_start}}</td>
@@ -77,6 +77,7 @@
         </tr>
         </tbody>
       </table>
+      <h4 v-if="totalItems === 0" class="rounded-1 text-center w-100 p-3 bg-white">No data.</h4>
       <Pagination :current-page="currentPage"
                   :per-page="perPage"
                   :total-items="totalItems"
@@ -94,9 +95,10 @@
   import Pagination from "../../components/Pagination";
 
   export default {
-    layout: 'auth',
     name: "ListJob",
     components: {Pagination},
+    layout: 'auth',
+
     data() {
       return {
         items: [],
