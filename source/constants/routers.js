@@ -1,22 +1,22 @@
 export default [
   {
-    tab: 'First',
-    name: 'First',
+    tab: 'profile',
+    name: 'プロフィール',
     path: '/',
   },
   {
-    tab: 'Second',
-    name: 'Second',
+    tab: 'candidate',
+    name: '応募者一覧',
     path: '/',
   },
   {
-    tab: 'List job',
+    tab: 'job',
     name: 'List job',
-    path: '/jobs/list',
+    path: '/jobs',
   },
   {
-    tab: 'Four',
-    name: 'Four',
+    tab: 'settlement',
+    name: '決済',
     path: '/',
   }
 ]

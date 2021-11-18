@@ -84,7 +84,7 @@ export default {
             url: 'companies/me',
             method: 'get',
             propertyName: false
-          }
+          },
         }
       },
       facebook: {

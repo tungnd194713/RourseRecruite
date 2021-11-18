@@ -1,0 +1,19 @@
+.pagination {
+  padding-right: 4rem;
+}
+
+.page-link {
+  border-radius: 2rem !important;
+}
+
+.page-item:first-child .page-link {
+  border-radius: 2rem;
+}
+
+.page-link:active {
+  background: #2f83b9 !important;
+}
+
+.page-item {
+  padding: 0.2rem;
+}

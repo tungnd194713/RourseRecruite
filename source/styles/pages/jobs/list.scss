@@ -1,0 +1,112 @@
+.nav-content {
+  background: #ededed;
+  padding-block: 2rem;
+  padding-inline: 6rem;
+}
+
+.add-job {
+  float: right;
+  background: #2f83b9;
+  border-radius: 3rem;
+}
+
+.search {
+  padding-block: 1rem;
+  background: white;
+  border-radius: 3rem;
+  padding-inline: 1rem;
+  height: 100%;
+}
+
+.search .row {
+  margin-top: 0.25rem;
+  padding-inline: 1rem;
+}
+
+input {
+  border: 1px solid #afcad9;
+  border-radius: 3rem;
+  padding-inline: 0.5rem;
+  padding-block: 0.5rem;
+  margin-right: 1rem;
+  height: 2.5rem;
+  width: 29% !important;
+}
+
+::placeholder {
+  color: #afcad9;
+  font-weight: lighter;
+  opacity: 1;
+}
+
+.search-button {
+  background: #2f83b9;
+  border-radius: 3rem;
+  color:white;
+}
+
+.search-button:hover {
+  background: #0a3156;
+  color: white;
+}
+
+#list_job {
+  margin-top: 2rem;
+  padding-bottom: 3rem;
+  background: white;
+  min-height: 45rem;
+}
+
+#list_job table thead{
+  background: #ededed;
+}
+
+#list_job table tbody{
+  border-top: 0;
+  background: white;
+}
+
+.trash {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 100%;
+  border: 1px solid black;
+  right: 0;
+  margin-right: 3rem;
+}
+
+.actions {
+  margin-right:0 !important;
+  width: 8rem;
+  text-align: center;
+  border: 1px solid #2f83b9;
+  border-radius: 3rem;
+  padding-inline: 0;
+}
+
+table {
+  overflow: auto;
+  text-wrap: normal;
+  height: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.btn-outline-primary {
+    border-color: #2f83b9;
+    color: #2f83b9;
+    border-radius: 3rem;
+}
+
+.btn-check:checked + .btn-outline-primary {
+  background: #2f83b9 !important;
+}
+
+.btn-check:hover + .btn-outline-primary {
+  background: #2f83b9 !important;
+}
+
+
+.btn-check + .btn-outline-primary {
+  border: 0;
+}

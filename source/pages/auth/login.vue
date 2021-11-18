@@ -31,10 +31,14 @@
     </form>
   </div>
 </template>
+
+<style lang="scss">
+  @import '../../styles/pages/auth/login.scss';
+</style>
+
 <script>
 
   export default {
-    layout: "auth",
     data () {
       return {
         data: {
@@ -46,62 +50,16 @@
     methods: {
       async login () {
           try {
-            await this.$axios.$post('/companies/login', this.data).then(() => {
-              this.$auth.loginWith('local', {
-                data: {
-                  email: this.data.email,
-                  password: this.data.password
-                }
-              })
+            await this.$auth.loginWith('local', {
+              data: {
+                email: this.data.email,
+                password: this.data.password
+              }
             })
           } catch (e) {
-              console.log(e)
+            this.$toast.error(e.message)
           }
       }
     }
   }
 </script>
-<style>
-  form {
-    width: 200px;
-    margin: auto;
-    text-align: center;
-  }
-
-  input {
-    width: 100%;
-    border: none;
-    border-bottom: 1px black solid;
-    background: none;
-    height: 50px;
-    line-height: 50px;
-    font-size: 24px;
-    font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    font-weight: 300;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    outline: none;
-  }
-
-  button {
-    width: 100%;
-    height: 50px;
-    border: none;
-    background-color: #f0c808;
-    font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
-    outline: none;
-    margin-top: 20px;
-    border-radius: 10px;
-  }
-  .paper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 16rem;
-  }
-</style>

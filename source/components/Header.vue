@@ -3,143 +3,55 @@
     <div class="header p-2">
       <a href="#" class="logo">Logo</a>
       <div class="header-right">
-        <div>
-          <b-dropdown id="dropdown-1" text="Profile">
-            <b-dropdown-item href="#" class="item_dropdown">Logout</b-dropdown-item>
-          </b-dropdown>
-          <b-avatar class="avatar" variant="primary"></b-avatar>
+        <div class="dropdown-1 m-0 d-flex flex-row">
+          <div class="dropdown">
+            <button id="dropdownMenuButton" class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Dropdown button
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item item_dropdown" href="#">Account</a>
+              <a class="dropdown-item item_dropdown" href="#">Logout</a>
+            </div>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="3rem" height="3rem" fill="currentColor" class="bi bi-person-circle avatar" viewBox="0 0 16 16">
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+          </svg>
         </div>
       </div>
     </div>
     <div class="nav-tabs">
-      <b-tabs content-class="pt-3"
-              justified
-              active-tab-class="font-weight-bold">
-        <b-tab v-for="router in routers"
-               :title="router.tab"
-               @click="redirect(router)"
-               :key="router.name"
-        ></b-tab>
-      </b-tabs>
+      <div class="nav-tabs">
+        <nav>
+          <div id="nav-tab" class="nav nav-tabs justify-content-center d-flex flex-row px-5" role="tablist">
+            <button v-for="router in routers"
+                    :id="router.tab + '-tab'"
+                    :key="router.tab"
+                    class="nav-link w-25"
+                    data-bs-toggle="tab"
+                    :data-bs-target="'#' + router.tab"
+                    type="button"
+                    role="tab"
+                    :aria-controls="router.tab"
+                    aria-selected="false"
+                    @click="redirect(router)"
+            >
+              {{router.name}}
+            </button>
+          </div>
+        </nav>
+      </div>
     </div>
-  </div>
+    </div>
 </template>
 
 <style>
-  html {
-    height: 100%;
-    width: 100%;
-    box-sizing: border-box;
-    overflow-x: hidden;
-  }
-  body {
-    position: relative;
-    margin: 0;
-    padding-bottom: 6rem;
-    min-height: 100%;
-    height: 90rem;
-  }
-
-  .header {
-    background-color: #0e304a;
-    padding: 0 10px;
-    height: 5rem;
-    padding-left: 5rem !important;
-    padding-right: 6rem !important;
-  }
-
-  .header a {
-    float: left;
-    color: white;
-    text-align: center;
-    padding: 1rem;
-    text-decoration: none;
-    font-size: 15px;
-    line-height: 25px;
-    border-radius: 4px;
-  }
-
-  /* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
-  .header a.logo {
-    font-size: 25px;
-    font-weight: bold;
-  }
-
-  /* Change the background color on mouse-over */
-  .header a:hover {
-    background-color: #0e304a;;
-    color: white;
-  }
-
-  /* Style the active/current link */
-  .header a.active {
-    background-color: dodgerblue;
-    color: white;
-  }
-
-  /* Float the link section to the right */
-  .header-right {
-    float: right;
-    padding-top: 1rem;
-  }
-
-  /* Add media queries for responsiveness - when the screen is 500px wide or less, stack the links on top of each other */
-  @media screen and (max-width: 500px) {
-    .header a {
-      float: none;
-      display: none;
-      text-align: left;
-    }
-    .header-right {
-      float: none;
-      padding-top: 1.25rem;
-    }
-  }
-
-  .avatar {
-    background: #82b0ca !important;
-  }
-
-  #dropdown-1 button {
-    border: 0;
-    background: #0e304a !important;
-    color: #82b0ca;
-  }
-
-  #dropdown-1 button:focus {
-    outline: none;
-    box-shadow: none;
-  }
-
-  .item_dropdown {
-    color: black;
-    visibility: visible;
-  }
-
-  .nav-tabs {
-    border: 0;
-  }
-
-  .nav-tabs ul {
-    background: #a0bed0;
-  }
-
-  h1 {
-    color: #0a3156
-  }
-
-  .nav-tabs ul li .active {
-    color: #0a3156 !important;
-    font-weight: bold;
-    background: #a0bed0 !important;
-  }
-
-  .tab-content {
-    background: #ededed;
-  }
+  @import '../styles/layout/_header.scss';
 </style>
+
 <script>
   import routers from "~/constants/routers";
+  import 'bootstrap/dist/css/bootstrap.css'
 
   export default {
     data () {
