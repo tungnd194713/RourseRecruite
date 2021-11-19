@@ -1,8 +1,8 @@
-body, html {
+.form-body {
   height: 100%;
   margin: 0;
 }
-body {
+.form-body {
   align-items: center;
   padding-top: 140px;
   padding-bottom: 40px;
@@ -11,6 +11,13 @@ body {
   background-position: top;
   background-repeat: no-repeat;
   background-image: url('assets/img/brackground.jpg');
+  min-height: 100%;
+  min-width: 1024px;
+  width: 100%;
+  height: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 .form-login {
