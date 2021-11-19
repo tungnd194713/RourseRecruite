@@ -1,0 +1,140 @@
+.nav-content {
+  background: #ededed;
+  padding-block: 2rem;
+  padding-inline: 6rem;
+}
+
+.add-job {
+  float: right;
+  background: #2f83b9;
+  border-radius: 3rem;
+}
+
+.search {
+  padding-block: 1rem;
+  background: white;
+  border-radius: 3rem;
+  padding-inline: 1rem;
+  height: 100%;
+}
+
+.search .row {
+  padding-inline: 1rem;
+}
+
+input {
+  border: 1px solid #afcad9;
+  border-radius: 3rem;
+  padding-inline: 0.5rem;
+  padding-block: 0.5rem;
+  margin-right: 1rem;
+  height: 2.5rem;
+  width: 29% !important;
+}
+
+::placeholder {
+  color: #afcad9;
+  font-weight: lighter;
+  opacity: 1;
+}
+
+.search-button {
+  background: #2f83b9;
+  border-radius: 3rem;
+  color:white;
+}
+
+.search-button:hover {
+  background: #0a3156;
+  color: white;
+}
+
+#list_job {
+  margin-top: 2rem;
+  padding-bottom: 3rem;
+  min-height: 45rem;
+}
+
+table tbody tr:first-child {
+  border-radius: 2rem 0 0 0;
+  -moz-border-radius: 6px 0 0 0;
+  -webkit-border-radius: 6px 0 0 0;
+}
+
+#list_job table thead{
+  background: #ededed;
+}
+
+#list_job table tbody{
+  border-top: 0;
+  background: white;
+}
+
+#list_job table tbody tr:first-child td:first-child {
+  border-top-left-radius: 2rem;
+}
+
+#list_job table tbody tr:first-child td:last-child {
+  border-top-right-radius: 2rem;
+}
+
+.only-row {
+  border-bottom-color: #ededed;
+}
+
+.only-row td:first-child {
+  border-bottom-left-radius: 2rem;
+}
+
+.only-row td:last-child {
+  border-bottom-right-radius: 2rem;
+}
+
+.trash {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 100%;
+  border: 1px solid black;
+  right: 0;
+  margin-right: 3rem;
+}
+
+.actions {
+  margin-right:0 !important;
+  width: 8rem;
+  text-align: center;
+  border: 1px solid #2f83b9;
+  border-radius: 3rem;
+  padding-inline: 0;
+}
+
+table {
+  overflow: auto;
+  text-wrap: normal;
+  height: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+table thead tr{
+  border-bottom-color: #ededed;
+}
+
+.btn-outline-primary {
+    border-color: #2f83b9;
+    color: #2f83b9;
+    border-radius: 3rem;
+}
+
+.btn-check:checked + .btn-outline-primary {
+  background: #2f83b9 !important;
+}
+
+.btn-check:hover + .btn-outline-primary {
+  background: #2f83b9 !important;
+}
+
+
+.btn-check + .btn-outline-primary {
+  border: 0;
+}
