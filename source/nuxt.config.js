@@ -12,7 +12,8 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=M+PLUS+1p'}
     ]
   },
 
@@ -25,7 +26,8 @@ export default {
   plugins: [
     {src: '~/plugins/vee-validate.js', mode: 'client'},
     '~/plugins/api',
-    '~/plugins/repositories'
+    '~/plugins/repositories',
+    '~/plugins/handle-response.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

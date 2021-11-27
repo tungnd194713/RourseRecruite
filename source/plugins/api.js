@@ -12,12 +12,12 @@ export default function ({ $axios, app, redirect, store}, inject) {
     if (token) {
       request.headers.Authorization = token
     }
-    
+
     return request
   })
 
   api.onResponse(response => {
-    
+
     console.log('[ RESPONSE ]' + response.request.responseURL, response,)
     // TODO: If token expires, perform a silent refresh
 
@@ -36,10 +36,12 @@ export default function ({ $axios, app, redirect, store}, inject) {
       return redirect('/')
     } else if (code === 403) {
       app.$toast.error(error.message)
+    } else if (code === 404) {
+      redirect('/404')
     } else if (code === 500) {
       app.$toast.error('Internal Server Error')
     }
-    
+
     return error
   })
   inject('api', api)
