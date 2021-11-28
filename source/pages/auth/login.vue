@@ -1,4 +1,5 @@
 <template>
+  <div class="text-center form-body">
     <main class="p-2 p-lg-0 form-login">
       <form @submit.prevent="login">
         <img class="mb-3 mb-lg-4" src="../../assets/images/icon_logo.svg" alt="" height="59">
@@ -59,9 +60,10 @@
         </div>
       </form>
     </main>
+  </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import '../../styles/pages/auth/login.scss';
 </style>
 
