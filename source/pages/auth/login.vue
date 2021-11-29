@@ -1,4 +1,5 @@
 <template>
+  <div class="text-center form-body">
     <main class="p-2 p-lg-0 form-login">
       <form @submit.prevent="login">
         <img class="mb-3 mb-lg-4" src="../../assets/images/icon_logo.svg" alt="" height="59">
@@ -13,42 +14,46 @@
             </a>
 
           </div>
+
+          <div v-if="errors.unauthenticate" class="alert alert-danger" role="alert">
+            {{errors.unauthenticate}}
+          </div>
+
           <div class="form-group">
             <label for="email">メールアドレス <span>*</span></label>
             <div class="input-group has-validation">
               <span class="input-group-text input-group-text-pre"><img src="../../assets/images/icon_user.svg" alt=""></span>
               <input
                 id="email"
-                v-model="data.email"
-                type="email"
+                v-model.trim="$v.data.email.$model"
                 class="form-control form-control-lg"
-                required
+                :class="{'invalid': $v.data.email.$invalid && $v.data.email.$dirty}"
                 maxlength="50"
-                oninvalid="this.setCustomValidity('Please fill out your email')"
-                oninput="setCustomValidity('')"
               >
-              <div class="invalid-feedback">
-                Please choose a email.
-              </div>
+            </div>
+            <div v-if="$v.data.email.$error">
+              <div v-if="!$v.data.email.required" class="error">これは必須項目なので、必ず入力してください</div>
+              <div v-if="!$v.data.email.email" class="error">メールアドレスの形式で入力してください</div>
             </div>
           </div>
           <div class="form-group">
             <label for="password">パスワード <span>*</span></label>
-            <div class="input-group has-validation">
+            <div class="input-group has-validation" :class="{ 'form-group--error': $v.data.password.$error }">
               <span class="input-group-text input-group-text-pre"><img src="../../assets/images/icon_key.svg" alt=""></span>
               <input
                 id="password"
-                v-model="data.password"
+                v-model.trim="$v.data.password.$model"
+                class="form__input form-control form-control-lg"
                 type="password"
-                class="form-control form-control-lg"
-                required
-                oninvalid="this.setCustomValidity('Please fill your password')"
-                oninput="setCustomValidity('')"
+                :class="{'invalid': $v.data.password.$invalid && $v.data.password.$dirty}"
+                maxlength="32"
               >
               <span class="input-group-text input-group-text-next"><img src="../../assets/images/icon_eye.svg" alt=""></span>
-              <div class="invalid-feedback">
-                Please choose a password.
-              </div>
+              <div class="invalid-feedback"></div>
+            </div>
+            <div v-if="$v.data.password.$error">
+              <div v-if="!$v.data.password.required" class="error">これは必須項目なので、必ず入力してください</div>
+              <div v-if="!$v.data.password.minLength" class="error">6文字以上32文字以下で入力してください</div>
             </div>
           </div>
 
@@ -59,14 +64,19 @@
         </div>
       </form>
     </main>
+  </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import '../../styles/pages/auth/login.scss';
 </style>
 
 <script>
+  import {validationMixin} from 'vuelidate'
+  import {required, email, minLength} from 'vuelidate/lib/validators'
+
   export default {
+    mixins: [validationMixin],
     head () {
       return { title: 'Login' }
     },
@@ -77,20 +87,48 @@
           email: '',
           password: ''
         },
+        errors: [],
       }
     },
+
+    validations: {
+      data: {
+        email: {
+          required,
+          email,
+        },
+        password: {
+          required,
+          minLength: minLength(6),
+        }
+      }
+    },
+
     methods: {
-      async login () {
+      resetData() {
+        this.$v.$reset();
+        this.data.email = '';
+        this.data.password = '';
+      },
+
+      async login() {
+        this.$v.data.$touch();
+        if (!this.$v.data.$invalid) {
           try {
             await this.$auth.loginWith('local', {
               data: {
                 email: this.data.email,
                 password: this.data.password
               }
-            })
+            }).then((res) => {
+              const data = this.$handleResponse(res);
+              this.errors = data.errors;
+              this.resetData();
+            });
           } catch (e) {
-            console.log(e.message)
+            this.errors = e.response.data.errors;
           }
+        }
       },
 
       async loginWithFacebook() {

@@ -8,7 +8,8 @@ export default (context, inject) => {
     } else {
       return {
         message: '',
-        errors: response.response.data.errors
+        errors: response.response.data.errors,
+        errorMsg: response.response.data.message ?? ''
       };
     }
   };
