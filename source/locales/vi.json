@@ -1,5 +1,21 @@
 {
     "general": {
         "homepage": "Trang chủ"
+    },
+    "careers": {
+      "key_0": "Xây dựng",
+      "key_1": "Công nghiệp chế tạo tàu biển",
+      "key_2": "Sửa chữa ô tô",
+      "key_3": "Công việc liên quan nghiệp vụ trong sân bay",
+      "key_4": "Nghiệp vụ khách sạn",
+      "key_5": "Chăm sóc người già (Hộ lý)",
+      "key_6": "Vệ sinh tòa nhà",
+      "key_7": "Nông nghiệp",
+      "key_8": "Ngư Nghiệp",
+      "key_9": "Chế biến thực phẩm",
+      "key_10": "Dịch vụ ăn uống, nhà hàng",
+      "key_11": "Gia công nguyên liệu",
+      "key_12": "Gia công cơ khí",
+      "key_13": "Cơ điện, điện tử"
     }
 }

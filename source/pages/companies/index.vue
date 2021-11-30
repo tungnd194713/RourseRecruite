@@ -56,7 +56,7 @@
                   <span class="me-2"
                     ><img src="../../assets/images/icon_cube.svg"
                   /></span>
-                  <span>{{ career }}</span>
+                  <span>{{ $t(career) }} </span>
                 </div>
                 <div class="d-block item">
                   <span class="me-2"
@@ -177,7 +177,7 @@ export default {
       const condition = { currentPage }
 
       const { data } =
-        await this.$repositories.companyProfile.getCompanyProfile(condition)
+        await this.$repositories.profiles.getCompanyProfile(condition)
 
       this.company_name = data.company_name
       this.manager_name = data.manager_name
@@ -192,7 +192,7 @@ export default {
       this.video_link = data.video_link
       this.images = data.images
 
-      this.career = this.careers[data.career]
+      this.career = this.careers[data.career - 1]
     },
   },
 }

@@ -64,6 +64,6 @@
   }
 </script>
 
-<style>
+<style scoped>
   @import '../styles/layout/_header.scss';
 </style>

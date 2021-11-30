@@ -7,6 +7,6 @@ export default ($axios) => ({
   post: PostRepository($axios),
   jobs: JobRepository($axios),
   account: AccountRepository($axios),
-  companyProfile: CompanyRepository($axios),
+  profiles: CompanyRepository($axios),
 })
 

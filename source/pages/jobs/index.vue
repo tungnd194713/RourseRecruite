@@ -191,6 +191,6 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import '../../styles/pages/jobs/list.scss';
 </style>
