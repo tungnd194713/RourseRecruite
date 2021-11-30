@@ -1,124 +1,243 @@
-html {
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box;
-  overflow-x: hidden;
-}
 body {
-  position: relative;
-  margin: 0;
-  padding-bottom: 6rem;
-  min-height: 100%;
-  height: 45rem;
+  font-family: 'M PLUS 1p';
+  background-color: #EBF2F2;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
-.header {
-  background-color: #0e304a;
-  padding: 0 10px;
-  height: 5rem;
-  padding-left: 5rem !important;
-  padding-right: 6rem !important;
-}
-
-.header a {
-  float: left;
-  color: white;
+#back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 15px;
+  z-index: 9999;
+  width: 55px;
+  height: 55px;
   text-align: center;
-  padding: 1rem;
+  line-height: 54px;
+  background: #CFC6C1;
+  color: #000000;
+  cursor: pointer;
+  border: 0;
+  border-radius: 55px;
   text-decoration: none;
-  font-size: 15px;
-  line-height: 25px;
-  border-radius: 4px;
+  transition: opacity 0.2s ease-out;
+  opacity: 0;
 }
 
-/* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
-.header a.logo {
-  font-size: 25px;
-  font-weight: bold;
+#back-to-top.show {
+  opacity: 1;
 }
 
-/* Change the background color on mouse-over */
-.header a:hover {
-  background-color: #0e304a;;
-  color: white;
+.btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
-/* Style the active/current link */
-.header a.active {
-  background-color: dodgerblue;
-  color: white;
+input:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
-/* Float the link section to the right */
-.header-right {
-  float: right;
-  padding: 0.5rem;
+.form-control:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
-/* Add media queries for responsiveness - when the screen is 500px wide or less, stack the links on top of each other */
-@media screen and (max-width: 500px) {
-  .header a {
-    float: none;
-    display: none;
-    text-align: left;
+.form-select:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.company-header {
+  background-color: #003156;
+  padding: 12px;
+}
+
+.company-header img {
+  height: 32px;
+}
+
+.company-header .dropdown-link-acc {
+  margin-right: 10px;
+}
+
+.company-header .dropdown-link-acc ul {
+  padding: 0px;
+  min-width: 200px;
+}
+
+.company-header .dropdown-link-acc ul li a.dropdown-item {
+  padding: 0.8rem 1rem;
+  font-size: 12px;
+  filter: invert(63%) sepia(0%) saturate(14%) hue-rotate(250deg) brightness(140%) contrast(93%);
+}
+
+.company-header .dropdown-link-acc ul li a.dropdown-item:hover {
+  background-color: #000;
+  filter: invert(70%) sepia(62%) saturate(294%) hue-rotate(163deg) brightness(95%) contrast(85%);
+}
+
+.company-header .dropdown-link-acc img {
+  margin-top: -5px;
+  margin-right: 10px;
+  height: 16px;
+}
+
+.company-header a {
+  font-size: 14px;
+  color: #75B0CC;
+}
+
+.company-header a:hover {
+  color: #82B0CA;
+}
+
+.company-menu {
+  background-color: #82B0CA;
+}
+
+.company-menu a {
+  font-size: 14px;
+  padding-right: 5rem !important;
+  padding-left: 5rem !important;
+}
+
+.company-menu a img {
+  margin-top: -5px;
+  margin-right: 5px;
+}
+
+.company-menu .border-end {
+  border-right: 1px solid #ebf2f23d !important;
+}
+
+.company-menu a.active {
+  /*font-weight: bold;*/
+  /*color: #003156;*/
+  filter: invert(16%) sepia(22%) saturate(4628%) hue-rotate(183deg) brightness(32%) contrast(105%);
+
+}
+
+.company-menu a:hover {
+  /*font-weight: bold;*/
+  /*color: #003156;*/
+  filter: invert(16%) sepia(22%) saturate(4628%) hue-rotate(183deg) brightness(32%) contrast(105%);
+
+}
+
+/*
+ * Footer
+ */
+footer {
+  width: 100%;
+}
+
+.company-footer {
+  background-color: #003156;
+}
+
+.company-footer .container {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.company-footer img {
+  height: 50px;
+}
+
+.company-footer h5 {
+  font-size: 16px;
+}
+
+.company-footer .line-title {
+  border-bottom: 2px solid #fff;
+  max-width: 30%;
+}
+
+.company-footer ul li a {
+  font-size: 14px;
+  color: #75B0CC;
+}
+
+.company-footer ul li a:hover {
+  color: #ffffff;
+}
+
+.company-footer .footer-icon-social {
+  color: #82B0CA;
+  /*font-size: 30px;*/
+}
+
+.footer-copyright {
+  color: #82B0CA;
+  font-size: 14px;
+  background-color: #00214A;
+  padding: 12px;
+}
+
+@media only screen and (max-width: 1024px) {
+  .company-menu a {
+    padding-right: 3rem !important;
+    padding-left: 3rem !important;
   }
-  .header-right {
-    float: none;
-    padding-top: 1.25rem;
+
+  .td-warning {
+    margin-top: -18px;
+    margin-left: -10px;
   }
 }
 
-.avatar {
-  background: #82b0ca !important;
-  border-radius: 3rem;
+@media only screen and (max-width: 991px) {
+  .company-menu a {
+    font-size: 13px;
+    padding-right: 2rem !important;
+    padding-left: 2rem !important;
+  }
+
+  .box-search {
+    border-radius: 2rem !important;
+  }
+
+  .td-warning img {
+    height: 16px;
+  }
+
+  .td-warning {
+    padding: 1px 0px 1px 10px;
+    font-size: 9px;
+    margin-top: -26px;
+    margin-left: -8px;
+  }
 }
 
-.dropdown-1 button {
-  border: 0;
-  background: #0e304a !important;
-  color: #82b0ca;
-  margin:0;
-}
+@media only screen and (max-width: 600px) {
+  .company-header {
+    background-color: #003156;
+    padding: 8px;
+  }
 
-.dropdown-1 button:focus {
-  outline: none;
-  box-shadow: none;
-}
+  .company-header img {
+    height: 28px;
+  }
 
-.item_dropdown {
-  color: black;
-  visibility: visible;
-}
+  .company-header a {
+    font-size: 11px;
+  }
 
-.nav-tabs {
-  border: 0;
-  background: #a0bed0 !important;
-}
+  .company-header .dropdown-link-acc ul {
+    padding: 0px;
+    min-width: 150px;
+  }
 
-.nav-tabs ul {
-  background: #a0bed0;
-}
+  .company-menu a {
+    font-size: 11px;
+    padding-right: 0.7rem !important;
+    padding-left: 0.7rem !important;
+  }
 
-h1 {
-  color: #0a3156
-}
-
-.nav-tabs ul li .active {
-  color: #0a3156 !important;
-  font-weight: bold;
-}
-
-.tab-content {
-  background: #ededed;
-}
-
-.nav-link {
-  background: #a0bed0;
-  color: white;
-  border-top-left-radius: 0 !important;
-  border-top-right-radius: 0 !important;
-}
-
-.nav-link:hover, .nav-link:active {
-  font-weight: bold;
+  .company-menu a img {
+    height: 12px;
+    margin-right: 1px;
+  }
 }

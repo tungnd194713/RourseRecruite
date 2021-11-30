@@ -81,7 +81,7 @@
         this.$v.$touch();
         if (!this.$v.$invalid) {
           try {
-            await this.$repositories.account.resetPassword({
+            await this.$repositories.accounts.resetPassword({
               email: this.email,
               token: this.token,
               password: this.password
