@@ -57,9 +57,9 @@ export default {
 
   i18n: {
     locales: ['vi', 'ja'],
-    defaultLocale: 'vi',
+    defaultLocale: 'ja',
     vueI18n: {
-      fallbackLocale: 'vi',
+      fallbackLocale: 'ja',
       messages: {
         'vi': require('./locales/vi.json'),
         'ja': require('./locales/ja.json'),
