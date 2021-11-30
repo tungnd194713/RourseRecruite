@@ -4,9 +4,9 @@ import AccountRepository from "~/repositories/AccountRepository";
 import CompanyRepository from "~/repositories/CompanyRepository";
 
 export default ($axios) => ({
-  post: PostRepository($axios),
+  posts: PostRepository($axios),
   jobs: JobRepository($axios),
-  account: AccountRepository($axios),
+  accounts: AccountRepository($axios),
   profiles: CompanyRepository($axios),
 })
 

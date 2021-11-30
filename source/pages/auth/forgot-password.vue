@@ -74,7 +74,7 @@
         this.$v.$touch();
         if (!this.$v.$invalid) {
           try {
-            await this.$repositories.account.forgotPassword({
+            await this.$repositories.accounts.forgotPassword({
               email: this.email
             })
               .then((res) => {

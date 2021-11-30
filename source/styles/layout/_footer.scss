@@ -1,27 +1,82 @@
-.footer {
-  background-color: #0e304a;
-}
-.link-social {
-  background: #00000000;
-  border-radius: 3rem;
-  color: #afcad9;
-  margin: 0.5rem;
+footer {
+  width: 100%;
 }
 
-h1 {
-  color: white;
+.company-footer {
+  background-color: #003156;
 }
 
-hr {
-  width: 4rem;
-  color: white;
-  height: 2px !important;
-  border-radius: 50%;
-  opacity: 1;
+.company-footer .container {
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 
-.link-footer {
-  color: #afcad9;
-  background-color: transparent;
-  text-decoration: none;
+.company-footer img {
+  height: 50px;
+}
+
+.company-footer h5 {
+  font-size: 16px;
+}
+
+.company-footer .line-title {
+  border-bottom: 2px solid #fff;
+  max-width: 30%;
+}
+
+.company-footer ul li a {
+  font-size: 14px;
+  color: #75B0CC;
+}
+
+.company-footer ul li a:hover {
+  color: #ffffff;
+}
+
+.company-footer .footer-icon-social {
+  color: #82B0CA;
+  /*font-size: 30px;*/
+}
+
+.footer-copyright {
+  color: #82B0CA;
+  font-size: 14px;
+  background-color: #00214A;
+  padding: 12px;
+}
+
+@media only screen and (max-width: 1024px) {
+  .company-menu a {
+    padding-right: 3rem !important;
+    padding-left: 3rem !important;
+  }
+
+  .td-warning {
+    margin-top: -18px;
+    margin-left: -10px;
+  }
+}
+
+@media only screen and (max-width: 991px) {
+  .company-footer .container {
+    padding-top: 25px;
+    padding-bottom: 35px;
+  }
+
+  .company-footer img {
+    height: 25px;
+  }
+
+  .company-footer h5 {
+    font-size: 13px;
+  }
+
+  .company-footer ul li a {
+    font-size: 11px;
+  }
+
+  .footer-copyright {
+    font-size: 11px;
+    padding: 8px;
+  }
 }

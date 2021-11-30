@@ -1,91 +1,85 @@
 <template>
-  <div class="nav-content">
-    <div class="d-flex flex-row content-header">
-      <div class="col-md-6">
-        <h1 class="text-start"><b>List job</b></h1>
-      </div>
-      <div class="col-md-6 mt-2">
-        <button type="button" class="btn btn-primary btn-sm add-job">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
-          </svg>
-          Add job
-        </button>
-      </div>
-
-    </div>
-    <div class="search">
-      <div class="row">
-        <input class="col-sm col-lg-3 input-search" type="text" placeholder="Tìm kiếm" />
-        <input class="col-sm col-lg-3 input-search" type="text" placeholder="Tìm kiếm" />
-        <input class="col-sm col-lg-3 input-search" type="text" placeholder="Tìm kiếm" />
-        <div class="col-sm col-lg-1">
-          <button type="submit" class="btn btn-m search-button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-            </svg>
-            Search
+  <div class="main-content">
+    <div class="nav-content container">
+      <div class="row box-title mb-1 mb-lg-2">
+        <div class="col-6">
+          <h4>求人一覧</h4>
+        </div>
+        <div class="col-6">
+          <button id="btn_create_job" type="button" class="btn rounded-pill btn-add-job">
+            <img class="" src="../../assets/images/icon_plus.svg"/>
+            新規求人登録
           </button>
         </div>
       </div>
-    </div>
 
+      <form class="row box-search mt-2 px-3 pt-3 pb-2 rounded-pill">
+        <div class="col-12 col-lg-4 mb-2 form-group">
+          <input v-model="condition.title" type="text" class="form-control rounded-pill" placeholder="タイトル">
+        </div>
+        <div class="col-12 col-lg-3 mb-2 form-group">
+          <input v-model="condition.date_start" type="text" class="form-control rounded-pill" placeholder="登録日">
+        </div>
+        <div class="col-12 col-lg-3 mb-2 form-group">
+          <select v-model="condition.status" class="form-select rounded-pill" aria-label="ステータス">
+            <option selected>ステータス</option>
+            <option value="1">Ok</option>
+            <option value="0">No</option>
+          </select>
+        </div>
+        <div class="col-12 col-lg-2">
+          <button type="button" class="btn btn-sm rounded-pill btn-search-job" @click="search">
+            <img src="../../assets/images/icon_search.svg" alt="">
+            <span class="px-4">検索</span>
+          </button>
+        </div>
+      </form>
 
-    <div id="list_job" class="border-1 border-dark table-responsive-lg" >
-      <table id="list"
-             class="table table-hover"
-             :current-page="currentPage"
-             :per-page="perPage"
-      >
-        <thead>
-        <tr>
-          <th v-for="header in fields" :key="header.key">{{header.label}}</th>
-        </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in items" :key="item.id" :class="totalItems === 1 ? 'only-row' : ''">
-              <td>{{index + 1}}</td>
-              <td>{{item.title}}</td>
-              <td>{{item.date_start}}</td>
-              <td>{{item.date_end}}</td>
-              <td>{{item.form_recruitment}}</td>
-              <td>{{item.conditions_apply}}</td>
-              <td>{{item.number_recruitments}}</td>
-              <td>
-                  <div>
-                    <div class="row">
-                      <div class="btn-group actions col-sm-3" role="group">
-                        <input :id="'btn_radio1_' + index" type="radio" class="btn-check" :name="'btn_radio1_' + index" autocomplete="off" checked>
-                        <label class="btn btn-outline-primary switch" :for="'btn_radio1_' + index" style="border-radius: 3rem;">Active</label>
-
-                        <input :id="'btn_radio2_' + index" type="radio" class="btn-check" :name="'btn_radio1_' + index" autocomplete="off">
-                        <label class="btn btn-outline-primary switch" :for="'btn_radio2_' + index" style="border-radius: 3rem;">Block</label>
-                      </div>
-                      <div class="col-sm-3" style="margin: 0; margin-right: 0">
-                        <button class="trash" style="width: 2rem !important;">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16" style="margin-left: -3px;">
-                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                          </svg>
-
-                        </button>
-                      </div>
-
-                    </div>
+      <div class="container mt-3 mt-lg-4">
+        <div id="list_job" class="row table-responsive box-table" >
+        <table id="list"
+               class="table table-hover"
+               :current-page="currentPage"
+               :per-page="perPage"
+        >
+          <thead>
+          <tr>
+            <th v-for="header in fields" :key="header.key">{{header.label}}</th>
+            <th scope="col"></th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in items" :key="item.id" :class="item.status === 1 ? 'active' : ''">
+                <td class="align-middle py-3 text-center">{{index + 1}}</td>
+                <td class="align-middle py-3">{{item.title}}</td>
+                <td class="align-middle py-3">{{item.date_start}}</td>
+                <td class="align-middle py-3">{{item.date_end}}</td>
+                <td class="align-middle py-3">{{item.form_recruitment}}</td>
+                <td class="align-middle py-3">{{item.conditions_apply}}</td>
+                <td class="align-middle py-3">{{item.number_recruitments}}</td>
+                <td class="align-middle py-3">
+                  <div class="btn-group btn-toggle rounded-pill btn-switch">
+                    <button :class="'btn btn-sm btn-check-active rounded-pill ' + (item.status === 1 ? 'active' : '')">有効</button>
+                    <button :class="'btn btn-sm btn-check-unactive rounded-pill ' + (item.status === 0 ? 'unactive' : '')">無効</button>
                   </div>
-            </td>
-        </tr>
-        </tbody>
-      </table>
-      <h4 v-if="totalItems === 0" class="rounded-1 text-center w-100 p-3 bg-white">No data.</h4>
-      <Pagination :current-page="currentPage"
-                  :per-page="perPage"
-                  :total-items="totalItems"
-                  :page-count="pageCount"
-                  @nextPage="pageChangeHandle('next')"
-                  @previousPage="pageChangeHandle('previous')"
-                  @customPage="pageChangeHandle"
-      />
+                </td>
+                <td class="align-middle py-3">
+                  <img class="" src="../../assets/images/icon_trash.svg"/>
+                </td>
+          </tr>
+          </tbody>
+        </table>
+        <h4 v-if="totalItems === 0" class="text-center w-100 p-3 bg-white">No data.</h4>
+        <Pagination :current-page="currentPage"
+                    :per-page="perPage"
+                    :total-items="totalItems"
+                    :page-count="pageCount"
+                    @nextPage="pageChangeHandle('next')"
+                    @previousPage="pageChangeHandle('previous')"
+                    @customPage="pageChangeHandle"
+        />
+      </div>
+      </div>
     </div>
   </div>
 </template>
@@ -105,35 +99,35 @@
         fields: [
           {
             key: 'id',
-            label: 'ID'
+            label: 'No'
           },
           {
             key: 'title',
-            label: 'Title'
+            label: 'タイトル'
           },
           {
             key: 'date_start',
-            label: 'Start'
+            label: '開始日'
           },
           {
             key: 'date_end',
-            label: 'End'
+            label: '終了日'
           },
           {
             key: 'form_recruitment',
-            label: 'Form Recruitment'
+            label: '雇用形態'
           },
           {
             key: 'conditions_apply',
-            label: 'Conditions Apply'
+            label: '語学レベル'
           },
           {
             key: 'number_recruitments',
-            label: 'Number Recruitment'
+            label: '応募者数'
           },
           {
             key: 'actions',
-            label: 'Actions',
+            label: 'ステータス',
             tdClass: 'action'
           }
         ],
@@ -141,6 +135,11 @@
         perPage: 20,
         totalItems: 0,
         pageCount: 1,
+        condition: {
+          title: '',
+          date_start: '',
+          status: ''
+        }
       }
     },
 
@@ -163,7 +162,7 @@
 
     methods: {
       async getListJob(currentPage) {
-        const condition = { currentPage };
+        const condition = { ...this.condition, currentPage };
 
         const { data } = await this.$repositories.jobs.getJobs(condition);
 
@@ -185,6 +184,11 @@
           default:
             this.currentPage = value
         }
+        this.getListJob(this.currentPage);
+      },
+
+      search() {
+        this.currentPage = 1;
         this.getListJob(this.currentPage);
       }
     }

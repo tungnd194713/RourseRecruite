@@ -1,64 +1,135 @@
-.nav-content {
+.main-content {
   background: #ededed;
+}
+
+.nav-content {
   padding-block: 2rem;
-  padding-inline: 6rem;
 }
 
-.add-job {
+.btn-add-job {
+  font-size: 12px;
+  color: #ffffff;
+  background-color: #2F83B9;
   float: right;
-  background: #2f83b9;
-  border-radius: 3rem;
 }
 
-.search {
-  padding-block: 1rem;
-  background: white;
-  border-radius: 3rem;
-  padding-inline: 1rem;
-  height: 100%;
+.btn-add-job img {
+  margin-bottom: 3px;
+  margin-right: 3px;
 }
 
-.search .row {
-  padding-inline: 1rem;
+.btn-add-job:hover {
+  color: #ffffff;
 }
 
-input {
-  border: 1px solid #afcad9;
-  border-radius: 3rem;
-  padding-inline: 0.5rem;
-  padding-block: 0.5rem;
-  margin-right: 1rem;
-  height: 2.5rem;
-  width: 29% !important;
+
+.box-search {
+  /*--bs-gutter-x: 0px;*/
+  margin-left: 0rem;
+  margin-right: 0rem;
+  background-color: #ffffff;
 }
 
-::placeholder {
-  color: #afcad9;
-  font-weight: lighter;
-  opacity: 1;
+.box-search input {
+  font-size: 12px;
+  color: #88B1C7;
+  border: 1px solid #88B1C7;
+  background-color: #F5F7F7;
 }
 
-.search-button {
-  background: #2f83b9;
-  border-radius: 3rem;
-  color:white;
+.box-search .form-select {
+  font-size: 12px;
+  color: #88B1C7;
+  border: 1px solid #88B1C7;
+  background-color: #F5F7F7;
 }
 
-.search-button:hover {
-  background: #0a3156;
-  color: white;
+input::placeholder {
+  color: #88B1C7 !important;
+  opacity: 1; /* Firefox */
+}
+
+.btn-search-job {
+  font-size: 15px;
+  color: #ffffff;
+  background-color: #87B0C6;
+  float: right;
+}
+
+.btn-search-job:hover {
+  color: #ffffff;
+}
+
+.btn-switch {
+  width: 92px;
+  border: 1px solid #87B0C6;
+}
+
+.btn-switch .btn {
+  color: #989898;
+  font-size: 12px;
+  padding: 0.09rem 0.6rem;
+}
+
+.btn-switch .active {
+  color: #ffffff;
+  background-color: #87B0C6;
+  border: 1px solid #87B0C6;
+}
+
+.btn-switch .unactive {
+  color: #ffffff;
+  background-color: #CBCBCB;
+  border: 1px solid #CBCBCB;
+}
+
+.box-table {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.box-table table {
+  font-size: 14px;
+}
+
+.box-table table thead tr {
+  background-color: #C5E8EF;
+  color: #003156;
+}
+
+.box-table table tr.active {
+  background-color: #F4F6F6;
+}
+
+.box-table table thead tr th {
+  font-weight: normal;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.box-table table tbody tr td {
+  color: #333333;
+}
+
+.box-table table tbody tr td a{
+  color: #333333!important;
+}
+
+.table > :not(:first-child) {
+  border-top: none;
+}
+#list {
+  margin: 0;
 }
 
 #list_job {
+  align-items: start;
+  display: inline-block;
+  vertical-align: top;
+  width: 100%;
   margin-top: 2rem;
   padding-bottom: 3rem;
-  min-height: 45rem;
-}
-
-table tbody tr:first-child {
-  border-radius: 2rem 0 0 0;
-  -moz-border-radius: 6px 0 0 0;
-  -webkit-border-radius: 6px 0 0 0;
+  min-height: 23rem;
 }
 
 #list_job table thead{
@@ -68,26 +139,6 @@ table tbody tr:first-child {
 #list_job table tbody{
   border-top: 0;
   background: white;
-}
-
-#list_job table tbody tr:first-child td:first-child {
-  border-top-left-radius: 2rem;
-}
-
-#list_job table tbody tr:first-child td:last-child {
-  border-top-right-radius: 2rem;
-}
-
-.only-row {
-  border-bottom-color: #ededed;
-}
-
-.only-row td:first-child {
-  border-bottom-left-radius: 2rem;
-}
-
-.only-row td:last-child {
-  border-bottom-right-radius: 2rem;
 }
 
 .trash {
@@ -126,15 +177,68 @@ table thead tr{
     border-radius: 3rem;
 }
 
-.btn-check:checked + .btn-outline-primary {
-  background: #2f83b9 !important;
-}
-
-.btn-check:hover + .btn-outline-primary {
-  background: #2f83b9 !important;
-}
-
-
 .btn-check + .btn-outline-primary {
   border: 0;
+}
+
+@media only screen and (max-width: 600px) {
+  .box-title h4 {
+    font-size: 20px;
+  }
+
+  .box-search {
+    border-radius: 1rem !important;
+  }
+
+  .btn-add-job {
+    font-size: 10px;
+  }
+
+  .btn-switch .btn {
+    font-size: 10px;
+  }
+
+  .box-table table {
+    font-size: 12px;
+  }
+
+  .td-warning img {
+    height: 15px;
+  }
+
+  .td-warning {
+    padding: 1px 0px 1px 10px;
+    font-size: 7px;
+    margin-top: -71px;
+    margin-left: -8px;
+  }
+
+  .box-pagination p {
+    font-size: 10px;
+  }
+
+  /*
+   * Footer
+   */
+  .company-footer .container {
+    padding-top: 25px;
+    padding-bottom: 35px;
+  }
+
+  .company-footer img {
+    height: 25px;
+  }
+
+  .company-footer h5 {
+    font-size: 13px;
+  }
+
+  .company-footer ul li a {
+    font-size: 11px;
+  }
+
+  .footer-copyright {
+    font-size: 11px;
+    padding: 8px;
+  }
 }

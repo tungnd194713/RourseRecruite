@@ -1,21 +1,25 @@
 export default [
   {
     tab: 'profile',
+    srcImage: '/icon_building.svg',
     name: 'プロフィール',
     path: '/',
   },
   {
+    tab: 'job',
+    srcImage: '/icon_job.svg',
+    name: '求人一覧',
+    path: '/jobs',
+  },
+  {
     tab: 'candidate',
+    srcImage: '/icon_gr_users.svg',
     name: '応募者一覧',
     path: '/',
   },
   {
-    tab: 'job',
-    name: 'List job',
-    path: '/jobs',
-  },
-  {
     tab: 'settlement',
+    srcImage: '/icon_order.svg',
     name: '決済',
     path: '/',
   }
