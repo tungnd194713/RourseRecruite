@@ -52,7 +52,7 @@
             <tr v-for="(item, index) in items" :key="item.id" :class="item.read === 0 ? 'unread' : ''">
               <td class="align-middle py-3 text-center">
                           <span v-if="!(item.read || isWarningUnRead(item.date_start))" class="td-warning">
-                          未対応の履歴書4/10通 <img class="" src="../../assets/images/icon_warning.svg"/>
+                          未対応の履歴書{{item.cv_read}}/{{item.total_cv_applied}}通 <img class="" src="../../assets/images/icon_warning.svg"/>
                           </span>
                   {{index + 1}}
                 </td>
@@ -195,10 +195,10 @@
         const { data } = await this.$repositories.jobs.getJobs(condition);
 
         this.items = data.data;
-        this.totalItems = data.total;
-        this.currentPage = data.current_page;
-        this.perPage = data.per_page;
-        this.pageCount = (this.totalItems > 0) ? parseInt(data.total / data.per_page, 10) + 1 : 1;
+        this.totalItems = data.meta.total;
+        this.currentPage = data.meta.current_page;
+        this.perPage = data.meta.per_page;
+        this.pageCount = (this.totalItems > 0) ? parseInt(data.meta.total / data.meta.per_page, 10) + 1 : 1;
       },
 
       pageChangeHandle(value) {
