@@ -53,6 +53,7 @@ export default {
     '@nuxtjs/style-resources',
     '@nuxtjs/dotenv',
     '@nuxtjs/auth',
+    '@nuxtjs/moment'
   ],
 
   i18n: {
@@ -117,6 +118,15 @@ export default {
       baseURL: process.env.API_URL
     }
   },
+
+  // moment nuxtjs
+  moment: {
+    defaultLocale: 'ja',
+    locales: ['ja'],
+    defaultTimezone: 'Asia/Tokyo',
+    timezone: true
+  },
+
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

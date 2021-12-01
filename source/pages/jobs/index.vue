@@ -49,36 +49,64 @@
           </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in items" :key="item.id" :class="item.status === 1 ? 'active' : ''">
-                <td class="align-middle py-3 text-center">{{index + 1}}</td>
-                <td class="align-middle py-3">{{item.title}}</td>
-                <td class="align-middle py-3">{{item.date_start}}</td>
-                <td class="align-middle py-3">{{item.date_end}}</td>
-                <td class="align-middle py-3">{{item.form_recruitment}}</td>
-                <td class="align-middle py-3">{{item.conditions_apply}}</td>
-                <td class="align-middle py-3">{{item.number_recruitments}}</td>
-                <td class="align-middle py-3">
-                  <div class="btn-group btn-toggle rounded-pill btn-switch">
-                    <button :class="'btn btn-sm btn-check-active rounded-pill ' + (item.status === 1 ? 'active' : '')">有効</button>
-                    <button :class="'btn btn-sm btn-check-unactive rounded-pill ' + (item.status === 0 ? 'unactive' : '')">無効</button>
-                  </div>
+            <tr v-for="(item, index) in items" :key="item.id" :class="item.read === 0 ? 'unread' : ''">
+              <td class="align-middle py-3 text-center">
+                          <span v-if="!(item.read || isWarningUnRead(item.date_start))" class="td-warning">
+                          未対応の履歴書4/10通 <img class="" src="../../assets/images/icon_warning.svg"/>
+                          </span>
+                  {{index + 1}}
                 </td>
-                <td class="align-middle py-3">
-                  <img class="" src="../../assets/images/icon_trash.svg"/>
-                </td>
+
+              <td class="align-middle py-3">{{item.title}}</td>
+              <td class="align-middle py-3">{{item.date_start}}</td>
+              <td class="align-middle py-3">{{item.date_end}}</td>
+              <td class="align-middle py-3">{{item.form_recruitment}}</td>
+              <td class="align-middle py-3">{{item.conditions_apply}}</td>
+              <td class="align-middle py-3">{{item.number_recruitments}}</td>
+              <td class="align-middle py-3">
+                <div class="btn-group btn-toggle rounded-pill btn-switch">
+                  <button :class="'btn btn-sm btn-check-active rounded-pill ' + (item.status === 1 ? 'active' : '')">
+                    有効
+                  </button>
+                  <button
+                    :class="'btn btn-sm btn-check-unactive rounded-pill ' + (item.status === 0 ? 'unactive' : '')">無効
+                  </button>
+                </div>
+              </td>
+              <td class="align-middle py-3">
+                <img class="btn" src="../../assets/images/icon_trash.svg" data-bs-toggle="modal"
+                     data-bs-target="#exampleModal"/>
+              </td>
           </tr>
           </tbody>
         </table>
-        <h4 v-if="totalItems === 0" class="text-center w-100 p-3 bg-white">No data.</h4>
-        <Pagination :current-page="currentPage"
-                    :per-page="perPage"
-                    :total-items="totalItems"
-                    :page-count="pageCount"
-                    @nextPage="pageChangeHandle('next')"
-                    @previousPage="pageChangeHandle('previous')"
-                    @customPage="pageChangeHandle"
-        />
+        <h4 v-if="totalItems === 0" class="text-center w-100 p-3 m-0 bg-white border-bottom border-1">No data.</h4>
       </div>
+      <Pagination :current-page="currentPage"
+                  :per-page="perPage"
+                  :total-items="totalItems"
+                  :page-count="pageCount"
+                  @nextPage="pageChangeHandle('next')"
+                  @previousPage="pageChangeHandle('previous')"
+                  @customPage="pageChangeHandle"
+      />
+      </div>
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header border-0">
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <h3 class="text-center">Are you sure?</h3>
+            </div>
+            <div class="modal-footer align-items-center d-flex justify-content-center flex-row">
+              <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-danger w-25">Delete</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -132,7 +160,7 @@
           }
         ],
         currentPage: 1,
-        perPage: 20,
+        perPage: 10,
         totalItems: 0,
         pageCount: 1,
         condition: {
@@ -190,6 +218,13 @@
       search() {
         this.currentPage = 1;
         this.getListJob(this.currentPage);
+      },
+
+      isWarningUnRead(date) {
+        const now = this.$moment().format('YYYY-MM-DD');
+        date = this.$moment(date);
+
+        return now < date.add(3, 'days').format('YYYY-MM-DD')
       }
     }
   }
