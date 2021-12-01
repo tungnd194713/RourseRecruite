@@ -1,27 +1,37 @@
 <template>
-  <nav v-if="totalItems > perPage" class="border-0 nav-paginate">
-    <ul class="pagination justify-content-end">
-      <li class="page-item">
-        <a :class="'btn btn-md page-link ' + isPreviousButtonDisabled"
-           aria-label="Previous"
-           @click="previousPage"
-        >
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
-      <li v-for="i in pageCount" :key="i" class="page-item">
-        <a :class="'btn btn-md page-link'" @click="customPage(i)">{{i}}</a>
-      </li>
-      <li class="page-item">
-        <a :class="'btn btn-md page-link ' + isNextButtonDisabled"
-           aria-label="Next"
-           @click="nextPage"
-        >
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
+  <div class="row pb-3 pb-lg-4 mb-4 mb-lg-5 box-pagination">
+    <div class="col-12 col-lg-6">
+      <p>
+        * 未読：暗い色、既読：明るい色 <br />
+        * 3日以上未読の履歴書があったら、リマインダーが表示されます。
+      </p>
+    </div>
+    <div class="col-12 col-lg-6">
+      <nav v-if="totalItems > perPage" aria-label="Page navigation example">
+        <ul class="pagination justify-content-end">
+          <li class="page-item disabled">
+            <a tabindex="-1"
+               aria-disabled="true"
+               :class="'page-link previous rounded-circle me-1 me-lg-1 fw-bold ' + isPreviousButtonDisabled"
+               aria-label="Previous"
+               @click="previousPage"
+            ><img class="" src="../assets/images/icon_laquo.svg"
+            /></a>
+          </li>
+          <li v-for="i in pageCount" :key="i" class="page-item">
+            <a :class="'btn page-link rounded-circle me-1 me-lg-1 fw-bold ' + (currentPage === i ? 'active' : '')" @click="customPage(i)">{{i}}</a>
+          </li>
+          <li class="page-item">
+            <a :class="'page-link next rounded-circle fw-bold bg-white ' + isNextButtonDisabled"
+               aria-label="Next"
+               @click="nextPage"
+            ><img class="" src="../assets/images/icon_raquo.svg"
+            /></a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
 </template>
 
 <script>

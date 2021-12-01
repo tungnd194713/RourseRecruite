@@ -1,3 +1,7 @@
+.container {
+  min-height: 23rem;
+}
+
 .main-content {
   background: #ededed;
 }
@@ -97,7 +101,7 @@ input::placeholder {
   color: #003156;
 }
 
-.box-table table tr.active {
+.box-table table tr.unread {
   background-color: #F4F6F6;
 }
 
@@ -123,13 +127,12 @@ input::placeholder {
 }
 
 #list_job {
+  width: -webkit-fill-available;
   align-items: start;
   display: inline-block;
   vertical-align: top;
-  width: 100%;
   margin-top: 2rem;
-  padding-bottom: 3rem;
-  min-height: 23rem;
+  min-height: 5rem;
 }
 
 #list_job table thead{
@@ -181,6 +184,22 @@ table thead tr{
   border: 0;
 }
 
+.td-warning {
+  padding: 1px 0 1px 10px;
+  color: #ffffff;
+  font-size: 10px;
+  background-color: #87B0C6;
+  position: absolute;
+  margin-top: -30px;
+  margin-left: -18px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.td-warning img {
+  height: 19px;
+}
+
 @media only screen and (max-width: 600px) {
   .box-title h4 {
     font-size: 20px;
@@ -207,38 +226,12 @@ table thead tr{
   }
 
   .td-warning {
-    padding: 1px 0px 1px 10px;
+    padding: 1px 0 1px 10px;
     font-size: 7px;
-    margin-top: -71px;
-    margin-left: -8px;
+    margin-top: -23px;
   }
 
   .box-pagination p {
     font-size: 10px;
-  }
-
-  /*
-   * Footer
-   */
-  .company-footer .container {
-    padding-top: 25px;
-    padding-bottom: 35px;
-  }
-
-  .company-footer img {
-    height: 25px;
-  }
-
-  .company-footer h5 {
-    font-size: 13px;
-  }
-
-  .company-footer ul li a {
-    font-size: 11px;
-  }
-
-  .footer-copyright {
-    font-size: 11px;
-    padding: 8px;
   }
 }
