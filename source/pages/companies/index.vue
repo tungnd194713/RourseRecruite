@@ -145,6 +145,7 @@ export default {
 
   data() {
     return {
+      address: '',
       careers,
       env_map_key: process.env.MAP_API_KEY,
       company_name: '',
