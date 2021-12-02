@@ -99,17 +99,27 @@
       </div>
       <!-- Modal -->
       <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content box-modal">
             <div class="modal-header border-0">
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeConfirmDeleteModal"></button>
+              <img
+                class="close-modal"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                id="closeConfirmDeleteModal"
+                src="../../assets/images/ic_exit.svg"
+                alt=""
+              >
             </div>
             <div class="modal-body">
-              <h3 class="text-center">Are you sure?</h3>
+              <h3 class="text-center">
+                <img src="../../assets/images/ic_delete image.svg" alt="">
+              </h3>
+              <h3 class="text-center modal-body-text">本求人を削除してもよろしいですか?</h3>
             </div>
             <div class="modal-footer align-items-center d-flex justify-content-center flex-row">
-              <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-danger w-25" @click="deleteItem">Delete</button>
+              <button type="button" class="btn btn-secondary-custom rounded-pill w-20 mt-4 mb-4" data-bs-dismiss="modal">キャンセル</button>
+              <button type="button" class="btn btn-danger rounded-pill w-20" @click="deleteItem">削除</button>
             </div>
           </div>
         </div>
@@ -242,12 +252,12 @@
         return await this.$repositories.jobs.deleteJob(this.selectedItemId).then(res => {
           if (res.status === 200) {
             document.getElementById('closeConfirmDeleteModal').click()
-            this.$toast.success(this.$t('api.job.delete_success'))
+            this.$toast.success('Xóa job thành công')
             this.getListJob(this.currentPage);
           }
           if (res.response && res.response.status === 406) {
             document.getElementById('closeConfirmDeleteModal').click()
-            this.$toast.error(this.$t('api.job.delete_fail'))
+            this.$toast.error('Xóa job không thành công vì đã có ứng viên ứng tuyển')
             this.getListJob(this.currentPage);
           }
         })
@@ -257,14 +267,14 @@
         if (oldStatus === 1) {
           return await this.$repositories.jobs.blockJob(itemId).then(res => {
             if (res.status === 200) {
-              this.$toast.success(this.$t('api.job.block_status_success'))
+              this.$toast.success('Job đã được Inactive')
               this.getListJob(this.currentPage);
             }
           })
         } else {
           return await this.$repositories.jobs.activeJob(itemId).then(res => {
             if (res.status === 200) {
-              this.$toast.success(this.$t('api.job.active_status_success'))
+              this.$toast.success('Job đã được Active')
               this.getListJob(this.currentPage);
             }
           })

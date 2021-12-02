@@ -17,13 +17,5 @@
       "key_11": "Gia công nguyên liệu",
       "key_12": "Gia công cơ khí",
       "key_13": "Cơ điện, điện tử"
-    },
-  "api": {
-    "job": {
-      "delete_success": "Xóa job thành công",
-      "delete_fail": "Xóa job không thành công vì đã có ứng viên ứng tuyển",
-      "block_status_success": "Job đã được Inactive",
-      "active_status_success": "Job đã được Active"
     }
-  }
 }
