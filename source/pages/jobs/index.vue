@@ -65,17 +65,23 @@
               <td class="align-middle py-3">{{item.number_recruitments}}</td>
               <td class="align-middle py-3">
                 <div class="btn-group btn-toggle rounded-pill btn-switch">
-                  <button :class="'btn btn-sm btn-check-active rounded-pill ' + (item.status === 1 ? 'active' : '')">
+                  <button
+                    :class="'btn btn-sm btn-check-active rounded-pill ' + (item.status === 1 ? 'active' : '')"
+                    @click="changeStatus(item.id, item.status)"
+                  >
                     有効
                   </button>
                   <button
-                    :class="'btn btn-sm btn-check-unactive rounded-pill ' + (item.status === 0 ? 'unactive' : '')">無効
+                    :class="'btn btn-sm btn-check-unactive rounded-pill ' + (item.status === 0 ? 'unactive' : '')"
+                    @click="changeStatus(item.id, item.status)"
+                  >
+                    無効
                   </button>
                 </div>
               </td>
               <td class="align-middle py-3">
                 <img class="btn" src="../../assets/images/icon_trash.svg" data-bs-toggle="modal"
-                     data-bs-target="#exampleModal"/>
+                     data-bs-target="#confirmDeleteModal" @click="confirmDelete(item.id)"/>
               </td>
           </tr>
           </tbody>
@@ -92,18 +98,18 @@
       />
       </div>
       <!-- Modal -->
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header border-0">
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeConfirmDeleteModal"></button>
             </div>
             <div class="modal-body">
               <h3 class="text-center">Are you sure?</h3>
             </div>
             <div class="modal-footer align-items-center d-flex justify-content-center flex-row">
               <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-danger w-25">Delete</button>
+              <button type="button" class="btn btn-danger w-25" @click="deleteItem">Delete</button>
             </div>
           </div>
         </div>
@@ -167,7 +173,8 @@
           title: '',
           date_start: '',
           status: ''
-        }
+        },
+        selectedItemId: 0
       }
     },
 
@@ -225,6 +232,43 @@
         date = this.$moment(date);
 
         return now < date.add(3, 'days').format('YYYY-MM-DD')
+      },
+
+      confirmDelete(itemId) {
+        this.selectedItemId = itemId
+      },
+
+      async deleteItem() {
+        return await this.$repositories.jobs.deleteJob(this.selectedItemId).then(res => {
+          if (res.status === 200) {
+            document.getElementById('closeConfirmDeleteModal').click()
+            this.$toast.success(this.$t('api.job.delete_success'))
+            this.getListJob(this.currentPage);
+          }
+          if (res.response && res.response.status === 406) {
+            document.getElementById('closeConfirmDeleteModal').click()
+            this.$toast.error(this.$t('api.job.delete_fail'))
+            this.getListJob(this.currentPage);
+          }
+        })
+      },
+
+      async changeStatus(itemId, oldStatus) {
+        if (oldStatus === 1) {
+          return await this.$repositories.jobs.blockJob(itemId).then(res => {
+            if (res.status === 200) {
+              this.$toast.success(this.$t('api.job.block_status_success'))
+              this.getListJob(this.currentPage);
+            }
+          })
+        } else {
+          return await this.$repositories.jobs.activeJob(itemId).then(res => {
+            if (res.status === 200) {
+              this.$toast.success(this.$t('api.job.active_status_success'))
+              this.getListJob(this.currentPage);
+            }
+          })
+        }
       }
     }
   }

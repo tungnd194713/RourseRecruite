@@ -17,5 +17,13 @@
       "key_11": "素材産業",
       "key_12": "産業機械製造業",
       "key_13": "電子・電気機器関連産業"
+    },
+  "api": {
+    "job": {
+      "delete_success": "Xóa job thành công",
+      "delete_fail": "Xóa job không thành công vì đã có ứng viên ứng tuyển",
+      "block_status_success": "Job đã được Inactive",
+      "active_status_success": "Job đã được Active"
     }
+  }
 }
