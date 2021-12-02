@@ -3,7 +3,7 @@ export default [
     tab: 'profile',
     srcImage: '/icon_building.svg',
     name: 'プロフィール',
-    path: '/',
+    path: '/companies',
   },
   {
     tab: 'job',
@@ -15,7 +15,7 @@ export default [
     tab: 'candidate',
     srcImage: '/icon_gr_users.svg',
     name: '応募者一覧',
-    path: '/',
+    path: '/candidates_apply',
   },
   {
     tab: 'settlement',
