@@ -45,7 +45,8 @@
              :id="router.tab + '-tab'"
              :key="router.tab"
              class="p-2 link-light text-decoration-none border-end"
-             @click="redirect(router)"
+             :class="$nuxt.$route.path === router.path ? 'active' : ''"
+             @click="$nuxt.$router.push({ path: router.path });"
           >
             <img class="" :src="require(`@/assets/images` + router.srcImage)"/>
             {{router.name}}
@@ -73,9 +74,7 @@
     },
 
     methods: {
-      redirect(tab) {
-        this.$router.push({ path: tab.path });
-      }
+
     }
   }
 </script>
