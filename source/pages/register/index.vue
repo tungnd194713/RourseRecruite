@@ -63,7 +63,7 @@
                         type="text"
                         class="form-control form-control-lg"
                     />
-                    
+
                     <div
                         v-if="!$v.email.email"
                         class="invalid-feedback error"
@@ -259,7 +259,7 @@ import {
 
 export default {
     name: 'Register',
-    // layout: 'auth',
+    layout: 'auth',
     validations: {
         company_name: {
             required,
@@ -344,6 +344,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../../styles/pages/jobs/register.scss';
 </style>

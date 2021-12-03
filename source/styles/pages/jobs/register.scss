@@ -1,21 +1,19 @@
-html,
-body {
+form {
     font-family: 'M PLUS 1p';
     height: 100%;
 }
 
-body {
+form {
     /*background: #003156;*/
-    // display: flex;
-    // align-items: center;
-    padding-top: 40px;
-    padding-bottom: 40px;
+    display: flex;
+    align-items: center;
+    padding-top: 76px;
+    padding-bottom: 77px;
     background-color: #003156;
     background-image: url('assets/images/brackground.jpg');
-    // background-size: cover;
+    background-size: cover;
     background-position: top;
     background-repeat: no-repeat;
-    // justify-content: center;
 }
 
 .form-register {
