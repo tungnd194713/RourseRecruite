@@ -1,0 +1,18 @@
+deploy_dev:
+  image: alpine:3.15.0
+  stage: deploy
+  script:
+    - mkdir -p ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+
+    # Cài openssh để dùng được sshpass
+    - apk add --no-cache --update bash openssh rsync sshpass
+    - sshpass -V
+
+    # - eval $(ssh-agent -s)
+    - export SSHPASS=$DEV_SSH_PASS
+
+    # Pull code
+    - sshpass -e ssh -t $DEV_SERVER_USER@$DEV_SERVER "cd $DEV_PATH && git pull && docker-compose up -d --build"
+  only:
+    - develop
