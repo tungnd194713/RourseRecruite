@@ -236,3 +236,37 @@ table thead tr{
     font-size: 10px;
   }
 }
+
+.box-modal {
+  border-radius: 15px;
+}
+
+.close-modal {
+  height: 30px;
+}
+
+.modal-header {
+  justify-content: end;
+}
+
+.modal-body > h3 > img {
+  height: 200px;
+}
+
+.btn-secondary-custom {
+  color: #fff;
+  background-color: #c9c9c9;
+  border-color: #c9c9c9;
+}
+
+.modal-body-text {
+  color: #076dad;
+}
+
+.modal-footer {
+  border-top: none !important;
+}
+
+.w-20 {
+  width: 20% !important;
+}
