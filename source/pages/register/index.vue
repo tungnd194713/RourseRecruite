@@ -5,16 +5,13 @@
             <div class="bg-white box-form-register">
                 <h1 class="mb-3 mb-lg-4 fw-bold">会員登録フォーム</h1>
                 <!--<form>-->
-                <div
-                    class="form-group"
-                    :class="{ 'form-group--error': $v.company_name.$error }"
-                >
+                <div class="form-group">
                     <label for="exampleInputEmail1"
                         >会社名 <span>*</span></label
                     >
                     <input
                         id="exampleInputEmail1"
-                        v-model.trim="$v.company_name.$model"
+                        v-model.trim="user.company_name"
                         class="form-control form-control-lg"
                         aria-describedby="emailHelp"
                     />
@@ -24,50 +21,38 @@
                     >
                         {{ errors.company_name }}
                     </div>
-                    <div
-                        v-if="errors.company_name === 'TRUE'"
-                        class="invalid-feedback error"
-                    >
-                        Please enter another company name
-                    </div>
                 </div>
-                <div
-                    class="form-group"
-                    :class="{ 'form-group--error': $v.manager_name.$error }"
-                >
+
+                <div class="form-group">
                     <label for="exampleInput3">担当者名 <span>*</span></label>
                     <input
                         id="exampleInput3"
-                        v-model.trim="$v.manager_name.$model"
+                        v-model.trim="user.manager_name"
                         type="text"
                         class="form-control form-control-lg"
                     />
                     <div
-                        v-if="!$v.manager_name.required"
+                        v-if="errors.manager_name"
                         class="invalid-feedback error"
-                        :class="{ errorDisplay: !$v.manager_name.$anyError }"
                     >
-                        Manager name is required
+                        {{ errors.manager_name }}
                     </div>
                 </div>
-                <div
-                    class="form-group"
-                    :class="{ 'form-group--error': $v.email.$error }"
-                >
+
+                <div class="form-group">
                     <label for="exampleInput5"
                         >メールアドレス <span>*</span></label
                     >
                     <input
                         id="exampleInput5"
-                        v-model.trim="$v.email.$model"
+                        v-model.trim="user.email"
                         type="text"
                         class="form-control form-control-lg"
                     />
 
                     <div
-                        v-if="!$v.email.email"
+                        v-if="!$v.user.email.email && $v.user.email.$anyError"
                         class="invalid-feedback error"
-                        :class="{ errorDisplay: !$v.email.$anyError }"
                     >
                         Email type is required
                     </div>
@@ -79,113 +64,102 @@
                     <label for="exampleInput6">電話番号 <span>*</span></label>
                     <input
                         id="exampleInput6"
-                        v-model.trim="$v.phone.$model"
+                        v-model.trim="user.phone"
                         type="text"
                         class="form-control form-control-lg"
                     />
-                    <div
-                        v-if="!$v.phone.required"
-                        class="invalid-feedback error"
-                        :class="{ errorDisplay: !$v.phone.$anyError }"
-                    >
-                        phone is required
+                    <div v-if="errors.phone" class="invalid-feedback error">
+                        {{ errors.phone }}
                     </div>
                     <div
-                        v-if="!$v.phone.numeric"
+                        v-if="!$v.user.phone.numeric && $v.user.phone.$anyError"
                         class="invalid-feedback error"
-                        :class="{ errorDisplay: !$v.phone.$anyError }"
                     >
                         phone is required number
                     </div>
                     <div
-                        v-if="!$v.phone.minLength"
-                        class="error invalid-feedback"
+                        v-if="
+                            !$v.user.phone.minLength && $v.user.phone.$anyError
+                        "
+                        class="invalid-feedback error"
                     >
                         Phone must have at least
-                        {{ $v.phone.$params.minLength.min }} letters.
+                        {{ $v.user.phone.$params.minLength.min }} letters.
                     </div>
                 </div>
-                <div
-                    class="form-group"
-                    :class="{ 'form-group--error': $v.password.$error }"
-                >
+                <div class="form-group">
                     <label for="exampleInput7">パスワード <span>*</span></label>
                     <input
                         id="exampleInput7"
-                        v-model.trim="$v.password.$model"
+                        v-model.trim="user.password"
                         type="text"
                         class="form-control form-control-lg"
                     />
-                    <div
-                        v-if="!$v.password.required"
-                        class="invalid-feedback error"
-                        :class="{ errorDisplay: !$v.password.$anyError }"
-                    >
-                        Password is required
+                    <div v-if="errors.password" class="invalid-feedback error">
+                        {{ errors.password }}
                     </div>
                     <div
-                        v-if="!$v.password.minLength || !$v.password.maxLength"
+                        v-if="
+                            !$v.user.password.minLength ||
+                            !$v.user.password.maxLength
+                        "
                         class="error invalid-feedback"
-                        :class="{ errorDisplay: !$v.password.$anyError }"
                     >
                         Password must between
-                        {{ $v.password.$params.minLength.min }} and
-                        {{ $v.password.$params.maxLength.max }}
+                        {{ $v.user.password.$params.minLength.min }} and
+                        {{ $v.user.password.$params.maxLength.max }}
                     </div>
                 </div>
-                <div
-                    class="form-group"
-                    :class="{ 'form-group--error': $v.confirmPassword.$error }"
-                >
+                <div class="form-group">
                     <label for="exampleInput8"
                         >パスワード（確認) <span>*</span></label
                     >
                     <input
                         id="exampleInput8"
-                        v-model.trim="$v.confirmPassword.$model"
+                        v-model.trim="user.confirmPassword"
                         type="text"
                         class="form-control form-control-lg"
                     />
                     <div
-                        v-if="!$v.confirmPassword.required"
+                        v-if="
+                            !$v.user.confirmPassword.required &&
+                            $v.user.confirmPassword.$anyError
+                        "
                         class="invalid-feedback error"
-                        :class="{ errorDisplay: !$v.confirmPassword.$anyError }"
                     >
                         This field is required
                     </div>
                     <div
-                        v-else-if="!$v.password.sameAsPassword"
+                        v-else-if="!$v.user.confirmPassword.sameAsPassword"
                         class="invalid-feedback error"
-                        :class="{ errorDisplay: !$v.confirmPassword.$anyError }"
                     >
                         Password is not correct
                     </div>
                 </div>
-                <div
-                    class="form-group"
-                    :class="{ 'form-group--error': $v.career.$error }"
-                >
+                <div class="form-group">
                     <label for="exampleInput9">業界・分野 <span>*</span></label>
                     <input
                         id="exampleInput9"
-                        v-model.trim="$v.career.$model"
+                        v-model.trim="user.career"
                         type="text"
                         class="form-control form-control-lg"
                     />
                     <div
-                        v-if="!$v.career.required"
+                        v-if="
+                            !$v.user.career.required && $v.user.career.$anyError
+                        "
                         class="invalid-feedback error"
-                        :class="{ errorDisplay: !$v.career.$anyError }"
                     >
                         Please enter a career
                     </div>
-                    <div
-                        v-if="!$v.career.numeric"
+                    <!-- <div
+                        v-if="
+                            !$v.career.numeric && $v.career.$anyError
+                        "
                         class="invalid-feedback error"
-                        :class="{ errorDisplay: !$v.career.$anyError }"
                     >
                         Required number
-                    </div>
+                    </div> -->
                 </div>
                 <div class="form-group">
                     <label for="inputGroupSelect01"
@@ -193,7 +167,7 @@
                     >
                     <select
                         id="inputGroupSelect01"
-                        v-model="$v.login_type.$model"
+                        v-model="user.login_type"
                         class="form-select form-select-lg"
                     >
                         <option selected></option>
@@ -201,10 +175,12 @@
                         <option value="2">Two</option>
                         <option value="3">Three</option>
                     </select>
-                    <div
-                        v-if="!$v.login_type.required"
+                    <div 
+                        v-if="
+                            !$v.user.login_type.required &&
+                            $v.user.login_type.$anyError
+                        "
                         class="invalid-feedback error"
-                        :class="{ errorDisplay: !$v.login_type.$anyError }"
                     >
                         Please choose a 在留資格.
                     </div>
@@ -235,7 +211,7 @@
                 >
                     登録
                 </button>
-                <div v-if="message">
+                <div v-if="message" class="valid-feedback">
                     {{ message }}
                 </div>
 
@@ -260,71 +236,62 @@ import {
 export default {
     name: 'Register',
     layout: 'auth',
-    validations: {
-        company_name: {
-            required,
-        },
-        manager_name: {
-            required,
-        },
-        email: {
-            required,
-            email,
-        },
-        phone: {
-            required,
-            numeric,
-            minLength: minLength(9),
-        },
-        password: {
-            required,
-            minLength: minLength(9),
-            maxLength: maxLength(20),
-        },
-        confirmPassword: {
-            required,
-            sameAsPassword: sameAs('password'),
-        },
-        career: {
-            required,
-            numeric,
-        },
-        login_type: {
-            required,
-        },
-        acceptTerms: {
-            sameAs: sameAs(true),
-            required,
-        },
-    },
     data() {
         return {
-            company_name: '',
-            manager_name: '',
-            email: '',
-            phone: '',
-            password: '',
-            confirmPassword: '',
-            career: '',
-            login_type: '',
-            acceptTerms: '',
             user: {},
+            acceptTerms: '',
             errors: [],
             message: '',
         }
     },
+    validations: {
+        user: {
+            company_name: {
+                required,
+            },
+            manager_name: {
+                required,
+            },
+            email: {
+                required,
+                email,
+            },
+            phone: {
+                required,
+                numeric,
+                minLength: minLength(9),
+            },
+            password: {
+                required,
+                minLength: minLength(9),
+                maxLength: maxLength(20),
+            },
+
+            confirmPassword: {
+                required,
+                sameAsPassword: sameAs('password'),
+            },
+
+            login_type: {
+                required,
+            },
+            career: {
+                required,
+            },
+        },
+
+        acceptTerms: {
+            required,
+        },
+    },
 
     methods: {
         async submit() {
-            this.user.email = this.email
-            this.user.company_name = this.company_name
-            this.user.manager_name = this.manager_name
-            this.user.password = this.password
-            this.user.phone = this.phone
-            this.user.career = this.career
             this.user.address = null
             this.user.login_type = 0
+            this.user.district = 0
             this.$v.$touch()
+            
             if (this.$v.$invalid === true) {
                 try {
                     await this.$axios
