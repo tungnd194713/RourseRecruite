@@ -164,7 +164,7 @@
                     aria-label="Default select provinces"
                   >
                     <option
-                      v-for="(province, index) in provinces"
+                      v-for="(province, index) in provinces.slice(1)"
                       :key="index"
                       :value="index + 1"
                     >
@@ -710,7 +710,6 @@ export default {
         manager_name: '',
         founded_year: '',
         number_members: '',
-        featured: '',
         link_website: '',
         facebook_id: '',
         description: '',
@@ -854,7 +853,7 @@ export default {
 
   head() {
     return {
-      title: 'Edit Profile Company',
+      title: '会社情報編集',
     }
   },
 
@@ -880,7 +879,6 @@ export default {
       this.data.manager_name = data.manager_name
       this.data.founded_year = data.founded_year
       this.data.number_members = data.number_members
-      this.data.featured = data.featured
       this.data.link_website = data.link_website
       this.data.facebook_id = data.facebook_id
       this.data.description = data.description
@@ -965,14 +963,12 @@ export default {
       dataCompany.append('manager_name', this.data.manager_name)
       dataCompany.append('founded_year', this.data.founded_year)
       dataCompany.append('number_members', this.data.number_members)
-      dataCompany.append('featured', this.data.featured)
       dataCompany.append('link_website', this.data.link_website)
       dataCompany.append('facebook_id', this.data.facebook_id)
       dataCompany.append('description', this.data.description)
       dataCompany.append('video_link', this.data.video_link)
       dataCompany.append('phone', this.data.phone)
       dataCompany.append('youtube', this.data.youtube)
-      dataCompany.append('nation', this.data.nation)
       dataCompany.append('postal_code', this.data.postal_code)
       dataCompany.append('district', this.data.district)
       dataCompany.append('province_id', this.data.province)
