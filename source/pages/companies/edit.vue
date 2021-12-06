@@ -95,9 +95,12 @@
                     <div v-if="!$v.data.phone.minLength" class="error">
                       9数字以上13数字以下で入力してください
                     </div>
-                    <div v-if="!$v.data.phone.numbers" class="error">
-                      numbers
+                    <div v-if="!$v.data.phone.phone" class="error">
+                      9数字以上13数字以下で入力してください
                     </div>
+                  </div>
+                  <div v-if="errors.phone" class="error">
+                    {{ errors.phone[0] }}
                   </div>
                 </div>
                 <div class="form-group col-12 col-lg-6 mb-2 mb-lg-3">
@@ -116,6 +119,9 @@
                   <div v-if="$v.data.number_members.$error">
                     <div v-if="!$v.data.number_members.required" class="error">
                       これは必須項目なので、必ず入力してください
+                    </div>
+                    <div v-if="!$v.data.number_members.numbers" class="error">
+                      整数を入力してください
                     </div>
                   </div>
                 </div>
@@ -140,6 +146,9 @@
                     <div v-if="!$v.data.postal_code.required" class="error">
                       これは必須項目なので、必ず入力してください
                     </div>
+                    <div v-if="!$v.data.postal_code.postalCode" class="error">
+                      郵便番号の形式で入力してください
+                    </div>
                   </div>
                 </div>
                 <div class="form-group col-12 col-lg-6 mb-2 mb-lg-3">
@@ -159,7 +168,7 @@
                       :key="index"
                       :value="index + 1"
                     >
-                      {{ province.province_kanji }}
+                      {{ $t(province) }}
                     </option>
                   </select>
                   <div v-if="$v.data.province.$error">
@@ -185,6 +194,9 @@
                   <div v-if="$v.data.district.$error">
                     <div v-if="!$v.data.district.required" class="error">
                       これは必須項目なので、必ず入力してください
+                    </div>
+                    <div v-if="!$v.data.district.maxLength" class="error">
+                      200文字以下で入力してください
                     </div>
                   </div>
                 </div>
@@ -359,10 +371,10 @@
                 <div
                   class="p-4 box-upload-file text-center rounded"
                   @dragover="dragover"
-                  @drop="drop($event, profileImage)"
+                  @drop="drop($event, logo)"
                 >
                   <img
-                    v-if="!data.profile_image.length"
+                    v-if="!data.logo.length"
                     src="../../assets/images/icon_upload_file.svg"
                     alt=""
                   />
@@ -390,14 +402,14 @@
                       remove
                     </button>
                   </div>
-                  <div v-if="data.profile_image.length" class="mt-4 w-100">
+                  <div v-if="data.logo.length" class="mt-4 w-100">
                     <div
-                      v-for="(file, index) in data.profile_image"
+                      v-for="(file, index) in data.logo"
                       :key="index"
                       class="p-1 row file-preview"
                     >
                       <img
-                        :src="profileImageUrl"
+                        :src="logoUrl"
                         alt=""
                         style="width: 100px; height: 100px"
                       />
@@ -406,7 +418,7 @@
                         type="button"
                         title="Remove file"
                         @click="
-                          remove(data.profile_image.indexOf(file), profileImage)
+                          remove(data.logo.indexOf(file), logo)
                         "
                       >
                         remove
@@ -415,18 +427,24 @@
                   </div>
                 </div>
                 <input
-                  id="profile_image"
-                  ref="profileImageInput"
+                  id="logo"
+                  ref="logoInput"
                   type="file"
                   class="d-none"
-                  @change="onChange(profileImage)"
+                  @change="onChange(logo)"
                 />
-                <div v-if="$v.data.profile_image.$error">
-                  <div v-if="!$v.data.profile_image.required" class="error">
+                <div v-if="$v.data.logo.$error">
+                  <div v-if="!$v.data.logo.required" class="error">
                     これは必須項目なので、必ず入力してください
                   </div>
-                  <div v-if="!$v.data.profile_image.lessThanOne" class="error">
+                  <div v-if="!$v.data.logo.lessThanOne" class="error">
                     less than one
+                  </div>
+                  <div v-if="!$v.data.logo.imageRule" class="error">
+                    画像はpng / jpg / jpeg / gifの形式でアプロードしてください
+                  </div>
+                  <div v-if="!$v.data.logo.imageSize" class="error">
+                    2MB以下の写真をアップロードしてくださいb
                   </div>
                 </div>
                 <small class="form-text text-muted float-end">
@@ -509,6 +527,12 @@
                   <div v-if="!$v.data.images.lessThanFive" class="error">
                     less than five
                   </div>
+                  <div v-if="!$v.data.images.imageRule" class="error">
+                    画像はpng / jpg / jpeg / gifの形式でアプロードしてください
+                  </div>
+                  <div v-if="!$v.data.images.imageSize" class="error">
+                    2MB以下の写真をアップロードしてくださいb
+                  </div>
                 </div>
                 <small class="form-text text-muted float-end">
                   画像の拡張子：.png .jpg .jpeg .gif；画像の容量：2MB以下
@@ -539,7 +563,7 @@
                     これは必須項目なので、必ず入力してください
                   </div>
                   <div v-if="!$v.data.youtube.youtube" class="error">
-                    need youtube link
+                    URLの形式で入力してください
                   </div>
                 </div>
               </div>
@@ -594,6 +618,12 @@
                   <div v-if="!$v.data.video.lessThanOne" class="error">
                     less than one
                   </div>
+                  <div v-if="!$v.data.video.videoRule" class="error">
+                    動画はAVI/ FLV/ WMV/MOV/ MP4の形式でアプロードしてください
+                  </div>
+                  <div v-if="!$v.data.video.videoSize" class="error">
+                    100MB以下の動画をアップロードしてください
+                  </div>
                 </div>
               </div>
             </div>
@@ -642,6 +672,7 @@ import DatePicker from 'vue2-datepicker'
 import 'vue2-datepicker/index.css'
 import 'vue2-datepicker/locale/ja'
 import theCareers from '~/constants/careers'
+import theProvinces from '~/constants/provinces'
 
 const PROFILEIMAGE = 1
 const INTROIMAGES = 2
@@ -655,8 +686,14 @@ const youtube = helpers.regex(
   /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w-]+\?v=|embed\/|v\/)?)([\w-]+)(\S+)?$/
 )
 const numbers = helpers.regex('numbers', /^[0-9]*$/)
+const phone = helpers.regex('phone', /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)
+const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/g)
 const lessThanFive = (value) => value.length <= 5
 const lessThanOne = (value) => value.length <= 1
+const imageRule = helpers.regex('image', /\.(gif|jpe?g|png)$/)
+const videoRule = helpers.regex('video', /\.(mp4|wmv|avi|mov|flv)$/)
+const imageSize = (value) => value <= 2000000
+const videoSize = (value) => value <= 100000000
 
 export default {
   name: 'EditProfileCompany',
@@ -685,24 +722,22 @@ export default {
         province: '',
         images: [],
         video: [],
-        profile_image: [],
+        logo: [],
         email: '',
         removeIntroImage: [],
-      },
-      country: {
-        country_id: '1',
       },
       uploadedIntroImage: [],
       uploadedProfileImage: {},
       uploadedVideo: null,
-      profileImageUrl: null,
+      logoUrl: null,
       videoUrl: null,
       imageUrl: [],
       provinces: [],
       theCareers,
+      theProvinces,
       careers: [],
       errors: [],
-      profileImage: PROFILEIMAGE,
+      logo: PROFILEIMAGE,
       introImages: INTROIMAGES,
       introVideo: INTROVIDEO,
     }
@@ -722,19 +757,22 @@ export default {
         required,
         maxLength: maxLength(13),
         minLength: minLength(9),
-        numbers,
+        phone,
       },
       career: {
         required,
       },
       number_members: {
         required,
+        numbers,
       },
       postal_code: {
         required,
+        postalCode,
       },
       district: {
         required,
+        maxLength: maxLength(200),
       },
       province: {
         required,
@@ -759,6 +797,14 @@ export default {
           return this.uploadedIntroImage.length === 0
         }),
         lessThanFive,
+        $each: {
+          name: {
+            imageRule,
+          },
+          size: {
+            imageSize,
+          },
+        },
       },
       video: {
         required: requiredIf(function () {
@@ -768,12 +814,28 @@ export default {
           )
         }),
         lessThanOne,
+        $each: {
+          name: {
+            videoRule,
+          },
+          size: {
+            videoSize,
+          },
+        },
       },
-      profile_image: {
+      logo: {
         required: requiredIf(function () {
           return this.uploadedProfileImage === ''
         }),
         lessThanOne,
+        $each: {
+          name: {
+            imageRule,
+          },
+          size: {
+            imageSize,
+          },
+        },
       },
       founded_year: {
         required,
@@ -800,8 +862,8 @@ export default {
 
   created() {
     this.careers = theCareers
+    this.provinces = theProvinces
     this.getProfileCompany()
-    this.getProvinces(this.country)
   },
 
   methods: {
@@ -830,14 +892,10 @@ export default {
       this.data.district = data.district
       this.data.career = data.career
       this.uploadedIntroImage = data.images
-      this.uploadedProfileImage = data.profile_image
-    },
-    async getProvinces(country) {
-      const { data } = await this.$repositories.profiles.getProvinces(country)
-      this.provinces = data
+      this.uploadedProfileImage = data.logo
     },
     triggerProfileImageInput() {
-      this.$refs.profileImageInput.click()
+      this.$refs.logoInput.click()
     },
     triggerIntroImageInput() {
       this.$refs.introImageInput.click()
@@ -848,9 +906,9 @@ export default {
     },
     onChange(fileType) {
       if (fileType === 1) {
-        this.data.profile_image = [...this.$refs.profileImageInput.files]
-        this.profileImageUrl = window.URL.createObjectURL(
-          this.$refs.profileImageInput.files[0]
+        this.data.logo = [...this.$refs.logoInput.files]
+        this.logoUrl = window.URL.createObjectURL(
+          this.$refs.logoInput.files[0]
         )
       }
       if (fileType === 2) {
@@ -871,7 +929,7 @@ export default {
     drop(event, fileType) {
       event.preventDefault()
       if (fileType === 1) {
-        this.$refs.profileImageInput.files = event.dataTransfer.files
+        this.$refs.logoInput.files = event.dataTransfer.files
         this.onChange(fileType) // Trigger the onChange event manually
       }
       if (fileType === 2) {
@@ -881,8 +939,8 @@ export default {
     },
     remove(i, fileType) {
       if (fileType === 1) {
-        this.data.profile_image.splice(i, 1)
-        this.$refs.profileImageInput.value = ''
+        this.data.logo.splice(i, 1)
+        this.$refs.logoInput.value = ''
       }
       if (fileType === 2) {
         this.data.images.splice(i, 1)
@@ -899,6 +957,7 @@ export default {
     async editCompanyProfile() {
       this.$v.data.$touch()
 
+      console.log(this.data.logo)
       const dataCompany = new FormData()
       dataCompany.append('career', this.data.career)
       dataCompany.append('address', this.data.address)
@@ -916,11 +975,11 @@ export default {
       dataCompany.append('nation', this.data.nation)
       dataCompany.append('postal_code', this.data.postal_code)
       dataCompany.append('district', this.data.district)
-      dataCompany.append('province', this.data.province)
+      dataCompany.append('province_id', this.data.province)
       dataCompany.append('email', this.data.email)
       dataCompany.append('remove_images', this.data.removeIntroImage)
-      if (this.data.profile_image[0]) {
-        dataCompany.append('profile_image', this.data.profile_image[0])
+      if (this.data.logo[0]) {
+        dataCompany.append('logo', this.data.logo[0])
       }
       for (let i = 0; i < this.data.images.length; i++) {
         const file = this.data.images[i]

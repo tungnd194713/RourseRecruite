@@ -31,7 +31,8 @@ export default {
     {src: '~/plugins/vee-validate.js', mode: 'client'},
     '~/plugins/api',
     '~/plugins/repositories',
-    '~/plugins/handle-response.js'
+    '~/plugins/handle-response.js',
+    {src: '~/plugins/vuelidate'}
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -53,8 +54,23 @@ export default {
     '@nuxtjs/style-resources',
     '@nuxtjs/dotenv',
     '@nuxtjs/auth',
-    '@nuxtjs/moment'
+    '@nuxtjs/moment',
+    '@nuxtjs/toast',
   ],
+
+  toast: {
+    position: 'top-right',
+    duration: 3000,
+    register: [
+      {
+        name: 'my-error',
+        message: 'Oops...Something went wrong',
+        options: {
+          type: 'error'
+        }
+      }
+    ]
+  },
 
   i18n: {
     locales: ['vi', 'ja'],
