@@ -103,7 +103,7 @@
                   <img src="../../assets/images/icon_user_search.svg" alt="">
               </span>
               <select id="exampleInput4" v-model="job.form_recruitment" class="form-select rounded-end">
-                <option v-for="item in formRecruitmentList" :value="item.value">{{ item.text }}</option>
+                <option v-for="item in formRecruitmentList" :key="item.value" :value="item.value">{{ item.text }}</option>
               </select>
               <div class="invalid-feedback">
                 Please choose a 雇用形態.
@@ -119,7 +119,7 @@
                   <img src="../../assets/images/icon_stay.svg" alt="">
               </span>
               <select id="inputGroupSelect01" v-model="job.status_stay" class="form-select rounded-end" multiple>
-              <option v-for="item in statusStayList" :value="item.value">{{ item.text }}</option>
+              <option v-for="item in statusStayList" :key="item.value" :value="item.value">{{ item.text }}</option>
             </select>
               <div class="invalid-feedback">
                 Please choose a 在留資格.
@@ -584,11 +584,6 @@
       return { title: 'Create job'}
     },
 
-    created() {
-      this.job.form_recruitment = this.formRecruitmentList[0].value
-      this.job.status_stay.push(this.statusStayList[0].value)
-    },
-
     watch: {
       displaySalary: {
         handler(newVal) {
@@ -599,6 +594,11 @@
         },
         deep: true
       }
+    },
+
+    created() {
+      this.job.form_recruitment = this.formRecruitmentList[0].value
+      this.job.status_stay.push(this.statusStayList[0].value)
     },
 
     methods: {
@@ -657,7 +657,7 @@
         this.$v.job.$touch()
         if (!this.$v.job.$invalid) {
           this.$store.dispatch('job/setJob', this.job)
-          this.$router.push('/jobs/preview-new')
+          // this.$router.push('/jobs/preview-new')
         }
       }
     }
