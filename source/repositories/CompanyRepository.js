@@ -4,10 +4,10 @@ export default ($axios) => ({
   getCompanyProfile() {
     return $axios.get(`${resource}/me`)
   },
-  getProvinces(data) {
-    return $axios.get(`${resource}/provinces`, {params: data})
-  },
   editCompanyProfile(data, header) {
     return $axios.post(`${resource}/profiles/update-detail`, data, header)
+  },
+  getInvoices(currentPage) {
+    return $axios.get(`${resource}/invoices?page=${currentPage}`)
   },
 })

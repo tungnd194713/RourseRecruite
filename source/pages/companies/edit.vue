@@ -5,10 +5,13 @@
         <div class="col-12 col-lg-3 mb-2 box-menu-left">
           <ul class="nav flex-column">
             <li class="nav-item rounded mb-2">
-              <a class="nav-link active" href="#">
+              <NuxtLink
+                class="nav-link active"
+                to="/companies/edit"
+              >
                 <img class="" src="../../assets/images/icon_building.svg" />
                 会社情報
-              </a>
+              </NuxtLink>
             </li>
             <li class="nav-item rounded">
               <a class="nav-link" href="#">
@@ -96,7 +99,7 @@
                       9数字以上13数字以下で入力してください
                     </div>
                     <div v-if="!$v.data.phone.phone" class="error">
-                      9数字以上13数字以下で入力してください
+                      これは必須項目なので、必ず入力してください
                     </div>
                   </div>
                   <div v-if="errors.phone" class="error">
@@ -164,7 +167,7 @@
                     aria-label="Default select provinces"
                   >
                     <option
-                      v-for="(province, index) in provinces"
+                      v-for="(province, index) in provinces.slice(1)"
                       :key="index"
                       :value="index + 1"
                     >
@@ -374,7 +377,7 @@
                   @drop="drop($event, logo)"
                 >
                   <img
-                    v-if="!data.logo.length"
+                    v-if="!data.logo.length && !uploadedProfileImage"
                     src="../../assets/images/icon_upload_file.svg"
                     alt=""
                   />
@@ -389,7 +392,7 @@
                     class="mt-4 w-100 row file-preview"
                   >
                     <img
-                      :src="uploadedProfileImage"
+                      :src="url_api_file + uploadedProfileImage"
                       alt=""
                       style="width: 100px; height: 100px"
                     />
@@ -417,9 +420,7 @@
                         class="col-12 col-sm-3 col-md-6 form-control w-25"
                         type="button"
                         title="Remove file"
-                        @click="
-                          remove(data.logo.indexOf(file), logo)
-                        "
+                        @click="remove(data.logo.indexOf(file), logo)"
                       >
                         remove
                       </button>
@@ -437,14 +438,11 @@
                   <div v-if="!$v.data.logo.required" class="error">
                     これは必須項目なので、必ず入力してください
                   </div>
-                  <div v-if="!$v.data.logo.lessThanOne" class="error">
-                    less than one
-                  </div>
                   <div v-if="!$v.data.logo.imageRule" class="error">
                     画像はpng / jpg / jpeg / gifの形式でアプロードしてください
                   </div>
                   <div v-if="!$v.data.logo.imageSize" class="error">
-                    2MB以下の写真をアップロードしてくださいb
+                    2MB以下の写真をアップロードしてください
                   </div>
                 </div>
                 <small class="form-text text-muted float-end">
@@ -459,7 +457,7 @@
                   @drop="drop($event, introImages)"
                 >
                   <img
-                    v-if="!data.images.length"
+                    v-if="!data.images.length && !uploadedIntroImage.length"
                     src="../../assets/images/icon_upload_file.svg"
                     alt=""
                   />
@@ -476,7 +474,7 @@
                       class="p-1 row file-preview"
                     >
                       <img
-                        :src="file.image_url"
+                        :src="url_api_file + file.image_url"
                         alt=""
                         style="width: 100px; height: 100px"
                       />
@@ -524,14 +522,11 @@
                   <div v-if="!$v.data.images.required" class="error">
                     これは必須項目なので、必ず入力してください
                   </div>
-                  <div v-if="!$v.data.images.lessThanFive" class="error">
-                    less than five
-                  </div>
                   <div v-if="!$v.data.images.imageRule" class="error">
                     画像はpng / jpg / jpeg / gifの形式でアプロードしてください
                   </div>
                   <div v-if="!$v.data.images.imageSize" class="error">
-                    2MB以下の写真をアップロードしてくださいb
+                    2MB以下の写真をアップロードしてください
                   </div>
                 </div>
                 <small class="form-text text-muted float-end">
@@ -583,7 +578,10 @@
                   <img src="../../assets/images/icon_upload.svg" alt="" />
                 </button>
                 <div v-if="uploadedVideo" class="mt-4 w-100 row file-preview">
-                  <iframe :src="uploadedVideo" frameborder="0"></iframe>
+                  <iframe
+                    :src="url_api_file + uploadedVideo"
+                    frameborder="0"
+                  ></iframe>
 
                   <button
                     class="col-12 col-sm-3 col-md-6 form-control w-25"
@@ -614,9 +612,6 @@
                 <div v-if="$v.data.video.$error">
                   <div v-if="!$v.data.video.required" class="error">
                     これは必須項目なので、必ず入力してください
-                  </div>
-                  <div v-if="!$v.data.video.lessThanOne" class="error">
-                    less than one
                   </div>
                   <div v-if="!$v.data.video.videoRule" class="error">
                     動画はAVI/ FLV/ WMV/MOV/ MP4の形式でアプロードしてください
@@ -686,11 +681,12 @@ const youtube = helpers.regex(
   /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w-]+\?v=|embed\/|v\/)?)([\w-]+)(\S+)?$/
 )
 const numbers = helpers.regex('numbers', /^[0-9]*$/)
-const phone = helpers.regex('phone', /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)
+const phone = helpers.regex(
+  'phone',
+  /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/
+)
 const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/g)
-const lessThanFive = (value) => value.length <= 5
-const lessThanOne = (value) => value.length <= 1
-const imageRule = helpers.regex('image', /\.(gif|jpe?g|png)$/)
+const imageRule = helpers.regex('image', /\.(gif|jpe?g|png|PNG|GIF|JPE?G)$/)
 const videoRule = helpers.regex('video', /\.(mp4|wmv|avi|mov|flv)$/)
 const imageSize = (value) => value <= 2000000
 const videoSize = (value) => value <= 100000000
@@ -710,7 +706,6 @@ export default {
         manager_name: '',
         founded_year: '',
         number_members: '',
-        featured: '',
         link_website: '',
         facebook_id: '',
         description: '',
@@ -726,6 +721,7 @@ export default {
         email: '',
         removeIntroImage: [],
       },
+      url_api_file: process.env.URL_API_FILE,
       uploadedIntroImage: [],
       uploadedProfileImage: {},
       uploadedVideo: null,
@@ -796,7 +792,6 @@ export default {
         required: requiredIf(function () {
           return this.uploadedIntroImage.length === 0
         }),
-        lessThanFive,
         $each: {
           name: {
             imageRule,
@@ -813,7 +808,6 @@ export default {
             (this.uploadedVideo === null || this.uploadedVideo === '')
           )
         }),
-        lessThanOne,
         $each: {
           name: {
             videoRule,
@@ -827,7 +821,6 @@ export default {
         required: requiredIf(function () {
           return this.uploadedProfileImage === ''
         }),
-        lessThanOne,
         $each: {
           name: {
             imageRule,
@@ -854,7 +847,7 @@ export default {
 
   head() {
     return {
-      title: 'Edit Profile Company',
+      title: '会社情報編集',
     }
   },
 
@@ -880,7 +873,6 @@ export default {
       this.data.manager_name = data.manager_name
       this.data.founded_year = data.founded_year
       this.data.number_members = data.number_members
-      this.data.featured = data.featured
       this.data.link_website = data.link_website
       this.data.facebook_id = data.facebook_id
       this.data.description = data.description
@@ -907,9 +899,7 @@ export default {
     onChange(fileType) {
       if (fileType === 1) {
         this.data.logo = [...this.$refs.logoInput.files]
-        this.logoUrl = window.URL.createObjectURL(
-          this.$refs.logoInput.files[0]
-        )
+        this.logoUrl = window.URL.createObjectURL(this.$refs.logoInput.files[0])
       }
       if (fileType === 2) {
         this.data.images = [...this.$refs.introImageInput.files]
@@ -957,7 +947,6 @@ export default {
     async editCompanyProfile() {
       this.$v.data.$touch()
 
-      console.log(this.data.logo)
       const dataCompany = new FormData()
       dataCompany.append('career', this.data.career)
       dataCompany.append('address', this.data.address)
@@ -965,19 +954,21 @@ export default {
       dataCompany.append('manager_name', this.data.manager_name)
       dataCompany.append('founded_year', this.data.founded_year)
       dataCompany.append('number_members', this.data.number_members)
-      dataCompany.append('featured', this.data.featured)
       dataCompany.append('link_website', this.data.link_website)
       dataCompany.append('facebook_id', this.data.facebook_id)
       dataCompany.append('description', this.data.description)
       dataCompany.append('video_link', this.data.video_link)
       dataCompany.append('phone', this.data.phone)
       dataCompany.append('youtube', this.data.youtube)
-      dataCompany.append('nation', this.data.nation)
       dataCompany.append('postal_code', this.data.postal_code)
       dataCompany.append('district', this.data.district)
       dataCompany.append('province_id', this.data.province)
       dataCompany.append('email', this.data.email)
-      dataCompany.append('remove_images', this.data.removeIntroImage)
+      for (let i = 0; i < this.data.removeIntroImage.length; i++) {
+        const remove = this.data.removeIntroImage[i]
+
+        dataCompany.append('remove_images[' + i + ']', remove)
+      }
       if (this.data.logo[0]) {
         dataCompany.append('logo', this.data.logo[0])
       }
