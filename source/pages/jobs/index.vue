@@ -6,7 +6,9 @@
           <h4>求人一覧</h4>
         </div>
         <div class="col-6">
-          <button id="btn_create_job" type="button" class="btn rounded-pill btn-add-job">
+          <button id="btn_create_job" type="button" class="btn rounded-pill btn-add-job"
+                  @click="$router.push('/jobs/create')"
+          >
             <img class="" src="../../assets/images/icon_plus.svg"/>
             新規求人登録
           </button>
