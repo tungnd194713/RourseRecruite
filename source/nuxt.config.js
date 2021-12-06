@@ -32,6 +32,7 @@ export default {
     '~/plugins/api',
     '~/plugins/repositories',
     '~/plugins/handle-response.js',
+    {src: '~/plugins/vuelidate'},
     { src: '~/plugins/datepicker.js', ssr: false }
   ],
 
