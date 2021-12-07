@@ -655,7 +655,7 @@
                         "
                         @click="previewJob"
                     >
-                        <span class="px-4">登録</span>
+                        <span class="px-4">編集</span>
                     </button>
                 </div>
             </div>
@@ -888,13 +888,12 @@ export default {
             await this.$axios
                 .get(`companies/jobs/${this.$route.params.id}`)
                 .then((response) => {
-                    // console.log('run')
-                    this.job.title = 'data temp'
+                    this.job.title = '仕事1求人タイトル'
                 })
         } catch (e) {
             // const data = this.$handleResponse(e)
             // this.errors = data.errors
-            this.job.title = 'data temp'
+            this.job.title = '仕事1求人タイトル'
         }
         this.job.form_recruitment = this.formRecruitmentList[0].value
         this.job.status_stay.push(this.statusStayList[0].value)
