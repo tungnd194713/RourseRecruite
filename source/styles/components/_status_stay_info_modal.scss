@@ -1,0 +1,34 @@
+.box-modal {
+  border-radius: 15px;
+}
+
+.close-modal {
+  height: 30px;
+}
+
+.modal-header {
+  justify-content: end;
+}
+
+.modal-body {
+  padding: 2rem;
+}
+
+.modal-body > h3 > img {
+  height: 120px;
+}
+
+.modal-body-text {
+  color: #31736a;
+}
+
+.modal-footer {
+  border-top: none !important;
+  p {
+    font-size: 12px;
+    margin: 0;
+  }
+  .red-text {
+    color: red;
+  }
+}
