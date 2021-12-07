@@ -145,6 +145,7 @@ export default {
 
   data() {
     return {
+      address: '',
       careers,
       env_map_key: process.env.MAP_API_KEY,
       company_name: '',
@@ -173,11 +174,10 @@ export default {
   },
 
   methods: {
-    async getProfileCompany(currentPage) {
-      const condition = { currentPage }
+    async getProfileCompany() {
 
       const { data } =
-        await this.$repositories.profiles.getCompanyProfile(condition)
+        await this.$repositories.profiles.getCompanyProfile()
 
       this.company_name = data.company_name
       this.manager_name = data.manager_name
