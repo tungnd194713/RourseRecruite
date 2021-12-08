@@ -121,6 +121,9 @@
                 password: this.data.password
               }
             }).then((res) => {
+              if (res.status === 200) {
+                this.$router.push('/companies')
+              }
               const data = this.$handleResponse(res);
               this.errors = data.errors;
               this.resetData();
