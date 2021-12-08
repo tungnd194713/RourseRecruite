@@ -19,7 +19,7 @@
             this.$auth.setStrategy('local');
 
             this.$auth.fetchUser().then(() => {
-                return this.$router.push('/companies');
+                return this.$router.push('/jobs');
             }).catch((e) => {
                 this.$auth.logout();
                 if (this.$route.query.origin == 'login') {
