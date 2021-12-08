@@ -11,7 +11,7 @@
         name: "FacebookCallback",
 
         head () {
-            return { title: 'Facebook callback' }
+            return {title: 'Facebook callback'}
         },
 
         data() {
@@ -27,7 +27,7 @@
                 return this.$router.push('/jobs');
             }).catch((e) => {
                 this.$auth.logout();
-                if (this.$route.query.origin == 'login') {
+                if (this.$route.query.origin === 'login') {
                     return this.$router.push(`/auth/login?error=1`);
                 } else {
                     return this.$router.push(`/register?error=1`);
