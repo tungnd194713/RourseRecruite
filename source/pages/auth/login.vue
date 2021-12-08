@@ -6,8 +6,12 @@
         <div class="bg-white box-form-login">
           <h1 class="mb-3 mb-lg-4 fw-bold">ログイン</h1>
 
+          <div v-if="error" class="alert alert-danger" role="alert">
+            ログインできませんでした。後ほどもう一度お試しください。
+          </div>
+
           <div class="btn-facebook m-4 m-lg-4">
-            <a class="text-decoration-none" @click="loginWithFacebook">
+            <a class="text-decoration-none pointer-event" style="cursor: pointer;" @click="loginWithFacebook">
                     <span>
                         <img class="" src="../../assets/images/icon_fb.svg" alt="Facebookでログイン"/> Facebookでログイン
                     </span>
@@ -88,6 +92,7 @@
           password: ''
         },
         errors: [],
+        error: this.$route.query.error
       }
     },
 
@@ -134,12 +139,8 @@
         }
       },
 
-      async loginWithFacebook() {
-        try {
-          await this.$auth.loginWith('facebook');
-        } catch (e) {
-          console.log(e.message)
-        }
+      loginWithFacebook() {
+        window.location.href = `${process.env.API_URL}/companies/login/facebook/callback`;
       },
 
       redirectToForgotPassword() {
