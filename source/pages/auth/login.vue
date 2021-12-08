@@ -140,11 +140,7 @@
       },
 
       loginWithFacebook() {
-        try {
-          window.location.href = `${process.env.API_URL}/companies/login/facebook/callback`;
-        } catch (e) {
-          console.log(e.message)
-        }
+        window.location.href = `${process.env.API_URL}/companies/login/facebook/callback`;
       },
 
       redirectToForgotPassword() {
