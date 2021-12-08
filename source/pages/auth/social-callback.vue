@@ -8,7 +8,12 @@
 <script>
     export default {
         // middleware: ['authenticated'],
-        name: "Facebook callback",
+        name: "FacebookCallback",
+
+        head () {
+            return { title: 'Facebook callback' }
+        },
+
         data() {
             return {
                 token: this.$route.query.token ? this.$route.query.token : null
