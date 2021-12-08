@@ -7,6 +7,7 @@
           height="30"
           src="../../assets/images/icon_edit.svg"
           alt=""
+          @click="$router.push('/companies/edit')"
         />
       </button>
       <div class="card-body basic">

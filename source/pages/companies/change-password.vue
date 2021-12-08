@@ -24,7 +24,7 @@
           <div class="container pb-5 row">
             <div class="form-change">
               <div class="form-group mb-2 mb-lg-3 text-center">
-                <img v-if="previewProfileImage" :src="previewProfileImage"/>
+                <img v-if="previewProfileImageUrl" :src="previewProfileImageUrl"/>
                 <img v-else src="../../assets/images/ic_avatar.svg"/>
               </div>
               <div class="text-center">
@@ -207,10 +207,6 @@
     },
 
     computed: {
-      previewProfileImage() {
-        return this.profile_image ? URL.createObjectURL(this.profile_image) : null
-      },
-
       profileImageErrors () {
         const errors = []
         if (!this.$v.profile_image.$dirty) return errors
@@ -253,7 +249,8 @@
 
     methods: {
       initData() {
-        this.previewProfileImageUrl = this.$store.getters.loggedInUser.profile_image
+        const currentProfileImage = this.$store.getters.loggedInUser.profile_image
+        this.previewProfileImageUrl = currentProfileImage ? process.env.API_URL.replace('api', 'storage') + currentProfileImage : ''
       },
 
       onChangeProfileImage(e) {
@@ -304,6 +301,8 @@
             }
           ).then(res => {
             if (res.status === 200) {
+              this.previewProfileImageUrl = process.env.API_URL.replace('api', 'storage') + res.data
+              this.$auth.fetchUser()
               this.$toast.success('画像アップロードに成功しました')
             }
           })
