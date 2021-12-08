@@ -5,13 +5,13 @@
         <div class="col-12 col-lg-3 mb-2 box-menu-left">
           <ul class="nav flex-column">
             <li class="nav-item rounded mb-2">
-              <a class="nav-link active" href="#">
+              <a class="nav-link active" @click="$router.push('/companies/edit')">
                 <img class="" src="../../assets/images/icon_building.svg" />
                 会社情報
               </a>
             </li>
             <li class="nav-item rounded">
-              <a class="nav-link" href="#">
+              <a class="nav-link" @click="$router.push('/companies/change-password')">
                 <img class="" src="../../assets/images/icon_user_rounded.svg" />
                 パスワード変更
               </a>
