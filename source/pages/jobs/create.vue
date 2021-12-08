@@ -58,40 +58,39 @@
                   :clearable="false"
                   :editable="false"
                   input-class="input-datepicker-create-job"
-                  @input="inputOrBlurDateStart"
-                  @blur="inputOrBlurDateStart"
+                  @input="$v.job.date_start.$touch()"
+                  @blur="$v.job.date_start.$touch()"
                 />
               </no-ssr>
             </div>
             <div v-if="$v.job.date_start.$error">
               <div v-if="!$v.job.date_start.required" class="error-text">これは必須項目なので、必ず入力してください</div>
-              <div v-if="!$v.job.date_start.isLessThanOrEqualDateEnd" class="error-text">Must less than or equal date end</div>
             </div>
           </div>
         </div>
         <div class="form-group mb-3 mb-lg-4 row">
-          <label for="exampleInput3" class="col-sm-2 col-form-label">終了日 <span>*</span></label>
-          <div class="col-12 col-sm-4 flex-column">
-            <div class="input-group input-group-icon custom-input-group">
+          <label for="typePlanSelect" class="col-sm-2 col-form-label">プラン <span>*</span></label>
+          <div class="col-12 col-sm-4">
+            <div class="input-group input-group-icon">
               <span class="input-group-text input-group-text-pre">
-                  <img src="../../assets/images/icon_calendar_2.svg" alt="">
+                  <img src="../../assets/images/icon_job_type_plan.svg" alt="">
               </span>
-              <no-ssr>
-                <date-picker
-                  v-model="job.date_end"
-                  value-type="format"
-                  format="YYYY-MM-DD"
-                  :clearable="false"
-                  :editable="false"
-                  input-class="input-datepicker-create-job"
-                  @input="inputOrBlurDateEnd"
-                  @blur="inputOrBlurDateEnd"
-                />
-              </no-ssr>
+              <select id="typePlanSelect" v-model="job.type_plan" class="form-select rounded-end">
+                <option v-for="item in typePlanList" :key="item.value" :value="item.value">{{ item.text }}</option>
+              </select>
             </div>
-            <div v-if="$v.job.date_end.$error">
-              <div v-if="!$v.job.date_end.required" class="error-text">これは必須項目なので、必ず入力してください</div>
-              <div v-if="!$v.job.date_end.isGreaterThanOrEqualDateStart" class="error-text">Must greater than or equal date start</div>
+          </div>
+        </div>
+        <div class="form-group mb-3 mb-lg-4 row">
+          <label for="displayMonthSelect" class="col-sm-2 col-form-label">仕事の有効期限 (月単位) <span>*</span></label>
+          <div class="col-12 col-sm-4">
+            <div class="input-group input-group-icon">
+              <span class="input-group-text input-group-text-pre">
+                  <img src="../../assets/images/icon_job_display_month.svg" alt="">
+              </span>
+              <select id="displayMonthSelect" v-model="job.display_month" class="form-select rounded-end">
+                <option v-for="item in displayMonthList" :key="item.value" :value="item.value">{{ item.text }}</option>
+              </select>
             </div>
           </div>
         </div>
@@ -356,17 +355,15 @@
           </div>
         </div>
         <div class="form-group mb-3 mb-lg-4 row">
-          <label for="example14" class="col-sm-2 col-form-label">ベトナム人在籍状況</label>
+          <label class="col-sm-2 col-form-label">ベトナム人在籍状況</label>
           <div class="col-12 col-sm-10">
-            <textarea
-              id="example14"
-              v-model="job.has_vietnamese_staff"
-              type="text"
-              class="form-control rounded-end"
-              rows="3"
-            />
-            <div class="invalid-feedback">
-              Please choose a ベトナム人在籍状況.
+            <div class="form-check">
+              <div class="float-start">
+                <input id="hasVietnameseStaffCheckbox" v-model="job.has_vietnamese_staff" class="form-check-input" type="checkbox" value="salary_max">
+                <label class="form-check-label" for="hasVietnameseStaffCheckbox">
+                  はい
+                </label>
+              </div>
             </div>
           </div>
         </div>
@@ -436,7 +433,7 @@
 <script>
   import 'bootstrap/dist/css/bootstrap.css'
   import {validationMixin} from 'vuelidate'
-  import { required, maxLength, requiredIf} from 'vuelidate/lib/validators'
+  import {maxLength, required, requiredIf} from 'vuelidate/lib/validators'
 
   export default {
     name: "CreateJob",
@@ -446,8 +443,48 @@
     data() {
       return {
         openDateEndPicker: false,
-        previewImageJobUrl: null,
+        // previewImageJobUrl: null,
         displaySalary: 'salary_max',
+        typePlanList:[
+          {
+            text: 'A',
+            value: 1
+          },
+          {
+            text: 'B',
+            value: 2
+          },
+          {
+            text: 'C',
+            value: 3
+          },
+          {
+            text: 'Standard plan',
+            value: 4
+          },
+        ],
+        displayMonthList: [
+          {
+            text: '1 month',
+            value: 1
+          },
+          {
+            text: '2 months',
+            value: 2
+          },
+          {
+            text: '3 months',
+            value: 3
+          },
+          {
+            text: '4 months',
+            value: 4
+          },
+          {
+            text: '5 months',
+            value: 5
+          },
+        ],
         formRecruitmentList: [
           {
             text: '1-フルタイム fulltime',
@@ -496,7 +533,8 @@
           image_job: null,
           title: '',
           date_start: this.$moment().format('YYYY-MM-DD'),
-          date_end: this.$moment().format('YYYY-MM-DD'),
+          type_plan: '',
+          display_month: '',
           form_recruitment: '',
           status_stay: [],
           number_recruitments: '',
@@ -522,16 +560,7 @@
           maxLength: maxLength(100)
         },
         date_start: {
-          required,
-          isLessThanOrEqualDateEnd(value) {
-            return !(value.localeCompare(this.job.date_end) === 1)
-          }
-        },
-        date_end: {
-          required,
-          isGreaterThanOrEqualDateStart(value) {
-            return !(value.localeCompare(this.job.date_start) === -1)
-          }
+          required
         },
         form_recruitment: {},
         status_stay: {},
@@ -584,6 +613,12 @@
       return { title: 'Create job'}
     },
 
+    computed: {
+      previewImageJobUrl() {
+        return this.job.image_job ? URL.createObjectURL(this.job.image_job) : null
+      },
+    },
+
     watch: {
       displaySalary: {
         handler(newVal) {
@@ -597,23 +632,27 @@
     },
 
     created() {
-      this.job.form_recruitment = this.formRecruitmentList[0].value
-      this.job.status_stay.push(this.statusStayList[0].value)
+      this.resetData()
+      let jobStored = {}
+      jobStored = Object.assign({}, this.$store.getters['job/getJob'])
+      if (!(Object.keys(jobStored).length === 0)) {
+        this.job = Object.assign({}, jobStored)
+      }
     },
 
     methods: {
       onChangeImageJob(e) {
-        const file = e.target.files[0]
-        this.job.image_job = file
-        this.previewImageJobUrl = file ? URL.createObjectURL(file) : null
+        this.job.image_job = e.target.files[0]
+        // this.previewImageJobUrl = file ? URL.createObjectURL(file) : null
       },
 
-      resetForm() {
+      resetData() {
         this.job = Object.assign({}, {
           image_job: null,
           title: '',
           date_start: this.$moment().format('YYYY-MM-DD'),
-          date_end: this.$moment().format('YYYY-MM-DD'),
+          type_plan: '',
+          display_month: '',
           form_recruitment: '',
           status_stay: [],
           number_recruitments: '',
@@ -629,22 +668,18 @@
           has_vietnamese_staff: '',
           overtime: ''
         })
+        this.job.type_plan = this.typePlanList[0].value
+        this.job.display_month = this.displayMonthList[0].value
         this.job.form_recruitment = this.formRecruitmentList[0].value
         this.job.status_stay.push(this.statusStayList[0].value)
-        this.previewImageJobUrl = null
+        // this.previewImageJobUrl = null
         this.displaySalary = 'salary_max'
         this.$v.$reset()
+      },
+
+      resetForm() {
+        this.resetData()
         this.$refs.closeConfirmCancelModal.click()
-      },
-
-      inputOrBlurDateStart() {
-        this.$v.job.date_end.$reset()
-        this.$v.job.date_start.$touch()
-      },
-
-      inputOrBlurDateEnd() {
-        this.$v.job.date_start.$reset()
-        this.$v.job.date_end.$touch()
       },
 
       keyPressForNumberInput(evt) {
@@ -657,7 +692,7 @@
         this.$v.job.$touch()
         if (!this.$v.job.$invalid) {
           this.$store.dispatch('job/setJob', this.job)
-          // this.$router.push('/jobs/preview-new')
+          this.$router.push('/jobs/preview-new')
         }
       }
     }
@@ -669,35 +704,5 @@
 </style>
 
 <style lang="scss">
-  .mx-datepicker {
-    width: 100%;
-
-    .mx-input-wrapper {
-      .input-datepicker-create-job {
-        width: 100%;
-        margin-left: 0;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-        border-left: 0 solid #7DB1C9;
-        border-top: 1px solid #7DB1C9;
-        border-bottom: 1px solid #7DB1C9;
-        border-right: 1px solid #7DB1C9;
-        color: #7DB1C9;
-        border-top-right-radius: 0.25rem !important;
-        border-bottom-right-radius: 0.25rem !important;
-        display: block;
-        padding: 0.375rem 0.75rem;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5;
-        appearance: none;
-        transition: border-color 0.15s
-      }
-
-      .mx-icon-calendar {
-        display: none;
-      }
-    }
-
-  }
+  @import '../../styles/pages/jobs/date-picker.scss';
 </style>

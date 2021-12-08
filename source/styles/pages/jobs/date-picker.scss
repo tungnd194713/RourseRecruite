@@ -1,0 +1,31 @@
+.mx-datepicker {
+  width: 100%;
+
+  .mx-input-wrapper {
+    .input-datepicker-create-job {
+      width: 100%;
+      margin-left: 0;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-left: 0 solid #7DB1C9;
+      border-top: 1px solid #7DB1C9;
+      border-bottom: 1px solid #7DB1C9;
+      border-right: 1px solid #7DB1C9;
+      color: #7DB1C9;
+      border-top-right-radius: 0.25rem !important;
+      border-bottom-right-radius: 0.25rem !important;
+      display: block;
+      padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5;
+      appearance: none;
+      transition: border-color 0.15s
+    }
+
+    .mx-icon-calendar {
+      display: none;
+    }
+  }
+
+}

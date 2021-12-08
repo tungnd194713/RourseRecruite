@@ -26,15 +26,15 @@
           <tbody>
             <tr v-for="item in items" :key="item.id" class="active">
               <td class="align-middle py-3">{{ item.id }}</td>
-              <td class="align-middle py-3">{{ item.paid_at }}</td>
+              <td class="align-middle py-3">{{ item.paid_at.split(' ')[0] }}</td>
               <td class="align-middle py-3">{{ item.year_month }}</td>
-              <td class="align-middle py-3">¥{{ item.cost_job }}</td>
-              <td class="align-middle py-3">¥{{ item.cost_apply }}</td>
+              <td class="align-middle py-3">¥{{ item.cost_job ? Math.ceil(item.cost_job) : null }}</td>
+              <td class="align-middle py-3">¥{{ item.cost_apply ? Math.ceil(item.cost_apply) : null }}</td>
               <td class="align-middle py-3">
-                {{ item.transaction.payment_method }}
+                {{ item.transaction == null || item.transaction.payment_method == 1 ? '振込' : 'クレジットカード' }}
               </td>
-              <td class="align-middle py-3">{{ item.status }}</td>
-              <td class="align-middle py-3">¥{{ item.total }}</td>
+              <td class="align-middle py-3">{{ theStatus[item.status] }}</td>
+              <td class="align-middle py-3">¥{{ item.total ? Math.ceil(item.total) : null }}</td>
               <td class="align-middle py-3">
                 <button
                   class="form-control btn btn-sm btn-payment"
@@ -63,6 +63,7 @@
 <script>
 import 'bootstrap/dist/css/bootstrap.css'
 import Pagination from '../../components/Pagination'
+import theStatus from '~/constants/invoicesStatus'
 
 export default {
   name: 'InvoiceCompany',
@@ -111,6 +112,7 @@ export default {
           tdClass: 'action',
         },
       ],
+      theStatus,
       currentPage: 1,
       perPage: 10,
       totalItems: 0,
@@ -143,34 +145,34 @@ export default {
         currentPage
       )
 
-      data.data.forEach((element) => {
-        element.paid_at = element.paid_at.split(' ')[0];
-        element.cost_job = Math.ceil(element.cost_job)
-        element.cost_apply = Math.ceil(element.cost_apply)
-        element.total = Math.ceil(element.total)
-        element.transaction =
-          element.transaction != null
-            ? element.transaction
-            : {
-                payment_method: 1,
-              }
-        element.transaction.payment_method =
-          element.transaction.payment_method === 1 ? '振込' : 'クレジットカード'
-        switch (element.status) {
-          case 1:
-            element.status = '新規'
-            break
-          case 2:
-            element.status = '未決済'
-            break
-          case 3:
-            element.status = '決済済み'
-            break
-          case 4:
-            element.status = 'キャンセル'
-            break
-        }
-      })
+      // data.data.forEach((element) => {
+      //   element.paid_at = element.paid_at.split(' ')[0]
+      //   element.cost_job = Math.ceil(element.cost_job)
+      //   element.cost_apply = Math.ceil(element.cost_apply)
+      //   element.total = Math.ceil(element.total)
+      //   element.transaction =
+      //     element.transaction != null
+      //       ? element.transaction
+      //       : {
+      //           payment_method: 1,
+      //         }
+      //   element.transaction.payment_method =
+      //     element.transaction.payment_method === 1 ? '振込' : 'クレジットカード'
+      //   switch (element.status) {
+      //     case 1:
+      //       element.status = '新規'
+      //       break
+      //     case 2:
+      //       element.status = '未決済'
+      //       break
+      //     case 3:
+      //       element.status = '決済済み'
+      //       break
+      //     case 4:
+      //       element.status = 'キャンセル'
+      //       break
+      //   }
+      // })
 
       this.items = data.data
       this.totalItems = data.total

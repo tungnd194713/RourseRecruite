@@ -1,0 +1,43 @@
+<template>
+    <div class="container">
+        <div class="loader"></div>
+        <p>しばらくお待ちください。</p>
+    </div>
+</template>
+
+<script>
+    export default {
+        // middleware: ['authenticated'],
+        name: "FacebookCallback",
+
+        head () {
+            return {title: 'Facebook callback'}
+        },
+
+        data() {
+            return {
+                token: this.$route.query.token ? this.$route.query.token : null
+            }
+        },
+        mounted() {
+            this.$auth.setToken('local', 'Bearer ' + this.token);
+            this.$auth.setStrategy('local');
+
+            this.$auth.fetchUser().then(() => {
+                return this.$router.push('/jobs');
+            }).catch((e) => {
+                this.$auth.logout();
+                if (this.$route.query.origin === 'login') {
+                    return this.$router.push(`/auth/login?error=1`);
+                } else {
+                    return this.$router.push(`/register?error=1`);
+                }
+
+            });
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+    @import '../../styles/pages/auth/social-callback.scss';
+</style>

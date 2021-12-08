@@ -175,7 +175,7 @@
                         <option value="2">Two</option>
                         <option value="3">Three</option>
                     </select>
-                    <div 
+                    <div
                         v-if="
                             !$v.user.login_type.required &&
                             $v.user.login_type.$anyError
@@ -244,6 +244,9 @@ export default {
             message: '',
         }
     },
+    head() {
+        return { title: 'Register' }
+    },
     validations: {
         user: {
             company_name: {
@@ -291,7 +294,7 @@ export default {
             this.user.login_type = 0
             this.user.district = 0
             this.$v.$touch()
-            
+
             if (this.$v.$invalid === true) {
                 try {
                     await this.$axios

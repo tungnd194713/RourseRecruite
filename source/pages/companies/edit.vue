@@ -14,7 +14,7 @@
               </NuxtLink>
             </li>
             <li class="nav-item rounded">
-              <a class="nav-link" href="#">
+              <a class="nav-link" @click="$router.push('/companies/change-password')">
                 <img class="" src="../../assets/images/icon_user_rounded.svg" />
                 パスワード変更
               </a>
