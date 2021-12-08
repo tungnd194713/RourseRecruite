@@ -4,7 +4,12 @@
       <h4 class="pt-2 pb-4 pt-lg-3 pb-lg-5 text-center">求人登録フォーム</h4>
       <div class="mx-3 mx-lg-5">
         <div class="form-group mb-4 mb-lg-5">
-          <div class="p-4 box-upload-file text-center rounded" @click="$refs.imageJob.click()">
+          <div
+            class="p-4 box-upload-file text-center rounded"
+            @click="onClickBoxUploadFile"
+            @drop.prevent="dropImage"
+            @dragover.prevent
+          >
             <input
               ref="imageJob"
               type="file"
@@ -17,8 +22,9 @@
             <p class="m-0">画像ファイルをドラグドロップ<span>、或いは選択してください</span></p>
           </div>
 
-          <div class="invalid-feedback">
-            Please choose a 会社紹介写真.
+          <div v-if="$v.job.image_job.$error" class="text-center error-text">
+            <div v-if="!$v.job.image_job.name.imageRule">画像はpng / jpg / jpeg / gifの形式でアプロードしてください</div>
+            <div v-if="!$v.job.image_job.size.imageSize">2MB以下の写真をアップロードしてください</div>
           </div>
         </div>
         <div class="form-group mb-3 mb-lg-4 row">
@@ -188,6 +194,7 @@
             </div>
             <div v-if="$v.job.salary_max.$error">
               <div v-if="!$v.job.salary_max.required" class="error-text">これは必須項目なので、必ず入力してください</div>
+              <div v-if="!$v.job.salary_max.maxLength" class="error-text">10数字以下で入力してください</div>
             </div>
           </div>
 
@@ -206,6 +213,8 @@
             </div>
             <div v-if="$v.job.salary_min.$error">
               <div v-if="!$v.job.salary_min.required" class="error-text">これは必須項目なので、必ず入力してください</div>
+              <div v-if="!$v.job.salary_min.maxLength" class="error-text">10数字以下で入力してください</div>
+
             </div>
           </div>
           {{ (displaySalary === 'salary_range') ? '～': ''}}
@@ -224,6 +233,7 @@
             </div>
             <div v-if="$v.job.salary_max.$error">
               <div v-if="!$v.job.salary_max.required" class="error-text">これは必須項目なので、必ず入力してください</div>
+              <div v-if="!$v.job.salary_max.maxLength" class="error-text">10数字以下で入力してください</div>
             </div>
           </div>
 
@@ -244,6 +254,7 @@
             <div v-if="$v.job.content_work.$error">
               <div v-if="!$v.job.content_work.required" class="error-text">これは必須項目なので、必ず入力してください</div>
               <div v-if="!$v.job.content_work.maxLength" class="error-text">1000文字以下で入力してください</div>
+              <div v-if="!$v.job.content_work.minLength" class="error-text">50文字以上で入力してください</div>
             </div>
           </div>
         </div>
@@ -268,7 +279,31 @@
         </div>
 
         <div class="form-group mb-3 mb-lg-4 row">
-          <label for="example9" class="col-sm-2 col-form-label">勤務地 <span>*</span></label>
+          <label for="exampleInput4" class="col-sm-2 col-form-label">都道府県 <span>*</span></label>
+          <div class="col-12 col-sm-4">
+            <div class="input-group input-group-icon">
+              <span class="input-group-text input-group-text-pre">
+                  <img src="../../assets/images/icon_user_search.svg" alt="">
+              </span>
+              <select
+                id="exampleInput4"
+                v-model="job.province_id"
+                class="form-select rounded-end"
+              >
+                <option
+                  v-for="(province, index) in provinceList.slice(1)"
+                  :key="index"
+                  :value="index + 1"
+                >
+                  {{ $t(province) }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group mb-3 mb-lg-4 row">
+          <label for="example9" class="col-sm-2 col-form-label">市区町村番地 <span>*</span></label>
           <div class="col-12 col-sm-10">
             <textarea
               id="example9"
@@ -300,6 +335,7 @@
             />
             <div v-if="$v.job.time_work.$error">
               <div v-if="!$v.job.time_work.required" class="error-text">これは必須項目なので、必ず入力してください</div>
+              <div v-if="!$v.job.time_work.maxLength" class="error-text">200文字以下で入力してください</div>
             </div>
           </div>
         </div>
@@ -317,6 +353,7 @@
             />
             <div v-if="$v.job.break_time.$error">
               <div v-if="!$v.job.break_time.required" class="error-text">これは必須項目なので、必ず入力してください</div>
+              <div v-if="!$v.job.break_time.maxLength" class="error-text">200文字以下で入力してください</div>
             </div>
           </div>
         </div>
@@ -334,6 +371,7 @@
             />
             <div v-if="$v.job.holidays.$error">
               <div v-if="!$v.job.holidays.required" class="error-text">これは必須項目なので、必ず入力してください</div>
+              <div v-if="!$v.job.holidays.maxLength" class="error-text">200文字以下で入力してください</div>
             </div>
           </div>
         </div>
@@ -351,6 +389,7 @@
             />
             <div v-if="$v.job.welfare_regime.$error">
               <div v-if="!$v.job.welfare_regime.required" class="error-text">これは必須項目なので、必ず入力してください</div>
+              <div v-if="!$v.job.welfare_regime.maxLength" class="error-text">500文字以下で入力してください</div>
             </div>
           </div>
         </div>
@@ -377,8 +416,8 @@
               class="form-control rounded-end"
               rows="3"
             />
-            <div class="invalid-feedback">
-              Please choose a 残業見込み、休日出勤見込み.
+            <div v-if="$v.job.overtime.$error">
+              <div v-if="!$v.job.overtime.maxLength" class="error-text">1000文字以下で入力してください</div>
             </div>
           </div>
         </div>
@@ -397,7 +436,7 @@
             class="btn btn-lg border rounded-pill btn-edit-create_job"
             @click="previewJob"
           >
-            <span class="px-4">登録</span>
+            <span class="px-4">プリビュー</span>
           </button>
         </div>
       </div>
@@ -433,7 +472,17 @@
 <script>
   import 'bootstrap/dist/css/bootstrap.css'
   import {validationMixin} from 'vuelidate'
-  import {maxLength, required, requiredIf} from 'vuelidate/lib/validators'
+  import {
+    minLength,
+    maxLength,
+    required,
+    requiredIf,
+    helpers
+  } from 'vuelidate/lib/validators'
+  import defaultProvinces from '~/constants/provinces'
+
+  const imageRule = helpers.regex('image', /\.(jpeg|png|jpg|gif)$/)
+  const imageSize = (value) => value <= 2000000
 
   export default {
     name: "CreateJob",
@@ -443,7 +492,7 @@
     data() {
       return {
         openDateEndPicker: false,
-        // previewImageJobUrl: null,
+        previewImageJobUrl: null,
         displaySalary: 'salary_max',
         typePlanList:[
           {
@@ -529,6 +578,7 @@
             value: 8
           }
         ],
+        provinceList: [],
         job: {
           image_job: null,
           title: '',
@@ -542,6 +592,7 @@
           salary_min: '',
           content_work: '',
           conditions_apply: '',
+          province_id: 1,
           address_work: '',
           time_work: '',
           break_time: '',
@@ -555,6 +606,14 @@
 
     validations: {
       job: {
+        image_job: {
+          name: {
+            imageRule
+          },
+          size: {
+            imageSize
+          }
+        },
         title: {
           required,
           maxLength: maxLength(100)
@@ -573,16 +632,19 @@
           }
         },
         salary_max: {
-          required
+          required,
+          maxLength: maxLength(10)
         },
         salary_min: {
           required: requiredIf(function () {
             return this.displaySalary === 'salary_range'
-          })
+          }),
+          maxLength: maxLength(10)
         },
         content_work: {
           required,
-          maxLength: maxLength(1000)
+          maxLength: maxLength(1000),
+          minLength: minLength(50)
         },
         conditions_apply: {
           required,
@@ -593,19 +655,25 @@
           maxLength: maxLength(200)
         },
         time_work: {
-          required
+          required,
+          maxLength: maxLength(200)
         },
         break_time: {
-          required
+          required,
+          maxLength: maxLength(200)
         },
         holidays: {
-          required
+          required,
+          maxLength: maxLength(200)
         },
         welfare_regime: {
-          required
+          required,
+          maxLength: maxLength(500)
         },
         has_vietnamese_staff: '',
-        overtime: ''
+        overtime: {
+          maxLength: maxLength(1000)
+        }
       }
     },
 
@@ -614,9 +682,9 @@
     },
 
     computed: {
-      previewImageJobUrl() {
-        return this.job.image_job ? URL.createObjectURL(this.job.image_job) : null
-      },
+      // previewImageJob() {
+      //   return this.job.image_job ? URL.createObjectURL(this.job.image_job) : null
+      // },
     },
 
     watch: {
@@ -632,18 +700,49 @@
     },
 
     created() {
+      this.provinceList = defaultProvinces
       this.resetData()
       let jobStored = {}
       jobStored = Object.assign({}, this.$store.getters['job/getJob'])
-      if (!(Object.keys(jobStored).length === 0)) {
+      if (Object.keys(jobStored).length !== 0) {
         this.job = Object.assign({}, jobStored)
+        if (this.job.image_job) {
+          this.previewImageJobUrl = URL.createObjectURL(this.job.image_job)
+        }
       }
     },
 
     methods: {
+      onClickBoxUploadFile() {
+        this.$refs.imageJob.click()
+      },
+
       onChangeImageJob(e) {
-        this.job.image_job = e.target.files[0]
-        // this.previewImageJobUrl = file ? URL.createObjectURL(file) : null
+        if (e.target.files[0]) {
+          this.job.image_job = e.target.files[0]
+        }
+        this.processAfterSelectImage()
+      },
+
+      dropImage(e) {
+        if (e.dataTransfer.files[0]) {
+          this.job.image_job = e.dataTransfer.files[0]
+        }
+        this.processAfterSelectImage()
+      },
+
+      processAfterSelectImage() {
+        if (this.job.image_job) {
+          this.$v.job.image_job.$touch()
+          if (this.$v.job.image_job.$invalid) {
+            this.previewImageJobUrl = null
+          } else {
+            this.previewImageJobUrl = URL.createObjectURL(this.job.image_job)
+          }
+        } else {
+          this.$v.job.image_job.$reset()
+          this.previewImageJobUrl = null
+        }
       },
 
       resetData() {
@@ -660,6 +759,7 @@
           salary_min: '',
           content_work: '',
           conditions_apply: '',
+          province_id: 1,
           address_work: '',
           time_work: '',
           break_time: '',
@@ -672,7 +772,7 @@
         this.job.display_month = this.displayMonthList[0].value
         this.job.form_recruitment = this.formRecruitmentList[0].value
         this.job.status_stay.push(this.statusStayList[0].value)
-        // this.previewImageJobUrl = null
+        this.previewImageJobUrl = null
         this.displaySalary = 'salary_max'
         this.$v.$reset()
       },
