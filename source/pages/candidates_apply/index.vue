@@ -22,15 +22,19 @@
                 />
             </div>
             <div class="col-12 col-lg-3 mb-2">
-                <input
+                <date-picker
+                        id="apply_date"
                         v-model="condition.apply_date"
-                        type="text"
-                        class="form-control rounded-pill"
+                        :clearable="false"
+                        format="YYYY-MM-DD"
+                        value-type="YYYY/MM/DD"
+                        class="date-picker "
                         placeholder="応募日"
-                />
+                >
+                    <i slot="icon-calendar"></i>
+                </date-picker>
             </div>
             <div class="col-12 col-lg-3 mb-2">
-                <!--<input type="text" class="form-control rounded-pill" placeholder="ステータス">-->
                 <select
                         v-model="condition.status_stay"
                         class="form-select rounded-pill"
@@ -84,7 +88,11 @@
                             <template v-else>アルバイト</template>
                         </td>
                         <td class="align-middle py-3">
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#popUpId">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#popUpId"
+                               @click="popupImageCard(
+                                   item.candidate.residence_card_front,
+                                   item.candidate.residence_card_backside
+                                   )">
                                 <img
                                         class=""
                                         :src="url_file+item.candidate.residence_card_front"
@@ -93,7 +101,8 @@
                         </td>
                         <td class="align-middle py-3">
                             <select v-model="item.residence_card_confirm"
-                                    class="form-select active rounded-3 confirm-select">
+                                    class="form-select active rounded-3 confirm-select"
+                                    @change="updateCard(item.id, {residence_card_confirm: item.residence_card_confirm})">
                                 <option value="0">未選択</option>
                                 <option value="1">承認</option>
                                 <option value="2">非承認</option>
@@ -103,7 +112,9 @@
                             {{item.note}}
                         </td>
                         <td class="align-middle py-3">
-                            <select v-model="item.status" class="form-select active rounded-3 status-select">
+                            <select v-model="item.status"
+                                    class="form-select active rounded-3 status-select"
+                                    @change="updateItemStatus(item.id, {status: item.status})">
                                 <option value="0">未選択</option>
                                 <option value="1">未対応</option>
                                 <option value="2">折り返し待ち</option>
@@ -118,8 +129,14 @@
                                     href="#"
                                     data-bs-toggle="modal"
                                     data-bs-target="#popUpCheck"
+                                    @click="popupUpdateStatus({
+                                    id: item.id,
+                                    residence_card_confirm: item.residence_card_confirm,
+                                    status: item.status,
+                                    note: item.note
+                                    })"
                             >
-                                <img class="edit-icon" src="../../assets/images/icon_edit.svg"/>
+                                <img class="edit-icon" src="../../assets/images/icon_edit_list.svg"/>
                             </a>
                         </td>
                     </tr>
@@ -135,16 +152,129 @@
                         @customPage="pageChangeHandle"
             />
         </div>
+
+        <div id="popUpId"
+             class="modal fade"
+             data-bs-backdrop="static"
+             data-bs-keyboard="false"
+             tabindex="-1"
+             aria-labelledby="popUpIdLabel"
+             aria-hidden="true"
+        >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a data-bs-dismiss="modal" class="btn-close" aria-label="Close">
+                            <img src="../../assets/images/icon_modal_close.svg" alt=""/>
+                        </a>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <h5 id="popUpIdLabel" class="modal-title">在留カード</h5>
+                    </div>
+                    <div class="modal-body d-flex justify-content-around">
+                        <a href="#"
+                        ><img
+                                class="link-modal"
+                                :src="url_file+image.residence_card_front"
+                                alt=""
+                        /></a>
+                        <a href="#"
+                        ><img
+                                class="link-modal"
+                                :src="url_file+image.residence_card_backside"
+                                alt=""
+                        /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="popUpCheck"
+             class="modal fade"
+             data-bs-backdrop="static"
+             data-bs-keyboard="false"
+             tabindex="-1"
+             aria-labelledby="popUpCheckLabel"
+             aria-hidden="true"
+        >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content check-content">
+                    <div class="modal-header">
+                        <a data-bs-dismiss="modal" class="btn-close" aria-label="Close">
+                            <img src="../../assets/images/icon_modal_close.svg" alt=""/>
+                        </a>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <h5 id="popUpCheckLabel" class="modal-title check-title">
+                            応募者の応募状態更新
+                        </h5>
+                    </div>
+                    <div class="modal-body pop-check-input">
+                        <label for="confirmation">在留資格確認</label>
+                        <select
+                                id="confirmation"
+                                v-model="dataUpdateStatus.residence_card_confirm"
+                                class="form-select rounded-pill pop-check-select"
+                                aria-label="Confirmation"
+                        >
+                            <!--<option selected></option>-->
+                            <option value="0">未選択</option>
+                            <option value="1">承認</option>
+                            <option value="2">非承認</option>
+                        </select>
+                        <label for="status">ステータス</label>
+                        <select
+                                id="status"
+                                v-model="dataUpdateStatus.status"
+                                class="form-select rounded-pill pop-check-select"
+                                aria-label="Status"
+                        >
+                            <option value="0">未選択</option>
+                            <option value="1">未対応</option>
+                            <option value="2">折り返し待ち</option>
+                            <option value="3">面接待ち</option>
+                            <option value="4">採用</option>
+                            <option value="5">不採用（連絡取れず）</option>
+                            <option value="6">不採用</option>
+                        </select>
+                        <label for="remarks">備考</label>
+                        <textarea
+                                id="remarks"
+                                v-model="dataUpdateStatus.note"
+                                class="form-control"
+
+                        ></textarea>
+                        <div class="submit-btn">
+                            <button
+                                    id="apply-btn"
+                                    class="btn btn-primary mt-4 rounded-pill"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#popUpSuccess"
+                                    @click="updateStatus()"
+                            >
+                                更新
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 </template>
 
 <script>
     import 'bootstrap/dist/css/bootstrap.css'
+    import DatePicker from 'vue2-datepicker'
+    import 'vue2-datepicker/index.css'
+    import 'vue2-datepicker/locale/ja'
     import Pagination from "../../components/Pagination";
 
     export default {
         name: "CandidateApply",
-        components: {Pagination},
+        components: {
+            Pagination,
+            DatePicker
+        },
         layout: 'auth',
 
         data() {
@@ -197,6 +327,16 @@
                     key_word: '',
                     apply_date: '',
                     status_stay: ''
+                },
+                idRow: -1,
+                dataUpdateStatus: {
+                    residence_card_confirm: 0,
+                    status: 0,
+                    note: '',
+                },
+                image: {
+                    residence_card_front: '',
+                    residence_card_backside: ''
                 }
             }
         },
@@ -255,6 +395,61 @@
                 date = this.$moment(date);
 
                 return now < date.add(3, 'days').format('YYYY-MM-DD')
+            },
+
+            popupUpdateStatus(data) {
+                this.idRow = data.id
+                this.dataUpdateStatus.residence_card_confirm = data.residence_card_confirm
+                this.dataUpdateStatus.status = data.status
+                this.dataUpdateStatus.note = data.note
+            },
+
+            async updateStatus() {
+                return await this.$repositories.candidatesApply.updateStatus(
+                    this.idRow,
+                    this.dataUpdateStatus
+                ).then(res => {
+                    this.idRow = -1;
+                    if (res.status === 200) {
+                        this.$toast.success('応募者の応募状態・更新が完了しました')
+                        this.getListCV(this.currentPage);
+                    } else {
+                        this.$toast.success('候補者の申請状況と候補者名の更新は完了していません。')
+                    }
+                })
+            },
+
+            async updateCard(id, data) {
+                return await this.$repositories.candidatesApply.updateStatus(
+                    id, data
+                ).then(res => {
+                    this.idRow = -1;
+                    if (res.status === 200) {
+                        this.$toast.success('応募者の応募状態・更新が完了しました')
+                        this.getListCV(this.currentPage);
+                    } else {
+                        this.$toast.success('候補者の申請状況と候補者名の更新は完了していません。')
+                    }
+                })
+            },
+
+            async updateItemStatus(id, data) {
+                return await this.$repositories.candidatesApply.updateStatus(
+                    id, data
+                ).then(res => {
+                    this.idRow = -1;
+                    if (res.status === 200) {
+                        this.$toast.success('応募者の応募状態・更新が完了しました')
+                        this.getListCV(this.currentPage);
+                    } else {
+                        this.$toast.success('候補者の申請状況と候補者名の更新は完了していません。')
+                    }
+                })
+            },
+
+            popupImageCard(residenceCardFront, residenceCardBackside) {
+                this.image.residence_card_front = residenceCardFront;
+                this.image.residence_card_backside = residenceCardBackside
             }
         }
     }
@@ -262,4 +457,8 @@
 
 <style lang="scss" scoped>
     @import '../../styles/pages/candidates_apply/list.scss';
+</style>
+
+<style lang="scss">
+    @import '../../styles/pages/candidates_apply/listnotscoped.scss';
 </style>
