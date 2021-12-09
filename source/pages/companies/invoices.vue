@@ -145,35 +145,6 @@ export default {
         currentPage
       )
 
-      // data.data.forEach((element) => {
-      //   element.paid_at = element.paid_at.split(' ')[0]
-      //   element.cost_job = Math.ceil(element.cost_job)
-      //   element.cost_apply = Math.ceil(element.cost_apply)
-      //   element.total = Math.ceil(element.total)
-      //   element.transaction =
-      //     element.transaction != null
-      //       ? element.transaction
-      //       : {
-      //           payment_method: 1,
-      //         }
-      //   element.transaction.payment_method =
-      //     element.transaction.payment_method === 1 ? '振込' : 'クレジットカード'
-      //   switch (element.status) {
-      //     case 1:
-      //       element.status = '新規'
-      //       break
-      //     case 2:
-      //       element.status = '未決済'
-      //       break
-      //     case 3:
-      //       element.status = '決済済み'
-      //       break
-      //     case 4:
-      //       element.status = 'キャンセル'
-      //       break
-      //   }
-      // })
-
       this.items = data.data
       this.totalItems = data.total
       this.currentPage = data.current_page
