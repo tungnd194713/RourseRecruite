@@ -3,7 +3,7 @@
 
     <div class="card detail-job-card position-relative">
       <div class="detail-job-content">
-        <button id="btn-edit" class="btn p-0">
+        <button id="btn-edit" class="btn p-0" @click="onClickEditJob()">
           <img width="30" height="30" src="../../../assets/images/icon_edit.svg"/>
         </button>
         <div class="mt-0 mt-lg-2 pt-0 pt-lg-3 pb-2">
@@ -817,7 +817,7 @@
           has_vietnamese_staff: '',
           overtime: ''
         },
-        url_file: process.env.URL_FILE,
+        url_file: process.env.API_URL.replace('api', 'storage'),
         items: [],
         fields: [
           {
@@ -913,6 +913,14 @@
 
       previewStatusStay() {
         return this.statusStayList.filter(this.filterPreviewStatusStay)
+      },
+
+      onClickEditJob() {
+        if (this.$moment() < this.$moment(this.job.date_start)) {
+          this.$router.push(`/jobs/update/${this.$route.params.id}`)
+        } else {
+          this.$toast.error('Can not edit job')
+        }
       },
 
       async getJobFromApi() {
