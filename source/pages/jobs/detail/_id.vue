@@ -817,7 +817,7 @@
           has_vietnamese_staff: '',
           overtime: ''
         },
-        url_file: process.env.API_URL.replace('api', 'storage'),
+        url_file: process.env.URL_FILE,
         items: [],
         fields: [
           {
