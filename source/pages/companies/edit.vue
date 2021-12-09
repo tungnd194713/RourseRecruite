@@ -5,16 +5,16 @@
         <div class="col-12 col-lg-3 mb-2 box-menu-left">
           <ul class="nav flex-column">
             <li class="nav-item rounded mb-2">
-              <NuxtLink
-                class="nav-link active"
-                to="/companies/edit"
-              >
+              <NuxtLink class="nav-link active" to="/companies/edit">
                 <img class="" src="../../assets/images/icon_building.svg" />
                 会社情報
               </NuxtLink>
             </li>
             <li class="nav-item rounded">
-              <a class="nav-link" @click="$router.push('/companies/change-password')">
+              <a
+                class="nav-link"
+                @click="$router.push('/companies/change-password')"
+              >
                 <img class="" src="../../assets/images/icon_user_rounded.svg" />
                 パスワード変更
               </a>
@@ -30,7 +30,7 @@
                 <label for="company_name">会社名 <span>*</span></label>
                 <input
                   id="company_name"
-                  v-model="$v.data.company_name.$model"
+                  v-model.trim="$v.data.company_name.$model"
                   type="text"
                   :class="{
                     invalid:
@@ -38,13 +38,14 @@
                       $v.data.company_name.$dirty,
                   }"
                   class="form-control"
+                  @change="clearErrors"
                 />
                 <div v-if="$v.data.company_name.$error">
                   <div v-if="!$v.data.company_name.required" class="error">
                     これは必須項目なので、必ず入力してください
                   </div>
                   <div v-if="!$v.data.company_name.maxLength" class="error">
-                    メールアドレスの形式で入力してください
+                    100文字以上入力する場合
                   </div>
                 </div>
                 <div v-if="errors.company_name" class="error">
@@ -81,7 +82,7 @@
                   <label for="phone">電話番号 <span>*</span></label>
                   <input
                     id="phone"
-                    v-model="$v.data.phone.$model"
+                    v-model.trim="$v.data.phone.$model"
                     type="tel"
                     :class="{
                       invalid: $v.data.phone.$invalid && $v.data.phone.$dirty,
@@ -110,7 +111,7 @@
                   <label for="number_members">従業員数 <span>*</span></label>
                   <input
                     id="number_members"
-                    v-model="$v.data.number_members.$model"
+                    v-model.trim="$v.data.number_members.$model"
                     type="number"
                     :class="{
                       invalid:
@@ -136,7 +137,7 @@
                   <label for="postal_code">郵便番号 <span>*</span></label>
                   <input
                     id="postal_code"
-                    v-model="$v.data.postal_code.$model"
+                    v-model.trim="$v.data.postal_code.$model"
                     type="text"
                     :class="{
                       invalid:
@@ -186,7 +187,7 @@
                   <label for="district">市区町村 <span>*</span></label>
                   <input
                     id="district"
-                    v-model="$v.data.district.$model"
+                    v-model.trim="$v.data.district.$model"
                     :class="{
                       invalid:
                         $v.data.district.$invalid && $v.data.district.$dirty,
@@ -204,10 +205,10 @@
                   </div>
                 </div>
                 <div class="form-group col-12 col-lg-6 mb-2 mb-lg-3">
-                  <label for="address">現住所 <span>*</span></label>
+                  <label for="address">番地 <span>*</span></label>
                   <input
                     id="address"
-                    v-model="$v.data.address.$model"
+                    v-model.trim="$v.data.address.$model"
                     type="text"
                     :class="{
                       invalid:
@@ -230,7 +231,7 @@
                 <label for="manager_name">担当者名 <span>*</span></label>
                 <input
                   id="manager_name"
-                  v-model="$v.data.manager_name.$model"
+                  v-model.trim="$v.data.manager_name.$model"
                   :class="{
                     invalid:
                       $v.data.manager_name.$invalid &&
@@ -243,6 +244,9 @@
                   <div v-if="!$v.data.manager_name.required" class="error">
                     これは必須項目なので、必ず入力してください
                   </div>
+                  <div v-if="!$v.data.manager_name.alphabet" class="error">
+                    数字・特殊文字を使用する場合
+                  </div>
                   <div v-if="!$v.data.manager_name.maxLength" class="error">
                     50文字以下で入力してください
                   </div>
@@ -252,7 +256,7 @@
                 <label for="email">メールアドレス <span>*</span></label>
                 <input
                   id="email"
-                  v-model="data.email"
+                  v-model.trim="data.email"
                   type="text"
                   class="form-control"
                   disabled
@@ -266,7 +270,7 @@
                   </span>
                   <date-picker
                     id="founded_year"
-                    v-model="$v.data.founded_year.$model"
+                    v-model.trim="$v.data.founded_year.$model"
                     :class="{
                       invalid:
                         $v.data.founded_year.$invalid &&
@@ -291,7 +295,7 @@
             <div class="my-3 my-lg-4 line"></div>
             <div class="container">
               <div class="form-group mb-2 mb-lg-3">
-                <label for="facebook_id">Facebookリンク <span>*</span></label>
+                <label for="facebook_id">Facebookリンク</label>
                 <div
                   class="input-group input-group-icon"
                   :class="{
@@ -305,15 +309,12 @@
                   </span>
                   <input
                     id="facebook_id"
-                    v-model="$v.data.facebook_id.$model"
+                    v-model.trim="$v.data.facebook_id.$model"
                     type="text"
                     class="form-control"
                   />
                 </div>
                 <div v-if="$v.data.facebook_id.$error">
-                  <div v-if="!$v.data.facebook_id.required" class="error">
-                    これは必須項目なので、必ず入力してください
-                  </div>
                   <div v-if="!$v.data.facebook_id.facebook" class="error">
                     facebook
                   </div>
@@ -336,7 +337,7 @@
                   </span>
                   <input
                     id="link_website"
-                    v-model="$v.data.link_website.$model"
+                    v-model.trim="$v.data.link_website.$model"
                     type="text"
                     class="form-control"
                   />
@@ -351,23 +352,13 @@
                 </div>
               </div>
               <div class="form-group mb-2 mb-lg-3">
-                <label for="description">会社概要・紹介 <span>*</span></label>
+                <label for="description">会社概要・紹介</label>
                 <textarea
                   id="description"
-                  v-model="$v.data.description.$model"
-                  :class="{
-                    invalid:
-                      $v.data.description.$invalid &&
-                      $v.data.description.$dirty,
-                  }"
+                  v-model="data.description"
                   class="form-control"
                   rows="5"
                 ></textarea>
-                <div v-if="$v.data.description.$error">
-                  <div v-if="!$v.data.description.required" class="error">
-                    これは必須項目なので、必ず入力してください
-                  </div>
-                </div>
               </div>
               <div class="form-group mb-2 mb-lg-3">
                 <label>ロゴ <span>*</span></label>
@@ -534,9 +525,7 @@
                 </small>
               </div>
               <div class="form-group mb-2 mb-lg-3">
-                <label for="youtube"
-                  >会社の公式サイトのリンク <span>*</span></label
-                >
+                <label for="youtube">会社の公式サイトのリンク</label>
                 <div
                   class="input-group input-group-icon"
                   :class="{
@@ -548,15 +537,12 @@
                   </span>
                   <input
                     id="youtube"
-                    v-model="$v.data.youtube.$model"
+                    v-model.trim="$v.data.youtube.$model"
                     type="text"
                     class="form-control"
                   />
                 </div>
                 <div v-if="$v.data.youtube.$error">
-                  <div v-if="!$v.data.youtube.required" class="error">
-                    これは必須項目なので、必ず入力してください
-                  </div>
                   <div v-if="!$v.data.youtube.youtube" class="error">
                     URLの形式で入力してください
                   </div>
@@ -610,9 +596,6 @@
                   </div>
                 </div>
                 <div v-if="$v.data.video.$error">
-                  <div v-if="!$v.data.video.required" class="error">
-                    これは必須項目なので、必ず入力してください
-                  </div>
                   <div v-if="!$v.data.video.videoRule" class="error">
                     動画はAVI/ FLV/ WMV/MOV/ MP4の形式でアプロードしてください
                   </div>
@@ -635,7 +618,7 @@
                   btn-cancel-profile
                 "
               >
-                <span class="px-4">プレビュー</span>
+                <span class="px-4">キャンセル</span>
               </button>
               <button
                 id="btn_edit_profile"
@@ -688,6 +671,7 @@ const phone = helpers.regex(
 const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/g)
 const imageRule = helpers.regex('image', /\.(gif|jpe?g|png|PNG|GIF|JPE?G)$/)
 const videoRule = helpers.regex('video', /\.(mp4|wmv|avi|mov|flv)$/)
+const alphabet = helpers.regex('alphabet', /^[a-zA-Z ]*$/)
 const imageSize = (value) => value <= 2000000
 const videoSize = (value) => value <= 100000000
 
@@ -775,18 +759,15 @@ export default {
       },
       manager_name: {
         required,
+        alphabet,
         maxLength: maxLength(50),
       },
       facebook_id: {
-        required,
         facebook,
       },
       link_website: {
         required,
         url,
-      },
-      description: {
-        required,
       },
       images: {
         required: requiredIf(function () {
@@ -802,12 +783,6 @@ export default {
         },
       },
       video: {
-        required: requiredIf(function () {
-          return (
-            this.data.youtube === '' &&
-            (this.uploadedVideo === null || this.uploadedVideo === '')
-          )
-        }),
         $each: {
           name: {
             videoRule,
@@ -834,12 +809,6 @@ export default {
         required,
       },
       youtube: {
-        required: requiredIf(function () {
-          return (
-            this.data.video.length === 0 &&
-            (this.uploadedVideo === null || this.uploadedVideo === '')
-          )
-        }),
         youtube,
       },
     },
@@ -863,7 +832,7 @@ export default {
     async getProfileCompany() {
       const { data } = await this.$repositories.profiles.getCompanyProfile()
 
-      if (data.video_link.includes('youtube')) {
+      if (data.video_link && data.video_link.includes('youtube')) {
         this.data.youtube = data.video_link
       } else {
         this.uploadedVideo = data.video_link
@@ -886,15 +855,19 @@ export default {
       this.uploadedIntroImage = data.images
       this.uploadedProfileImage = data.logo
     },
-    triggerProfileImageInput() {
+    triggerProfileImageInput(event) {
+      event.preventDefault()
       this.$refs.logoInput.click()
     },
-    triggerIntroImageInput() {
+    triggerIntroImageInput(event) {
+      event.preventDefault()
       this.$refs.introImageInput.click()
     },
     triggerVideoInput(event) {
       event.preventDefault()
-      this.$refs.videoInput.click()
+      if (event.pointerId !== -1) {
+        this.$refs.videoInput.click()
+      }
     },
     onChange(fileType) {
       if (fileType === 1) {
@@ -944,6 +917,9 @@ export default {
     dragover(event) {
       event.preventDefault()
     },
+    clearErrors() {
+      this.errors = ''
+    },
     async editCompanyProfile() {
       this.$v.data.$touch()
 
@@ -991,7 +967,10 @@ export default {
             .then((res) => {
               const data = this.$handleResponse(res)
               if (!data.errors) {
-                window.location.reload()
+                console.log('dsadsad')
+                this.$toast.success(
+                  '会社情報の更新に成功しました。'
+                )
               } else {
                 this.errors = data.errors
               }

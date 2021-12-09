@@ -15,5 +15,9 @@ export default ($axios) => ({
 
   activeJob(id) {
     return $axios.post(`${resource}/active/${id}`)
+  },
+
+  createJob(payload, header) {
+    return $axios.post(`${resource}/create`, payload, header)
   }
 })

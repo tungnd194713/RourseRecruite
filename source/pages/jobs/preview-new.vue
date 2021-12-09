@@ -101,22 +101,30 @@
         </div>
         <div class="d-flex justify-content-end footer">
           <button id="btn_back" class="btn" @click="$router.push('/jobs/create')">戻る</button>
-          <button id="btn_completion" class="btn">完了</button>
+          <button id="btn_completion" class="btn" @click="completeCreateJob">完了</button>
+          <button
+            ref="showCompleteCreateJobModal"
+            data-bs-toggle="modal"
+            data-bs-target="#completeCreateJobModal"
+            class="d-none"
+          />
         </div>
       </div>
     </div>
 
     <StatusStayInfoModal />
-
+    <CompleteCreateJobModal />
   </main>
 </template>
 
 <script>
   import StatusStayInfoModal from "../../components/StatusStayInfoModal";
+  import CompleteCreateJobModal from "../../components/CompleteCreateJobModal";
 
   export default {
     name: "PreviewNewJob",
     components: {
+      CompleteCreateJobModal,
       StatusStayInfoModal
     },
     layout: 'preview-new',
@@ -220,6 +228,7 @@
           salary_min: '',
           content_work: '',
           conditions_apply: '',
+          province_id: 1,
           address_work: '',
           time_work: '',
           break_time: '',
@@ -277,6 +286,44 @@
       previewStatusStay() {
         return this.isJobStored() ? this.statusStayList.filter(this.filterPreviewStatusStay) : []
       },
+
+      async completeCreateJob() {
+        if (this.job.salary_min === '') {
+          this.job.salary_min = 0
+        }
+        this.job.has_vietnamese_staff = this.job.has_vietnamese_staff ? 1 : 0
+        const formData = new FormData()
+        formData.append('image_job', this.job.image_job)
+        formData.append('title', this.job.title)
+        formData.append('date_start', this.job.date_start)
+        formData.append('type_plan', this.job.type_plan)
+        formData.append('display_month', this.job.display_month)
+        formData.append('form_recruitment', this.job.form_recruitment)
+        formData.append('status_stay', this.job.status_stay)
+        formData.append('number_recruitments', this.job.number_recruitments)
+        formData.append('salary_max', this.job.salary_max)
+        formData.append('salary_min', this.job.salary_min)
+        formData.append('content_work', this.job.content_work)
+        formData.append('conditions_apply', this.job.conditions_apply)
+        formData.append('province_id', this.job.province_id)
+        formData.append('address_work', this.job.address_work)
+        formData.append('time_work', this.job.time_work)
+        formData.append('break_time', this.job.break_time)
+        formData.append('holidays', this.job.holidays)
+        formData.append('welfare_regime', this.job.welfare_regime)
+        formData.append('has_vietnamese_staff', this.job.has_vietnamese_staff)
+        formData.append('overtime', this.job.overtime)
+        return await this.$repositories.jobs.createJob(formData, {
+          header: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }).then(res => {
+          if (res.status === 200) {
+            this.$refs.showCompleteCreateJobModal.click()
+            this.$store.dispatch('job/setJob', {})
+          }
+        })
+      }
     }
   }
 </script>
