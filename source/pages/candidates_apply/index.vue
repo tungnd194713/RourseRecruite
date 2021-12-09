@@ -102,7 +102,7 @@
                         <td class="align-middle py-3">
                             <select v-model="item.residence_card_confirm"
                                     class="form-select active rounded-3 confirm-select"
-                                    @change="updateCard(item.id, item.residence_card_confirm)">
+                                    @change="updateCard(item.id, {residence_card_confirm: item.residence_card_confirm})">
                                 <option value="0">未選択</option>
                                 <option value="1">承認</option>
                                 <option value="2">非承認</option>
@@ -114,7 +114,7 @@
                         <td class="align-middle py-3">
                             <select v-model="item.status"
                                     class="form-select active rounded-3 status-select"
-                                    @change="updateItemStatus(item.id, item.status)">
+                                    @change="updateItemStatus(item.id, {status: item.status})">
                                 <option value="0">未選択</option>
                                 <option value="1">未対応</option>
                                 <option value="2">折り返し待ち</option>
@@ -129,7 +129,12 @@
                                     href="#"
                                     data-bs-toggle="modal"
                                     data-bs-target="#popUpCheck"
-                                    @click="popupUpdateStatus(item.id, item.residence_card_confirm, item.status, item.note)"
+                                    @click="popupUpdateStatus({
+                                    id: item.id,
+                                    residence_card_confirm: item.residence_card_confirm,
+                                    status: item.status,
+                                    note: item.note
+                                    })"
                             >
                                 <img class="edit-icon" src="../../assets/images/icon_edit_list.svg"/>
                             </a>
@@ -208,9 +213,9 @@
                         <label for="confirmation">在留資格確認</label>
                         <select
                                 id="confirmation"
+                                v-model="dataUpdateStatus.residence_card_confirm"
                                 class="form-select rounded-pill pop-check-select"
                                 aria-label="Confirmation"
-                                v-model="dataUpdateStatus.residence_card_confirm"
                         >
                             <!--<option selected></option>-->
                             <option value="0">未選択</option>
@@ -220,9 +225,9 @@
                         <label for="status">ステータス</label>
                         <select
                                 id="status"
+                                v-model="dataUpdateStatus.status"
                                 class="form-select rounded-pill pop-check-select"
                                 aria-label="Status"
-                                v-model="dataUpdateStatus.status"
                         >
                             <option value="0">未選択</option>
                             <option value="1">未対応</option>
@@ -235,8 +240,9 @@
                         <label for="remarks">備考</label>
                         <textarea
                                 id="remarks"
-                                class="form-control"
                                 v-model="dataUpdateStatus.note"
+                                class="form-control"
+
                         ></textarea>
                         <div class="submit-btn">
                             <button
@@ -258,10 +264,10 @@
 
 <script>
     import 'bootstrap/dist/css/bootstrap.css'
-    import Pagination from "../../components/Pagination";
     import DatePicker from 'vue2-datepicker'
     import 'vue2-datepicker/index.css'
     import 'vue2-datepicker/locale/ja'
+    import Pagination from "../../components/Pagination";
 
     export default {
         name: "CandidateApply",
@@ -391,18 +397,31 @@
                 return now < date.add(3, 'days').format('YYYY-MM-DD')
             },
 
-            popupUpdateStatus(id, residence_card_confirm, status, note) {
-                console.log('áda');
-                this.idRow = id;
-                this.dataUpdateStatus.residence_card_confirm = residence_card_confirm;
-                this.dataUpdateStatus.status = status;
-                this.dataUpdateStatus.note = note
+            popupUpdateStatus(data) {
+                this.idRow = data.id
+                this.dataUpdateStatus.residence_card_confirm = data.residence_card_confirm
+                this.dataUpdateStatus.status = data.status
+                this.dataUpdateStatus.note = data.note
             },
 
             async updateStatus() {
+        return await this.$repositories.candidatesApply.updateStatus(
+            this.idRow,
+            this.dataUpdateStatus
+        ).then(res => {
+            this.idRow = -1;
+            if (res.status === 200) {
+                this.$toast.success('応募者の応募状態・更新が完了しました')
+                this.getListCV(this.currentPage);
+            } else {
+                this.$toast.success('候補者の申請状況と候補者名の更新は完了していません。')
+            }
+        })
+    },
+
+            async updateCard(id, data) {
                 return await this.$repositories.candidatesApply.updateStatus(
-                    this.idRow,
-                    this.dataUpdateStatus
+                    id, data
                 ).then(res => {
                     this.idRow = -1;
                     if (res.status === 200) {
@@ -414,10 +433,9 @@
                 })
             },
 
-            async updateCard(id, residence_card_confirm) {
+            async updateItemStatus(id, data) {
                 return await this.$repositories.candidatesApply.updateStatus(
-                    id,
-                    {residence_card_confirm: residence_card_confirm}
+                    id, data
                 ).then(res => {
                     this.idRow = -1;
                     if (res.status === 200) {
@@ -429,24 +447,9 @@
                 })
             },
 
-            async updateItemStatus(id, status) {
-                return await this.$repositories.candidatesApply.updateStatus(
-                    id,
-                    {status: status}
-                ).then(res => {
-                    this.idRow = -1;
-                    if (res.status === 200) {
-                        this.$toast.success('応募者の応募状態・更新が完了しました')
-                        this.getListCV(this.currentPage);
-                    } else {
-                        this.$toast.success('候補者の申請状況と候補者名の更新は完了していません。')
-                    }
-                })
-            },
-
-            popupImageCard(residence_card_front, residence_card_backside) {
-                this.image.residence_card_front = residence_card_front;
-                this.image.residence_card_backside = residence_card_backside
+            popupImageCard(residenceCardFront, residenceCardBackside) {
+                this.image.residence_card_front = residenceCardFront;
+                this.image.residence_card_backside = residenceCardBackside
             }
         }
     }
