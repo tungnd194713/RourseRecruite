@@ -20,20 +20,27 @@
                     :key="router.tab"
                     class="border-bottom"
                 >
-                  <a class="dropdown-item" @click="redirect(router)">
+                  <a class="dropdown-item" @click="$router.push(router.path)">
                     <img class="" :src="require(`@/assets/images` + router.srcImage)"/>
                     {{router.name}}
                   </a>
                 </li>
                 <li>
-                  <a class="dropdown-item" @click="redirect('/auth/login')">
+                  <a class="dropdown-item" @click="$auth.logout()">
                     <img class="" src="../assets/images/icon_logout.svg"/>
                     ログアウト
                   </a>
                 </li>
               </ul>
             </div>
-            <img src="../assets/images/icon_avatar.svg" alt="mdo" width="32" height="32" class="rounded-circle">
+            <img
+              v-if="loggedInUser.profile_image"
+              :src="url_file + loggedInUser.profile_image"
+              alt="mdo" width="32" height="32" class="rounded-circle">
+            <img
+              v-else
+              src="../assets/images/icon_avatar.svg"
+              alt="mdo" width="32" height="32" class="rounded-circle">
           </div>
         </div>
       </div>
@@ -66,6 +73,7 @@
     data () {
       return {
         routers,
+        url_file: process.env.URL_FILE
       }
     },
 

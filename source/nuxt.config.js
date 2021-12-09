@@ -95,7 +95,10 @@ export default {
             propertyName: 'access_token' // property of token in JSON data of API login
           },
           tokenRequired: false,
-          logout: false,
+          logout: {
+            url: '/companies/logout',
+            method: 'post'
+          },
           user: {
             url: 'companies/me',
             method: 'get',
