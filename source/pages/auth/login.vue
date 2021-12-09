@@ -60,7 +60,9 @@
           <p class="mb-3 mb-lg-4"><a class="text-decoration-none" @click="redirectToForgotPassword">パスワードをお忘れの方はこちら</a></p>
           <button type="submit" class="btn fw-bold">ログイン</button>
 
-          <p class="mt-1 mt-lg-2 mb-0 mb-lg-1"><a class="text-decoration-none" href="#">まだ会員登録がお済みでない方</a></p>
+          <p class="mt-1 mt-lg-2 mb-0 mb-lg-1">
+             <NuxtLink to="/companies/register" class="text-decoration-none">まだ会員登録がお済みでない方</NuxtLink>
+            </p>
         </div>
       </form>
     </main>
