@@ -2,13 +2,15 @@
   <main class="container my-3 my-lg-4">
     <div class="card position-relative">
       <button id="btn-edit" class="btn border-0 p-0">
-        <img
-          width="30"
-          height="30"
-          src="../../assets/images/icon_edit.svg"
-          alt=""
-          @click="$router.push('/companies/edit')"
-        />
+        <NuxtLink
+          to="/companies/edit"
+        >
+          <img
+            width="30"
+            height="30"
+            src="../../assets/images/icon_edit.svg"
+            alt=""
+        /></NuxtLink>
       </button>
       <div class="card-body basic">
         <div class="d-md-flex">
@@ -112,7 +114,13 @@
             <div class="map">
               <iframe
                 frameborder="0"
-                :src="'https://www.google.com/maps/embed/v1/place?key=' + env_map_key + '&q=' + address + '&language=ja'"
+                :src="
+                  'https://www.google.com/maps/embed/v1/place?key=' +
+                  env_map_key +
+                  '&q=' +
+                  address +
+                  '&language=ja'
+                "
               ></iframe>
             </div>
           </div>
@@ -176,9 +184,7 @@ export default {
 
   methods: {
     async getProfileCompany() {
-
-      const { data } =
-        await this.$repositories.profiles.getCompanyProfile()
+      const { data } = await this.$repositories.profiles.getCompanyProfile()
 
       this.company_name = data.company_name
       this.manager_name = data.manager_name
