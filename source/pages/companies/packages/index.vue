@@ -93,13 +93,12 @@ import 'bootstrap/dist/css/bootstrap.css'
 
 export default {
     name: 'Packages',
-    // layout: 'auth',
+    layout: 'auth',
     head() {
         return { title: 'Packages' }
     },
 }
 </script>
-
 
 <style lang="scss" scoped>
 @import '../../../styles/pages/companies/packages.scss';
@@ -109,13 +108,14 @@ export default {
 picture img {
     width: 100%;
     height: auto;
-    padding: 0px 50px;
+    padding-left: 50px;
+    padding-right: 50px;
 }
 
 @media only screen and (max-width: 975px) {
     picture img {
-        padding: 0 20px;
+        padding-left: 20px;
+        padding-right: 20px;
     }
 }
-
 </style>

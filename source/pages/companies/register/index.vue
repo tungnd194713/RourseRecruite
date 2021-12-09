@@ -318,8 +318,6 @@ import {
     sameAs,
     minLength,
     maxLength,
-    requiredIf,
-    numeric,
 } from 'vuelidate/lib/validators'
 
 export default {
