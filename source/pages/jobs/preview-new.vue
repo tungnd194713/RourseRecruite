@@ -319,12 +319,11 @@
           },
         }).then(res => {
           if (res.status === 201) {
-            if (res.data.length > 0) {
-              this.$refs.showCompleteCreateJobModal.click()
-              this.$store.dispatch('job/setJob', {})
-            } else {
-              this.$toast.error('Create job failed')
-            }
+            this.$refs.showCompleteCreateJobModal.click()
+            this.$store.dispatch('job/setJob', {})
+          }
+          if (res.response && res.response.status === 406) {
+            this.$toast.error(res.response.data.message)
           }
         })
       }
