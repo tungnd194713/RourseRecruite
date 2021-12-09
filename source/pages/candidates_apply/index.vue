@@ -405,19 +405,19 @@
             },
 
             async updateStatus() {
-        return await this.$repositories.candidatesApply.updateStatus(
-            this.idRow,
-            this.dataUpdateStatus
-        ).then(res => {
-            this.idRow = -1;
-            if (res.status === 200) {
-                this.$toast.success('応募者の応募状態・更新が完了しました')
-                this.getListCV(this.currentPage);
-            } else {
-                this.$toast.success('候補者の申請状況と候補者名の更新は完了していません。')
-            }
-        })
-    },
+                return await this.$repositories.candidatesApply.updateStatus(
+                    this.idRow,
+                    this.dataUpdateStatus
+                ).then(res => {
+                    this.idRow = -1;
+                    if (res.status === 200) {
+                        this.$toast.success('応募者の応募状態・更新が完了しました')
+                        this.getListCV(this.currentPage);
+                    } else {
+                        this.$toast.success('候補者の申請状況と候補者名の更新は完了していません。')
+                    }
+                })
+            },
 
             async updateCard(id, data) {
                 return await this.$repositories.candidatesApply.updateStatus(
