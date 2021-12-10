@@ -73,7 +73,7 @@
     },
 
     head() {
-      return {title: 'Reset password'}
+      return {title: 'パスワード変更'}
     },
 
     methods: {

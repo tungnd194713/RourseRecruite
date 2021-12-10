@@ -92,7 +92,7 @@
     },
 
       head () {
-          return { title: 'Login' }
+          return { title: 'ログイン' }
       },
 
     validations: {
@@ -126,7 +126,7 @@
               }
             }).then((res) => {
               if (res.status === 200) {
-                this.$router.push('/companies')
+                this.$router.push('/jobs')
               }
               const data = this.$handleResponse(res);
               this.errors = data.errors;

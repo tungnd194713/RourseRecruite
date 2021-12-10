@@ -62,7 +62,7 @@
     },
 
     head() {
-      return {title: 'Forgot password'}
+      return {title: 'パスワード忘れ'}
     },
 
     methods: {
