@@ -2,9 +2,7 @@
   <main class="container my-3 my-lg-4">
     <ul class="nav nav-tabs">
       <li class="nav-item w-50">
-        <a class="nav-link big-nav nav-one" aria-current="page" href="#"
-          >決済情報</a
-        >
+        <NuxtLink class="nav-link big-nav nav-one" aria-current="page" to="/companies/packages">決済情報</NuxtLink>
       </li>
       <li class="nav-item w-50">
         <NuxtLink class="nav-link big-nav nav-two active" to="/companies/invoices">決済履歴</NuxtLink>
