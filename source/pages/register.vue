@@ -190,9 +190,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInput9">業界・分野 <span>*</span></label>
+                    <label for="inputGroupSelect01s">業界・分野 <span>*</span></label>
                     <select
-                        id="inputGroupSelect01"
+                        id="inputGroupSelect01s"
                         v-model="user.career"
                         class="form-select form-select-lg"
                     >
@@ -214,27 +214,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="exampleInput8">郵便番号 <span>*</span></label>
+                    <label for="exampleInput10">郵便番号 <span>*</span></label>
                     <input
-                        id="exampleInput8"
+                        id="exampleInput10"
                         type="text"
                         class="form-control form-control-lg"
                     />
-                    <!-- <div v-if="$v.user.confirmPassword.$error">
-                        <div
-                            v-if="!$v.user.confirmPassword.required"
-                            class="invalid-feedback error"
-                        >
-                            これは必須項目なので、必ず入力してください
-                        </div>
-
-                        <div
-                            v-if="!$v.user.confirmPassword.sameAsPassword"
-                            class="invalid-feedback error"
-                        >
-                            入力したパスワードが一致しません
-                        </div>
-                    </div> -->
                 </div>
 
                 <div class="form-group">
@@ -253,18 +238,18 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="exampleInput8">市区町村 <span>*</span></label>
+                    <label for="exampleInput8i">市区町村 <span>*</span></label>
                     <input
-                        id="exampleInput8"
+                        id="exampleInput8i"
                         type="text"
                         class="form-control form-control-lg"
                     />
                 </div>
 
                 <div class="form-group">
-                    <label for="exampleInput8">番地 <span>*</span></label>
+                    <label for="exampleInput9">番地 <span>*</span></label>
                     <input
-                        id="exampleInput8"
+                        id="exampleInput9"
                         type="text"
                         class="form-control form-control-lg"
                     />
@@ -341,9 +326,11 @@ export default {
             message: '',
         }
     },
+
     head() {
-        return { title: 'Register' }
+        return { title: '会員登録' }
     },
+
     validations: {
         user: {
             company_name: {
@@ -407,5 +394,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../styles/pages/jobs/register.scss';
+@import '../styles/pages/jobs/register.scss';
 </style>

@@ -20,13 +20,13 @@
                     :key="router.tab"
                     class="border-bottom"
                 >
-                  <a class="dropdown-item" @click="$router.push(router.path)">
+                  <a class="dropdown-item cursor-pointer" @click="$router.push(router.path)">
                     <img class="" :src="require(`@/assets/images` + router.srcImage)"/>
                     {{router.name}}
                   </a>
                 </li>
                 <li>
-                  <a class="dropdown-item" @click="$auth.logout()">
+                  <a class="dropdown-item cursor-pointer" @click="$auth.logout()">
                     <img class="" src="../assets/images/icon_logout.svg"/>
                     ログアウト
                   </a>
@@ -51,7 +51,7 @@
           <a v-for="router in routers"
              :id="router.tab + '-tab'"
              :key="router.tab"
-             class="p-2 link-light text-decoration-none border-end"
+             class="p-2 link-light text-decoration-none border-end cursor-pointer"
              :class="$nuxt.$route.path === router.path ? 'active' : ''"
              @click="$nuxt.$router.push({ path: router.path });"
           >
