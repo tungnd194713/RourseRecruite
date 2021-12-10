@@ -9,12 +9,8 @@ export default ($axios) => ({
     return $axios.post(`${resource}/delete/${id}`)
   },
 
-  blockJob(id) {
-    return $axios.post(`${resource}/block/${id}`)
-  },
-
-  activeJob(id) {
-    return $axios.post(`${resource}/active/${id}`)
+  changeStatus(id, data) {
+    return $axios.post(`${resource}/change-status/${id}`, data)
   },
 
   createJob(payload, header) {
