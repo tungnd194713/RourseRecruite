@@ -389,8 +389,8 @@ export default {
 
             if (!this.$v.user.$invalid) {
                 try {
-                    await this.$axios
-                        .post('companies/register', this.user)
+                    await this.$repositories.accounts
+                        .registerAccount(this.user)
                         .then((response) => {
                             const data = this.$handleResponse(response)
                             this.message = data.message
