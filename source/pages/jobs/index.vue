@@ -266,21 +266,19 @@
       },
 
       async changeStatus(itemId, oldStatus) {
-        if (oldStatus === 1) {
-          return await this.$repositories.jobs.blockJob(itemId).then(res => {
-            if (res.status === 200) {
+        return await this.$repositories.jobs.changeStatus(itemId, {
+          status: (oldStatus === 1) ? 0 : 1
+        }).then(res => {
+          if (res.status === 200) {
+            this.getListJob(this.currentPage);
+
+            if (oldStatus === 1) {
               this.$toast.success('Job đã được Inactive')
-              this.getListJob(this.currentPage);
-            }
-          })
-        } else {
-          return await this.$repositories.jobs.activeJob(itemId).then(res => {
-            if (res.status === 200) {
+            } else if (oldStatus === 0) {
               this.$toast.success('Job đã được Active')
-              this.getListJob(this.currentPage);
             }
-          })
-        }
+          }
+        });
       }
     }
   }
