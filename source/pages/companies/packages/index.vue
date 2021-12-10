@@ -11,7 +11,7 @@
             </li>
             <li class="nav-item w-50">
                 <NuxtLink
-                    to="/companies/packages/history-payment"
+                    to="/companies/invoices"
                     class="nav-link big-nav nav-two"
                     >決済履歴</NuxtLink
                 >
