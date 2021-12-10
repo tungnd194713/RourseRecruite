@@ -456,7 +456,7 @@
             >
           </div>
           <div class="modal-body">
-            <h3 class="text-center modal-body-text">Are you sure?</h3>
+            <h3 class="text-center modal-body-text">本求人を削除してもよろしいですか</h3>
           </div>
           <div class="modal-footer align-items-center d-flex justify-content-center flex-row">
             <button type="button" class="btn btn-secondary-custom rounded-pill w-20 mt-4 mb-4" data-bs-dismiss="modal">いいえ</button>
