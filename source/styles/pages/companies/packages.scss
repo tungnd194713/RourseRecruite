@@ -81,6 +81,13 @@ main.container {
     margin-right: 1rem;
 }
 
+picture img {
+    width: 100%;
+    height: auto;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
 @media only screen and (max-width: 991px) {
     .title-page {
         font-size: 25px;
@@ -95,6 +102,13 @@ main.container {
     .info-pill {
         font-size: 12px;
         width: 200px;
+    }
+}
+
+@media only screen and (max-width: 975px) {
+    picture img {
+        padding-left: 20px;
+        padding-right: 20px;
     }
 }
 

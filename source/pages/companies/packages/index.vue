@@ -103,19 +103,3 @@ export default {
 <style lang="scss" scoped>
 @import '../../../styles/pages/companies/packages.scss';
 </style>
-
-<style lang="scss" scoped>
-picture img {
-    width: 100%;
-    height: auto;
-    padding-left: 50px;
-    padding-right: 50px;
-}
-
-@media only screen and (max-width: 975px) {
-    picture img {
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-}
-</style>

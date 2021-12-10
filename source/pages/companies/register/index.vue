@@ -386,7 +386,6 @@ export default {
         async submit() {
             this.$v.user.$touch()
             this.$v.acceptTerms.$touch()
-            this.user.address = 'abcxyz'
 
             if (!this.$v.user.$invalid) {
                 try {
