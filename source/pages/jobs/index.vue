@@ -88,7 +88,7 @@
           </tr>
           </tbody>
         </table>
-        <h4 v-if="totalItems === 0" class="text-center w-100 p-3 m-0 bg-white border-bottom border-1">No data.</h4>
+        <h4 v-if="totalItems === 0" class="text-center w-100 p-3 m-0 bg-white border-bottom border-1">検索結果がありません</h4>
       </div>
       <Pagination :current-page="currentPage"
                   :per-page="perPage"
@@ -254,12 +254,12 @@
         return await this.$repositories.jobs.deleteJob(this.selectedItemId).then(res => {
           if (res.status === 200) {
             document.getElementById('closeConfirmDeleteModal').click()
-            this.$toast.success('Xóa job thành công')
+            this.$toast.success('求人の削除に成功しました')
             this.getListJob(this.currentPage);
           }
           if (res.response && res.response.status === 406) {
             document.getElementById('closeConfirmDeleteModal').click()
-            this.$toast.error('Xóa job không thành công vì đã có ứng viên ứng tuyển')
+            this.$toast.error('応募者がいるので、求人を削除できません')
             this.getListJob(this.currentPage);
           }
         })
@@ -273,9 +273,9 @@
             this.getListJob(this.currentPage);
 
             if (oldStatus === 1) {
-              this.$toast.success('Job đã được Inactive')
+              this.$toast.success('求人が非表示されました')
             } else if (oldStatus === 0) {
-              this.$toast.success('Job đã được Active')
+              this.$toast.success('求人が表示されました')
             }
           }
         });

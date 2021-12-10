@@ -595,23 +595,23 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group mb-3 mb-lg-4 row">
-                    <label for="example14" class="col-sm-2 col-form-label"
-                        >ベトナム人在籍状況</label
-                    >
-                    <div class="col-12 col-sm-10">
-                        <textarea
-                            id="example14"
-                            v-model="job.has_vietnamese_staff"
-                            type="text"
-                            class="form-control rounded-end"
-                            rows="3"
-                        />
-                        <div class="invalid-feedback">
-                            Please choose a ベトナム人在籍状況.
-                        </div>
-                    </div>
-                </div>
+<!--                <div class="form-group mb-3 mb-lg-4 row">-->
+<!--                    <label for="example14" class="col-sm-2 col-form-label"-->
+<!--                        >ベトナム人在籍状況</label-->
+<!--                    >-->
+<!--                    <div class="col-12 col-sm-10">-->
+<!--                        <textarea-->
+<!--                            id="example14"-->
+<!--                            v-model="job.has_vietnamese_staff"-->
+<!--                            type="text"-->
+<!--                            class="form-control rounded-end"-->
+<!--                            rows="3"-->
+<!--                        />-->
+<!--                        <div class="invalid-feedback">-->
+<!--                            Please choose a ベトナム人在籍状況.-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <div class="form-group mb-3 mb-lg-4 row">
                     <label for="example15" class="col-sm-2 col-form-label"
                         >残業見込み、休日出勤見込み</label
@@ -796,7 +796,7 @@ export default {
                 break_time: '',
                 holidays: '',
                 welfare_regime: '',
-                has_vietnamese_staff: '',
+                // has_vietnamese_staff: '',
                 overtime: '',
             },
         }
@@ -862,7 +862,7 @@ export default {
             welfare_regime: {
                 required,
             },
-            has_vietnamese_staff: '',
+            // has_vietnamese_staff: '',
             overtime: '',
         },
     },

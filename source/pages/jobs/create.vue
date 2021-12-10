@@ -393,19 +393,19 @@
             </div>
           </div>
         </div>
-        <div class="form-group mb-3 mb-lg-4 row">
-          <label class="col-sm-2 col-form-label">ベトナム人在籍状況</label>
-          <div class="col-12 col-sm-10">
-            <div class="form-check">
-              <div class="float-start">
-                <input id="hasVietnameseStaffCheckbox" v-model="job.has_vietnamese_staff" class="form-check-input" type="checkbox" value="salary_max">
-                <label class="form-check-label" for="hasVietnameseStaffCheckbox">
-                  はい
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
+<!--        <div class="form-group mb-3 mb-lg-4 row">-->
+<!--          <label class="col-sm-2 col-form-label">ベトナム人在籍状況</label>-->
+<!--          <div class="col-12 col-sm-10">-->
+<!--            <div class="form-check">-->
+<!--              <div class="float-start">-->
+<!--                <input id="hasVietnameseStaffCheckbox" v-model="job.has_vietnamese_staff" class="form-check-input" type="checkbox" value="salary_max">-->
+<!--                <label class="form-check-label" for="hasVietnameseStaffCheckbox">-->
+<!--                  はい-->
+<!--                </label>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
         <div class="form-group mb-3 mb-lg-4 row">
           <label for="example15" class="col-sm-2 col-form-label">残業見込み、休日出勤見込み</label>
           <div class="col-12 col-sm-10">
@@ -598,7 +598,7 @@
           break_time: '',
           holidays: '',
           welfare_regime: '',
-          has_vietnamese_staff: '',
+          // has_vietnamese_staff: '',
           overtime: ''
         }
       }
@@ -670,7 +670,7 @@
           required,
           maxLength: maxLength(500)
         },
-        has_vietnamese_staff: '',
+        // has_vietnamese_staff: '',
         overtime: {
           maxLength: maxLength(1000)
         }
@@ -765,7 +765,7 @@
           break_time: '',
           holidays: '',
           welfare_regime: '',
-          has_vietnamese_staff: '',
+          // has_vietnamese_staff: '',
           overtime: ''
         })
         this.job.type_plan = this.typePlanList[0].value
