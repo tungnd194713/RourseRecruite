@@ -40,5 +40,5 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../styles/pages/auth/social-callback.scss';
+    @import '../styles/pages/auth/social-callback.scss';
 </style>

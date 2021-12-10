@@ -54,10 +54,10 @@
                 <div class="form-group mb-2 mb-lg-3">
                   <label for="exampleInput1c">現在のパスワード</label>
                   <input
+                          id="exampleInput1c"
                     v-model="company.old_password"
                     type="text"
                     class="form-control"
-                    id="exampleInput1c"
                     placeholder="新しいパスワードを入力してください"
                     @input="onInputOldPassword"
                     @blur="$v.company.old_password.$touch()"
@@ -68,10 +68,10 @@
                 <div class="form-group mb-2 mb-lg-3">
                   <label for="exampleInput2c">新しいパスワード</label>
                   <input
+                          id="exampleInput2c"
                     v-model="company.new_password"
                     type="text"
                     class="form-control"
-                    id="exampleInput2c"
                     placeholder="新しいパスワードを入力してください"
                     @input="$v.company.new_password.$touch()"
                     @blur="$v.company.new_password.$touch()"
@@ -81,10 +81,10 @@
                 <div class="form-group mb-2 mb-lg-3">
                   <label for="exampleInput3c">新しいパスワード（確認）</label>
                   <input
+                          id="exampleInput3c"
                     v-model="company.confirm_password"
                     type="text"
                     class="form-control"
-                    id="exampleInput3c"
                     placeholder="新しいパスワードを改めて入力してください"
                     @input="$v.company.confirm_password.$touch()"
                     @blur="$v.company.confirm_password.$touch()"
@@ -93,15 +93,15 @@
                 </div>
                 <div class="text-end">
                   <button
+                          id="btn_cancel"
                     type="button"
                     class="btn btn-sm border rounded-pill ms-2 ms-lg-3 btn-cancel-account"
-                    id="btn_cancel"
                     data-bs-toggle="modal"
                     data-bs-target="#confirmCancelModal"
                   >
                     <span class="px-4">キャンセル</span>
                   </button>
-                  <button type="submit" class="btn btn-sm border rounded-pill btn-edit-account" id="btn_change_pw">
+                  <button  id="btn_change_pw" type="submit" class="btn btn-sm border rounded-pill btn-edit-account">
                     <span class="px-4">保存</span>
                   </button>
 
@@ -114,7 +114,7 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="confirmCancelModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div id="confirmCancelModal" class="modal fade"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content box-modal">
           <div class="modal-header border-0">
@@ -277,7 +277,7 @@
         if (!this.$v.company.$invalid) {
           return await this.$repositories.profiles.updateCompanyPassword(this.company).then(res => {
             if (res.status === 200) {
-              this.$router.push('/auth/login')
+              this.$router.push('/login')
               this.$toast.success('パスワードが変更されました。再度ログインしてください')
             }
             if (res.response.status === 406) {

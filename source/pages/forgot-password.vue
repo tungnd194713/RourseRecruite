@@ -2,7 +2,7 @@
   <div class="text-center form-body">
     <main class="p-2 p-lg-0 form-login">
       <form @submit.prevent="forgotPassword">
-        <img class="mb-3 mb-lg-4" src="../../assets/images/icon_logo.svg" alt="" height="59">
+        <img class="mb-3 mb-lg-4" src="../assets/images/icon_logo.svg" alt="" height="59">
         <div class="bg-white box-form-login">
           <h1 class="mb-3 mb-lg-4 fw-bold">パスワード変更</h1>
           <h5 class="mb-3 mb-lg-4 mt-3">入力されたメールアドレスに再設定メ-ルをお送りします</h5>
@@ -17,7 +17,7 @@
           <div class="form-group my-5">
             <label for="email">メールアドレス</label>
             <div class="input-group has-validation">
-              <span class="input-group-text input-group-text-pre"><img src="../../assets/images/icon_email.svg" alt=""></span>
+              <span class="input-group-text input-group-text-pre"><img src="../assets/images/icon_email.svg" alt=""></span>
               <input id="email"
                      v-model="$v.email.$model"
                      class="form-control form-control-lg"
@@ -36,10 +36,6 @@
     </main>
   </div>
 </template>
-
-<style scoped>
-  @import '../../styles/pages/auth/forgot-password.scss';
-</style>
 
 <script>
   import 'bootstrap/dist/css/bootstrap.css';
@@ -91,3 +87,7 @@
     }
   }
 </script>
+
+<style scoped>
+  @import '../styles/pages/auth/forgot-password.scss';
+</style>

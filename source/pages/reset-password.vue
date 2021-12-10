@@ -1,20 +1,20 @@
 <template>
   <div class="text-center form-body">
     <form class="p-2 p-lg-0 form-login" @submit.prevent="resetPassword">
-      <img class="mb-3 mb-lg-4" src="../../assets/images/icon_logo.svg" alt="" height="59">
+      <img class="mb-3 mb-lg-4" src="../assets/images/icon_logo.svg" alt="" height="59">
       <div class="bg-white box-form-login">
         <h1 class="mb-3 mb-lg-4 fw-bold">パスワード変更</h1>
         <div class="form-group mt-5">
           <label for="password">パスワード</label>
           <div class="input-group has-validation">
-            <span class="input-group-text input-group-text-pre"><img src="../../assets/images/icon_key.svg" alt=""></span>
+            <span class="input-group-text input-group-text-pre"><img src="../assets/images/icon_key.svg" alt=""></span>
             <input id="password"
                    v-model="password"
                    type="password"
                    class="form-control form-control-lg"
                    maxlength="32"
             >
-            <span class="input-group-text input-group-text-next"><img src="../../assets/images/icon_eye.svg" alt=""></span>
+            <span class="input-group-text input-group-text-next"><img src="../assets/images/icon_eye.svg" alt=""></span>
             <div class="invalid-feedback"></div>
           </div>
           <div v-if="$v.password.$error">
@@ -25,14 +25,14 @@
         <div class="form-group mb-5">
           <label for="passwordConfirm">パスワード確認</label>
           <div class="input-group has-validation">
-            <span class="input-group-text input-group-text-pre"><img src="../../assets/images/icon_key.svg" alt=""></span>
+            <span class="input-group-text input-group-text-pre"><img src="../assets/images/icon_key.svg" alt=""></span>
             <input id="passwordConfirm"
                    v-model.trim="$v.password_confirm.$model"
                    type="password"
                    class="form-control form-control-lg"
                    maxlength="32"
             >
-            <span class="input-group-text input-group-text-next"><img src="../../assets/images/icon_eye.svg" alt=""></span>
+            <span class="input-group-text input-group-text-next"><img src="../assets/images/icon_eye.svg" alt=""></span>
             <div class="invalid-feedback"></div>
           </div>
           <div v-if="$v.password_confirm.$error">
@@ -87,10 +87,10 @@
               password: this.password
             })
               .then((res) => {
-                this.$router.push({ path: '/auth/login' });
+                this.$router.push({ path: '/login' });
               });
           } catch (e) {
-            console.log(e.message)
+//            console.log(e.message)
           }
         }
       },
@@ -99,5 +99,5 @@
 </script>
 
 <style scoped>
-  @import '../../styles/pages/auth/forgot-password.scss';
+  @import '../styles/pages/auth/forgot-password.scss';
 </style>
