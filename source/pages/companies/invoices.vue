@@ -18,7 +18,7 @@
         <table class="table table-list-cv">
           <thead>
             <tr>
-              <th scope="col" v-for="header in fields" :key="header.key">
+              <th v-for="header in fields" :key="header.key" scope="col">
                 {{ header.label }}
               </th>
             </tr>
@@ -152,6 +152,7 @@ export default {
       this.pageCount =
         this.totalItems > 0 ? parseInt(data.total / data.per_page, 10) + 1 : 1
     },
+
     pageChangeHandle(value) {
       switch (value) {
         case 'next':
@@ -169,6 +170,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../../styles/pages/companies/invoices.scss';
 </style>
