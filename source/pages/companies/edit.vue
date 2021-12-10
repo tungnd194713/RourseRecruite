@@ -11,13 +11,10 @@
               </NuxtLink>
             </li>
             <li class="nav-item rounded">
-              <a
-                class="nav-link"
-                @click="$router.push('/companies/change-password')"
-              >
+              <NuxtLink class="nav-link" to="/companies/change-password">
                 <img class="" src="../../assets/images/icon_user_rounded.svg" />
                 パスワード変更
-              </a>
+              </NuxtLink>
             </li>
           </ul>
         </div>
@@ -374,12 +371,12 @@
                   />
                   <p class="m-0">
                     画像ファイルをドラグドロップ
-                    <span @click="triggerProfileImageInput"
+                    <span class="open-file-btn" @click="triggerProfileImageInput"
                       >、或いは選択してください</span
                     >
                   </p>
                   <div
-                    v-if="uploadedProfileImage"
+                    v-if="uploadedProfileImage != ''"
                     class="mt-4 w-100 row file-preview"
                   >
                     <img
@@ -387,14 +384,6 @@
                       alt=""
                       style="width: 100px; height: 100px"
                     />
-                    <button
-                      class="col-12 col-sm-3 col-md-6 form-control w-25"
-                      type="button"
-                      title="Remove file"
-                      @click="removeProfileImage()"
-                    >
-                      remove
-                    </button>
                   </div>
                   <div v-if="data.logo.length" class="mt-4 w-100">
                     <div
@@ -429,11 +418,16 @@
                   <div v-if="!$v.data.logo.required" class="error">
                     これは必須項目なので、必ず入力してください
                   </div>
-                  <div v-if="!$v.data.logo.imageRule" class="error">
-                    画像はpng / jpg / jpeg / gifの形式でアプロードしてください
-                  </div>
-                  <div v-if="!$v.data.logo.imageSize" class="error">
-                    2MB以下の写真をアップロードしてください
+                  <div
+                    v-for="(v, index) in $v.data.logo.$each.$iter"
+                    :key="index"
+                  >
+                    <div v-if="!v.name.imageRule" class="error">
+                      画像はpng / jpg / jpeg / gifの形式でアプロードしてください
+                    </div>
+                    <div v-if="!v.size.imageSize" class="error">
+                      2MB以下の写真をアップロードしてください
+                    </div>
                   </div>
                 </div>
                 <small class="form-text text-muted float-end">
@@ -454,7 +448,7 @@
                   />
                   <p class="m-0">
                     画像ファイルをドラグドロップ
-                    <span @click.prevent="triggerIntroImageInput"
+                    <span class="open-file-btn" @click.prevent="triggerIntroImageInput"
                       >、或いは選択してください</span
                     >
                   </p>
@@ -513,18 +507,29 @@
                   <div v-if="!$v.data.images.required" class="error">
                     これは必須項目なので、必ず入力してください
                   </div>
-                  <div v-if="!$v.data.images.imageRule" class="error">
-                    画像はpng / jpg / jpeg / gifの形式でアプロードしてください
+                  <div v-if="!$v.data.images.lessThanFive" class="error">
+                    5つ以下の写真をアップロードしてください
                   </div>
-                  <div v-if="!$v.data.images.imageSize" class="error">
-                    2MB以下の写真をアップロードしてください
+                  <div
+                    v-for="(v, index) in $v.data.images.$each.$iter"
+                    :key="index"
+                  >
+                    <div v-if="!v.name.imageRule" class="error">
+                      画像はpng / jpg / jpeg / gifの形式でアプロードしてください
+                    </div>
+                    <div v-if="!v.size.imageSize" class="error">
+                      2MB以下の写真をアップロードしてください
+                    </div>
                   </div>
                 </div>
                 <small class="form-text text-muted float-end">
                   画像の拡張子：.png .jpg .jpeg .gif；画像の容量：2MB以下
                 </small>
               </div>
-              <div class="form-group mb-2 mb-lg-3">
+              <div
+                v-if="data.video.length == 0"
+                class="form-group mb-2 mb-lg-3"
+              >
                 <label for="youtube">会社の公式サイトのリンク</label>
                 <div
                   class="input-group input-group-icon"
@@ -548,7 +553,7 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group mb-1 mb-lg-2">
+              <div v-if="data.youtube == ''" class="form-group mb-1 mb-lg-2">
                 <input
                   id="video"
                   ref="videoInput"
@@ -556,13 +561,6 @@
                   class="d-none"
                   @change="onChange(introVideo)"
                 />
-                <button
-                  class="btn btn-upload-video border rounded-3"
-                  @click="triggerVideoInput"
-                >
-                  <span>PCからアップロードする</span>
-                  <img src="../../assets/images/icon_upload.svg" alt="" />
-                </button>
                 <div v-if="uploadedVideo" class="mt-4 w-100 row file-preview">
                   <iframe
                     :src="url_api_file + uploadedVideo"
@@ -578,6 +576,13 @@
                     remove
                   </button>
                 </div>
+                <button
+                  class="btn btn-upload-video border rounded-3"
+                  @click="triggerVideoInput"
+                >
+                  <span>PCからアップロードする</span>
+                  <img src="../../assets/images/icon_upload.svg" alt="" />
+                </button>
                 <div v-if="data.video.length" class="mt-4 w-100">
                   <div
                     v-for="(file, index) in data.video"
@@ -585,22 +590,19 @@
                     class="p-1 row file-preview"
                   >
                     <iframe :src="videoUrl" frameborder="0"></iframe>
-                    <button
-                      class="col-12 col-sm-3 col-md-6 form-control w-25"
-                      type="button"
-                      title="Remove file"
-                      @click="remove(data.video.indexOf(file), introVideo)"
-                    >
-                      remove
-                    </button>
                   </div>
                 </div>
                 <div v-if="$v.data.video.$error">
-                  <div v-if="!$v.data.video.videoRule" class="error">
-                    動画はAVI/ FLV/ WMV/MOV/ MP4の形式でアプロードしてください
-                  </div>
-                  <div v-if="!$v.data.video.videoSize" class="error">
-                    100MB以下の動画をアップロードしてください
+                  <div
+                    v-for="(v, index) in $v.data.video.$each.$iter"
+                    :key="index"
+                  >
+                    <div v-if="!v.name.videoRule" class="error">
+                      動画はAVI/ FLV/ WMV/MOV/ MP4の形式でアプロードしてください
+                    </div>
+                    <div v-if="!v.size.videoSize" class="error">
+                      100MB以下の動画をアップロードしてください
+                    </div>
                   </div>
                 </div>
               </div>
@@ -674,6 +676,7 @@ const videoRule = helpers.regex('video', /\.(mp4|wmv|avi|mov|flv)$/)
 const alphabet = helpers.regex('alphabet', /^[a-zA-Z ]*$/)
 const imageSize = (value) => value <= 2000000
 const videoSize = (value) => value <= 100000000
+const lessThanFive = (value) => value <= 5
 
 export default {
   name: 'EditProfileCompany',
@@ -705,9 +708,9 @@ export default {
         email: '',
         removeIntroImage: [],
       },
-      url_api_file: process.env.URL_API_FILE,
+      url_api_file: process.env.URL_FILE,
       uploadedIntroImage: [],
-      uploadedProfileImage: {},
+      uploadedProfileImage: '',
       uploadedVideo: null,
       logoUrl: null,
       videoUrl: null,
@@ -773,6 +776,7 @@ export default {
         required: requiredIf(function () {
           return this.uploadedIntroImage.length === 0
         }),
+        lessThanFive,
         $each: {
           name: {
             imageRule,
@@ -832,10 +836,12 @@ export default {
     async getProfileCompany() {
       const { data } = await this.$repositories.profiles.getCompanyProfile()
 
-      if (data.video_link && data.video_link.includes('youtube')) {
-        this.data.youtube = data.video_link
-      } else {
-        this.uploadedVideo = data.video_link
+      if (data.video_link) {
+        if (data.video_link.includes('youtube')) {
+          this.data.youtube = data.video_link
+        } else {
+          this.uploadedVideo = data.video_link
+        }
       }
 
       this.data.company_name = data.company_name
@@ -873,6 +879,7 @@ export default {
       if (fileType === 1) {
         this.data.logo = [...this.$refs.logoInput.files]
         this.logoUrl = window.URL.createObjectURL(this.$refs.logoInput.files[0])
+        this.uploadedProfileImage = ''
       }
       if (fileType === 2) {
         this.data.images = [...this.$refs.introImageInput.files]
@@ -953,7 +960,7 @@ export default {
 
         dataCompany.append('images[' + i + ']', file)
       }
-      if (this.$refs.videoInput.files[0]) {
+      if (this.$refs.videoInput) {
         dataCompany.append('video', this.$refs.videoInput.files[0])
       }
       if (!this.$v.data.$invalid) {
@@ -966,13 +973,11 @@ export default {
             })
             .then((res) => {
               const data = this.$handleResponse(res)
-              if (!data.errors) {
-                console.log('dsadsad')
-                this.$toast.success(
-                  '会社情報の更新に成功しました。'
-                )
-              } else {
+              if (data.errors) {
                 this.errors = data.errors
+              }
+              if (res.status === 200) {
+                this.$toast.success('会社情報の更新に成功しました。')
               }
             })
         } catch (e) {

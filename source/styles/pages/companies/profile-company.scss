@@ -24,8 +24,8 @@
 
 .basic .logo img {
   transform: translate(-50%, -50%);
-  max-width: 200px;
-  height: auto;
+  width: inherit;
+  height: inherit;
 }
 
 .basic #name {
@@ -75,7 +75,6 @@ h2.title {
     align-items: center;
   }
   .basic .logo img {
-    width: 100px;
     transform: translate(0, 0);
   }
 }

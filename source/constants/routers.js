@@ -18,9 +18,9 @@ export default [
     path: '/candidates_apply',
   },
   {
-    tab: 'settlement',
+    tab: 'invoice',
     srcImage: '/icon_order.svg',
     name: '決済',
-    path: '/',
+    path: '/companies/invoices',
   }
 ]

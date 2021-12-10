@@ -90,7 +90,7 @@
             </tr>
             <tr>
               <td>ベトナム人在籍状況</td>
-              <td>{{ job.has_vietnamese_staff ? 'Yes': 'No'}}</td>
+              <td>{{ job.has_vietnamese_staff ? 'はい': 'いいえ'}}</td>
             </tr>
             <tr>
               <td>残業見込み、休日出勤見込み</td>
@@ -118,8 +118,8 @@
 </template>
 
 <script>
-  import StatusStayInfoModal from "../../components/StatusStayInfoModal";
-  import CompleteCreateJobModal from "../../components/CompleteCreateJobModal";
+  import StatusStayInfoModal from "~/components/StatusStayInfoModal";
+  import CompleteCreateJobModal from "~/components/CompleteCreateJobModal";
 
   export default {
     name: "PreviewNewJob",
@@ -299,7 +299,7 @@
         formData.append('type_plan', this.job.type_plan)
         formData.append('display_month', this.job.display_month)
         formData.append('form_recruitment', this.job.form_recruitment)
-        formData.append('status_stay', this.job.status_stay)
+        formData.append('status_stay', this.job.status_stay.toString())
         formData.append('number_recruitments', this.job.number_recruitments)
         formData.append('salary_max', this.job.salary_max)
         formData.append('salary_min', this.job.salary_min)
@@ -318,9 +318,12 @@
             'Content-Type': 'multipart/form-data',
           },
         }).then(res => {
-          if (res.status === 200) {
+          if (res.status === 201) {
             this.$refs.showCompleteCreateJobModal.click()
             this.$store.dispatch('job/setJob', {})
+          }
+          if (res.response && res.response.status === 406) {
+            this.$toast.error(res.response.data.message)
           }
         })
       }

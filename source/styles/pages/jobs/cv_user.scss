@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;500;600;700;900&display=swap');
+
+.cv_user tr td {
+  font-weight: 500;
+}
+
+.cv_user .modal-body {
+  height: auto;
+  padding: 60px 100px;
+  font-family: 'Noto Serif JP', serif;
+}
+
+.cv_user .btn-close {
+  margin: 0!important;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.cv_user .modal-body .content {
+  padding: 30px;
+  border: 1px solid #C9C9C9;
+  border-radius: 15px;
+  margin-bottom: 30px;
+}
+
+.cv_user .card-photo {
+  width: 170px;
+  border: 0!important;
+}
+
+.cv_user .card-photo img {
+  max-width: 160px;
+  width: 100%;
+  height: auto;
+}
+
+.cv_user .table {
+  margin-bottom: 30px;
+}
+
+.cv_user .table td, .cv_user .table th {
+  border: 1px solid #000000;
+}
+
+.cv_user tr {
+  height: 40px;
+}
+
+.border-bottom-dot {
+  border-bottom: 1px dotted #000000!important;
+}
+
+.border-top-dot {
+  border-top: 1px dotted #000000!important;
+}
+
+.cv_user .border-2 {
+  border: 2px solid #000000;
+}
+
+.cv_user .footer {
+  padding-top: 10px;
+}
+
+.cv_user .footer button {
+  border-radius: 20px;
+  padding: 8px 20px;
+  width: 120px;
+  height: 40px;
+  text-align: center;
+}
+
+.tb-certificate td:first-child {
+  width: 20%;
+}
+
+.tb-2 td:first-child {
+  width: 30%;
+}
+
+.table-list-cv td:nth-child(2) a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (min-width: 992px) {
+  .cv_user .modal-dialog {
+    margin: 130px auto 100px;
+    max-width: 1000px;
+  }
+}
+
+@media (max-width: 992px) {
+  .cv_user .modal-body {
+    padding: 60px 30px;
+  }
+  
+  .cv_user .modal-dialog {
+    margin: 80px auto;
+    max-width: calc(100% - 40px);
+  }
+  
+  .cv_user table {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cv_user .modal-body {
+    padding: 60px 30px;
+  }
+  
+  .cv_user table {
+    font-size: 14px;
+  }
+  
+  .cv_user .modal-dialog {
+    max-width: 100%;
+    margin: 0;
+  }
+  
+  .cv_user .modal-body {
+    padding: 30px 20px;
+  }
+  
+  .cv_user .modal-body .content {
+    padding: 0px;
+    border: 0;
+  }
+  
+  .card-photo {
+    max-width: 120px;
+  }
+}
+

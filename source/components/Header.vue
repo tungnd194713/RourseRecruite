@@ -20,20 +20,27 @@
                     :key="router.tab"
                     class="border-bottom"
                 >
-                  <a class="dropdown-item" @click="redirect(router)">
+                  <a class="dropdown-item cursor-pointer" @click="$router.push(router.path)">
                     <img class="" :src="require(`@/assets/images` + router.srcImage)"/>
                     {{router.name}}
                   </a>
                 </li>
                 <li>
-                  <a class="dropdown-item" @click="redirect('/auth/login')">
+                  <a class="dropdown-item cursor-pointer" @click="$auth.logout()">
                     <img class="" src="../assets/images/icon_logout.svg"/>
                     ログアウト
                   </a>
                 </li>
               </ul>
             </div>
-            <img src="../assets/images/icon_avatar.svg" alt="mdo" width="32" height="32" class="rounded-circle">
+            <img
+              v-if="loggedInUser.profile_image"
+              :src="url_file + loggedInUser.profile_image"
+              alt="mdo" width="32" height="32" class="rounded-circle">
+            <img
+              v-else
+              src="../assets/images/icon_avatar.svg"
+              alt="mdo" width="32" height="32" class="rounded-circle">
           </div>
         </div>
       </div>
@@ -44,7 +51,7 @@
           <a v-for="router in routers"
              :id="router.tab + '-tab'"
              :key="router.tab"
-             class="p-2 link-light text-decoration-none border-end"
+             class="p-2 link-light text-decoration-none border-end cursor-pointer"
              :class="$nuxt.$route.path === router.path ? 'active' : ''"
              @click="$nuxt.$router.push({ path: router.path });"
           >
@@ -66,6 +73,7 @@
     data () {
       return {
         routers,
+        url_file: process.env.URL_FILE
       }
     },
 
