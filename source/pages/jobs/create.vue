@@ -156,7 +156,19 @@
             </div>
           </div>
         </div>
-
+        <div class="form-group mb-3 mb-lg-4 row">
+          <label class="col-sm-2 col-form-label">ベトナム人在籍状況</label>
+          <div class="col-12 col-sm-10">
+            <div class="form-check">
+              <div class="float-start">
+                <input id="hasVietnameseStaffCheckbox" v-model="job.has_vietnamese_staff" class="form-check-input" type="checkbox" value="salary_max">
+                <label class="form-check-label" for="hasVietnameseStaffCheckbox">
+                  はい
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="form-group mb-1 row">
           <label class="col-sm-2 col-form-label">月給 <span>*</span></label>
           <div class="col-12 col-sm-4">
@@ -283,7 +295,7 @@
           <div class="col-12 col-sm-4">
             <div class="input-group input-group-icon">
               <span class="input-group-text input-group-text-pre">
-                  <img src="../../assets/images/icon_user_search.svg" alt="">
+                  <img src="../../assets/images/icon_province.svg" alt="">
               </span>
               <select
                 id="exampleInput4"
@@ -305,7 +317,7 @@
         <div class="form-group mb-3 mb-lg-4 row">
           <label for="example9" class="col-sm-2 col-form-label">市区町村番地 <span>*</span></label>
           <div class="col-12 col-sm-10">
-            <textarea
+            <input
               id="example9"
               v-model="job.address_work"
               type="text"
@@ -393,19 +405,6 @@
             </div>
           </div>
         </div>
-<!--        <div class="form-group mb-3 mb-lg-4 row">-->
-<!--          <label class="col-sm-2 col-form-label">ベトナム人在籍状況</label>-->
-<!--          <div class="col-12 col-sm-10">-->
-<!--            <div class="form-check">-->
-<!--              <div class="float-start">-->
-<!--                <input id="hasVietnameseStaffCheckbox" v-model="job.has_vietnamese_staff" class="form-check-input" type="checkbox" value="salary_max">-->
-<!--                <label class="form-check-label" for="hasVietnameseStaffCheckbox">-->
-<!--                  はい-->
-<!--                </label>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
         <div class="form-group mb-3 mb-lg-4 row">
           <label for="example15" class="col-sm-2 col-form-label">残業見込み、休日出勤見込み</label>
           <div class="col-12 col-sm-10">
@@ -457,7 +456,7 @@
             >
           </div>
           <div class="modal-body">
-            <h3 class="text-center modal-body-text">Are you sure?</h3>
+            <h3 class="text-center modal-body-text">本求人を削除してもよろしいですか</h3>
           </div>
           <div class="modal-footer align-items-center d-flex justify-content-center flex-row">
             <button type="button" class="btn btn-secondary-custom rounded-pill w-20 mt-4 mb-4" data-bs-dismiss="modal">いいえ</button>
@@ -536,11 +535,11 @@
         ],
         formRecruitmentList: [
           {
-            text: '1-フルタイム fulltime',
+            text: '1-フルタイム',
             value: 1
           },
           {
-            text: '2-アルバイト parttime',
+            text: '2-アルバイト',
             value: 2
           },
         ],
@@ -598,7 +597,7 @@
           break_time: '',
           holidays: '',
           welfare_regime: '',
-          // has_vietnamese_staff: '',
+          has_vietnamese_staff: '',
           overtime: ''
         }
       }
@@ -670,7 +669,7 @@
           required,
           maxLength: maxLength(500)
         },
-        // has_vietnamese_staff: '',
+        has_vietnamese_staff: '',
         overtime: {
           maxLength: maxLength(1000)
         }
@@ -678,7 +677,7 @@
     },
 
     head() {
-      return { title: 'Create job'}
+      return { title: '新規求人登録'}
     },
 
     computed: {
@@ -765,7 +764,7 @@
           break_time: '',
           holidays: '',
           welfare_regime: '',
-          // has_vietnamese_staff: '',
+          has_vietnamese_staff: '',
           overtime: ''
         })
         this.job.type_plan = this.typePlanList[0].value

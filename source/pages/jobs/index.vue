@@ -59,7 +59,9 @@
                   {{index + 1}}
                 </td>
 
-              <td class="align-middle py-3">{{item.title}}</td>
+              <td class="align-middle py-3">
+                <a href="" class="text-decoration-none" @click="$router.push('/jobs/detail/' + item.id)">{{item.title}}</a>
+              </td>
               <td class="align-middle py-3">{{item.date_start}}</td>
               <td class="align-middle py-3">{{item.date_end}}</td>
               <td class="align-middle py-3">{{item.form_recruitment}}</td>
