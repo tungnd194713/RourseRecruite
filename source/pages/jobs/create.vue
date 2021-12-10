@@ -156,7 +156,19 @@
             </div>
           </div>
         </div>
-
+        <div class="form-group mb-3 mb-lg-4 row">
+          <label class="col-sm-2 col-form-label">ベトナム人在籍状況</label>
+          <div class="col-12 col-sm-10">
+            <div class="form-check">
+              <div class="float-start">
+                <input id="hasVietnameseStaffCheckbox" v-model="job.has_vietnamese_staff" class="form-check-input" type="checkbox" value="salary_max">
+                <label class="form-check-label" for="hasVietnameseStaffCheckbox">
+                  はい
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="form-group mb-1 row">
           <label class="col-sm-2 col-form-label">月給 <span>*</span></label>
           <div class="col-12 col-sm-4">
@@ -283,7 +295,7 @@
           <div class="col-12 col-sm-4">
             <div class="input-group input-group-icon">
               <span class="input-group-text input-group-text-pre">
-                  <img src="../../assets/images/icon_user_search.svg" alt="">
+                  <img src="../../assets/images/icon_province.svg" alt="">
               </span>
               <select
                 id="exampleInput4"
@@ -305,7 +317,7 @@
         <div class="form-group mb-3 mb-lg-4 row">
           <label for="example9" class="col-sm-2 col-form-label">市区町村番地 <span>*</span></label>
           <div class="col-12 col-sm-10">
-            <textarea
+            <input
               id="example9"
               v-model="job.address_work"
               type="text"
@@ -390,19 +402,6 @@
             <div v-if="$v.job.welfare_regime.$error">
               <div v-if="!$v.job.welfare_regime.required" class="error-text">これは必須項目なので、必ず入力してください</div>
               <div v-if="!$v.job.welfare_regime.maxLength" class="error-text">500文字以下で入力してください</div>
-            </div>
-          </div>
-        </div>
-        <div class="form-group mb-3 mb-lg-4 row">
-          <label class="col-sm-2 col-form-label">ベトナム人在籍状況</label>
-          <div class="col-12 col-sm-10">
-            <div class="form-check">
-              <div class="float-start">
-                <input id="hasVietnameseStaffCheckbox" v-model="job.has_vietnamese_staff" class="form-check-input" type="checkbox" value="salary_max">
-                <label class="form-check-label" for="hasVietnameseStaffCheckbox">
-                  はい
-                </label>
-              </div>
             </div>
           </div>
         </div>
@@ -536,11 +535,11 @@
         ],
         formRecruitmentList: [
           {
-            text: '1-フルタイム fulltime',
+            text: '1-フルタイム',
             value: 1
           },
           {
-            text: '2-アルバイト parttime',
+            text: '2-アルバイト',
             value: 2
           },
         ],
@@ -678,7 +677,7 @@
     },
 
     head() {
-      return { title: 'Create job'}
+      return { title: '新規求人登録'}
     },
 
     computed: {
