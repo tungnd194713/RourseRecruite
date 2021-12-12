@@ -50,7 +50,7 @@
           </div>
         </div>
         <div class="form-group mb-3 mb-lg-4 row">
-          <label for="exampleInput2" class="col-sm-2 col-form-label">開始日 <span>*</span></label>
+          <label for="date_start" class="col-sm-2 col-form-label">開始日 <span>*</span></label>
           <div class="col-12 col-sm-4 flex-column">
             <div class="input-group input-group-icon custom-input-group">
               <span class="input-group-text input-group-text-pre">
@@ -58,6 +58,7 @@
               </span>
               <no-ssr>
                 <date-picker
+                  id="date_start"
                   v-model="job.date_start"
                   value-type="format"
                   format="YYYY-MM-DD"
@@ -291,14 +292,14 @@
         </div>
 
         <div class="form-group mb-3 mb-lg-4 row">
-          <label for="exampleInput4" class="col-sm-2 col-form-label">都道府県 <span>*</span></label>
+          <label for="province" class="col-sm-2 col-form-label">都道府県 <span>*</span></label>
           <div class="col-12 col-sm-4">
             <div class="input-group input-group-icon">
               <span class="input-group-text input-group-text-pre">
                   <img src="../../assets/images/icon_province.svg" alt="">
               </span>
               <select
-                id="exampleInput4"
+                id="province"
                 v-model="job.province_id"
                 class="form-select rounded-end"
               >
