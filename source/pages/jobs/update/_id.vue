@@ -1,5 +1,5 @@
 <template>
-    <main class="container my-3 my-lg-4" @submit.prevent="submit">
+    <main class="container my-3 my-lg-4">
         <div class="create_job pb-4 pb-lg-5">
             <h4 class="pt-2 pb-4 pt-lg-3 pb-lg-5 text-center">仕事の訂正</h4>
             <div class="mx-3 mx-lg-5">
@@ -93,6 +93,7 @@
                             </span>
                             <no-ssr>
                                 <date-picker
+                                    id="exampleInput2"
                                     v-model="job.date_start"
                                     value-type="format"
                                     format="YYYY-MM-DD"
@@ -141,6 +142,7 @@
                             </span>
                             <no-ssr>
                                 <date-picker
+                                    id="exampleInput3"
                                     v-model="job.date_end"
                                     value-type="format"
                                     format="YYYY-MM-DD"
@@ -275,6 +277,25 @@
                         </div>
                     </div>
                 </div>
+
+              <div class="form-group mb-3 mb-lg-4 row">
+                <label for="example14" class="col-sm-2 col-form-label"
+                >ベトナム人在籍状況</label
+                >
+                <div class="col-12 col-sm-10">
+                  <div class="form-check">
+                    <div class="float-start">
+                      <input id="example14" v-model="job.has_vietnamese_staff" class="form-check-input" type="checkbox">
+                      <label class="form-check-label" for="example14">
+                        はい
+                      </label>
+                      <div class="invalid-feedback">
+                        Please choose a ベトナム人在籍状況.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
                 <div class="form-group mb-1 row">
                     <label class="col-sm-2 col-form-label"
@@ -595,23 +616,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group mb-3 mb-lg-4 row">
-                    <label for="example14" class="col-sm-2 col-form-label"
-                        >ベトナム人在籍状況</label
-                    >
-                    <div class="col-12 col-sm-10">
-                        <textarea
-                            id="example14"
-                            v-model="job.has_vietnamese_staff"
-                            type="text"
-                            class="form-control rounded-end"
-                            rows="3"
-                        />
-                        <div class="invalid-feedback">
-                            Please choose a ベトナム人在籍状況.
-                        </div>
-                    </div>
-                </div>
+
                 <div class="form-group mb-3 mb-lg-4 row">
                     <label for="example15" class="col-sm-2 col-form-label"
                         >残業見込み、休日出勤見込み</label
@@ -653,7 +658,7 @@
                             rounded-pill
                             btn-edit-create_job
                         "
-                        @click="previewJob"
+                        @click="submit"
                     >
                         <span class="px-4">編集</span>
                     </button>
@@ -888,22 +893,22 @@ export default {
             await this.$axios
                 .get(`companies/jobs/${this.$route.params.id}`)
                 .then((response) => {
-                    this.job.title = '仕事1求人タイトル'
+                    this.job = response.data.job
                 })
         } catch (e) {
             // const data = this.$handleResponse(e)
             // this.errors = data.errors
             this.job.title = '仕事1求人タイトル'
         }
-        this.job.form_recruitment = this.formRecruitmentList[0].value
-        this.job.status_stay.push(this.statusStayList[0].value)
+        // this.job.form_recruitment = this.formRecruitmentList[0].value
+        // this.job.status_stay.push(this.statusStayList[0].value)
     },
 
     methods: {
         async submit() {
             try {
                 await this.$axios
-                    .get(
+                    .post(
                         `companies/jobs/update/${this.$route.params.id}`,
                         this.job
                     )
