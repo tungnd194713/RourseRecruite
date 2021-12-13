@@ -34,8 +34,12 @@
                     </div>
 
                     <div class="invalid-feedback">
-                        Please choose a 会社紹介写真.
+
                     </div>
+                  <div v-if="$v.job.image_job.$error" class="text-center error-text">
+                    <div v-if="!$v.job.image_job.name.imageRule">画像はpng / jpg / jpeg / gifの形式でアプロードしてください</div>
+                    <div v-if="!$v.job.image_job.size.imageSize">2MB以下の写真をアップロードしてください</div>
+                  </div>
                 </div>
                 <div class="form-group mb-3 mb-lg-4 row">
                     <label for="exampleInput1" class="col-sm-2 col-form-label"
@@ -118,7 +122,7 @@
                                 "
                                 class="error-text"
                             >
-                                Must less than or equal date end
+                              Ngày bắt đầu phải lớn hơn ngày hiện tại
                             </div>
                         </div>
                     </div>
@@ -175,7 +179,7 @@
                                 </option>
                             </select>
                             <div class="invalid-feedback">
-                                Please choose a 雇用形態.
+                              これは必須項目なので、必ず入力してください
                             </div>
                         </div>
                     </div>
@@ -209,9 +213,17 @@
                                 </option>
                             </select>
                             <div class="invalid-feedback">
-                                Please choose a 在留資格.
+
                             </div>
                         </div>
+                      <div v-if="$v.job.status_stay.$error">
+                        <div
+                          v-if="!$v.job.status_stay.required"
+                          class="error-text"
+                        >
+                          これは必須項目なので、必ず入力してください
+                        </div>
+                      </div>
                     </div>
                 </div>
                 <div class="form-group mb-3 mb-lg-4 row">
@@ -266,7 +278,6 @@
                         はい
                       </label>
                       <div class="invalid-feedback">
-                        Please choose a ベトナム人在籍状況.
                       </div>
                     </div>
                   </div>
@@ -327,19 +338,25 @@
                                 />
                             </span>
                             <input
-                                v-model="job.salary_max"
+                                v-model="job.salary_min"
                                 type="text"
                                 class="form-control rounded-end"
-                                @input="$v.job.salary_max.$touch()"
-                                @blur="$v.job.salary_max.$touch()"
+                                @input="$v.job.salary_min.$touch()"
+                                @blur="$v.job.salary_min.$touch()"
                             />
                         </div>
-                        <div v-if="$v.job.salary_max.$error">
+                        <div v-if="$v.job.salary_min.$error">
                             <div
-                                v-if="!$v.job.salary_max.required"
+                                v-if="!$v.job.salary_min.required"
                                 class="error-text"
                             >
                                 これは必須項目なので、必ず入力してください
+                            </div>
+                            <div
+                              v-if="!$v.job.salary_min.isNumber"
+                              class="error-text"
+                            >
+                              Nhập số thập phân hoặc số nguyên cho trường này
                             </div>
                         </div>
                     </div>
@@ -364,12 +381,18 @@
                             />
                         </div>
                         <div v-if="$v.job.salary_min.$error">
-                            <div
-                                v-if="!$v.job.salary_min.required"
-                                class="error-text"
-                            >
-                                これは必須項目なので、必ず入力してください
-                            </div>
+                          <div
+                            v-if="!$v.job.salary_min.required"
+                            class="error-text"
+                          >
+                            これは必須項目なので、必ず入力してください
+                          </div>
+                          <div
+                            v-if="!$v.job.salary_min.isNumber"
+                            class="error-text"
+                          >
+                            Nhập số thập phân hoặc số nguyên cho trường này
+                          </div>
                         </div>
                     </div>
                     {{ displaySalary === 'salary_range' ? '～' : '' }}
@@ -393,12 +416,18 @@
                             />
                         </div>
                         <div v-if="$v.job.salary_max.$error">
-                            <div
-                                v-if="!$v.job.salary_max.required"
-                                class="error-text"
-                            >
-                                これは必須項目なので、必ず入力してください
-                            </div>
+                          <div
+                            v-if="!$v.job.salary_max.required"
+                            class="error-text"
+                          >
+                            これは必須項目なので、必ず入力してください
+                          </div>
+                          <div
+                            v-if="!$v.job.salary_max.isNumber"
+                            class="error-text"
+                          >
+                            Nhập số thập phân hoặc số nguyên cho trường này
+                          </div>
                         </div>
                     </div>
                 </div>
@@ -619,7 +648,7 @@
                             rounded-pill
                             btn-edit-create_job
                         "
-                        @click="submit"
+                        @click="previewJob"
                     >
                         <span class="px-4">編集</span>
                     </button>
@@ -810,10 +839,13 @@ export default {
           maxLength: maxLength(100)
         },
         date_start: {
-          required
+          required,
+          minValue: value => value > new Date().toISOString()
         },
         form_recruitment: {},
-        status_stay: {},
+        status_stay: {
+          required
+        },
         number_recruitments: {
           required,
           isNumber(value) {
@@ -824,12 +856,22 @@ export default {
         },
         salary_max: {
           required,
+          // isNumber(value) {
+          //   // eslint-disable-next-line prefer-regex-literals
+          //   const numberRegExp = new RegExp("/^\\d*\\.?\\d*$/")
+          //   return numberRegExp.test(value)
+          // },
           maxLength: maxLength(10)
         },
         salary_min: {
           required: requiredIf(function () {
             return this.displaySalary === 'salary_range'
           }),
+          // isNumber(value) {
+          //   // eslint-disable-next-line prefer-regex-literals
+          //   const numberRegExp = new RegExp("/^\\d*\\.?\\d*$/")
+          //   return numberRegExp.test(value)
+          // },
           maxLength: maxLength(10)
         },
         content_work: {
@@ -871,18 +913,18 @@ export default {
     head() {
         return { title: 'Edit job' }
     },
-
-    watch: {
-        displaySalary: {
-            handler(newVal) {
-                this.job.salary_min = ''
-                this.job.salary_max = ''
-                this.$v.job.salary_min.$reset()
-                this.$v.job.salary_max.$reset()
-            },
-            deep: true,
-        },
-    },
+    //
+    // watch: {
+    //     displaySalary: {
+    //         handler(newVal) {
+    //             this.job.salary_min = ''
+    //             this.job.salary_max = ''
+    //             this.$v.job.salary_min.$reset()
+    //             this.$v.job.salary_max.$reset()
+    //         },
+    //         deep: true,
+    //     },
+    // },
 
     created() {
         this.showJob();
@@ -894,6 +936,11 @@ export default {
             await this.$repositories.jobs.getJob(this.$route.params.id)
               .then((response) => {
                 this.job = response.data.job
+
+                this.job.salary_max = parseFloat(this.job.salary_max).toFixed(3);
+                this.job.salary_min = parseFloat(this.job.salary_min).toFixed(3);
+
+                this.displaySalary = this.job.salary_max ? 'salary_range' : ''
               });
 
             this.provinceList = defaultProvinces
@@ -902,20 +949,6 @@ export default {
           }
         },
 
-        async submit() {
-            try {
-                await this.$repositories.jobs.updateJob(this.$route.params.id, this.job)
-                    .then((response) => {
-                      if (response.status === 201) {
-                        this.$router.push('/jobs')
-                      } else {
-                        this.$toast.error(response.response.data.message)
-                      }
-                    })
-            } catch (e) {
-              console.log(e.message)
-            }
-        },
         onChangeImageJob(e) {
             const file = e.target.files[0]
             this.job.image_job = file
@@ -935,18 +968,18 @@ export default {
             }
         },
 
-        previewJob() {
-            this.$v.job.$touch()
-            if (!this.$v.job.$invalid) {
-                this.$store.dispatch('job/setJob', this.job)
-                // this.$router.push('/jobs/preview-new')
-            }
-        },
-
-        resetFormToStart() {
-          this.showJob();
-          this.$refs.closeConfirmCancelModal.click()
+      previewJob() {
+        this.$v.job.$touch()
+        if (!this.$v.job.$invalid) {
+          this.$store.dispatch('job/setJob', this.job)
+          this.$router.push('/jobs/update/preview/' + this.$route.params.id)
         }
+      },
+
+      resetFormToStart() {
+        this.showJob();
+        this.$refs.closeConfirmCancelModal.click()
+      }
     },
 }
 </script>
