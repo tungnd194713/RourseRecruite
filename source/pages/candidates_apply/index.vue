@@ -307,7 +307,7 @@
                         <td colspan="3" class="border-bottom-dot">トランバンアン</td>
                         <td rowspan="2">
                           <div class="text-center mb-3">性別</div>
-                          <div class="text-center">{{ defaultGenderList[candidate.gender]}}</div>
+                          <div class="text-center">{{ defaultGenderListJa[candidate.gender]}}</div>
                         </td>
                         <td rowspan="4" class="card-photo">
                           <img :src="url_file + candidate.profile_image" alt="">
@@ -336,11 +336,11 @@
                         </td>
                         <td>
                           <div class="text-start">国籍</div>
-                          <div class="text-center">{{ defaultNationalityList[candidate.nationality - 1]}}</div>
+                          <div class="text-center">{{ defaultNationalityListJa[candidate.nationality - 1]}}</div>
                         </td>
                         <td>
                           <div class="text-start">母国語</div>
-                          <div class="text-center">{{ defaultLanguageList[candidate.language - 1]}}</div>
+                          <div class="text-center">{{ defaultLanguageListJa[candidate.language - 1]}}</div>
                         </td>
                       </tr>
                       <tr>
@@ -568,9 +568,9 @@
                         <td>健康状態<br>(持病など有無)</td>
                       </tr>
                       <tr>
-                        <td>{{ defaultMarriedStatusList[candidate.married_status - 1]}}</td>
-                        <td>{{ defaultDependentPersonList[candidate.dependent_person]}}</td>
-                        <td>{{ defaultHealthList[candidate.health - 1]}}</td>
+                        <td>{{ defaultMarriedStatusListJa[candidate.married_status - 1]}}</td>
+                        <td>{{ defaultDependentPersonListJa[candidate.dependent_person]}}</td>
+                        <td>{{ defaultHealthListJa[candidate.health - 1]}}</td>
                       </tr>
                       </tbody>
                     </table>
@@ -929,6 +929,7 @@
     import 'vue2-datepicker/index.css'
     import 'vue2-datepicker/locale/ja'
     import Pagination from "../../components/Pagination";
+    import defaultInCvUser from "~/constants/defaultInCvUser"
 
     export default {
         name: "CandidateApply",
@@ -999,10 +1000,47 @@
                     residence_card_front: '',
                     residence_card_backside: ''
                 },
-              lang_ja: 'ja',
-              lang_vi: 'vi',
+              lang_ja: defaultInCvUser.lang_ja,
+              lang_vi: defaultInCvUser.lang_vi,
               language: '',
               idCandidate: -1,
+              defaultCandidate : {
+                id: '',
+                user_id: '',
+                first_name : '',
+                name : '',
+                nationality : '',
+                gender : '',
+                birthday : '',
+                email : '',
+                profile_image : '',
+                language : '',
+                phone_number : '',
+                address : '',
+                married_status : '',
+                dependent_person : '',
+                health : '',
+                visa_type : '',
+                visa_date : '',
+                residence_card_front : '',
+                residence_card_backside : '',
+                strength : '',
+                stay_experience_date : '',
+                stay_experience_purpose : '',
+                reason_apply : '',
+                file_cv_upload : '',
+                desire_change_jobs : '',
+                translate_jp : '',
+                postal_code : '',
+                province_id : '',
+                district : '',
+                status : '',
+                created_at : '',
+                updated_at : '',
+                educations_jobs : [],
+                languages : [],
+                certificates : []
+              },
               candidate : {
                 id: '',
                 user_id: '',
@@ -1042,18 +1080,18 @@
               },
               educationsOfCandidate: [],
               jobsOfCandidate: [],
-              defaultGenderList: ['男', '女', 'Other'],
-              defaultGenderListVi: ['Nam', 'Nữ', 'Khác'],
-              defaultNationalityList: ['Japan', 'ベトナム'],
-              defaultNationalityListVi: ['Nhật Bản', 'Việt Nam'],
-              defaultLanguageList: ['Japanese', 'ベトナム語'],
-              defaultLanguageListVi: ['Nhật Bản', 'Việt Nam'],
-              defaultMarriedStatusList: ['無', '有'],
-              defaultMarriedStatusListVi: ['Độc thân', 'Kết hôn'],
-              defaultDependentPersonList: ['無', '有'],
-              defaultDependentPersonListVi: ['Không', 'Có'],
-              defaultHealthList: ['特病無し', 'Co benh ly nen'],
-              defaultHealthListVi: ['Không có bệnh lý nền', 'Có bệnh lý nền']
+              defaultGenderListJa: defaultInCvUser.defaultGenderListJa,
+              defaultGenderListVi: defaultInCvUser.defaultGenderListVi,
+              defaultNationalityListJa: defaultInCvUser.defaultNationalityListJa,
+              defaultNationalityListVi: defaultInCvUser.defaultNationalityListVi,
+              defaultLanguageListJa: defaultInCvUser.defaultLanguageListJa,
+              defaultLanguageListVi: defaultInCvUser.defaultLanguageListVi,
+              defaultMarriedStatusListJa: defaultInCvUser.defaultMarriedStatusListJa,
+              defaultMarriedStatusListVi: defaultInCvUser.defaultMarriedStatusListVi,
+              defaultDependentPersonListJa: defaultInCvUser.defaultDependentPersonListJa,
+              defaultDependentPersonListVi: defaultInCvUser.defaultDependentPersonListVi,
+              defaultHealthListJa: defaultInCvUser.defaultHealthListJa,
+              defaultHealthListVi: defaultInCvUser.defaultHealthListVi
             }
         },
 
@@ -1071,7 +1109,6 @@
         },
 
         created(){
-            this.language = this.lang_ja
             this.getListCV(this.currentPage);
         },
 
@@ -1169,16 +1206,27 @@
                 this.image.residence_card_backside = residenceCardBackside
             },
 
-          changeLanguage(newLanguage) {
+          async changeLanguage(newLanguage) {
             if (newLanguage !== this.language) {
               this.language = newLanguage
+              if (this.language === this.lang_ja) {
+                await this.$repositories.candidatesApply.translateCvCandidate(this.idRow).then(res => {
+                  if (res.status === 200) {
+                    this.candidate = Object.assign({}, res.data)
+                  }
+                })
+              }
+              if (this.language === this.lang_vi) {
+                this.candidate = Object.assign({}, this.defaultCandidate)
+              }
             }
           },
 
           popupCvUser(candidateApply) {
-            this.language = this.lang_ja
+            this.language = this.lang_vi
             this.idRow = candidateApply.id
-            this.candidate = Object.assign({}, candidateApply.candidate)
+            this.defaultCandidate = Object.assign({}, candidateApply.candidate)
+            this.candidate = Object.assign({}, this.defaultCandidate)
             this.educationsOfCandidate = this.candidate.educations_jobs.filter(function (element) {
               return element.type === 1
             })

@@ -13,7 +13,7 @@ export default ($axios) => ({
         return $axios.post(`${resource}/export-cv-pdf/${candidateApplyId}`, payload, responseType)
     },
 
-    translateCvCandidate(candidateId) {
-        return $axios.get(`${resource}/translate/${candidateId}`)
+    translateCvCandidate(candidateApplyId) {
+        return $axios.get(`${resource}/translate/${candidateApplyId}`)
     }
 })
