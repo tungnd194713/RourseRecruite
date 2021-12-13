@@ -131,8 +131,9 @@ input:focus {
     display: block;
 }
 
-.errorDisplay {
-    display: none;
+.text-end {
+    flex-direction: column;
+    align-content: center;
 }
 
 @media only screen and (max-width: 600px) {

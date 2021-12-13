@@ -88,6 +88,10 @@ picture img {
     padding-right: 50px;
 }
 
+.nav-item {
+    width: calc( 100%/3);
+}
+
 @media only screen and (max-width: 991px) {
     .title-page {
         font-size: 25px;
