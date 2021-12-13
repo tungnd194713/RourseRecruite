@@ -790,7 +790,6 @@
 
       previewJob() {
         this.$v.job.$touch()
-        console.log(this.$v.$errors)
         if (!this.$v.job.$invalid) {
           this.$store.dispatch('job/setJob', this.job)
           this.$router.push('/jobs/preview-new')
