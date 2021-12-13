@@ -6,23 +6,24 @@
         <div class="container-btn-language">
           <button
             type="button"
-            class="btn-language btn-language-first btn-language-active"
-            :class="{ 'btn-language-active': language === 'ja'}"
-            @click="changeLanguage('ja')"
+            class="btn-language btn-language-first"
+            :class="{ 'btn-language-active': language === lang_ja}"
+            @click.prevent.stop="changeLanguage(lang_ja)"
           >
             JA
           </button>
           <button
             type="button"
             class="btn-language btn-language-last"
-            :class="{ 'btn-language-active': language === 'vi'}"
-            @click="changeLanguage('vi')"
+            :class="{ 'btn-language-active': language === lang_vi}"
+            @click.prevent.stop="changeLanguage(lang_vi)"
           >
             VI
           </button>
         </div>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><img
-          src="../../assets/images/icon_modal_close.svg" alt=""></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <img src="../../assets/images/icon_modal_close.svg" alt="">
+        </button>
         <div class="modal-body">
           <div class="content">
             <div class="row">
@@ -32,64 +33,91 @@
                   <tr>
                     <td colspan="5" class="border-0">
                       <div class="d-flex align-items-end">
-                        <h2 class="fw-bold flex-grow-1">履歴書</h2>
-                        <div class="">
-                          <span class="mx-0 mx-md-3">2020</span>年
-                          <span class="mx-0 mx-md-3">10</span>月
-                          <span class="mx-0 mx-md-3">20</span>日現在
+                        <h2 class="fw-bold flex-grow-1">{{ $t('cv_user.title')}}</h2>
+                        <div v-if="language === lang_vi" class="">
+                          Ngày<span class="mx-0 mx-md-3">{{ $moment(candidate.created_at).format('D')}}</span>
+                          Tháng<span class="mx-0 mx-md-3">{{ $moment(candidate.created_at).format('M')}}</span>
+                          Năm<span class="mx-0 mx-md-3">{{ $moment(candidate.created_at).format('YYYY')}}</span>
+                        </div>
+                        <div v-if="language === lang_ja" class="">
+                          <span class="mx-0 mx-md-3">{{ $moment(candidate.created_at).format('YYYY')}}</span>年
+                          <span class="mx-0 mx-md-3">{{ $moment(candidate.created_at).format('M')}}</span>月
+                          <span class="mx-0 mx-md-3">{{ $moment(candidate.created_at).format('D')}}</span>日現在
                         </div>
                       </div>
                     </td>
                   </tr>
                   <tr>
-                    <td class="border-bottom-dot text-center">スヌワル</td>
+                    <td class="border-bottom-dot text-center">{{ $t('cv_user.furigana')}}</td>
                     <td colspan="3" class="border-bottom-dot">トランバンアン</td>
                     <td rowspan="2">
-                      <div class="text-center mb-3">性別</div>
-                      <div class="text-center">男・女</div>
+                      <div class="text-center mb-3">{{ $t('cv_user.gender')}}</div>
+                      <div v-if="language === lang_vi" class="text-center">{{ defaultGenderListVi[candidate.gender]}}</div>
+                      <div v-if="language === lang_ja" class="text-center">{{ defaultGenderListJa[candidate.gender]}}</div>
                     </td>
                     <td rowspan="4" class="card-photo">
-                      <img src="../../assets/images/draft/card_photo.png" alt="">
+                      <img :src="url_file + candidate.profile_image" alt="">
                     </td>
                   </tr>
                   <tr>
-                    <td class="border-top-dot text-center">氏名</td>
-                    <td colspan="3" class="border-top-dot">TRAN VAN AN</td>
+                    <td class="border-top-dot text-center">{{ $t('cv_user.name')}}</td>
+                    <td colspan="3" class="border-top-dot">
+                      {{ candidate.first_name ? candidate.first_name.toUpperCase() : ''}}
+                      {{ candidate.name ? candidate.name.toUpperCase() : ''}}
+                    </td>
                   </tr>
                   <tr>
-                    <td class="text-center">生年月日</td>
-                    <td colspan="2">
-                      <div>1993年<span class="mx-2 mx-md-3">7月</span>9日生</div>
+                    <td class="text-center">{{ $t('cv_user.birthday')}}</td>
+                    <td v-if="language === lang_vi" colspan="2">
+                      <div>
+                        Ngày
+                        <span class="mx-2 mx-md-3">
+                            {{ $moment(candidate.birthday).format('D/M/YYYY')}}
+                          </span>
+                      </div>
                       <div class="text-center">
-                        (満<span class="mx-2 mx-md-3">28</span>歳)
+                        (Tròn <span class="mx-2 mx-md-3">{{ Math.abs($moment(candidate.birthday).diff($moment(), 'years'))}}</span>tuổi)
                       </div>
                     </td>
+                    <td v-if="language === lang_ja" colspan="2">
+                      <div>
+                        {{ $moment(candidate.birthday).format('YYYY')}}年
+                        <span class="mx-2 mx-md-3">
+                            {{ $moment(candidate.birthday).format('MM')}}月
+                          </span>
+                        {{ $moment(candidate.birthday).format('DD')}}日生
+                      </div>
+                      <div class="text-center">
+                        (満<span class="mx-2 mx-md-3">{{ Math.abs($moment(candidate.birthday).diff($moment(), 'years'))}}</span>歳)
+                      </div>
                     <td>
-                      <div class="text-start">国籍</div>
-                      <div class="text-center">べトナム</div>
+                      <div class="text-start">{{ $t('cv_user.nationality')}}</div>
+                      <div v-if="language === lang_vi" class="text-center">{{ defaultNationalityListVi[candidate.nationality - 1]}}</div>
+                      <div v-if="language === lang_ja" class="text-center">{{ defaultNationalityListJa[candidate.nationality - 1]}}</div>
                     </td>
                     <td>
-                      <div class="text-start">母国語</div>
-                      <div class="text-center">ベトナム証</div>
+                      <div class="text-start">{{ $t('cv_user.language')}}</div>
+                      <div v-if="language === lang_vi" class="text-center">{{ defaultLanguageListVi[candidate.language - 1]}}</div>
+                      <div v-if="language === lang_ja" class="text-center">{{ defaultLanguageListJa[candidate.language - 1]}}</div>
                     </td>
                   </tr>
                   <tr>
                     <td colspan="2">
-                      <div class="text-start">携帯電話番号</div>
-                      <div class="text-center">000-0000-0000</div>
+                      <div class="text-start">{{ $t('cv_user.phone_number')}}</div>
+                      <div class="text-center">{{ candidate.phone_number}}</div>
                     </td>
                     <td colspan="3">
-                      <div class="text-start">E-mail</div>
-                      <div class="text-center">user@gmail.com</div>
+                      <div class="text-start">{{ $t('cv_user.email')}}</div>
+                      <div class="text-center">{{ candidate.email}}</div>
                     </td>
                   </tr>
                   <tr>
-                    <td class="border-bottom-dot text-center">フリガナ</td>
+                    <td class="border-bottom-dot text-center">{{ $t('cv_user.furigana')}}</td>
                     <td colspan="5" class="border-bottom-dot"></td>
                   </tr>
                   <tr>
-                    <td class="border-top-dot text-center">現住所</td>
-                    <td colspan="5" class="border-top-dot"></td>
+                    <td class="border-top-dot text-center">{{ $t('cv_user.address')}}</td>
+                    <td colspan="5" class="border-top-dot">{{ candidate.address}}</td>
                   </tr>
                   </tbody>
                 </table>
@@ -100,59 +128,26 @@
                 <table class="table border-2">
                   <thead>
                   <tr class="text-center">
-                    <th>年</th>
-                    <th>月</th>
-                    <th>学歴</th>
+                    <th>{{ $t('cv_user.year')}}</th>
+                    <th>{{ $t('cv_user.month')}}</th>
+                    <th>{{ $t('cv_user.educations')}}</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>2005年</td>
-                    <td>5月</td>
+                  <tr v-for="education in educationsOfCandidate" :key="education.id">
+                    <td v-if="language === lang_vi" class="text-center">Năm {{ $moment(education.start_at).format('YYYY')}}</td>
+                    <td v-if="language === lang_vi" class="text-center">{{ $moment(education.start_at).format('M')}}</td>
+                    <td v-if="language === lang_ja" class="text-center">{{ $moment(education.start_at).format('YYYY')}}年</td>
+                    <td v-if="language === lang_ja" class="text-center">{{ $moment(education.start_at).format('M')}}月</td>
                     <td>
                       <div class="row">
-                        <div class="col-9">ルックガン高校</div>
-                        <div class="col-3">卒業</div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2016年</td>
-                    <td>4月</td>
-                    <td>
-                      <div class="row">
-                        <div class="col-9">長野平成学園</div>
-                        <div class="col-3">入学</div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2018年</td>
-                    <td>3月</td>
-                    <td>
-                      <div class="row">
-                        <div class="col-9">長野平成学園</div>
-                        <div class="col-3">卒業</div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2018年</td>
-                    <td>4月</td>
-                    <td>
-                      <div class="row">
-                        <div class="col-9">千葉ビジえス専門学校 国際ビジネス科</div>
-                        <div class="col-3">入学</div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2020年</td>
-                    <td>3月</td>
-                    <td>
-                      <div class="row">
-                        <div class="col-9">千葉ビジネス専門学校 国際ビジネス科</div>
-                        <div class="col-3">卒業見込み</div>
+                        <div class="col-9">{{ education.name}}</div>
+                        <div v-if="language === lang_vi" class="col-3">
+                          {{ defaultEducationsListVi[education.status - 1]}}
+                        </div>
+                        <div v-if="language === lang_ja" class="col-3">
+                          {{ defaultEducationsListJa[education.status - 1]}}
+                        </div>
                       </div>
                     </td>
                   </tr>
@@ -165,7 +160,7 @@
                     <td></td>
                     <td></td>
                     <td>
-                      <div class="text-end">以上</div>
+                      <div class="text-end">{{ $t('cv_user.end')}}</div>
                     </td>
                   </tr>
                   <tr>
@@ -179,31 +174,33 @@
                     <td></td>
                   </tr>
                   <tr class="text-center">
-                    <th>年</th>
-                    <th>月</th>
-                    <th>職用(アルバィト含む)</th>
+                    <th>{{ $t('cv_user.year')}}</th>
+                    <th>{{ $t('cv_user.month')}}</th>
+                    <th>{{ $t('cv_user.jobs')}}</th>
                   </tr>
-                  <tr>
-                    <td>2017年</td>
-                    <td>5月</td>
+
+                  <tr v-for="job in jobsOfCandidate" :key="job.id">
+                    <td v-if="language === lang_vi" class="text-center">Năm {{ $moment(job.start_at).format('YYYY')}}</td>
+                    <td v-if="language === lang_vi" class="text-center">{{ $moment(job.start_at).format('M')}}</td>
+                    <td v-if="language === lang_ja" class="text-center">{{ $moment(job.start_at).format('YYYY')}}年</td>
+                    <td v-if="language === lang_ja" class="text-center">{{ $moment(job.start_at).format('M')}}月</td>
                     <td>
                       <div class="row">
-                        <div class="col-9">株式会礼ABC</div>
-                        <div class="col-3">~2018年3月</div>
+                        <div class="col-9">{{ job.name}}</div>
+                        <div v-if="language === lang_vi" class="col-3">
+                          {{ job.status === 1 ?
+                          '～' + $moment(job.end_at).format('M/YYYY') :
+                          'Hiện đang làm'}}
+                        </div>
+                        <div v-if="language === lang_ja" class="col-3">
+                          {{ job.status === 1 ?
+                          '～' + $moment(job.end_at).format('M/YYYY') :
+                          '在職中'}}
+                        </div>
                       </div>
                     </td>
                   </tr>
                   <tr>
-                    <td>2018年</td>
-                    <td>5月</td>
-                    <td>
-                      <div class="row">
-                        <div class="col-9">宮武等修うどん</div>
-                        <div class="col-3">~在職中</div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -212,7 +209,7 @@
                     <td></td>
                     <td></td>
                     <td>
-                      <div class="text-end">以上</div>
+                      <div class="text-end">{{ $t('cv_user.end')}}</div>
                     </td>
                   </tr>
                   <tr>
@@ -237,24 +234,30 @@
                 <table class="table tb-certificate border-2 text-center m-0">
                   <thead>
                   <tr>
-                    <th>自己靴</th>
-                    <th colspan="4">◯（仕事上、問題なし）△（仕事上、ある程度てきる）×（少し不安）</th>
+                    <th>{{ $t('cv_user.self_assessment')}}</th>
+                    <th colspan="4">
+                      {{ $t('cv_user.level_1')}}
+                      &emsp;
+                      {{ $t('cv_user.level_2')}}
+                      <br>
+                      {{ $t('cv_user.level_3')}}
+                    </th>
                   </tr>
                   <tr>
-                    <th>スキル</th>
-                    <th>聞くこと</th>
-                    <th>話すこと</th>
-                    <th>読むこと</th>
-                    <th>書くこと</th>
+                    <th>{{ $t('cv_user.skill')}}</th>
+                    <th>{{ $t('cv_user.skill_listen')}}</th>
+                    <th>{{ $t('cv_user.skill_speak')}}</th>
+                    <th>{{ $t('cv_user.skill_read')}}</th>
+                    <th>{{ $t('cv_user.skill_write')}}</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>日本語能力</td>
-                    <td>◯</td>
-                    <td>△</td>
-                    <td>△</td>
-                    <td>△</td>
+                  <tr v-for="(language, index) in candidate.candidate_foreign_languages" :key="index">
+                    <td>{{ language.language_name}}</td>
+                    <td>{{ showIconSkill(JSON.parse(language.skill).listen)}}</td>
+                    <td>{{ showIconSkill(JSON.parse(language.skill).speak)}}</td>
+                    <td>{{ showIconSkill(JSON.parse(language.skill).read)}}</td>
+                    <td>{{ showIconSkill(JSON.parse(language.skill).write)}}</td>
                   </tr>
                   <tr>
                     <td></td>
@@ -269,16 +272,16 @@
                 <table class="table tb-certificate text-center border-2 border-top-0">
                   <thead>
                   <tr>
-                    <th>年</th>
-                    <th>月</th>
-                    <th>鮮・免許・賞割（上記以外のもの、取得予定含む）</th>
+                    <th>{{ $t('cv_user.year')}}</th>
+                    <th>{{ $t('cv_user.month')}}</th>
+                    <th>{{ $t('cv_user.certificates')}}</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>2018年</td>
-                    <td>2月</td>
-                    <td class="text-start">NAT-TEST (N2)</td>
+                  <tr v-for="(certificate, index) in candidate.candidate_certificates" :key="index">
+                    <td>Năm {{ $moment(certificate.receive_at).format('YYYY')}}</td>
+                    <td>{{ $moment(certificate.receive_at).format('M')}}</td>
+                    <td class="text-start">{{ certificate.name}}</td>
                   </tr>
                   <tr>
                     <td></td>
@@ -306,29 +309,16 @@
                 <table class="table border-2">
                   <tbody>
                   <tr>
-                    <td>志望の動機</td>
+                    <td>{{ $t('cv_user.reason_apply')}}</td>
                   </tr>
                   <tr>
-                    <td class="py-4">私はお客様に良いサーピスを提供することが好きです。私のアルワトは今接客の仕事をして
-                      おります。いつもお客様に最も良い料理を提供したいと思います。お客様は良い食事は自分で喜ひに感じます。もっと
-                      お客様に喜んでいただきたいと思って色々な事を検素してしました。この会社のボムペジで仕事内容を調べました
-                      この仕事ば自分でお客様と話せるだけではなく、お客様に感動させたいということを私の考えと同じため志望しまし
-                      た・
-                    </td>
+                    <td class="py-4">{{ candidate.reason_apply}}</td>
                   </tr>
                   <tr>
-                    <td>
-                      長所
-                    </td>
+                    <td>{{ $t('cv_user.strength')}}</td>
                   </tr>
                   <tr>
-                    <td class="py-4">私はどんな時も明るく活発に取り組むことができます。人と関わる事が好きなので日本てのァルパイトては接客の仕
-                      事をしながらマナーや挨接にっいて身に付けてきました。どんな人ともコミュニケ-ションをとりすぐに仲良くなるこ
-                      とができるのて、ァルバイトても新しいスタッフに仕事を丁室に教えています学校でな人の役に立っことが好きな
-                      O_で生徒会でリーダ-としてクラスをまとめたか地域のポランティア清掃に積極的に参加い社会貢献の活重にも取
-                      り組み充実した学生生活を送ってきました。大変な時もありましたが最後まで責任感を持ってやりとけることがで
-                      きましたこれからも積種的にたくさんの柳単をしていきたいと思います。
-                    </td>
+                    <td class="py-4">{{ candidate.strength}}</td>
                   </tr>
                   </tbody>
                 </table>
@@ -336,28 +326,33 @@
                 <table class="table tb-2 text-center border-2 mb-0">
                   <tbody>
                   <tr>
-                    <td>配偶者</td>
-                    <td>配偶者以外の<br>扶養家族</td>
-                    <td>健康状態<br>(持病など有無)</td>
+                    <td>{{ $t('cv_user.married_status')}}</td>
+                    <td>{{ $t('cv_user.dependent_person_part_1')}}<br>{{ $t('cv_user.dependent_person_part_2')}}</td>
+                    <td>{{ $t('cv_user.health_part_1')}}<br>{{ $t('cv_user.health_part_2')}}</td>
                   </tr>
-                  <tr>
-                    <td>有・無</td>
-                    <td>有・無</td>
-                    <td>無病無し</td>
+                  <tr v-if="language === lang_vi">
+                    <td>{{ defaultMarriedStatusListVi[candidate.married_status - 1]}}</td>
+                    <td>{{ defaultDependentPersonListVi[candidate.dependent_person]}}</td>
+                    <td>{{ defaultHealthListVi[candidate.health - 1]}}</td>
+                  </tr>
+                  <tr v-if="language === lang_ja">
+                    <td>{{ defaultMarriedStatusListJa[candidate.married_status - 1]}}</td>
+                    <td>{{ defaultDependentPersonListJa[candidate.dependent_person]}}</td>
+                    <td>{{ defaultHealthListJa[candidate.health - 1]}}</td>
                   </tr>
                   </tbody>
                 </table>
                 <table class="table  tb-2 text-center border-2 border-top-0">
                   <tbody>
                   <tr>
-                    <td rowspan="2">日本滞在経歴<br>（期間・目的）</td>
-                    <td class="border-bottom-dot">2017/4/20 ~ 2018/4/21</td>
-                    <td rowspan="2">耳得ビザ<br>（種素・有効期限）</td>
-                    <td class="border-bottom-dot">持能実習</td>
+                    <td rowspan="2">{{ $t('cv_user.stay_experience_part_1')}}<br>{{ $t('cv_user.stay_experience_part_2')}}</td>
+                    <td class="border-bottom-dot">{{ candidate.stay_experience_date}}</td>
+                    <td rowspan="2">{{ $t('cv_user.visa_part_1')}}<br>{{ $t('cv_user.visa_part_2')}}</td>
+                    <td class="border-bottom-dot">{{ candidate.visa_type}}</td>
                   </tr>
                   <tr>
-                    <td class="border-top-dot">留学のため</td>
-                    <td class="border-top-dot">2020/7/20</td>
+                    <td class="border-top-dot">{{ candidate.stay_experience_purpose}}</td>
+                    <td class="border-top-dot">{{ $moment(candidate.visa_date).format('D/M/YYYY')}}</td>
                   </tr>
                   </tbody>
                 </table>
@@ -366,7 +361,7 @@
           </div>
 
           <div class="d-flex justify-content-end footer">
-            <img src="../../assets/images/icon_pdf_download.svg" alt="">
+            <img src="../../assets/images/icon_pdf_download.svg" alt="" @click="exportPdf()">
             <button class="btn btn-outline-secondary ms-5" data-bs-dismiss="modal" aria-label="Close">クローズ</button>
           </div>
         </div>
@@ -376,29 +371,73 @@
 </template>
 
 <script>
+  import defaultInCvUser from "~/constants/defaultInCvUser"
+
   export default {
     name: "CvUserModal",
 
+    props: [
+      'candidate',
+      'language',
+      'educationsOfCandidate',
+      'jobsOfCandidate',
+      'idRow'
+    ],
+
     data() {
       return {
-        language: 'ja',
+        url_file: process.env.URL_FILE,
+        lang_ja: defaultInCvUser.lang_ja,
+        lang_vi: defaultInCvUser.lang_vi,
+        defaultGenderListJa: defaultInCvUser.defaultGenderListJa,
+        defaultGenderListVi: defaultInCvUser.defaultGenderListVi,
+        defaultNationalityListJa: defaultInCvUser.defaultNationalityListJa,
+        defaultNationalityListVi: defaultInCvUser.defaultNationalityListVi,
+        defaultLanguageListJa: defaultInCvUser.defaultLanguageListJa,
+        defaultLanguageListVi: defaultInCvUser.defaultLanguageListVi,
+        defaultMarriedStatusListJa: defaultInCvUser.defaultMarriedStatusListJa,
+        defaultMarriedStatusListVi: defaultInCvUser.defaultMarriedStatusListVi,
+        defaultDependentPersonListJa: defaultInCvUser.defaultDependentPersonListJa,
+        defaultDependentPersonListVi: defaultInCvUser.defaultDependentPersonListVi,
+        defaultHealthListJa: defaultInCvUser.defaultHealthListJa,
+        defaultHealthListVi: defaultInCvUser.defaultHealthListVi,
+        defaultEducationsListVi: defaultInCvUser.defaultEducationsListVi,
+        defaultEducationsListJa: defaultInCvUser.defaultEducationsListJa
       }
     },
 
     created() {
-      // console.log()
-      this.getCandidateApplyDetailFromApi()
+
     },
 
     methods: {
-      getCandidateApplyDetailFromApi() {
-        console.log('getCandidateApplyDetailFromApi')
+      changeLanguage(newLanguage) {
+        this.$emit('changeLanguageEvent', newLanguage)
       },
 
-      changeLanguage(newLanguage) {
-        if (newLanguage !== this.language) {
-          this.language = newLanguage
-          console.log(this.language)
+      async exportPdf() {
+        return await this.$repositories.candidatesApply.exportCvPdf(this.idRow, {
+          language: this.language
+        }, {
+          responseType: 'blob'
+        }).then(res => {
+          if (res.status === 200) {
+            const file = new Blob(
+              [res.data],
+              {type: 'application/pdf'});
+            const fileURL = URL.createObjectURL(file);
+            window.open(fileURL, '_blank');
+          }
+        })
+      },
+
+      showIconSkill(level) {
+        if (level === 1) {
+          return '◯'
+        } else if (level === 2) {
+          return '△'
+        } else if (level === 3) {
+          return '×'
         }
       }
     }

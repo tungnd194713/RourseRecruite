@@ -67,5 +67,68 @@
       "province_45": "Miyazaki",
       "province_46": "Kagoshima",
       "province_47": "Okinawa"
+    },
+  "cv_user": {
+    "title": "Sơ yếu lý lịch",
+    "furigana": "Furigana",
+    "gender": "Giới tính",
+    "name": "Họ tên",
+    "birthday": "Ngày tháng năm sinh",
+    "nationality": "Quốc tịch",
+    "language": "Tiếng mẹ đẻ",
+    "phone_number": "Số điện thoại",
+    "email": "E-mail",
+    "address": "Địa chỉ",
+    "year": "Năm",
+    "month": "Tháng",
+    "educations": "Học vấn",
+    "jobs": "Kinh nghiệm làm việc (bao gồm cả làm thêm)",
+    "end": "Hết",
+    "self_assessment": "Tự đánh giá",
+    "level_1": "〇：Làm việc không vấn đề gì",
+    "level_2": "△：Có thể làm được ở mức độ nào đó",
+    "level_3": "×：Hơi bất an khi làm việc",
+    "skill": "Kỹ năng",
+    "skill_listen": "Kỹ năng nghe",
+    "skill_speak": "Kỹ năng nói",
+    "skill_read": "Kỹ năng đọc",
+    "skill_write": "Kỹ năng viết",
+    "certificates": "Bằng cấp, chứng chỉ, giải thưởng",
+    "reason_apply": "Lý do ứng tuyển",
+    "strength": "Điểm mạnh",
+    "married_status": "Tình trạng hôn nhân",
+    "dependent_person_part_1": "Người phụ thuộc",
+    "dependent_person_part_2": "ngoài vợ/ chồng",
+    "health_part_1": "Tình trạng sức khỏe",
+    "health_part_2": "(Có/không có các bệnh như mãn tính)",
+    "stay_experience_part_1": "Kinh nghiệm lưu trú tại Nhật",
+    "stay_experience_part_2": "(Thời gian & Mục đích)",
+    "visa_part_1": "Visa",
+    "visa_part_2": "(Loại visa & Thời hạn)",
+    "nationality_value": {
+      "1": "Nhật Bản",
+      "2": "Việt Nam"
+    },
+    "gender_value": {
+      "0": "Nam",
+      "1": "Nữ",
+      "2": "Khác"
+    },
+    "language_value": {
+      "1": "Nhật Bản",
+      "2": "Việt Nam"
+    },
+    "married_status_value": {
+      "1": "Độc thân",
+      "2": "Kết hôn"
+    },
+    "dependent_person_value": {
+      "0": "Không",
+      "1": "Có"
+    },
+    "health_value": {
+      "1": "Không có bệnh lý nền",
+      "2": "Có bệnh lý nền"
     }
+  }
 }

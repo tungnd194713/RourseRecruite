@@ -12,5 +12,7 @@ export default {
   defaultDependentPersonListJa: ['無', '有'],
   defaultDependentPersonListVi: ['Không', 'Có'],
   defaultHealthListJa: ['持病なし', '持病あり'],
-  defaultHealthListVi: ['Không có bệnh mãn tính', 'Có bệnh mãn tính']
+  defaultHealthListVi: ['Không có bệnh mãn tính', 'Có bệnh mãn tính'],
+  defaultEducationsListVi: ['Dự kiến tốt nghiệp', 'Tốt nghiệp'],
+  defaultEducationsListJa: ['卒業見込み', '卒業']
 }
