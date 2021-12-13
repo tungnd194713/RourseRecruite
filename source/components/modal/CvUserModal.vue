@@ -52,8 +52,8 @@
                     <td colspan="3" class="border-bottom-dot">トランバンアン</td>
                     <td rowspan="2">
                       <div class="text-center mb-3">{{ $t('cv_user.gender')}}</div>
-                      <div v-if="language === lang_vi" class="text-center">{{ defaultGenderListVi[candidate.gender]}}</div>
-                      <div v-if="language === lang_ja" class="text-center">{{ defaultGenderListJa[candidate.gender]}}</div>
+                      <div v-if="language === lang_vi" class="text-center">{{ defaultLangAndText.defaultGenderListVi[candidate.gender]}}</div>
+                      <div v-if="language === lang_ja" class="text-center">{{ defaultLangAndText.defaultGenderListJa[candidate.gender]}}</div>
                     </td>
                     <td rowspan="4" class="card-photo">
                       <img :src="url_file + candidate.profile_image" alt="">
@@ -92,13 +92,13 @@
                       </div>
                     <td>
                       <div class="text-start">{{ $t('cv_user.nationality')}}</div>
-                      <div v-if="language === lang_vi" class="text-center">{{ defaultNationalityListVi[candidate.nationality - 1]}}</div>
-                      <div v-if="language === lang_ja" class="text-center">{{ defaultNationalityListJa[candidate.nationality - 1]}}</div>
+                      <div v-if="language === lang_vi" class="text-center">{{ defaultLangAndText.defaultNationalityListVi[candidate.nationality - 1]}}</div>
+                      <div v-if="language === lang_ja" class="text-center">{{ defaultLangAndText.defaultNationalityListJa[candidate.nationality - 1]}}</div>
                     </td>
                     <td>
                       <div class="text-start">{{ $t('cv_user.language')}}</div>
-                      <div v-if="language === lang_vi" class="text-center">{{ defaultLanguageListVi[candidate.language - 1]}}</div>
-                      <div v-if="language === lang_ja" class="text-center">{{ defaultLanguageListJa[candidate.language - 1]}}</div>
+                      <div v-if="language === lang_vi" class="text-center">{{ defaultLangAndText.defaultLanguageListVi[candidate.language - 1]}}</div>
+                      <div v-if="language === lang_ja" class="text-center">{{ defaultLangAndText.defaultLanguageListJa[candidate.language - 1]}}</div>
                     </td>
                   </tr>
                   <tr>
@@ -143,10 +143,10 @@
                       <div class="row">
                         <div class="col-9">{{ education.name}}</div>
                         <div v-if="language === lang_vi" class="col-3">
-                          {{ defaultEducationsListVi[education.status - 1]}}
+                          {{ defaultLangAndText.defaultEducationsListVi[education.status - 1]}}
                         </div>
                         <div v-if="language === lang_ja" class="col-3">
-                          {{ defaultEducationsListJa[education.status - 1]}}
+                          {{ defaultLangAndText.defaultEducationsListJa[education.status - 1]}}
                         </div>
                       </div>
                     </td>
@@ -331,14 +331,14 @@
                     <td>{{ $t('cv_user.health_part_1')}}<br>{{ $t('cv_user.health_part_2')}}</td>
                   </tr>
                   <tr v-if="language === lang_vi">
-                    <td>{{ defaultMarriedStatusListVi[candidate.married_status - 1]}}</td>
-                    <td>{{ defaultDependentPersonListVi[candidate.dependent_person]}}</td>
-                    <td>{{ defaultHealthListVi[candidate.health - 1]}}</td>
+                    <td>{{ defaultLangAndText.defaultMarriedStatusListVi[candidate.married_status - 1]}}</td>
+                    <td>{{ defaultLangAndText.defaultDependentPersonListVi[candidate.dependent_person]}}</td>
+                    <td>{{ defaultLangAndText.defaultHealthListVi[candidate.health - 1]}}</td>
                   </tr>
                   <tr v-if="language === lang_ja">
-                    <td>{{ defaultMarriedStatusListJa[candidate.married_status - 1]}}</td>
-                    <td>{{ defaultDependentPersonListJa[candidate.dependent_person]}}</td>
-                    <td>{{ defaultHealthListJa[candidate.health - 1]}}</td>
+                    <td>{{ defaultLangAndText.defaultMarriedStatusListJa[candidate.married_status - 1]}}</td>
+                    <td>{{ defaultLangAndText.defaultDependentPersonListJa[candidate.dependent_person]}}</td>
+                    <td>{{ defaultLangAndText.defaultHealthListJa[candidate.health - 1]}}</td>
                   </tr>
                   </tbody>
                 </table>
@@ -389,20 +389,7 @@
         url_file: process.env.URL_FILE,
         lang_ja: defaultInCvUser.lang_ja,
         lang_vi: defaultInCvUser.lang_vi,
-        defaultGenderListJa: defaultInCvUser.defaultGenderListJa,
-        defaultGenderListVi: defaultInCvUser.defaultGenderListVi,
-        defaultNationalityListJa: defaultInCvUser.defaultNationalityListJa,
-        defaultNationalityListVi: defaultInCvUser.defaultNationalityListVi,
-        defaultLanguageListJa: defaultInCvUser.defaultLanguageListJa,
-        defaultLanguageListVi: defaultInCvUser.defaultLanguageListVi,
-        defaultMarriedStatusListJa: defaultInCvUser.defaultMarriedStatusListJa,
-        defaultMarriedStatusListVi: defaultInCvUser.defaultMarriedStatusListVi,
-        defaultDependentPersonListJa: defaultInCvUser.defaultDependentPersonListJa,
-        defaultDependentPersonListVi: defaultInCvUser.defaultDependentPersonListVi,
-        defaultHealthListJa: defaultInCvUser.defaultHealthListJa,
-        defaultHealthListVi: defaultInCvUser.defaultHealthListVi,
-        defaultEducationsListVi: defaultInCvUser.defaultEducationsListVi,
-        defaultEducationsListJa: defaultInCvUser.defaultEducationsListJa
+        defaultLangAndText: defaultInCvUser
       }
     },
 
