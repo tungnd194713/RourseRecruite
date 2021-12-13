@@ -21,6 +21,6 @@ export default [
     tab: 'invoice',
     srcImage: '/icon_order.svg',
     name: '決済',
-    path: '/companies/invoices',
+    path: '/companies/packages',
   }
 ]

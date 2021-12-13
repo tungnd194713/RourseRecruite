@@ -17,8 +17,7 @@
           <div class="align-items-center">
             <div class="logo mb-3 mb-md-0">
               <img
-                class="logo"
-                :src="profile_image"
+                :src="url_api_file + logo"
                 alt="Company Profile Image"
               />
             </div>
@@ -91,10 +90,10 @@
               {{ description }}
             </div>
           </div>
-          <div class="col-12 col-lg-6 mt-3 mt-lg-0">
+          <div v-if="video_link" class="col-12 col-lg-6 mt-3 mt-lg-0">
             <iframe
               class="img-fluid profile-img w-100"
-              :src="video_link"
+              :src="video_link.includes('youtube') ? video_link : url_api_file + video_link"
               frameborder="0"
               allowfullscreen
             ></iframe>
@@ -108,7 +107,7 @@
         <div class="row">
           <div class="col-12 col-lg-6">
             <h2 class="title">住所</h2>
-            <div class="mt-4">{{ address }}</div>
+            <div class="mt-4">{{ address }}, {{ district }}, {{ $t(province) }}</div>
           </div>
           <div class="col-12 col-lg-6 mt-3 mt-lg-0">
             <div class="map">
@@ -147,6 +146,7 @@
 <script>
 import 'bootstrap/dist/css/bootstrap.css'
 import careers from '~/constants/careers'
+import theProvinces from '~/constants/provinces'
 
 export default {
   name: 'ProfileCompany',
@@ -154,6 +154,7 @@ export default {
 
   data() {
     return {
+      url_api_file: process.env.URL_FILE,
       address: '',
       careers,
       env_map_key: process.env.MAP_API_KEY,
@@ -166,9 +167,11 @@ export default {
       link_website: '',
       facebook_id: '',
       description: '',
-      profile_image: '',
+      logo: '',
       video_link: '',
       images: [],
+      district: '',
+      theProvinces,
     }
   },
 
@@ -194,8 +197,10 @@ export default {
       this.link_website = data.link_website
       this.facebook_id = data.facebook_id
       this.description = data.description
-      this.profile_image = data.profile_image
+      this.logo = data.logo
       this.address = data.address
+      this.district = data.district
+      this.province = this.theProvinces[data.province_id]
       this.video_link = data.video_link
       this.images = data.images
 
