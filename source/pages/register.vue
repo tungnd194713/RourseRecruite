@@ -10,11 +10,11 @@
                     登録されたメールアドレスに確認用のリンクをお送りしました。
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1"
+                    <label for="company-name"
                         >会社名 <span>*</span></label
                     >
                     <input
-                        id="exampleInputEmail1"
+                        id="company-name"
                         v-model.trim="user.company_name"
                         class="form-control form-control-lg"
                         aria-describedby="emailHelp"
@@ -39,9 +39,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="exampleInput3">担当者名 <span>*</span></label>
+                    <label for="manager-name">担当者名 <span>*</span></label>
                     <input
-                        id="exampleInput3"
+                        id="manager-name"
                         v-model.trim="user.manager_name"
                         type="text"
                         class="form-control form-control-lg"
@@ -66,11 +66,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="exampleInput5"
+                    <label for="mail"
                         >メールアドレス <span>*</span></label
                     >
                     <input
-                        id="exampleInput5"
+                        id="mail"
                         v-model.trim="user.email"
                         type="text"
                         class="form-control form-control-lg"
@@ -101,9 +101,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInput6">電話番号 <span>*</span></label>
+                    <label for="phone">電話番号 <span>*</span></label>
                     <input
-                        id="exampleInput6"
+                        id="phone"
                         v-model.trim="user.phone"
                         type="text"
                         class="form-control form-control-lg"
@@ -140,9 +140,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInput7">パスワード <span>*</span></label>
+                    <label for="password">パスワード <span>*</span></label>
                     <input
-                        id="exampleInput7"
+                        id="password"
                         v-model.trim="user.password"
                         type="text"
                         class="form-control form-control-lg"
@@ -169,11 +169,11 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInput8"
+                    <label for="confirm-password"
                         >パスワード（確認) <span>*</span></label
                     >
                     <input
-                        id="exampleInput8"
+                        id="confirm-password"
                         v-model.trim="user.confirm_password"
                         type="text"
                         class="form-control form-control-lg"
@@ -200,20 +200,20 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputGroupSelect01s"
+                    <label for="career"
                         >業界・分野 <span>*</span></label
                     >
                     <select
-                        id="inputGroupSelect01s"
+                        id="career"
                         v-model="user.career"
                         class="form-select form-select-lg"
                     >
                         <option
-                            v-for="item in formCareerList"
-                            :key="item.value"
-                            :value="item.value"
+                            v-for="(career, index) in careers"
+                            :key="index"
+                            :value="index + 1"
                         >
-                            {{ item.text }}
+                            {{ $t(career) }}
                         </option>
                     </select>
                     <div v-if="$v.user.career.$error">
@@ -230,9 +230,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="exampleInput10">郵便番号 <span>*</span></label>
+                    <label for="postal-code">郵便番号 <span>*</span></label>
                     <input
-                        id="exampleInput10"
+                        id="postal-code"
                         v-model.trim="user.postal_code"
                         type="text"
                         class="form-control form-control-lg"
@@ -256,20 +256,20 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="inputGroupSelect01"
+                    <label for="provinces"
                         >都道府県<span>*</span></label
                     >
                     <select
-                        id="inputGroupSelect01"
+                        id="provinces"
                         v-model="user.province_id"
                         class="form-select form-select-lg"
                     >
                         <option
-                            v-for="item in formProvinceList"
-                            :key="item.value"
-                            :value="item.value"
+                            v-for="(province, index) in provinces"
+                            :key="index"
+                            :value="index + 1"
                         >
-                            {{ item.text }}
+                            {{ $t(province) }}
                         </option>
                     </select>
                     <div v-if="$v.user.province_id.$error">
@@ -283,9 +283,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="exampleInput8i">市区町村<span>*</span></label>
+                    <label for="district">市区町村<span>*</span></label>
                     <input
-                        id="exampleInput8i"
+                        id="district"
                         v-model.trim="user.district"
                         type="text"
                         class="form-control form-control-lg"
@@ -309,9 +309,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="exampleInput8i">番地<span>*</span></label>
+                    <label for="address">番地<span>*</span></label>
                     <input
-                        id="exampleInput8i"
+                        id="address"
                         v-model.trim="user.address"
                         type="text"
                         class="form-control form-control-lg"
@@ -397,11 +397,13 @@ import {
     helpers,
 } from 'vuelidate/lib/validators'
 
+import theCareers from '~/constants/careers'
+import theProvinces from '~/constants/provinces'
+
 const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/g)
 const phone = helpers.regex(
     'phone',
-    /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{3})/
-)
+    /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{3})/)
 
 export default {
     name: 'Register',
@@ -421,34 +423,12 @@ export default {
                 address: '',
             },
             acceptTerms: '',
-
-            formCareerList: [
-                {
-                    text: 'career 1',
-                    value: 1,
-                },
-                {
-                    text: 'career 2',
-                    value: 2,
-                },
-            ],
-
-            formProvinceList: [
-                {
-                    text: 'provice 1',
-                    value: 1,
-                },
-                {
-                    text: 'provice 2',
-                    value: 2,
-                },
-                {
-                    text: 'provice 3',
-                    value: 3,
-                },
-            ],
             errors: [],
             message: '',
+            theCareers,
+            theProvinces,
+            careers: [],
+            provinces: [],
         }
     },
 
@@ -507,6 +487,11 @@ export default {
         acceptTerms: {
             required,
         },
+    },
+
+    created() {
+        this.careers = theCareers
+        this.provinces = theProvinces
     },
 
     methods: {
