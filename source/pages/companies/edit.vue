@@ -776,7 +776,9 @@ export default {
         required: requiredIf(function () {
           return this.uploadedIntroImage.length === 0
         }),
-        lessThanFive,
+        length: {
+          lessThanFive
+        },
         $each: {
           name: {
             imageRule,
