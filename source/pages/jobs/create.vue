@@ -122,13 +122,37 @@
         <div class="form-group mb-3 mb-lg-4 row">
           <label for="inputGroupSelect01" class="col-sm-2 col-form-label">在留資格 <span>*</span></label>
           <div class="col-12 col-sm-4">
-            <div class="input-group input-group-icon">
-              <span class="input-group-text input-group-text-pre">
+            <div class="input-group input-group-icon flex-column">
+              <div class="input-group input-group-icon flex-nowrap">
+                <span class="input-group-text input-group-text-pre">
                   <img src="../../assets/images/icon_stay.svg" alt="">
-              </span>
-              <select id="inputGroupSelect01" v-model="job.status_stay" class="form-select rounded-end" multiple>
-              <option v-for="item in statusStayList" :key="item.value" :value="item.value">{{ item.text }}</option>
-            </select>
+                </span>
+                <div
+                  ref="statusStayDropdownRef"
+                  class="status-stay-dropdown"
+                  @click="showStatusStayDropdown"
+                  @focusout="focusOutStatusStayListDropdown"
+                >
+                  <div class="over-select"></div>
+                  <select class="form-select rounded-end">
+                    <option value="">{{ previewStatusStay()}}</option>
+                  </select>
+                </div>
+              </div>
+              <div v-if="showStatusStayList" class="multi-select-status-stay">
+                <ul>
+                  <li v-for="item in statusStayList" :key="item.value">
+                    <label :for="'statusStay' +item.value">
+                      <input
+                        :id="'statusStay' +item.value"
+                        v-model="job.status_stay"
+                        type="checkbox"
+                        :value="item.value">
+                      {{ item.text }}
+                    </label>
+                  </li>
+                </ul>
+              </div>
               <div class="invalid-feedback">
                 Please choose a 在留資格.
               </div>
@@ -252,6 +276,7 @@
             <div v-if="$v.job.salary_max.$error">
               <div v-if="!$v.job.salary_max.required" class="error-text">これは必須項目なので、必ず入力してください</div>
               <div v-if="!$v.job.salary_max.maxLength" class="error-text">10数字以下で入力してください</div>
+              <div v-if="!$v.job.salary_max.isGreaterThanSalaryMin" class="error-text">Must be greater than salary_min</div>
             </div>
           </div>
 
@@ -497,6 +522,8 @@
 
     data() {
       return {
+        previewNewRoute: '/jobs/preview-new',
+        showStatusStayList: false,
         openDateEndPicker: false,
         previewImageJobUrl: null,
         displaySalary: 'salary_max',
@@ -642,13 +669,25 @@
         },
         salary_max: {
           required,
-          maxLength: maxLength(10)
+          maxLength: maxLength(10),
+          isGreaterThanSalaryMin(value) {
+            if (this.job.salary_min) {
+              return value > this.job.salary_min
+            }
+            return true
+          }
         },
         salary_min: {
           required: requiredIf(function () {
             return this.displaySalary === 'salary_range'
           }),
-          maxLength: maxLength(10)
+          maxLength: maxLength(10),
+          // isLowerThanSalaryMax(value) {
+          //   if (this.job.salary_max) {
+          //     return value < this.job.salary_max
+          //   }
+          //   return true
+          // }
         },
         content_work: {
           required,
@@ -711,17 +750,51 @@
     created() {
       this.provinceList = defaultProvinces
       this.resetData()
-      let jobStored = {}
-      jobStored = Object.assign({}, this.$store.getters['job/getJob'])
-      if (Object.keys(jobStored).length !== 0) {
-        this.job = Object.assign({}, jobStored)
-        if (this.job.image_job) {
-          this.previewImageJobUrl = URL.createObjectURL(this.job.image_job)
+      if (this.previewNewRoute === this.$store.getters['job/getPrevRoute']) {
+        let jobStored = {}
+        jobStored = Object.assign({}, this.$store.getters['job/getJob'])
+        if (Object.keys(jobStored).length !== 0) {
+          this.job = Object.assign({}, jobStored)
+          if (this.job.image_job) {
+            this.previewImageJobUrl = URL.createObjectURL(this.job.image_job)
+          }
         }
+        this.$store.dispatch('job/setPrevRoute', '')
       }
+
     },
 
     methods: {
+      showStatusStayDropdown() {
+        this.showStatusStayList = !this.showStatusStayList
+      },
+
+      filterPreviewStatusStay(element) {
+        for (let i = 0; i < this.job.status_stay.length; i++) {
+          if (element.value === this.job.status_stay[i]) {
+            return true
+          }
+        }
+        return false
+      },
+
+      previewStatusStay() {
+        const statusStaySelected = this.statusStayList.filter(this.filterPreviewStatusStay)
+        let result = ''
+        statusStaySelected.forEach(function (item, index) {
+          if (index === statusStaySelected.length - 1) {
+            result += item.text
+          } else {
+            result += item.text + ' - '
+          }
+        })
+        return result
+      },
+
+      focusOutStatusStayListDropdown() {
+        this.$refs.statusStayDropdownRef.click()
+      },
+
       onClickBoxUploadFile() {
         this.$refs.imageJob.click()
       },
@@ -793,6 +866,7 @@
 
       resetForm() {
         this.resetData()
+        this.$store.dispatch('job/setJob', {})
         this.$refs.closeConfirmCancelModal.click()
       },
 

@@ -100,7 +100,7 @@
           </table>
         </div>
         <div class="d-flex justify-content-end footer">
-          <button id="btn_back" class="btn" @click="$router.push('/jobs/create')">戻る</button>
+          <button id="btn_back" class="btn" @click="backToCreateJobPage">戻る</button>
           <button id="btn_completion" class="btn" @click="completeCreateJob">完了</button>
           <button
             ref="showCompleteCreateJobModal"
@@ -287,6 +287,11 @@
         return this.isJobStored() ? this.statusStayList.filter(this.filterPreviewStatusStay) : []
       },
 
+      backToCreateJobPage() {
+        this.$store.dispatch('job/setPrevRoute', this.$route.path)
+        this.$router.push('/jobs/create')
+      },
+
       async completeCreateJob() {
         if (this.job.salary_min === '') {
           this.job.salary_min = 0
@@ -321,6 +326,7 @@
           if (res.status === 201) {
             this.$refs.showCompleteCreateJobModal.click()
             this.$store.dispatch('job/setJob', {})
+            this.$store.dispatch('job/setPrevRoute', '')
           }
           if (res.response && res.response.status === 406) {
             this.$toast.error(res.response.data.message)
