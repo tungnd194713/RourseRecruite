@@ -403,8 +403,7 @@ import theProvinces from '~/constants/provinces'
 const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/g)
 const phone = helpers.regex(
     'phone',
-    /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{3})/
-)
+    /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{3})/)
 
 export default {
     name: 'Register',
