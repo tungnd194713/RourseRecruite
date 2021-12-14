@@ -24,7 +24,8 @@
 
           <div v-if="$v.job.image_job.$error" class="text-center error-text">
             <div v-if="!$v.job.image_job.name.imageRule">画像はpng / jpg / jpeg / gifの形式でアプロードしてください</div>
-            <div v-if="!$v.job.image_job.size.imageSize">2MB以下の写真をアップロードしてください</div>
+<!--            <div v-if="!$v.job.image_job.size.imageSize">2MB以下の写真をアップロードしてください</div>-->
+            <div v-if="!$v.job.image_job.size">2MB以下の写真をアップロードしてください</div>
           </div>
         </div>
         <div class="form-group mb-3 mb-lg-4 row">
@@ -64,6 +65,7 @@
                   format="YYYY-MM-DD"
                   :clearable="false"
                   :editable="false"
+                  :disabled-date="notBeforeToday"
                   input-class="input-datepicker-create-job"
                   @input="$v.job.date_start.$touch()"
                   @blur="$v.job.date_start.$touch()"
@@ -172,7 +174,7 @@
         </div>
         <div class="form-group mb-1 row">
           <label class="col-sm-2 col-form-label">月給 <span>*</span></label>
-          <div class="col-12 col-sm-4">
+          <div class="col-12 col-sm-10">
             <div class="form-check">
               <div class="float-start">
                 <input id="gridCheck1" v-model="displaySalary" class="form-check-input" type="radio" value="salary_max">
@@ -203,6 +205,7 @@
                 class="form-control rounded-end"
                 @input="$v.job.salary_max.$touch()"
                 @blur="$v.job.salary_max.$touch()"
+                @keypress="keyPressForNumberInput"
               >
             </div>
             <div v-if="$v.job.salary_max.$error">
@@ -222,6 +225,7 @@
                 class="form-control rounded-end"
                 @input="$v.job.salary_min.$touch()"
                 @blur="$v.job.salary_min.$touch()"
+                @keypress="keyPressForNumberInput"
               >
             </div>
             <div v-if="$v.job.salary_min.$error">
@@ -242,6 +246,7 @@
                 class="form-control rounded-end"
                 @input="$v.job.salary_max.$touch()"
                 @blur="$v.job.salary_max.$touch()"
+                @keypress="keyPressForNumberInput"
               >
             </div>
             <div v-if="$v.job.salary_max.$error">
@@ -482,7 +487,8 @@
   import defaultProvinces from '~/constants/provinces'
 
   const imageRule = helpers.regex('image', /\.(jpeg|png|jpg|gif)$/)
-  const imageSize = (value) => value <= 2000000
+  // const imageSize = (value) => value <= 2000000
+  const maximumImageSize = 2000000
 
   export default {
     name: "CreateJob",
@@ -496,41 +502,41 @@
         displaySalary: 'salary_max',
         typePlanList:[
           {
-            text: 'A',
+            text: 'プランA',
             value: 1
           },
           {
-            text: 'B',
+            text: 'プランB',
             value: 2
           },
           {
-            text: 'C',
+            text: 'プランC',
             value: 3
           },
           {
-            text: 'Standard plan',
+            text: '標準プラン',
             value: 4
           },
         ],
         displayMonthList: [
           {
-            text: '1 month',
+            text: '1ヶ月',
             value: 1
           },
           {
-            text: '2 months',
+            text: '2ヶ月',
             value: 2
           },
           {
-            text: '3 months',
+            text: '3ヶ月',
             value: 3
           },
           {
-            text: '4 months',
+            text: '4ヶ月',
             value: 4
           },
           {
-            text: '5 months',
+            text: '5ヶ月',
             value: 5
           },
         ],
@@ -582,7 +588,7 @@
         job: {
           image_job: null,
           title: '',
-          date_start: this.$moment().format('YYYY-MM-DD'),
+          date_start: this.$moment().add(1, 'day').format('YYYY-MM-DD'),
           type_plan: '',
           display_month: '',
           form_recruitment: '',
@@ -610,8 +616,11 @@
           name: {
             imageRule
           },
-          size: {
-            imageSize
+          size(val) {
+            if (this.job.image_job) {
+              return this.job.image_job.size <= maximumImageSize
+            }
+            return true
           }
         },
         title: {
@@ -745,11 +754,16 @@
         }
       },
 
+      notBeforeToday(date) {
+        // return date < new Date(new Date().setHours(0, 0, 0, 0));
+        return this.$moment(date) < this.$moment();
+      },
+
       resetData() {
         this.job = Object.assign({}, {
           image_job: null,
           title: '',
-          date_start: this.$moment().format('YYYY-MM-DD'),
+          date_start: this.$moment().add(1, 'day').format('YYYY-MM-DD'),
           type_plan: '',
           display_month: '',
           form_recruitment: '',
