@@ -916,11 +916,11 @@
       },
 
       onClickEditJob() {
-        if (this.$moment() < this.$moment(this.job.date_start)) {
+        // if (this.$moment() < this.$moment(this.job.date_start)) {
           this.$router.push(`/jobs/update/${this.$route.params.id}`)
-        } else {
-          this.$toast.error('Can not edit job')
-        }
+        // } else {
+        //   this.$toast.error('Can not edit job')
+        // }
       },
 
       async getJobFromApi() {
