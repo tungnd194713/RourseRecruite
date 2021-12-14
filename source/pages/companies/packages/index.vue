@@ -1,7 +1,7 @@
 <template>
     <main class="container my-3 my-lg-4">
         <ul class="nav nav-tabs">
-            <li class="nav-item w-50">
+            <li class="nav-item">
                 <NuxtLink
                     to="/companies/packages"
                     class="nav-link big-nav nav-one active"
@@ -9,10 +9,17 @@
                     >決済情報</NuxtLink
                 >
             </li>
-            <li class="nav-item w-50">
+            <li class="nav-item">
+                <NuxtLink
+                    to="/"
+                    class="nav-link big-nav nav-two"
+                    >請求書</NuxtLink
+                >
+            </li>
+            <li class="nav-item">
                 <NuxtLink
                     to="/companies/invoices"
-                    class="nav-link big-nav nav-two"
+                    class="nav-link big-nav nav-three"
                     >決済履歴</NuxtLink
                 >
             </li>

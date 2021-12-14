@@ -5,6 +5,10 @@
             <div class="bg-white box-form-register">
                 <h1 class="mb-3 mb-lg-4 fw-bold">会員登録フォーム</h1>
                 <!--<form>-->
+                <div v-if="message === 200" class="valid-feedback error">
+                    ご登録ありがとうございます。<br />
+                    登録されたメールアドレスに確認用のリンクをお送りしました。
+                </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1"
                         >会社名 <span>*</span></label
@@ -31,12 +35,6 @@
                         >
                             100文字以下で入力してください
                         </div>
-                    </div>
-                    <div
-                        v-if="errors.company_name"
-                        class="invalid-feedback error"
-                    >
-                        会社名は既に存在しています
                     </div>
                 </div>
 
@@ -95,7 +93,10 @@
                             メールアドレスの形式で入力してください
                         </div>
                     </div>
-                    <div v-if="errors.email" class="invalid-feedback error">
+                    <div
+                        v-if="errors.email && $v.user.email.required"
+                        class="invalid-feedback error"
+                    >
                         このメールアドレスは既に存在しています
                     </div>
                 </div>
@@ -127,9 +128,15 @@
                         >
                             9数字以上13数字以下で入力してください
                         </div>
-                    </div>
-                    <div v-if="errors.phone" class="invalid-feedback error">
-                        この電話番号は既に存在しています
+
+                        <div
+                            v-else-if="
+                                !$v.user.phone.phone && $v.user.phone.required
+                            "
+                            class="invalid-feedback error"
+                        >
+                            整数を入力してください
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -167,22 +174,25 @@
                     >
                     <input
                         id="exampleInput8"
-                        v-model.trim="user.confirmPassword"
+                        v-model.trim="user.confirm_password"
                         type="text"
                         class="form-control form-control-lg"
-                        @input="$v.user.confirmPassword.$touch()"
-                        @blur="$v.user.confirmPassword.$touch()"
+                        @input="$v.user.confirm_password.$touch()"
+                        @blur="$v.user.confirm_password.$touch()"
                     />
-                    <div v-if="$v.user.confirmPassword.$error">
+                    <div v-if="$v.user.confirm_password.$error">
                         <div
-                            v-if="!$v.user.confirmPassword.required"
+                            v-if="!$v.user.confirm_password.required"
                             class="invalid-feedback error"
                         >
                             これは必須項目なので、必ず入力してください
                         </div>
 
                         <div
-                            v-if="!$v.user.confirmPassword.sameAsPassword"
+                            v-if="
+                                !$v.user.confirm_password.sameAsPassword &&
+                                $v.user.confirm_password.required
+                            "
                             class="invalid-feedback error"
                         >
                             入力したパスワードが一致しません
@@ -190,7 +200,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputGroupSelect01s">業界・分野 <span>*</span></label>
+                    <label for="inputGroupSelect01s"
+                        >業界・分野 <span>*</span></label
+                    >
                     <select
                         id="inputGroupSelect01s"
                         v-model="user.career"
@@ -204,9 +216,13 @@
                             {{ item.text }}
                         </option>
                     </select>
-
-                    <div class="invalid-feedback">
-                        これは必須項目なので、必ず選択してください
+                    <div v-if="$v.user.career.$error">
+                        <div
+                            v-if="!$v.user.career.required"
+                            class="invalid-feedback error"
+                        >
+                            これは必須項目なので、必ず選択してください
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -217,42 +233,103 @@
                     <label for="exampleInput10">郵便番号 <span>*</span></label>
                     <input
                         id="exampleInput10"
+                        v-model.trim="user.postal_code"
                         type="text"
                         class="form-control form-control-lg"
+                        @input="$v.user.postal_code.$touch()"
+                        @blur="$v.user.postal_code.$touch()"
                     />
+                    <div v-if="$v.user.postal_code.$error">
+                        <div
+                            v-if="!$v.user.postal_code.required"
+                            class="invalid-feedback error"
+                        >
+                            これは必須項目なので、必ず選択してください
+                        </div>
+                        <div
+                            v-if="!$v.user.postal_code.postalCode"
+                            class="invalid-feedback error"
+                        >
+                            郵便番号の形式で入力してください
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="inputGroupSelect01"
-                        >都道府県 <span>*</span></label
+                        >都道府県<span>*</span></label
                     >
                     <select
                         id="inputGroupSelect01"
+                        v-model="user.province_id"
                         class="form-select form-select-lg"
                     >
-                        <option selected></option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <option
+                            v-for="item in formProvinceList"
+                            :key="item.value"
+                            :value="item.value"
+                        >
+                            {{ item.text }}
+                        </option>
                     </select>
+                    <div v-if="$v.user.province_id.$error">
+                        <div
+                            v-if="!$v.user.province_id.required"
+                            class="invalid-feedback error"
+                        >
+                            これは必須項目なので、必ず選択してください
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="exampleInput8i">市区町村 <span>*</span></label>
+                    <label for="exampleInput8i">市区町村<span>*</span></label>
                     <input
                         id="exampleInput8i"
+                        v-model.trim="user.district"
                         type="text"
                         class="form-control form-control-lg"
+                        @input="$v.user.district.$touch()"
+                        @blur="$v.user.district.$touch()"
                     />
+                    <div v-if="$v.user.district.$error">
+                        <div
+                            v-if="!$v.user.district.required"
+                            class="invalid-feedback error"
+                        >
+                            これは必須項目なので、必ず入力してください
+                        </div>
+                        <div
+                            v-if="!$v.user.district.maxLength"
+                            class="invalid-feedback error"
+                        >
+                            200文字以下で入力してください
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="exampleInput9">番地 <span>*</span></label>
+                    <label for="exampleInput8i">番地<span>*</span></label>
                     <input
-                        id="exampleInput9"
+                        id="exampleInput8i"
+                        v-model.trim="user.address"
                         type="text"
                         class="form-control form-control-lg"
                     />
+                    <div v-if="$v.user.address.$error">
+                        <div
+                            v-if="!$v.user.address.required"
+                            class="invalid-feedback error"
+                        >
+                            これは必須項目なので、必ず入力してください
+                        </div>
+                        <div
+                            v-if="!$v.user.address.maxLength"
+                            class="invalid-feedback error"
+                        >
+                            200文字以下で入力してください
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-check">
@@ -277,17 +354,31 @@
                         </div>
                     </div>
                 </div>
-                <button
-                    id="signup"
-                    type="submit"
-                    class="btn fw-bold my-3 my-lg-4 rounded-pill"
-                >
-                    登録
-                </button>
-                <div v-if="message" class="valid-feedback">
-                    ご登録ありがとうございます。登録されたメールアドレスに確認用のリンクをお送りしました。
+                <div>
+                    <NuxtLink to="/login">
+                        <button
+                            id="btn_cancel"
+                            type="submit"
+                            class="btn fw-bold my-3 my-lg-4 rounded-pill"
+                            style="
+                                background-color: white;
+                                border-color: black;
+                                color: black;
+                                width: 50%;
+                                font-size: 16px;
+                            "
+                        >
+                            キャンセル
+                        </button>
+                    </NuxtLink>
+                    <button
+                        id="signup"
+                        type="submit"
+                        class="btn fw-bold my-3 my-lg-4 rounded-pill cancel"
+                    >
+                        登録
+                    </button>
                 </div>
-
                 <!--</form>-->
             </div>
             <!--</form>-->
@@ -303,23 +394,57 @@ import {
     sameAs,
     minLength,
     maxLength,
+    helpers,
 } from 'vuelidate/lib/validators'
+
+const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/g)
+const phone = helpers.regex(
+    'phone',
+    /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{3})/
+)
 
 export default {
     name: 'Register',
     data() {
         return {
-            user: {},
+            user: {
+                company_name: '',
+                manager_name: '',
+                email: '',
+                phone: '',
+                password: '',
+                confirm_password: '',
+                career: '',
+                postal_code: '',
+                province_id: '',
+                district: '',
+                address: '',
+            },
             acceptTerms: '',
 
             formCareerList: [
                 {
-                    text: '1',
+                    text: 'career 1',
                     value: 1,
                 },
                 {
-                    text: '2',
+                    text: 'career 2',
                     value: 2,
+                },
+            ],
+
+            formProvinceList: [
+                {
+                    text: 'provice 1',
+                    value: 1,
+                },
+                {
+                    text: 'provice 2',
+                    value: 2,
+                },
+                {
+                    text: 'provice 3',
+                    value: 3,
                 },
             ],
             errors: [],
@@ -349,19 +474,34 @@ export default {
                 required,
                 minLength: minLength(9),
                 maxLength: maxLength(13),
+                phone,
             },
             password: {
                 required,
                 minLength: minLength(6),
                 maxLength: maxLength(30),
             },
-            confirmPassword: {
+            confirm_password: {
                 required,
                 sameAsPassword: sameAs('password'),
             },
-
             career: {
                 required,
+            },
+            postal_code: {
+                required,
+                postalCode,
+            },
+            province_id: {
+                required,
+            },
+            district: {
+                required,
+                maxLength: maxLength(200),
+            },
+            address: {
+                required,
+                maxLength: maxLength(200),
             },
         },
         acceptTerms: {
@@ -380,11 +520,11 @@ export default {
                         .registerAccount(this.user)
                         .then((response) => {
                             const data = this.$handleResponse(response)
-                            this.message = data.message
+                            this.message = response.status
                             this.errors = data.errors
                         })
-                } catch (e) {
-                    const data = this.$handleResponse(e)
+                } catch (error) {
+                    const data = this.$handleResponse(error)
                     this.errors = data.errors
                 }
             }
