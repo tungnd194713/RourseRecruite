@@ -246,6 +246,40 @@
   align-items: baseline;
 }
 
+.box-modal {
+  border-radius: 15px;
+}
+
+.close-modal {
+  height: 30px;
+}
+
+.modal-header {
+  justify-content: end;
+}
+
+.modal-body > h3 > img {
+  height: 200px;
+}
+
+.btn-secondary-custom {
+  color: #fff;
+  background-color: #c9c9c9;
+  border-color: #c9c9c9;
+}
+
+.modal-body-text {
+  color: #076dad;
+}
+
+.modal-footer {
+  border-top: none !important;
+}
+
+.custom-input-group {
+  flex-wrap: unset !important;
+}
+
 @media (max-width: 768px) {
   .date-picker .mx-input {
     width: 100%;
