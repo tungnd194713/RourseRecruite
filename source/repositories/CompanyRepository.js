@@ -15,8 +15,5 @@ export default ($axios) => ({
   },
   updateCompanyProfileImage(payload, header) {
     return $axios.post(`${resource}/profiles/update-profile-image`, payload, header)
-  },
-  uploadIntroImage(payload, header) {
-    return $axios.post(`${resource}/profiles/upload-intro-image`, payload, header)
   }
 })

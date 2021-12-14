@@ -442,7 +442,7 @@
                   @drop="drop($event, introImages)"
                 >
                   <img
-                    v-if="!data.images.length && !uploadedIntroImage.length"
+                    v-if="!uploadedImages.length && !uploadedIntroImage.length"
                     src="../../assets/images/icon_upload_file.svg"
                     alt=""
                   />
@@ -482,7 +482,7 @@
                       class="p-1 row file-preview"
                     >
                       <img
-                        :src="url_api_file + file"
+                        :src="imageUrl[index]"
                         alt=""
                         style="width: 100px; height: 100px"
                       />
@@ -930,7 +930,12 @@ export default {
       }
       if (fileType === 2) {
         this.data.images = [...this.$refs.introImageInput.files]
-        this.uploadIntroImage(this.data.images)
+        for (let i = 0; i < this.data.images.length; i++) {
+          const file = this.data.images[i]
+
+          this.uploadedImages.push(file)
+          this.imageUrl.push(window.URL.createObjectURL(file))
+        }
       }
       if (fileType === 3) {
         this.data.video = [...this.$refs.videoInput.files]
@@ -956,6 +961,7 @@ export default {
         this.$refs.logoInput.value = ''
       }
       if (fileType === 2) {
+        this.imageUrl.splice(i, 1)
         this.uploadedImages.splice(i, 1)
         this.$refs.introImageInput.value = ''
       }
@@ -970,101 +976,74 @@ export default {
     clearErrors() {
       this.errors = ''
     },
-    async uploadIntroImage(data) {
+    async editCompanyProfile() {
       this.$v.data.$touch()
-      if (
-        data.length +
-          this.uploadedImages.length +
-          this.uploadedIntroImage.length >
-        5
-      ) {
+      if (this.uploadedImages.length + this.uploadedIntroImage.length > 5) {
         this.errors.images = ['5つ以下の写真をアップロードしてください']
       } else {
+        this.clearErrors()
         const dataCompany = new FormData()
-        for (let i = 0; i < data.length; i++) {
-          const file = data[i]
+        dataCompany.append('career', this.data.career)
+        dataCompany.append('address', this.data.address)
+        dataCompany.append('company_name', this.data.company_name)
+        dataCompany.append('manager_name', this.data.manager_name)
+        dataCompany.append('founded_year', this.data.founded_year)
+        dataCompany.append('number_members', this.data.number_members)
+        dataCompany.append('link_website', this.data.link_website)
+        dataCompany.append('link_facebook', this.data.link_facebook)
+        dataCompany.append('description', this.data.description)
+        dataCompany.append('video_link', this.data.video_link)
+        dataCompany.append('phone', this.data.phone)
+        dataCompany.append('youtube', this.data.youtube)
+        dataCompany.append('postal_code', this.data.postal_code)
+        dataCompany.append('district', this.data.district)
+        dataCompany.append('province_id', this.data.province)
+        dataCompany.append('email', this.data.email)
+        for (let i = 0; i < this.data.removeIntroImage.length; i++) {
+          const remove = this.data.removeIntroImage[i]
+
+          dataCompany.append('remove_images[' + i + ']', remove)
+        }
+
+        for (let i = 0; i < this.uploadedImages.length; i++) {
+          const file = this.uploadedImages[i]
 
           dataCompany.append('images[' + i + ']', file)
         }
-        try {
-          this.clearErrors()
-          await this.$repositories.profiles
-            .uploadIntroImage(dataCompany, {
-              header: {
-                'Content-Type': 'multipart/form-data',
-              },
-            })
-            .then((res) => {
-              const data = this.$handleResponse(res)
-              if (data.errors) {
-                this.errors = data.errors
-              }
-              if (res.status === 200) {
-                this.uploadedImages.push(...res.data)
-              }
-            })
-        } catch (e) {
-          this.errors = e.response.data.errors
+
+        if (this.data.logo[0]) {
+          dataCompany.append('logo', this.data.logo[0])
         }
-      }
-    },
-    async editCompanyProfile() {
-      this.$v.data.$touch()
 
-      const dataCompany = new FormData()
-      dataCompany.append('career', this.data.career)
-      dataCompany.append('address', this.data.address)
-      dataCompany.append('company_name', this.data.company_name)
-      dataCompany.append('manager_name', this.data.manager_name)
-      dataCompany.append('founded_year', this.data.founded_year)
-      dataCompany.append('number_members', this.data.number_members)
-      dataCompany.append('link_website', this.data.link_website)
-      dataCompany.append('link_facebook', this.data.link_facebook)
-      dataCompany.append('description', this.data.description)
-      dataCompany.append('video_link', this.data.video_link)
-      dataCompany.append('phone', this.data.phone)
-      dataCompany.append('youtube', this.data.youtube)
-      dataCompany.append('postal_code', this.data.postal_code)
-      dataCompany.append('district', this.data.district)
-      dataCompany.append('province_id', this.data.province)
-      dataCompany.append('email', this.data.email)
-      for (let i = 0; i < this.data.removeIntroImage.length; i++) {
-        const remove = this.data.removeIntroImage[i]
-
-        dataCompany.append('remove_images[' + i + ']', remove)
-      }
-      for (let i = 0; i < this.uploadedImages.length; i++) {
-        const file = this.uploadedImages[i]
-
-        dataCompany.append('images[' + i + ']', file)
-      }
-      if (this.data.logo[0]) {
-        dataCompany.append('logo', this.data.logo[0])
-      }
-
-      if (this.$refs.videoInput) {
-        dataCompany.append('video', this.$refs.videoInput.files[0])
-      }
-      if (!this.$v.data.$invalid) {
-        try {
-          await this.$repositories.profiles
-            .editCompanyProfile(dataCompany, {
-              header: {
-                'Content-Type': 'multipart/form-data',
-              },
-            })
-            .then((res) => {
-              const data = this.$handleResponse(res)
-              if (data.errors) {
-                this.errors = data.errors
-              }
-              if (res.status === 200) {
-                this.$toast.success('会社情報の更新に成功しました。')
-                setTimeout(this.$router.push('/companies'), 2000)
-              }
-            })
-        } catch (e) {
-          this.errors = e.response.data.errors
+        if (this.$refs.videoInput) {
+          dataCompany.append(
+            'video',
+            this.$refs.videoInput.files[0]
+              ? this.$refs.videoInput.files[0]
+              : 'null'
+          )
+        }
+        if (!this.$v.data.$invalid) {
+          try {
+            await this.$repositories.profiles
+              .editCompanyProfile(dataCompany, {
+                header: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              })
+              .then((res) => {
+                const data = this.$handleResponse(res)
+                if (data.errors) {
+                  this.errors = data.errors
+                }
+                if (res.status === 200) {
+                  this.$toast.success('会社情報の更新に成功しました。')
+                  setTimeout(this.$router.push('/companies'), 2000)
+                }
+              })
+          } catch (e) {
+            this.errors = e.response.data.errors
+          }
         }
       }
     },
