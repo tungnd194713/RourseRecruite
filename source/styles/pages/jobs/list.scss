@@ -24,7 +24,7 @@
 }
 
 .btn-add-job:hover {
-  color: #ffffff;
+  background-color: #6e9ddf;
 }
 
 
@@ -62,11 +62,11 @@ input::placeholder {
 }
 
 .btn-search-job:hover {
-  color: #ffffff;
+  background-color: #b7d5e5;
 }
 
 .btn-switch {
-  width: 92px;
+  width: 100px;
   border: 1px solid #87B0C6;
 }
 
@@ -175,6 +175,10 @@ table thead tr{
   border-bottom-color: #ededed;
 }
 
+table tbody td{
+  padding: 1rem 0;
+}
+
 .btn-outline-primary {
     border-color: #2f83b9;
     color: #2f83b9;
@@ -191,8 +195,8 @@ table thead tr{
   font-size: 10px;
   background-color: #87B0C6;
   position: absolute;
-  margin-top: -30px;
-  margin-left: -18px;
+  margin-top: -22px;
+  margin-left: -21px;
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
 }
@@ -201,40 +205,32 @@ table thead tr{
   height: 19px;
 }
 
-@media only screen and (max-width: 600px) {
-  .box-title h4 {
-    font-size: 20px;
-  }
+.outer-spinner {
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .box-search {
-    border-radius: 1rem !important;
-  }
+.loader {
+  border: 10px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 10px solid #3498db;
+  width: 80px;
+  height: 80px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
 
-  .btn-add-job {
-    font-size: 10px;
-  }
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
 
-  .btn-switch .btn {
-    font-size: 10px;
-  }
-
-  .box-table table {
-    font-size: 12px;
-  }
-
-  .td-warning img {
-    height: 15px;
-  }
-
-  .td-warning {
-    padding: 1px 0 1px 10px;
-    font-size: 7px;
-    margin-top: -23px;
-  }
-
-  .box-pagination p {
-    font-size: 10px;
-  }
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .box-modal {
@@ -268,5 +264,104 @@ table thead tr{
 }
 
 .w-20 {
-  width: 20% !important;
+  width: 20%;
+}
+
+@media only screen and (max-width: 1400px) {
+  .td-warning {
+    margin-top: -22px;
+    margin-left: -18px;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .td-warning {
+    margin-top: -21px;
+    margin-left: -17px;
+  }
+}
+
+@media only screen and (max-width: 991px) {
+  .td-warning {
+    margin-top: -25px;
+    margin-left: -11px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .td-warning {
+    margin-top: -36px;
+    margin-left: -12px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .box-title h4 {
+    font-size: 20px;
+  }
+
+  .box-search {
+    border-radius: 1rem !important;
+  }
+
+  .btn-add-job {
+    font-size: 10px;
+  }
+
+  .btn-switch .btn {
+    font-size: 10px;
+  }
+
+  .box-table table {
+    font-size: 12px;
+  }
+
+  .td-warning img {
+    height: 15px;
+  }
+
+  .td-warning {
+    padding: 1px 0 1px 10px;
+    font-size: 7px;
+    margin-top: -17px;
+    margin-left: -11px;
+  }
+
+  .box-pagination p {
+    font-size: 10px;
+  }
+
+  .btn-switch {
+    width: 60px;
+  }
+
+  .btn-switch .btn {
+    font-size: 8px;
+    padding: 0.09rem 0.1rem;
+  }
+
+  table tbody td{
+    padding: 0.5rem 0 !important
+  }
+
+  .btn-secondary-custom {
+    font-size: 14px;
+    width: 30% !important;
+  }
+
+  .btn-custom {
+    font-size: 14px;
+    width: 30% !important;
+  }
+
+  .modal-body-text {
+    margin-top: 1rem;
+    font-size: 14px;
+  }
+}
+
+@media only screen and (max-width: 489px) {
+  .td-warning {
+    margin-top: -26px;
+  }
 }

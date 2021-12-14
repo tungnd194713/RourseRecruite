@@ -52,7 +52,7 @@
             <div class="form-change">
               <form @submit.prevent="submitChangePassword">
                 <div class="form-group mb-2 mb-lg-3">
-                  <label for="exampleInput1c">現在のパスワード</label>
+                  <label for="exampleInput1c">現在のパスワード <span>*</span></label>
                   <input
                           id="exampleInput1c"
                     v-model="company.old_password"
@@ -66,7 +66,7 @@
                   <div class="error-text">{{ wrongOldPasswordText}}</div>
                 </div>
                 <div class="form-group mb-2 mb-lg-3">
-                  <label for="exampleInput2c">新しいパスワード</label>
+                  <label for="exampleInput2c">新しいパスワード <span>*</span></label>
                   <input
                           id="exampleInput2c"
                     v-model="company.new_password"
@@ -79,9 +79,9 @@
                   <div class="error-text">{{ newPasswordErrors[0]}}</div>
                 </div>
                 <div class="form-group mb-2 mb-lg-3">
-                  <label for="exampleInput3c">新しいパスワード（確認）</label>
+                  <label for="exampleInput3c">新しいパスワード（確認）<span>*</span></label>
                   <input
-                          id="exampleInput3c"
+                    id="exampleInput3c"
                     v-model="company.confirm_password"
                     type="text"
                     class="form-control"
