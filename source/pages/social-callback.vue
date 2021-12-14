@@ -17,7 +17,7 @@
         },
 
         head () {
-            return {title: 'Facebook callback'}
+            return {title: 'お待ちください'}
         },
 
         mounted() {

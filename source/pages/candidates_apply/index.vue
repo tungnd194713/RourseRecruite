@@ -76,7 +76,7 @@
                             {{index + 1}}
                         </td>
                         <td class="align-middle py-3">
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop" @click="popupCvUser(item)">
                                 {{item.candidate.name}}
                             </a>
                         </td>
@@ -259,6 +259,16 @@
                 </div>
             </div>
         </div>
+
+        <CvUserModal
+          :candidate="candidate"
+          :language="language"
+          :educations-of-candidate="educationsOfCandidate"
+          :jobs-of-candidate="jobsOfCandidate"
+          :id-row="idRow"
+          @changeLanguageEvent="changeLanguage($event)"
+        />
+
     </main>
 </template>
 
@@ -268,12 +278,15 @@
     import 'vue2-datepicker/index.css'
     import 'vue2-datepicker/locale/ja'
     import Pagination from "../../components/Pagination";
+    import CvUserModal from "~/components/modal/CvUserModal"
+    import defaultInCvUser from "~/constants/defaultInCvUser"
 
     export default {
         name: "CandidateApply",
         components: {
             Pagination,
-            DatePicker
+            DatePicker,
+            CvUserModal
         },
         layout: 'auth',
 
@@ -337,7 +350,87 @@
                 image: {
                     residence_card_front: '',
                     residence_card_backside: ''
-                }
+                },
+                lang_ja: defaultInCvUser.lang_ja,
+                lang_vi: defaultInCvUser.lang_vi,
+                language: '',
+                idCandidate: -1,
+                defaultCandidate : {
+                  id: '',
+                  user_id: '',
+                  first_name : '',
+                  name : '',
+                  nationality : '',
+                  gender : '',
+                  birthday : '',
+                  email : '',
+                  profile_image : '',
+                  language : '',
+                  phone_number : '',
+                  address : '',
+                  married_status : '',
+                  dependent_person : '',
+                  health : '',
+                  visa_type : '',
+                  visa_date : '',
+                  residence_card_front : '',
+                  residence_card_backside : '',
+                  strength : '',
+                  stay_experience_date : '',
+                  stay_experience_purpose : '',
+                  reason_apply : '',
+                  file_cv_upload : '',
+                  desire_change_jobs : '',
+                  translate_jp : '',
+                  postal_code : '',
+                  province_id : '',
+                  district : '',
+                  status : '',
+                  created_at : '',
+                  updated_at : '',
+                  candidate_educations_jobs : [],
+                  candidate_foreign_languages : [],
+                  candidate_certificates : []
+                },
+                candidate : {
+                  id: '',
+                  user_id: '',
+                  first_name : '',
+                  name : '',
+                  nationality : '',
+                  gender : '',
+                  birthday : '',
+                  email : '',
+                  profile_image : '',
+                  language : '',
+                  phone_number : '',
+                  address : '',
+                  married_status : '',
+                  dependent_person : '',
+                  health : '',
+                  visa_type : '',
+                  visa_date : '',
+                  residence_card_front : '',
+                  residence_card_backside : '',
+                  strength : '',
+                  stay_experience_date : '',
+                  stay_experience_purpose : '',
+                  reason_apply : '',
+                  file_cv_upload : '',
+                  desire_change_jobs : '',
+                  translate_jp : '',
+                  postal_code : '',
+                  province_id : '',
+                  district : '',
+                  status : '',
+                  created_at : '',
+                  updated_at : '',
+                  candidate_educations_jobs : [],
+                  candidate_foreign_languages : [],
+                  candidate_certificates : []
+                },
+                educationsOfCandidate: [],
+                jobsOfCandidate: []
             }
         },
 
@@ -450,6 +543,43 @@
             popupImageCard(residenceCardFront, residenceCardBackside) {
                 this.image.residence_card_front = residenceCardFront;
                 this.image.residence_card_backside = residenceCardBackside
+            },
+
+            async changeLanguage(newLanguage) {
+              if (newLanguage !== this.language) {
+                this.language = newLanguage
+                this.$i18n.locale = this.language
+                if (this.language === this.lang_ja) {
+                  await this.$repositories.candidatesApply.translateCvCandidate(this.idRow).then(res => {
+                    if (res.status === 200) {
+                      this.candidate = Object.assign({}, res.data)
+                      this.initJobsAndEducationsOfCandidate()
+                    }
+                  })
+                }
+                if (this.language === this.lang_vi) {
+                  this.candidate = Object.assign({}, this.defaultCandidate)
+                  this.initJobsAndEducationsOfCandidate()
+                }
+              }
+            },
+
+            popupCvUser(candidateApply) {
+              this.language = this.lang_vi
+              this.$i18n.locale = this.language
+              this.idRow = candidateApply.id
+              this.defaultCandidate = Object.assign({}, candidateApply.candidate)
+              this.candidate = Object.assign({}, this.defaultCandidate)
+              this.initJobsAndEducationsOfCandidate()
+            },
+
+            initJobsAndEducationsOfCandidate() {
+              this.educationsOfCandidate = this.candidate.candidate_educations_jobs.filter(function (element) {
+                return element.type === 1
+              })
+              this.jobsOfCandidate = this.candidate.candidate_educations_jobs.filter(function (element) {
+                return element.type === 2
+              })
             }
         }
     }
@@ -457,6 +587,7 @@
 
 <style lang="scss" scoped>
     @import '../../styles/pages/candidates_apply/list.scss';
+    @import '../../styles/pages/jobs/cv_user.scss';
 </style>
 
 <style lang="scss">

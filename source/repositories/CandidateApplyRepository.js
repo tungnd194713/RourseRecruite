@@ -8,4 +8,12 @@ export default ($axios) => ({
     updateStatus(id, data) {
         return $axios.post(`${resource}/update/${id}`, data)
     },
+
+    exportCvPdf(candidateApplyId, payload, responseType) {
+        return $axios.post(`${resource}/export-cv-pdf/${candidateApplyId}`, payload, responseType)
+    },
+
+    translateCvCandidate(candidateApplyId) {
+        return $axios.get(`${resource}/translate/${candidateApplyId}`)
+    }
 })
