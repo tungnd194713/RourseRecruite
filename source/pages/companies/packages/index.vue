@@ -10,9 +10,7 @@
                 >
             </li>
             <li class="nav-item">
-                <NuxtLink
-                    to="/"
-                    class="nav-link big-nav nav-two"
+                <NuxtLink to="/" class="nav-link big-nav nav-two"
                     >請求書</NuxtLink
                 >
             </li>
@@ -29,14 +27,63 @@
             <div class="row">
                 <h3 class="title-page">料金プラン</h3>
             </div>
-            <div class="text-center">
-                <picture class="">
+
+            <!-- <picture class="">
                     <source
                         media="(max-width: 950px)"
                         srcset="../../../assets/images/package.png"
                     />
                     <img src="../../../assets/images/package.png" alt="" />
-                </picture>
+                </picture> -->
+            <div class="text-center" style="margin:0px 16px 15px">
+                <table class="table table-borderless">
+                    <tr>
+                        <th colspan="2"></th>
+                        <th scope="col" class="package">プランA</th>
+                        <th scope="col" class="package">プランB</th>
+                        <th scope="col" class="package">プランC</th>
+                        <th scope="col" class="package">標準プラン</th>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="3" class="first-row-title">
+                            求人掲載1件につき
+                        </td>
+                        <td class="column-first-row">投稿</td>
+                        <td class="package-value">O</td>
+                        <td class="package-value">O</td>
+                        <td class="package-value">O</td>
+                        <td class="package-value">O</td>
+                    </tr>
+
+                    <tr>
+                        <td scope="row" class="column-first-row">Homepageに掲載される</td>
+                        <td class="package-value">O</td>
+                        <td class="package-value">x</td>
+                        <td class="package-value">x</td>
+                        <td class="package-value">x</td>
+                    </tr>
+
+                    <tr>
+                        <td scope="row" class="column-first-row">仕事一覧に表示順番</td>
+                        <td class="package-value">1</td>
+                        <td class="package-value">2</td>
+                        <td class="package-value">3</td>
+                        <td class="package-value">4</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row" class="second-row-title">
+                            応募1件につ <br />
+                            （受けた履歴書）
+                        </th>
+                        <td class="column-second-row">応募確認</td>
+                        <td class="package-value">O</td>
+                        <td class="package-value">O</td>
+                        <td class="package-value">O</td>
+                        <td class="package-value">O</td>
+                    </tr>
+                </table>
             </div>
 
             <div class="row m-4">
