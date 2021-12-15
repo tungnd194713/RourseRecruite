@@ -18,7 +18,7 @@
               <td class="align-middle">{{ item.id }}</td>
               <td v-if="item.paid_at" class="align-middle py-3">{{ item.paid_at.split(' ')[0] }}</td>
               <td v-else class="align-middle py-3"></td>
-              <td class="align-middle">{{ item.year_month }}</td>
+              <td class="align-middle" @click="$router.push('/invoices/detail?year_month=' + item.year_month)">{{ item.year_month }}</td>
               <td class="align-middle">
                 ¥{{ item.cost_job ? Math.ceil(item.cost_job).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null }}
               </td>

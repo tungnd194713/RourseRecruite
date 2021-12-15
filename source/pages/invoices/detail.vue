@@ -127,10 +127,10 @@
 
     methods: {
       async getInvoiceInMonth() {
-        this.month = this.$route.params.year_month || this.$moment().format('M');
+        this.month = this.$moment(this.$route.query.year_month).format('M') || this.$moment().format('M');
 
         const params = {
-          year_month: this.$route.params.year_month
+          year_month: this.$route.query.year_month
         };
 
         const res = await this.$repositories.invoices.getInvoiceInMonth(params);
