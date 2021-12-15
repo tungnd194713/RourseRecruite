@@ -6,7 +6,9 @@
                 <div class="form-group mb-4 mb-lg-5">
                     <div
                         class="p-4 box-upload-file text-center rounded"
-                        @click="$refs.imageJob.click()"
+                        @click="onClickBoxUploadFile"
+                        @drop.prevent="dropImage"
+                        @dragover.prevent
                     >
                         <input
                             ref="imageJob"
@@ -15,31 +17,16 @@
                             style="display: none"
                             @change="onChangeImageJob"
                         />
-                        <img
-                            v-if="previewImageJobUrl"
-                            class="preview-image"
-                            :src="previewImageJobUrl"
-                            alt=""
-                        />
-                        <img
-                            v-else
-                            src="../../../assets/images/icon_upload_file.svg"
-                            alt=""
-                        />
-                        <p class="m-0">
-                            画像ファイルをドラグドロップ<span
-                                >、或いは選択してください</span
-                            >
-                        </p>
+                        <img v-if="previewImageJobUrl" class="preview-image" :src="previewImageJobUrl" alt=""/>
+                        <img v-else-if="oldImageJob" class="preview-image" :src="url_file + oldImageJob" alt=""/>
+                        <img v-else src="../../../assets/images/icon_upload_file.svg" alt=""/>
+                        <p class="m-0">画像ファイルをドラグドロップ<span>、或いは選択してください</span></p>
                     </div>
 
-                    <div class="invalid-feedback">
-
+                    <div v-if="$v.job.image_job.$error" class="text-center error-text">
+                      <div v-if="!$v.job.image_job.name.imageRule">画像はpng / jpg / jpeg / gifの形式でアプロードしてください</div>
+                      <div v-if="!$v.job.image_job.size">2MB以下の写真をアップロードしてください</div>
                     </div>
-                  <div v-if="$v.job.image_job.$error" class="text-center error-text">
-                    <div v-if="!$v.job.image_job.name.imageRule">画像はpng / jpg / jpeg / gifの形式でアプロードしてください</div>
-                    <div v-if="!$v.job.image_job.size.imageSize">2MB以下の写真をアップロードしてください</div>
-                  </div>
                 </div>
                 <div class="form-group mb-3 mb-lg-4 row">
                     <label for="exampleInput1" class="col-sm-2 col-form-label"
@@ -702,7 +689,7 @@ import {required, maxLength, requiredIf, helpers, minLength} from 'vuelidate/lib
 import defaultProvinces from '~/constants/provinces'
 
 const imageRule = helpers.regex('image', /\.(jpeg|png|jpg|gif)$/)
-const imageSize = (value) => value <= 2000000
+const maximumImageSize = 2000000
 
 export default {
     name: 'EditJob',
@@ -711,59 +698,61 @@ export default {
 
     data() {
         return {
+            url_file: process.env.URL_FILE,
+            oldImageJob: null,
             showStatusStayList: false,
             openDateEndPicker: false,
             previewImageJobUrl: null,
             displaySalary: 'salary_max',
             typePlanList:[
               {
-                text: 'A',
+                text: 'プランA',
                 value: 1
               },
               {
-                text: 'B',
+                text: 'プランB',
                 value: 2
               },
               {
-                text: 'C',
+                text: 'プランC',
                 value: 3
               },
               {
-                text: 'Standard plan',
+                text: '標準プラン',
                 value: 4
               },
             ],
             displayMonthList: [
               {
-                text: '1 month',
+                text: '1ヶ月',
                 value: 1
               },
               {
-                text: '2 months',
+                text: '2ヶ月',
                 value: 2
               },
               {
-                text: '3 months',
+                text: '3ヶ月',
                 value: 3
               },
               {
-                text: '4 months',
+                text: '4ヶ月',
                 value: 4
               },
               {
-                text: '5 months',
+                text: '5ヶ月',
                 value: 5
               },
             ],
             formRecruitmentList: [
-                {
-                    text: '1-フルタイム fulltime',
-                    value: 1,
-                },
-                {
-                    text: '2-アルバイト parttime',
-                    value: 2,
-                },
+              {
+                text: '1-フルタイム',
+                value: 1
+              },
+              {
+                text: '2-アルバイト',
+                value: 2
+              },
             ],
             statusStayList: [
                 {
@@ -831,8 +820,11 @@ export default {
           name: {
             imageRule
           },
-          size: {
-            imageSize
+          size(val) {
+            if (this.job.image_job) {
+              return this.job.image_job.size <= maximumImageSize
+            }
+            return true
           }
         },
         title: {
@@ -986,6 +978,9 @@ export default {
               .then((response) => {
                 this.job = Object.assign({}, response.data.job)
                 this.job.status_stay = response.data.job.status_stay.split(",")
+                this.job.image_job = null
+                this.previewImageJobUrl = null
+                this.oldImageJob = response.data.job.image_job
 
                 this.job.salary_max = parseFloat(this.job.salary_max).toFixed(3);
                 this.job.salary_min = parseFloat(this.job.salary_min).toFixed(3);
@@ -999,11 +994,38 @@ export default {
           }
         },
 
-        onChangeImageJob(e) {
-            const file = e.target.files[0]
-            this.job.image_job = file
-            this.previewImageJobUrl = file ? URL.createObjectURL(file) : null
-        },
+      onClickBoxUploadFile() {
+        this.$refs.imageJob.click()
+      },
+
+      onChangeImageJob(e) {
+        if (e.target.files[0]) {
+          this.job.image_job = e.target.files[0]
+        }
+        this.processAfterSelectImage()
+      },
+
+      dropImage(e) {
+        if (e.dataTransfer.files[0]) {
+          this.job.image_job = e.dataTransfer.files[0]
+        }
+        this.processAfterSelectImage()
+      },
+
+      processAfterSelectImage() {
+        if (this.job.image_job) {
+          this.$v.job.image_job.$touch()
+          if (this.$v.job.image_job.$invalid) {
+            this.previewImageJobUrl = null
+            this.oldImageJob = null
+          } else {
+            this.previewImageJobUrl = URL.createObjectURL(this.job.image_job)
+          }
+        } else {
+          this.$v.job.image_job.$reset()
+          this.previewImageJobUrl = null
+        }
+      },
 
         inputOrBlurDateStart() {
             this.$v.job.date_start.$touch()

@@ -17,7 +17,7 @@
               <div class="row">
                 <div class="d-block">
                   <span class="badge">{{ previewFormRecruitment()}}</span>
-                  <span class="badge">{{ $store.getters['loggedInUser'].career}}</span>
+                  <span class="badge">{{ $t(careerList[$store.getters['loggedInUser'].career - 1])}}</span>
                 </div>
                 <div class="d-block">
                   <span v-for="item in previewStatusStay()" :key="item.value" class="badge">{{ item.text}}</span>
@@ -120,6 +120,7 @@
 <script>
   import StatusStayInfoModal from "~/components/StatusStayInfoModal";
   import CompleteUpdateJobModal from "~/components/CompleteUpdateJobModal";
+  import theCareers from '~/constants/careers'
 
   export default {
     name: "PreviewUpdateJob",
@@ -131,53 +132,54 @@
 
     data() {
       return {
+        careerList: theCareers,
         typePlanList:[
           {
-            text: 'A',
+            text: 'プランA',
             value: 1
           },
           {
-            text: 'B',
+            text: 'プランB',
             value: 2
           },
           {
-            text: 'C',
+            text: 'プランC',
             value: 3
           },
           {
-            text: 'Standard plan',
+            text: '標準プラン',
             value: 4
           },
         ],
         displayMonthList: [
           {
-            text: '1 month',
+            text: '1ヶ月',
             value: 1
           },
           {
-            text: '2 months',
+            text: '2ヶ月',
             value: 2
           },
           {
-            text: '3 months',
+            text: '3ヶ月',
             value: 3
           },
           {
-            text: '4 months',
+            text: '4ヶ月',
             value: 4
           },
           {
-            text: '5 months',
+            text: '5ヶ月',
             value: 5
           },
         ],
         formRecruitmentList: [
           {
-            text: '1-フルタイム fulltime',
+            text: '1-フルタイム',
             value: 1
           },
           {
-            text: '2-アルバイト parttime',
+            text: '2-アルバイト',
             value: 2
           },
         ],
