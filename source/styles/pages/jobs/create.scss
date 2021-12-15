@@ -77,9 +77,17 @@
   font-size: 16px;
 }
 
+.create_job .btn-edit-create_job:hover {
+  background-color: #6e9ddf;
+}
+
 .create_job .btn-cancel-create_job {
   color: #B2B2B2;
   font-size: 16px;
+}
+
+.create_job .btn-cancel-create_job:hover {
+  background-color: grey;
 }
 
 .create_job .checkbox_two {
@@ -184,4 +192,45 @@
 
 .custom-input-group {
   flex-wrap: unset !important;
+}
+
+.status-stay-dropdown {
+  position: relative;
+  width: inherit;
+  .over-select {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}
+
+.multi-select-status-stay {
+  position: relative;
+  width: 100%;
+  ul {
+    border: 1px solid grey;
+    list-style: none;
+    max-height: 150px;
+    overflow: auto;
+    padding: 8px 8px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 9999;
+    background-color: white;
+    width: 100%;
+    li {
+      padding: 2px;
+
+      label {
+        width: 100%;
+      }
+    }
+    li:hover {
+      background-color: dodgerblue;
+      color: white;
+    }
+  }
 }

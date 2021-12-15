@@ -6,7 +6,9 @@
                 <div class="form-group mb-4 mb-lg-5">
                     <div
                         class="p-4 box-upload-file text-center rounded"
-                        @click="$refs.imageJob.click()"
+                        @click="onClickBoxUploadFile"
+                        @drop.prevent="dropImage"
+                        @dragover.prevent
                     >
                         <input
                             ref="imageJob"
@@ -15,31 +17,16 @@
                             style="display: none"
                             @change="onChangeImageJob"
                         />
-                        <img
-                            v-if="previewImageJobUrl"
-                            class="preview-image"
-                            :src="previewImageJobUrl"
-                            alt=""
-                        />
-                        <img
-                            v-else
-                            src="../../../assets/images/icon_upload_file.svg"
-                            alt=""
-                        />
-                        <p class="m-0">
-                            画像ファイルをドラグドロップ<span
-                                >、或いは選択してください</span
-                            >
-                        </p>
+                        <img v-if="previewImageJobUrl" class="preview-image" :src="previewImageJobUrl" alt=""/>
+                        <img v-else-if="oldImageJob" class="preview-image" :src="url_file + oldImageJob" alt=""/>
+                        <img v-else src="../../../assets/images/icon_upload_file.svg" alt=""/>
+                        <p class="m-0">画像ファイルをドラグドロップ<span>、或いは選択してください</span></p>
                     </div>
 
-                    <div class="invalid-feedback">
-
+                    <div v-if="$v.job.image_job.$error" class="text-center error-text">
+                      <div v-if="!$v.job.image_job.name.imageRule">画像はpng / jpg / jpeg / gifの形式でアプロードしてください</div>
+                      <div v-if="!$v.job.image_job.size">2MB以下の写真をアップロードしてください</div>
                     </div>
-                  <div v-if="$v.job.image_job.$error" class="text-center error-text">
-                    <div v-if="!$v.job.image_job.name.imageRule">画像はpng / jpg / jpeg / gifの形式でアプロードしてください</div>
-                    <div v-if="!$v.job.image_job.size.imageSize">2MB以下の写真をアップロードしてください</div>
-                  </div>
                 </div>
                 <div class="form-group mb-3 mb-lg-4 row">
                     <label for="exampleInput1" class="col-sm-2 col-form-label"
@@ -191,37 +178,41 @@
                         >在留資格 <span>*</span></label
                     >
                     <div class="col-12 col-sm-4">
-                        <div class="input-group input-group-icon">
-                            <span class="input-group-text input-group-text-pre">
-                                <img
-                                    src="../../../assets/images/icon_stay.svg"
-                                    alt=""
-                                />
-                            </span>
-                            <select
-                                id="inputGroupSelect01"
-                                v-model="job.status_stay"
-                                class="form-select rounded-end"
-                                multiple
-                            >
-                                <option
-                                    v-for="item in statusStayList"
-                                    :key="item.value"
-                                    :value="item.value"
-                                >
-                                    {{ item.text }}
-                                </option>
+                      <div class="input-group input-group-icon flex-column">
+                        <div class="input-group input-group-icon flex-nowrap">
+                          <span class="input-group-text input-group-text-pre">
+                            <img src="../../../assets/images/icon_stay.svg" alt="">
+                          </span>
+                          <div
+                            ref="statusStayDropdownRef"
+                            class="status-stay-dropdown"
+                            @click="showStatusStayDropdown"
+                            @focusout="focusOutStatusStayListDropdown"
+                          >
+                            <div class="over-select"></div>
+                            <select class="form-select rounded-end">
+                              <option value="">{{ previewStatusStay()}}</option>
                             </select>
-                            <div class="invalid-feedback">
-
-                            </div>
+                          </div>
                         </div>
-                      <div v-if="$v.job.status_stay.$error">
-                        <div
-                          v-if="!$v.job.status_stay.required"
-                          class="error-text"
-                        >
-                          これは必須項目なので、必ず入力してください
+                        <div v-if="showStatusStayList" class="multi-select-status-stay">
+                          <ul>
+                            <li v-for="item in statusStayList" :key="item.value">
+                              <label :for="'statusStay' +item.value">
+                                <input
+                                  :id="'statusStay' +item.value"
+                                  v-model="job.status_stay"
+                                  type="checkbox"
+                                  :value="item.value"
+                                  @click="$v.job.status_stay.$touch()"
+                                >
+                                {{ item.text }}
+                              </label>
+                            </li>
+                          </ul>
+                        </div>
+                        <div v-if="$v.job.status_stay.$error">
+                          <div v-if="!$v.job.status_stay.isNotEmpty" class="error-text">これは必須項目なので、必ず入力してください</div>
                         </div>
                       </div>
                     </div>
@@ -338,27 +329,18 @@
                                 />
                             </span>
                             <input
-                                v-model="job.salary_min"
-                                type="text"
-                                class="form-control rounded-end"
-                                @input="$v.job.salary_min.$touch()"
-                                @blur="$v.job.salary_min.$touch()"
-                            />
-                        </div>
-                        <div v-if="$v.job.salary_min.$error">
-                            <div
-                                v-if="!$v.job.salary_min.required"
-                                class="error-text"
+                              v-model="job.salary_max"
+                              type="text"
+                              class="form-control rounded-end"
+                              @input="$v.job.salary_max.$touch()"
+                              @blur="$v.job.salary_max.$touch()"
+                              @keypress="keyPressForNumberInput"
                             >
-                                これは必須項目なので、必ず入力してください
-                            </div>
-                            <div
-                              v-if="!$v.job.salary_min.isNumber"
-                              class="error-text"
-                            >
-                              Nhập số thập phân hoặc số nguyên cho trường này
-                            </div>
                         </div>
+                      <div v-if="$v.job.salary_max.$error">
+                        <div v-if="!$v.job.salary_max.required" class="error-text">これは必須項目なので、必ず入力してください</div>
+                        <div v-if="!$v.job.salary_max.maxLength" class="error-text">10数字以下で入力してください</div>
+                      </div>
                     </div>
 
                     <div
@@ -373,26 +355,18 @@
                                 />
                             </span>
                             <input
-                                v-model="job.salary_min"
-                                type="text"
-                                class="form-control rounded-end"
-                                @input="$v.job.salary_min.$touch()"
-                                @blur="$v.job.salary_min.$touch()"
-                            />
+                              v-model="job.salary_min"
+                              type="text"
+                              class="form-control rounded-end"
+                              @input="onInputOrBlurSalaryMin"
+                              @blur="onInputOrBlurSalaryMin"
+                              @keypress="keyPressForNumberInput"
+                            >
                         </div>
                         <div v-if="$v.job.salary_min.$error">
-                          <div
-                            v-if="!$v.job.salary_min.required"
-                            class="error-text"
-                          >
-                            これは必須項目なので、必ず入力してください
-                          </div>
-                          <div
-                            v-if="!$v.job.salary_min.isNumber"
-                            class="error-text"
-                          >
-                            Nhập số thập phân hoặc số nguyên cho trường này
-                          </div>
+                          <div v-if="!$v.job.salary_min.required" class="error-text">これは必須項目なので、必ず入力してください</div>
+                          <div v-if="!$v.job.salary_min.maxLength" class="error-text">10数字以下で入力してください</div>
+                          <div v-if="!$v.job.salary_min.isLowerThanSalaryMax" class="error-text">最多の月給以下で入力してください</div>
                         </div>
                     </div>
                     {{ displaySalary === 'salary_range' ? '～' : '' }}
@@ -408,26 +382,18 @@
                                 />
                             </span>
                             <input
-                                v-model="job.salary_max"
-                                type="text"
-                                class="form-control rounded-end"
-                                @input="$v.job.salary_max.$touch()"
-                                @blur="$v.job.salary_max.$touch()"
-                            />
+                              v-model="job.salary_max"
+                              type="text"
+                              class="form-control rounded-end"
+                              @input="onInputOrBlurSalaryMax"
+                              @blur="onInputOrBlurSalaryMax"
+                              @keypress="keyPressForNumberInput"
+                            >
                         </div>
                         <div v-if="$v.job.salary_max.$error">
-                          <div
-                            v-if="!$v.job.salary_max.required"
-                            class="error-text"
-                          >
-                            これは必須項目なので、必ず入力してください
-                          </div>
-                          <div
-                            v-if="!$v.job.salary_max.isNumber"
-                            class="error-text"
-                          >
-                            Nhập số thập phân hoặc số nguyên cho trường này
-                          </div>
+                          <div v-if="!$v.job.salary_max.required" class="error-text">これは必須項目なので、必ず入力してください</div>
+                          <div v-if="!$v.job.salary_max.maxLength" class="error-text">10数字以下で入力してください</div>
+                          <div v-if="!$v.job.salary_max.isGreaterThanSalaryMin" class="error-text">最低の月給以上で入力してください</div>
                         </div>
                     </div>
                 </div>
@@ -723,7 +689,7 @@ import {required, maxLength, requiredIf, helpers, minLength} from 'vuelidate/lib
 import defaultProvinces from '~/constants/provinces'
 
 const imageRule = helpers.regex('image', /\.(jpeg|png|jpg|gif)$/)
-const imageSize = (value) => value <= 2000000
+const maximumImageSize = 2000000
 
 export default {
     name: 'EditJob',
@@ -732,58 +698,61 @@ export default {
 
     data() {
         return {
+            url_file: process.env.URL_FILE,
+            oldImageJob: null,
+            showStatusStayList: false,
             openDateEndPicker: false,
             previewImageJobUrl: null,
             displaySalary: 'salary_max',
             typePlanList:[
               {
-                text: 'A',
+                text: 'プランA',
                 value: 1
               },
               {
-                text: 'B',
+                text: 'プランB',
                 value: 2
               },
               {
-                text: 'C',
+                text: 'プランC',
                 value: 3
               },
               {
-                text: 'Standard plan',
+                text: '標準プラン',
                 value: 4
               },
             ],
             displayMonthList: [
               {
-                text: '1 month',
+                text: '1ヶ月',
                 value: 1
               },
               {
-                text: '2 months',
+                text: '2ヶ月',
                 value: 2
               },
               {
-                text: '3 months',
+                text: '3ヶ月',
                 value: 3
               },
               {
-                text: '4 months',
+                text: '4ヶ月',
                 value: 4
               },
               {
-                text: '5 months',
+                text: '5ヶ月',
                 value: 5
               },
             ],
             formRecruitmentList: [
-                {
-                    text: '1-フルタイム fulltime',
-                    value: 1,
-                },
-                {
-                    text: '2-アルバイト parttime',
-                    value: 2,
-                },
+              {
+                text: '1-フルタイム',
+                value: 1
+              },
+              {
+                text: '2-アルバイト',
+                value: 2
+              },
             ],
             statusStayList: [
                 {
@@ -820,7 +789,28 @@ export default {
                 },
             ],
           provinceList: [],
-          job: {},
+          job: {
+            image_job: null,
+            title: '',
+            date_start: '',
+            type_plan: '',
+            display_month: '',
+            form_recruitment: '',
+            status_stay: [],
+            number_recruitments: '',
+            salary_max: '',
+            salary_min: '',
+            content_work: '',
+            conditions_apply: '',
+            province_id: 1,
+            address_work: '',
+            time_work: '',
+            break_time: '',
+            holidays: '',
+            welfare_regime: '',
+            has_vietnamese_staff: '',
+            overtime: ''
+          },
         }
     },
 
@@ -830,8 +820,11 @@ export default {
           name: {
             imageRule
           },
-          size: {
-            imageSize
+          size(val) {
+            if (this.job.image_job) {
+              return this.job.image_job.size <= maximumImageSize
+            }
+            return true
           }
         },
         title: {
@@ -844,7 +837,9 @@ export default {
         },
         form_recruitment: {},
         status_stay: {
-          required
+          isNotEmpty(val) {
+            return this.job.status_stay.length !== 0
+          }
         },
         number_recruitments: {
           required,
@@ -856,23 +851,25 @@ export default {
         },
         salary_max: {
           required,
-          // isNumber(value) {
-          //   // eslint-disable-next-line prefer-regex-literals
-          //   const numberRegExp = new RegExp("/^\\d*\\.?\\d*$/")
-          //   return numberRegExp.test(value)
-          // },
-          maxLength: maxLength(10)
+          maxLength: maxLength(10),
+          isGreaterThanSalaryMin(value) {
+            if (value && this.job.salary_min) {
+              return parseInt(value) > parseInt(this.job.salary_min)
+            }
+            return true
+          }
         },
         salary_min: {
           required: requiredIf(function () {
             return this.displaySalary === 'salary_range'
           }),
-          // isNumber(value) {
-          //   // eslint-disable-next-line prefer-regex-literals
-          //   const numberRegExp = new RegExp("/^\\d*\\.?\\d*$/")
-          //   return numberRegExp.test(value)
-          // },
-          maxLength: maxLength(10)
+          maxLength: maxLength(10),
+          isLowerThanSalaryMax(value) {
+            if (value && this.job.salary_max) {
+              return parseInt(value) < parseInt(this.job.salary_max)
+            }
+            return true
+          }
         },
         content_work: {
           required,
@@ -931,11 +928,59 @@ export default {
     },
 
     methods: {
+      onInputOrBlurSalaryMin() {
+        if (this.job.salary_max) {
+          this.$v.job.salary_max.$reset()
+        }
+        this.$v.job.salary_min.$touch()
+      },
+
+      onInputOrBlurSalaryMax() {
+        if (this.job.salary_min) {
+          this.$v.job.salary_min.$reset()
+        }
+        this.$v.job.salary_max.$touch()
+      },
+
+      showStatusStayDropdown() {
+        this.showStatusStayList = !this.showStatusStayList
+      },
+
+      filterPreviewStatusStay(element) {
+        for (let i = 0; i < this.job.status_stay.length; i++) {
+          if (element.value === this.job.status_stay[i]) {
+            return true
+          }
+        }
+        return false
+      },
+
+      previewStatusStay() {
+        const statusStaySelected = this.statusStayList.filter(this.filterPreviewStatusStay)
+        let result = ''
+        statusStaySelected.forEach(function (item, index) {
+          if (index === statusStaySelected.length - 1) {
+            result += item.text
+          } else {
+            result += item.text + ' - '
+          }
+        })
+        return result
+      },
+
+      focusOutStatusStayListDropdown() {
+        this.$refs.statusStayDropdownRef.click()
+      },
+
         async showJob() {
           try {
             await this.$repositories.jobs.getJob(this.$route.params.id)
               .then((response) => {
-                this.job = response.data.job
+                this.job = Object.assign({}, response.data.job)
+                this.job.status_stay = response.data.job.status_stay.split(",")
+                this.job.image_job = null
+                this.previewImageJobUrl = null
+                this.oldImageJob = response.data.job.image_job
 
                 this.job.salary_max = parseFloat(this.job.salary_max).toFixed(3);
                 this.job.salary_min = parseFloat(this.job.salary_min).toFixed(3);
@@ -949,11 +994,38 @@ export default {
           }
         },
 
-        onChangeImageJob(e) {
-            const file = e.target.files[0]
-            this.job.image_job = file
-            this.previewImageJobUrl = file ? URL.createObjectURL(file) : null
-        },
+      onClickBoxUploadFile() {
+        this.$refs.imageJob.click()
+      },
+
+      onChangeImageJob(e) {
+        if (e.target.files[0]) {
+          this.job.image_job = e.target.files[0]
+        }
+        this.processAfterSelectImage()
+      },
+
+      dropImage(e) {
+        if (e.dataTransfer.files[0]) {
+          this.job.image_job = e.dataTransfer.files[0]
+        }
+        this.processAfterSelectImage()
+      },
+
+      processAfterSelectImage() {
+        if (this.job.image_job) {
+          this.$v.job.image_job.$touch()
+          if (this.$v.job.image_job.$invalid) {
+            this.previewImageJobUrl = null
+            this.oldImageJob = null
+          } else {
+            this.previewImageJobUrl = URL.createObjectURL(this.job.image_job)
+          }
+        } else {
+          this.$v.job.image_job.$reset()
+          this.previewImageJobUrl = null
+        }
+      },
 
         inputOrBlurDateStart() {
             this.$v.job.date_start.$touch()

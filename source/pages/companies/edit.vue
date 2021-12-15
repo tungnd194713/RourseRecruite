@@ -85,19 +85,21 @@
                       invalid: $v.data.phone.$invalid && $v.data.phone.$dirty,
                     }"
                     class="form-control"
+                    @change="clearErrors"
                   />
                   <div v-if="$v.data.phone.$error">
                     <div v-if="!$v.data.phone.required" class="error">
                       これは必須項目なので、必ず入力してください
                     </div>
-                    <div v-if="!$v.data.phone.maxLength" class="error">
+                    <div
+                      v-if="
+                        !$v.data.phone.maxLength ||
+                        !$v.data.phone.minLength ||
+                        !$v.data.phone.phone
+                      "
+                      class="error"
+                    >
                       9数字以上13数字以下で入力してください
-                    </div>
-                    <div v-if="!$v.data.phone.minLength" class="error">
-                      9数字以上13数字以下で入力してください
-                    </div>
-                    <div v-if="!$v.data.phone.phone" class="error">
-                      これは必須項目なので、必ず入力してください
                     </div>
                   </div>
                   <div v-if="errors.phone" class="error">
@@ -267,53 +269,43 @@
                   </span>
                   <date-picker
                     id="founded_year"
-                    v-model.trim="$v.data.founded_year.$model"
-                    :class="{
-                      invalid:
-                        $v.data.founded_year.$invalid &&
-                        $v.data.founded_year.$dirty,
-                    }"
+                    v-model.trim="data.founded_year"
                     :clearable="false"
                     format="YYYY-MM-DD"
                     value-type="YYYY/MM/DD"
                     class="date-picker"
-                    :placeholder="$v.data.founded_year.$model"
+                    :placeholder="data.founded_year"
                   >
                     <i slot="icon-calendar"></i>
                   </date-picker>
-                </div>
-                <div v-if="$v.data.founded_year.$error">
-                  <div v-if="!$v.data.founded_year.required" class="error">
-                    これは必須項目なので、必ず入力してください
-                  </div>
                 </div>
               </div>
             </div>
             <div class="my-3 my-lg-4 line"></div>
             <div class="container">
               <div class="form-group mb-2 mb-lg-3">
-                <label for="facebook_id">Facebookリンク</label>
+                <label for="link_facebook">FacebookのMessengerのリンク</label>
                 <div
                   class="input-group input-group-icon"
                   :class="{
                     invalid:
-                      $v.data.facebook_id.$invalid &&
-                      $v.data.facebook_id.$dirty,
+                      $v.data.link_facebook.$invalid &&
+                      $v.data.link_facebook.$dirty,
                   }"
                 >
                   <span class="input-group-text input-group-text-pre">
                     <img src="../../assets/images/icon_facebook.svg" alt="" />
                   </span>
                   <input
-                    id="facebook_id"
-                    v-model.trim="$v.data.facebook_id.$model"
+                    id="link_facebook"
+                    v-model.trim="$v.data.link_facebook.$model"
                     type="text"
                     class="form-control"
                   />
                 </div>
-                <div v-if="$v.data.facebook_id.$error">
-                  <div v-if="!$v.data.facebook_id.facebook" class="error">
-                    facebook
+                <div v-if="$v.data.link_facebook.$error">
+                  <div v-if="!$v.data.link_facebook.facebook" class="error">
+                    入力したリンクはFacebookのMessengerのリンクではありません
                   </div>
                 </div>
               </div>
@@ -358,7 +350,7 @@
                 ></textarea>
               </div>
               <div class="form-group mb-2 mb-lg-3">
-                <label>ロゴ <span>*</span></label>
+                <label>ロゴ</label>
                 <div
                   class="p-4 box-upload-file text-center rounded"
                   @dragover="dragover"
@@ -371,7 +363,9 @@
                   />
                   <p class="m-0">
                     画像ファイルをドラグドロップ
-                    <span class="open-file-btn" @click="triggerProfileImageInput"
+                    <span
+                      class="open-file-btn"
+                      @click="triggerProfileImageInput"
                       >、或いは選択してください</span
                     >
                   </p>
@@ -415,9 +409,6 @@
                   @change="onChange(logo)"
                 />
                 <div v-if="$v.data.logo.$error">
-                  <div v-if="!$v.data.logo.required" class="error">
-                    これは必須項目なので、必ず入力してください
-                  </div>
                   <div
                     v-for="(v, index) in $v.data.logo.$each.$iter"
                     :key="index"
@@ -435,20 +426,22 @@
                 </small>
               </div>
               <div class="form-group mb-4 mb-lg-5">
-                <label>会社紹介写真 <span>*</span></label>
+                <label>会社紹介写真</label>
                 <div
                   class="p-4 box-upload-file text-center rounded"
                   @dragover="dragover"
                   @drop="drop($event, introImages)"
                 >
                   <img
-                    v-if="!data.images.length && !uploadedIntroImage.length"
+                    v-if="!uploadedImages.length && !uploadedIntroImage.length"
                     src="../../assets/images/icon_upload_file.svg"
                     alt=""
                   />
                   <p class="m-0">
                     画像ファイルをドラグドロップ
-                    <span class="open-file-btn" @click.prevent="triggerIntroImageInput"
+                    <span
+                      class="open-file-btn"
+                      @click.prevent="triggerIntroImageInput"
                       >、或いは選択してください</span
                     >
                   </p>
@@ -473,9 +466,9 @@
                       </button>
                     </div>
                   </div>
-                  <div v-if="data.images.length" class="mt-4 w-100">
+                  <div v-if="uploadedImages.length" class="mt-4 w-100">
                     <div
-                      v-for="(file, index) in data.images"
+                      v-for="(file, index) in uploadedImages"
                       :key="index"
                       class="p-1 row file-preview"
                     >
@@ -488,7 +481,9 @@
                         class="col-12 col-sm-3 col-md-6 form-control w-25"
                         type="button"
                         title="Remove file"
-                        @click="remove(data.images.indexOf(file), introImages)"
+                        @click="
+                          remove(uploadedImages.indexOf(file), introImages)
+                        "
                       >
                         remove
                       </button>
@@ -504,12 +499,6 @@
                   @change="onChange(introImages)"
                 />
                 <div v-if="$v.data.images.$error">
-                  <div v-if="!$v.data.images.required" class="error">
-                    これは必須項目なので、必ず入力してください
-                  </div>
-                  <div v-if="!$v.data.images.lessThanFive" class="error">
-                    5つ以下の写真をアップロードしてください
-                  </div>
                   <div
                     v-for="(v, index) in $v.data.images.$each.$iter"
                     :key="index"
@@ -521,6 +510,9 @@
                       2MB以下の写真をアップロードしてください
                     </div>
                   </div>
+                </div>
+                <div v-if="errors.images" class="error">
+                  {{ errors.images[0] }}
                 </div>
                 <small class="form-text text-muted float-end">
                   画像の拡張子：.png .jpg .jpeg .gif；画像の容量：2MB以下
@@ -619,6 +611,8 @@
                   ms-2 ms-lg-3
                   btn-cancel-profile
                 "
+                data-bs-toggle="modal"
+                data-bs-target="#confirmCancelModal"
               >
                 <span class="px-4">キャンセル</span>
               </button>
@@ -634,6 +628,58 @@
         </div>
       </div>
     </form>
+    <!-- Modal -->
+    <div
+      id="confirmCancelModal"
+      class="modal fade"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content box-modal">
+          <div class="modal-header border-0">
+            <img
+              ref="closeConfirmCancelModal"
+              class="close-modal"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              src="../../assets/images/ic_exit.svg"
+              alt=""
+            />
+          </div>
+          <div class="modal-body">
+            <h3 class="text-center modal-body-text">
+              編集内容をキャンセルしてもよろしいですか?
+            </h3>
+          </div>
+          <div
+            class="
+              modal-footer
+              align-items-center
+              d-flex
+              justify-content-center
+              flex-row
+            "
+          >
+            <button
+              type="button"
+              class="btn btn-secondary-custom rounded-pill w-20 mt-4 mb-4"
+              data-bs-dismiss="modal"
+            >
+              いいえ
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger rounded-pill w-20"
+              @click="resetFormToStart"
+            >
+              はい
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 </template>
 
@@ -646,7 +692,6 @@ import {
   minLength,
   url,
   helpers,
-  requiredIf,
 } from 'vuelidate/lib/validators'
 import DatePicker from 'vue2-datepicker'
 import 'vue2-datepicker/index.css'
@@ -659,7 +704,7 @@ const INTROIMAGES = 2
 const INTROVIDEO = 3
 const facebook = helpers.regex(
   'facebook',
-  /(?:(?:http|https):\/\/)?(?:www.)?facebook.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[?\w-]*\/)?(?:profile.php\?id=(?=\d.*))?([\w-]*)?/
+  /(?:(?:http|https):\/\/)?(?:www.)?facebook.com\/(?:messages\/)?(?:[?\w-]*\/)([\w-]*)/
 )
 const youtube = helpers.regex(
   'youtube',
@@ -668,15 +713,14 @@ const youtube = helpers.regex(
 const numbers = helpers.regex('numbers', /^[0-9]*$/)
 const phone = helpers.regex(
   'phone',
-  /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/
+  /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{3})/
 )
-const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/g)
+const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/)
 const imageRule = helpers.regex('image', /\.(gif|jpe?g|png|PNG|GIF|JPE?G)$/)
 const videoRule = helpers.regex('video', /\.(mp4|wmv|avi|mov|flv)$/)
 const alphabet = helpers.regex('alphabet', /^[a-zA-Z ]*$/)
 const imageSize = (value) => value <= 2000000
 const videoSize = (value) => value <= 100000000
-const lessThanFive = (value) => value <= 5
 
 export default {
   name: 'EditProfileCompany',
@@ -694,7 +738,7 @@ export default {
         founded_year: '',
         number_members: '',
         link_website: '',
-        facebook_id: '',
+        link_facebook: '',
         description: '',
         video_link: '',
         phone: '',
@@ -720,6 +764,7 @@ export default {
       theProvinces,
       careers: [],
       errors: [],
+      uploadedImages: [],
       logo: PROFILEIMAGE,
       introImages: INTROIMAGES,
       introVideo: INTROVIDEO,
@@ -738,8 +783,8 @@ export default {
       },
       phone: {
         required,
-        maxLength: maxLength(13),
         minLength: minLength(9),
+        maxLength: maxLength(13),
         phone,
       },
       career: {
@@ -765,7 +810,7 @@ export default {
         alphabet,
         maxLength: maxLength(50),
       },
-      facebook_id: {
+      link_facebook: {
         facebook,
       },
       link_website: {
@@ -773,10 +818,6 @@ export default {
         url,
       },
       images: {
-        required: requiredIf(function () {
-          return this.uploadedIntroImage.length === 0
-        }),
-        lessThanFive,
         $each: {
           name: {
             imageRule,
@@ -797,9 +838,6 @@ export default {
         },
       },
       logo: {
-        required: requiredIf(function () {
-          return this.uploadedProfileImage === ''
-        }),
         $each: {
           name: {
             imageRule,
@@ -808,9 +846,6 @@ export default {
             imageSize,
           },
         },
-      },
-      founded_year: {
-        required,
       },
       youtube: {
         youtube,
@@ -849,7 +884,7 @@ export default {
       this.data.founded_year = data.founded_year
       this.data.number_members = data.number_members
       this.data.link_website = data.link_website
-      this.data.facebook_id = data.facebook_id
+      this.data.link_facebook = data.link_facebook
       this.data.description = data.description
       this.data.address = data.address
       this.data.phone = data.phone
@@ -883,10 +918,11 @@ export default {
       }
       if (fileType === 2) {
         this.data.images = [...this.$refs.introImageInput.files]
-        for (let i = 0; i < this.$refs.introImageInput.files.length; i++) {
-          const file = this.$refs.introImageInput.files[i]
+        for (let i = 0; i < this.data.images.length; i++) {
+          const file = this.data.images[i]
 
-          this.imageUrl[i] = window.URL.createObjectURL(file)
+          this.uploadedImages.push(file)
+          this.imageUrl.push(window.URL.createObjectURL(file))
         }
       }
       if (fileType === 3) {
@@ -913,7 +949,10 @@ export default {
         this.$refs.logoInput.value = ''
       }
       if (fileType === 2) {
-        this.data.images.splice(i, 1)
+        this.clearErrors()
+        this.imageUrl.splice(i, 1)
+        this.data.images = []
+        this.uploadedImages.splice(i, 1)
         this.$refs.introImageInput.value = ''
       }
       if (fileType === 3) {
@@ -929,64 +968,82 @@ export default {
     },
     async editCompanyProfile() {
       this.$v.data.$touch()
+      if (this.uploadedImages.length + this.uploadedIntroImage.length > 5) {
+        this.errors.images = ['5つ以下の写真をアップロードしてください']
+      } else {
+        this.clearErrors()
+        const dataCompany = new FormData()
+        dataCompany.append('career', this.data.career)
+        dataCompany.append('address', this.data.address)
+        dataCompany.append('company_name', this.data.company_name)
+        dataCompany.append('manager_name', this.data.manager_name)
+        dataCompany.append(
+          'founded_year',
+          this.data.founded_year
+            ? this.data.founded_year
+            : this.$moment(new Date()).format('L')
+        )
+        dataCompany.append('number_members', this.data.number_members)
+        dataCompany.append('link_website', this.data.link_website)
+        dataCompany.append('link_facebook', this.data.link_facebook ? this.data.link_facebook : '')
+        dataCompany.append('description', this.data.description)
+        dataCompany.append('video_link', this.data.video_link)
+        dataCompany.append('phone', this.data.phone)
+        dataCompany.append('youtube', this.data.youtube)
+        dataCompany.append('postal_code', this.data.postal_code)
+        dataCompany.append('district', this.data.district)
+        dataCompany.append('province_id', this.data.province)
+        dataCompany.append('email', this.data.email)
+        for (let i = 0; i < this.data.removeIntroImage.length; i++) {
+          const remove = this.data.removeIntroImage[i]
 
-      const dataCompany = new FormData()
-      dataCompany.append('career', this.data.career)
-      dataCompany.append('address', this.data.address)
-      dataCompany.append('company_name', this.data.company_name)
-      dataCompany.append('manager_name', this.data.manager_name)
-      dataCompany.append('founded_year', this.data.founded_year)
-      dataCompany.append('number_members', this.data.number_members)
-      dataCompany.append('link_website', this.data.link_website)
-      dataCompany.append('facebook_id', this.data.facebook_id)
-      dataCompany.append('description', this.data.description)
-      dataCompany.append('video_link', this.data.video_link)
-      dataCompany.append('phone', this.data.phone)
-      dataCompany.append('youtube', this.data.youtube)
-      dataCompany.append('postal_code', this.data.postal_code)
-      dataCompany.append('district', this.data.district)
-      dataCompany.append('province_id', this.data.province)
-      dataCompany.append('email', this.data.email)
-      for (let i = 0; i < this.data.removeIntroImage.length; i++) {
-        const remove = this.data.removeIntroImage[i]
+          dataCompany.append('remove_images[' + i + ']', remove)
+        }
 
-        dataCompany.append('remove_images[' + i + ']', remove)
-      }
-      if (this.data.logo[0]) {
-        dataCompany.append('logo', this.data.logo[0])
-      }
-      for (let i = 0; i < this.data.images.length; i++) {
-        const file = this.data.images[i]
+        for (let i = 0; i < this.uploadedImages.length; i++) {
+          const file = this.uploadedImages[i]
 
-        dataCompany.append('images[' + i + ']', file)
-      }
-      if (this.$refs.videoInput) {
-        dataCompany.append('video', this.$refs.videoInput.files[0])
-      }
-      if (!this.$v.data.$invalid) {
-        try {
-          await this.$repositories.profiles
-            .editCompanyProfile(dataCompany, {
-              header: {
-                'Content-Type': 'multipart/form-data',
-              },
-            })
-            .then((res) => {
-              const data = this.$handleResponse(res)
-              if (data.errors) {
-                this.errors = data.errors
-              }
-              if (res.status === 200) {
-                this.$toast.success('会社情報の更新に成功しました。')
-              }
-            })
-        } catch (e) {
-          this.errors = e.response.data.errors
-          console.log(this.errors)
+          dataCompany.append('images[' + i + ']', file)
+        }
+
+        if (this.data.logo[0]) {
+          dataCompany.append('logo', this.data.logo[0])
+        }
+
+        if (this.$refs.videoInput) {
+          dataCompany.append(
+            'video',
+            this.$refs.videoInput.files[0]
+              ? this.$refs.videoInput.files[0]
+              : 'null'
+          )
+        }
+        if (!this.$v.data.$invalid) {
+          try {
+            await this.$repositories.profiles
+              .editCompanyProfile(dataCompany, {
+                header: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              })
+              .then((res) => {
+                const data = this.$handleResponse(res)
+                if (data.errors) {
+                  this.errors = data.errors
+                }
+                if (res.status === 200) {
+                  this.$toast.success('会社情報の更新に成功しました。')
+                  setTimeout(this.$router.push('/companies'), 2000)
+                }
+              })
+          } catch (e) {
+            this.errors = e.response.data.errors
+          }
         }
       }
     },
     removeImagesOnServer(id, i) {
+      this.clearErrors()
       this.uploadedIntroImage.splice(i, 1)
       this.data.removeIntroImage.push(id)
     },
@@ -995,6 +1052,9 @@ export default {
     },
     removeVideo() {
       this.uploadedVideo = ''
+    },
+    resetFormToStart() {
+      window.location.reload()
     },
   },
 }
