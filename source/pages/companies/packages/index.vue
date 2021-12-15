@@ -35,7 +35,7 @@
                     />
                     <img src="../../../assets/images/package.png" alt="" />
                 </picture> -->
-            <div class="text-center" style="margin:0px 16px 15px">
+            <div class="text-center" style="margin-left: 16px; margin-right: 16px; margin-bottom: 15px">
                 <table class="table table-borderless">
                     <tr>
                         <th colspan="2"></th>
@@ -147,7 +147,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 
 export default {
     name: 'Packages',
-    layout: 'auth',
+    // layout: 'auth',
     head() {
         return { title: 'Packages' }
     },
