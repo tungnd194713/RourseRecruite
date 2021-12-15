@@ -13,11 +13,11 @@
             </div>
             <div class="col-12 col-lg-6 mt-4 mt-lg-0">
               <h1 class="mb-3 mb-lg-4"> {{ job.title}}</h1>
-              <div class="row mb-4">
-                <div class="col-12">
-                  <button id="btn-apply" class="btn btn-secondary w-100 h4">応募する</button>
-                </div>
-              </div>
+<!--              <div class="row mb-4">-->
+<!--                <div class="col-12">-->
+<!--                  <button id="btn-apply" class="btn btn-secondary w-100 h4">応募する</button>-->
+<!--                </div>-->
+<!--              </div>-->
               <div class="row">
                 <div class="d-block">
                   <span class="badge">{{ previewFormRecruitment()}}</span>
@@ -677,11 +677,11 @@
       },
 
       onClickEditJob() {
-        // if (this.$moment() < this.$moment(this.job.date_start)) {
-          this.$router.push(`/jobs/update/${this.$route.params.id}`)
-        // } else {
-        //   this.$toast.error('Can not edit job')
-        // }
+        if (this.$moment() < this.$moment(this.job.date_start)) {
+          this.$router.push('/jobs/update/' + this.$route.params.id)
+        } else {
+          this.$toast.error('この求人を編集できません')
+        }
       },
 
       async getJobFromApi() {
@@ -801,13 +801,20 @@
         }
       },
 
-      popupCvUser(candidateApply) {
+      async popupCvUser(candidateApply) {
         this.language = this.lang_vi
         this.$i18n.locale = this.language
         this.idRow = candidateApply.id
         this.defaultCandidate = Object.assign({}, candidateApply.candidate)
         this.candidate = Object.assign({}, this.defaultCandidate)
         this.initJobsAndEducationsOfCandidate()
+        if (candidateApply.read === 0) {
+          await this.$repositories.candidatesApply.updateStatus(this.idRow, { read: 1}).then(res => {
+            if (res.status === 200) {
+              this.getListCV(this.currentPage);
+            }
+          })
+        }
       },
 
       initJobsAndEducationsOfCandidate() {
