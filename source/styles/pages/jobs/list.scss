@@ -242,6 +242,9 @@ table tbody td{
 }
 
 .modal-header {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: end;
   justify-content: end;
 }
 
@@ -341,7 +344,7 @@ table tbody td{
   }
 
   table tbody td{
-    padding: 0.5rem 0 !important
+    padding: 0.5rem 0.5rem !important
   }
 
   .btn-secondary-custom {
