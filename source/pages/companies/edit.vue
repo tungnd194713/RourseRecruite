@@ -85,6 +85,7 @@
                       invalid: $v.data.phone.$invalid && $v.data.phone.$dirty,
                     }"
                     class="form-control"
+                    @change="clearErrors"
                   />
                   <div v-if="$v.data.phone.$error">
                     <div v-if="!$v.data.phone.required" class="error">
@@ -268,32 +269,22 @@
                   </span>
                   <date-picker
                     id="founded_year"
-                    v-model.trim="$v.data.founded_year.$model"
-                    :class="{
-                      invalid:
-                        $v.data.founded_year.$invalid &&
-                        $v.data.founded_year.$dirty,
-                    }"
+                    v-model.trim="data.founded_year"
                     :clearable="false"
                     format="YYYY-MM-DD"
                     value-type="YYYY/MM/DD"
                     class="date-picker"
-                    :placeholder="$v.data.founded_year.$model"
+                    :placeholder="data.founded_year"
                   >
                     <i slot="icon-calendar"></i>
                   </date-picker>
-                </div>
-                <div v-if="$v.data.founded_year.$error">
-                  <div v-if="!$v.data.founded_year.required" class="error">
-                    これは必須項目なので、必ず入力してください
-                  </div>
                 </div>
               </div>
             </div>
             <div class="my-3 my-lg-4 line"></div>
             <div class="container">
               <div class="form-group mb-2 mb-lg-3">
-                <label for="link_facebook">FacebookのMessengerのURL</label>
+                <label for="link_facebook">FacebookのMessengerのリンク</label>
                 <div
                   class="input-group input-group-icon"
                   :class="{
@@ -722,9 +713,9 @@ const youtube = helpers.regex(
 const numbers = helpers.regex('numbers', /^[0-9]*$/)
 const phone = helpers.regex(
   'phone',
-  /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/
+  /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{3})/
 )
-const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/g)
+const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/)
 const imageRule = helpers.regex('image', /\.(gif|jpe?g|png|PNG|GIF|JPE?G)$/)
 const videoRule = helpers.regex('video', /\.(mp4|wmv|avi|mov|flv)$/)
 const alphabet = helpers.regex('alphabet', /^[a-zA-Z ]*$/)
@@ -792,8 +783,8 @@ export default {
       },
       phone: {
         required,
-        maxLength: maxLength(13),
         minLength: minLength(9),
+        maxLength: maxLength(13),
         phone,
       },
       career: {
@@ -855,9 +846,6 @@ export default {
             imageSize,
           },
         },
-      },
-      founded_year: {
-        required,
       },
       youtube: {
         youtube,
@@ -961,7 +949,9 @@ export default {
         this.$refs.logoInput.value = ''
       }
       if (fileType === 2) {
+        this.clearErrors()
         this.imageUrl.splice(i, 1)
+        this.data.images = []
         this.uploadedImages.splice(i, 1)
         this.$refs.introImageInput.value = ''
       }
@@ -987,10 +977,15 @@ export default {
         dataCompany.append('address', this.data.address)
         dataCompany.append('company_name', this.data.company_name)
         dataCompany.append('manager_name', this.data.manager_name)
-        dataCompany.append('founded_year', this.data.founded_year)
+        dataCompany.append(
+          'founded_year',
+          this.data.founded_year
+            ? this.data.founded_year
+            : this.$moment(new Date()).format('L')
+        )
         dataCompany.append('number_members', this.data.number_members)
         dataCompany.append('link_website', this.data.link_website)
-        dataCompany.append('link_facebook', this.data.link_facebook)
+        dataCompany.append('link_facebook', this.data.link_facebook ? this.data.link_facebook : '')
         dataCompany.append('description', this.data.description)
         dataCompany.append('video_link', this.data.video_link)
         dataCompany.append('phone', this.data.phone)
@@ -1048,6 +1043,7 @@ export default {
       }
     },
     removeImagesOnServer(id, i) {
+      this.clearErrors()
       this.uploadedIntroImage.splice(i, 1)
       this.data.removeIntroImage.push(id)
     },
