@@ -147,7 +147,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 
 export default {
     name: 'Packages',
-    // layout: 'auth',
+    layout: 'auth',
     head() {
         return { title: 'Packages' }
     },
