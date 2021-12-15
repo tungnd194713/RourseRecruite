@@ -17,7 +17,7 @@
               <div class="row">
                 <div class="d-block">
                   <span class="badge">{{ previewFormRecruitment()}}</span>
-                  <span class="badge">{{ $store.getters['loggedInUser'].career}}</span>
+                  <span class="badge">{{ $t(careerList[$store.getters['loggedInUser'].career - 1])}}</span>
                 </div>
                 <div class="d-block">
                   <span v-for="item in previewStatusStay()" :key="item.value" class="badge">{{ item.text}}</span>
@@ -100,7 +100,7 @@
           </table>
         </div>
         <div class="d-flex justify-content-end footer">
-          <button id="btn_back" class="btn" @click="$router.push('/jobs/create')">戻る</button>
+          <button id="btn_back" class="btn" @click="backToCreateJobPage">戻る</button>
           <button id="btn_completion" class="btn" @click="completeCreateJob">完了</button>
           <button
             ref="showCompleteCreateJobModal"
@@ -120,6 +120,7 @@
 <script>
   import StatusStayInfoModal from "~/components/StatusStayInfoModal";
   import CompleteCreateJobModal from "~/components/CompleteCreateJobModal";
+  import theCareers from '~/constants/careers'
 
   export default {
     name: "PreviewNewJob",
@@ -131,6 +132,7 @@
 
     data() {
       return {
+        careerList: theCareers,
         typePlanList:[
           {
             text: 'A',
@@ -173,11 +175,11 @@
         ],
         formRecruitmentList: [
           {
-            text: '1-フルタイム fulltime',
+            text: '1-フルタイム',
             value: 1
           },
           {
-            text: '2-アルバイト parttime',
+            text: '2-アルバイト',
             value: 2
           },
         ],
@@ -287,6 +289,11 @@
         return this.isJobStored() ? this.statusStayList.filter(this.filterPreviewStatusStay) : []
       },
 
+      backToCreateJobPage() {
+        this.$store.dispatch('job/setPrevRoute', this.$route.path)
+        this.$router.push('/jobs/create')
+      },
+
       async completeCreateJob() {
         if (this.job.salary_min === '') {
           this.job.salary_min = 0
@@ -321,6 +328,7 @@
           if (res.status === 201) {
             this.$refs.showCompleteCreateJobModal.click()
             this.$store.dispatch('job/setJob', {})
+            this.$store.dispatch('job/setPrevRoute', '')
           }
           if (res.response && res.response.status === 406) {
             this.$toast.error(res.response.data.message)
