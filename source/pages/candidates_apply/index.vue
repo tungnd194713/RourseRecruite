@@ -93,10 +93,8 @@
                                    item.candidate.residence_card_front,
                                    item.candidate.residence_card_backside
                                    )">
-                                <img
-                                        class=""
-                                        :src="url_file+item.candidate.residence_card_front"
-                                />
+                                <img v-if="item.read === 0" class="" src="../../assets/images/icon_postcard_active.svg"/>
+                                <img v-else class="" src="../../assets/images/icon_postcard_inactive.svg"/>
                             </a>
                         </td>
                         <td class="align-middle py-3">
