@@ -20,13 +20,13 @@
           <input v-model="condition.title" type="text" class="form-control rounded-pill" placeholder="タイトル">
         </div>
         <div class="col-12 col-lg-3 mb-2 form-group">
-          <input v-model="condition.date_start" type="text" class="form-control rounded-pill" placeholder="登録日">
+          <input v-model="condition.date_start" type="text" class="form-control rounded-pill" placeholder="開始日">
         </div>
         <div class="col-12 col-lg-3 mb-2 form-group">
           <select v-model="condition.status" class="form-select rounded-pill" aria-label="ステータス">
             <option selected>ステータス</option>
-            <option value="1">Ok</option>
-            <option value="0">No</option>
+            <option value="1">表示</option>
+            <option value="0">非表示</option>
           </select>
         </div>
         <div class="col-12 col-lg-2">
@@ -52,45 +52,47 @@
           </thead>
           <tbody>
             <tr v-for="(item, index) in items" :key="item.id" :class="item.read === 0 ? 'unread' : ''">
-              <td class="align-middle py-3 text-center">
+              <td class="align-middle text-center">
                           <span v-if="!(item.read || isWarningUnRead(item.date_start))" class="td-warning">
                           未対応の履歴書{{item.cv_read}}/{{item.total_cv_applied}}通 <img class="" src="../../assets/images/icon_warning.svg"/>
                           </span>
                   {{index + 1}}
                 </td>
 
-              <td class="align-middle py-3">
+              <td class="align-middle">
                 <a href="" class="text-decoration-none" @click.prevent="$router.push('/jobs/detail/' + item.id)">{{item.title}}</a>
               </td>
-              <td class="align-middle py-3">{{item.date_start}}</td>
-              <td class="align-middle py-3">{{item.date_end}}</td>
-              <td class="align-middle py-3">{{item.form_recruitment}}</td>
-              <td class="align-middle py-3">{{item.conditions_apply}}</td>
-              <td class="align-middle py-3">{{item.number_recruitments}}</td>
-              <td class="align-middle py-3">
+              <td class="align-middle">{{item.date_start}}</td>
+              <td class="align-middle">{{item.date_end}}</td>
+              <td class="align-middle">{{item.form_recruitment == 1 ? 'フルタイム' : 'アルバイト'}}</td>
+              <td class="align-middle">{{ theTypePlan[item.type_plan ]}}</td>
+              <td class="align-middle">{{item.total_cv_applied}}</td>
+              <td class="align-middle">
                 <div class="btn-group btn-toggle rounded-pill btn-switch">
                   <button
                     :class="'btn btn-sm btn-check-active rounded-pill ' + (item.status === 1 ? 'active' : '')"
                     @click="changeStatus(item.id, item.status)"
                   >
-                    有効
+                    表示
                   </button>
                   <button
                     :class="'btn btn-sm btn-check-unactive rounded-pill ' + (item.status === 0 ? 'unactive' : '')"
                     @click="changeStatus(item.id, item.status)"
                   >
-                    無効
+                    非表示
                   </button>
                 </div>
               </td>
-              <td class="align-middle py-3">
+              <td class="align-middle">
                 <img class="btn" src="../../assets/images/icon_trash.svg" data-bs-toggle="modal"
                      data-bs-target="#confirmDeleteModal" @click="confirmDelete(item.id)"/>
               </td>
           </tr>
           </tbody>
         </table>
-        <h4 v-if="totalItems === 0" class="text-center w-100 p-3 m-0 bg-white border-bottom border-1">検索結果がありません</h4>
+        <div v-if="totalItems === 0" class="outer-spinner">
+          <div class="loader"></div>
+        </div>
       </div>
       <Pagination :current-page="currentPage"
                   :per-page="perPage"
@@ -123,7 +125,7 @@
             </div>
             <div class="modal-footer align-items-center d-flex justify-content-center flex-row">
               <button type="button" class="btn btn-secondary-custom rounded-pill w-20 mt-4 mb-4" data-bs-dismiss="modal">キャンセル</button>
-              <button type="button" class="btn btn-danger rounded-pill w-20" @click="deleteItem">削除</button>
+              <button type="button" class="btn btn-custom btn-danger rounded-pill w-20" @click="deleteItem">削除</button>
             </div>
           </div>
         </div>
@@ -135,6 +137,7 @@
 <script>
   import 'bootstrap/dist/css/bootstrap.css'
   import Pagination from "../../components/Pagination";
+  import theTypePlan from "~/constants/typePlan"
 
   export default {
     name: "ListJob",
@@ -166,11 +169,11 @@
             label: '雇用形態'
           },
           {
-            key: 'conditions_apply',
-            label: '語学レベル'
+            key: 'type_plan',
+            label: 'プラン'
           },
           {
-            key: 'number_recruitments',
+            key: 'number_apply',
             label: '応募者数'
           },
           {
@@ -179,6 +182,7 @@
             tdClass: 'action'
           }
         ],
+        theTypePlan,
         currentPage: 1,
         perPage: 10,
         totalItems: 0,
@@ -193,7 +197,7 @@
     },
 
     head () {
-      return { title: 'List job' }
+      return { title: '求人一覧' }
     },
 
     computed: {

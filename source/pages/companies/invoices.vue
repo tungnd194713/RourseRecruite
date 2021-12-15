@@ -2,10 +2,19 @@
   <main class="container my-3 my-lg-4">
     <ul class="nav nav-tabs">
       <li class="nav-item w-50">
-        <NuxtLink class="nav-link big-nav nav-one" aria-current="page" to="/companies/packages">決済情報</NuxtLink>
+        <NuxtLink
+          class="nav-link big-nav nav-one"
+          aria-current="page"
+          to="/companies/packages"
+          >決済情報</NuxtLink
+        >
       </li>
       <li class="nav-item w-50">
-        <NuxtLink class="nav-link big-nav nav-two active" to="/companies/invoices">決済履歴</NuxtLink>
+        <NuxtLink
+          class="nav-link big-nav nav-two active"
+          to="/companies/invoices"
+          >決済履歴</NuxtLink
+        >
       </li>
     </ul>
     <div class="container tab-content">
@@ -23,23 +32,35 @@
           </thead>
           <tbody>
             <tr v-for="item in items" :key="item.id" class="active">
-              <td class="align-middle py-3">{{ item.id }}</td>
-              <td class="align-middle py-3">{{ item.paid_at.split(' ')[0] }}</td>
-              <td class="align-middle py-3">{{ item.year_month }}</td>
-              <td class="align-middle py-3">¥{{ item.cost_job ? Math.ceil(item.cost_job) : null }}</td>
-              <td class="align-middle py-3">¥{{ item.cost_apply ? Math.ceil(item.cost_apply) : null }}</td>
-              <td class="align-middle py-3">
-                {{ item.transaction == null || item.transaction.payment_method == 1 ? '振込' : 'クレジットカード' }}
+              <td class="align-middle">{{ item.id }}</td>
+              <td class="align-middle">{{ item.paid_at.split(' ')[0] }}</td>
+              <td class="align-middle">{{ item.year_month }}</td>
+              <td class="align-middle">
+                ¥{{ item.cost_job ? Math.ceil(item.cost_job).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null }}
               </td>
-              <td class="align-middle py-3">{{ theStatus[item.status] }}</td>
-              <td class="align-middle py-3">¥{{ item.total ? Math.ceil(item.total) : null }}</td>
-              <td class="align-middle py-3">
-                <button
-                  class="form-control btn btn-sm btn-payment"
-                  style="background: white"
-                >
-                  決済
-                </button>
+              <td class="align-middle">
+                ¥{{ item.cost_apply ? Math.ceil(item.cost_apply).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null }}
+              </td>
+              <td class="align-middle">
+                {{
+                  item.transaction == null ||
+                  item.transaction.payment_method == 1
+                    ? '振込'
+                    : 'クレジットカード'
+                }}
+              </td>
+              <td class="align-middle">{{ theStatus[item.status] }}</td>
+              <td class="align-middle">
+                ¥{{ item.total ? Math.ceil(item.total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null }}
+              </td>
+              <td class="align-middle">
+                <div class="btn-payment">
+                  <img
+                    class="text-center btn-inside"
+                    src="../../assets/images/icon_money_jp.svg"
+                    alt=""
+                  />
+                </div>
               </td>
             </tr>
           </tbody>
@@ -50,6 +71,7 @@
         :per-page="perPage"
         :total-items="totalItems"
         :page-count="pageCount"
+        :description-require="descriptionRequire"
         @nextPage="pageChangeHandle('next')"
         @previousPage="pageChangeHandle('previous')"
         @customPage="pageChangeHandle"
@@ -78,7 +100,7 @@ export default {
         },
         {
           key: 'payment_date',
-          label: '決済日',
+          label: '購入日',
         },
         {
           key: 'year_month',
@@ -110,6 +132,7 @@ export default {
           tdClass: 'action',
         },
       ],
+      descriptionRequire: false,
       theStatus,
       currentPage: 1,
       perPage: 10,

@@ -24,7 +24,7 @@
 }
 
 .btn-add-job:hover {
-  color: #ffffff;
+  background-color: #6e9ddf;
 }
 
 
@@ -62,11 +62,11 @@ input::placeholder {
 }
 
 .btn-search-job:hover {
-  color: #ffffff;
+  background-color: #b7d5e5;
 }
 
 .btn-switch {
-  width: 92px;
+  width: 100px;
   border: 1px solid #87B0C6;
 }
 
@@ -175,6 +175,10 @@ table thead tr{
   border-bottom-color: #ededed;
 }
 
+table tbody td{
+  padding: 1rem 0;
+}
+
 .btn-outline-primary {
     border-color: #2f83b9;
     color: #2f83b9;
@@ -199,6 +203,34 @@ table thead tr{
 
 .td-warning img {
   height: 19px;
+}
+
+.outer-spinner {
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader {
+  border: 10px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 10px solid #3498db;
+  width: 80px;
+  height: 80px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 @media only screen and (max-width: 600px) {
@@ -235,6 +267,34 @@ table thead tr{
   .box-pagination p {
     font-size: 10px;
   }
+
+  .btn-switch {
+    width: 60px;
+  }
+
+  .btn-switch .btn {
+    font-size: 8px;
+    padding: 0.09rem 0.1rem;
+  }
+
+  table tbody td{
+    padding: 0.5rem 0 !important
+  }
+
+  .btn-secondary-custom {
+    font-size: 14px;
+    width: 30% !important;
+  }
+
+  .btn-custom {
+    font-size: 14px;
+    width: 30% !important;
+  }
+
+  .modal-body-text {
+    margin-top: 1rem;
+    font-size: 14px;
+  }
 }
 
 .box-modal {
@@ -268,5 +328,5 @@ table thead tr{
 }
 
 .w-20 {
-  width: 20% !important;
+  width: 20%;
 }
