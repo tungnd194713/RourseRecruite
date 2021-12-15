@@ -191,37 +191,41 @@
                         >在留資格 <span>*</span></label
                     >
                     <div class="col-12 col-sm-4">
-                        <div class="input-group input-group-icon">
-                            <span class="input-group-text input-group-text-pre">
-                                <img
-                                    src="../../../assets/images/icon_stay.svg"
-                                    alt=""
-                                />
-                            </span>
-                            <select
-                                id="inputGroupSelect01"
-                                v-model="job.status_stay"
-                                class="form-select rounded-end"
-                                multiple
-                            >
-                                <option
-                                    v-for="item in statusStayList"
-                                    :key="item.value"
-                                    :value="item.value"
-                                >
-                                    {{ item.text }}
-                                </option>
+                      <div class="input-group input-group-icon flex-column">
+                        <div class="input-group input-group-icon flex-nowrap">
+                          <span class="input-group-text input-group-text-pre">
+                            <img src="../../../assets/images/icon_stay.svg" alt="">
+                          </span>
+                          <div
+                            ref="statusStayDropdownRef"
+                            class="status-stay-dropdown"
+                            @click="showStatusStayDropdown"
+                            @focusout="focusOutStatusStayListDropdown"
+                          >
+                            <div class="over-select"></div>
+                            <select class="form-select rounded-end">
+                              <option value="">{{ previewStatusStay()}}</option>
                             </select>
-                            <div class="invalid-feedback">
-
-                            </div>
+                          </div>
                         </div>
-                      <div v-if="$v.job.status_stay.$error">
-                        <div
-                          v-if="!$v.job.status_stay.required"
-                          class="error-text"
-                        >
-                          これは必須項目なので、必ず入力してください
+                        <div v-if="showStatusStayList" class="multi-select-status-stay">
+                          <ul>
+                            <li v-for="item in statusStayList" :key="item.value">
+                              <label :for="'statusStay' +item.value">
+                                <input
+                                  :id="'statusStay' +item.value"
+                                  v-model="job.status_stay"
+                                  type="checkbox"
+                                  :value="item.value"
+                                  @click="$v.job.status_stay.$touch()"
+                                >
+                                {{ item.text }}
+                              </label>
+                            </li>
+                          </ul>
+                        </div>
+                        <div v-if="$v.job.status_stay.$error">
+                          <div v-if="!$v.job.status_stay.isNotEmpty" class="error-text">これは必須項目なので、必ず入力してください</div>
                         </div>
                       </div>
                     </div>
@@ -338,27 +342,18 @@
                                 />
                             </span>
                             <input
-                                v-model="job.salary_min"
-                                type="text"
-                                class="form-control rounded-end"
-                                @input="$v.job.salary_min.$touch()"
-                                @blur="$v.job.salary_min.$touch()"
-                            />
-                        </div>
-                        <div v-if="$v.job.salary_min.$error">
-                            <div
-                                v-if="!$v.job.salary_min.required"
-                                class="error-text"
+                              v-model="job.salary_max"
+                              type="text"
+                              class="form-control rounded-end"
+                              @input="$v.job.salary_max.$touch()"
+                              @blur="$v.job.salary_max.$touch()"
+                              @keypress="keyPressForNumberInput"
                             >
-                                これは必須項目なので、必ず入力してください
-                            </div>
-                            <div
-                              v-if="!$v.job.salary_min.isNumber"
-                              class="error-text"
-                            >
-                              Nhập số thập phân hoặc số nguyên cho trường này
-                            </div>
                         </div>
+                      <div v-if="$v.job.salary_max.$error">
+                        <div v-if="!$v.job.salary_max.required" class="error-text">これは必須項目なので、必ず入力してください</div>
+                        <div v-if="!$v.job.salary_max.maxLength" class="error-text">10数字以下で入力してください</div>
+                      </div>
                     </div>
 
                     <div
@@ -373,26 +368,18 @@
                                 />
                             </span>
                             <input
-                                v-model="job.salary_min"
-                                type="text"
-                                class="form-control rounded-end"
-                                @input="$v.job.salary_min.$touch()"
-                                @blur="$v.job.salary_min.$touch()"
-                            />
+                              v-model="job.salary_min"
+                              type="text"
+                              class="form-control rounded-end"
+                              @input="onInputOrBlurSalaryMin"
+                              @blur="onInputOrBlurSalaryMin"
+                              @keypress="keyPressForNumberInput"
+                            >
                         </div>
                         <div v-if="$v.job.salary_min.$error">
-                          <div
-                            v-if="!$v.job.salary_min.required"
-                            class="error-text"
-                          >
-                            これは必須項目なので、必ず入力してください
-                          </div>
-                          <div
-                            v-if="!$v.job.salary_min.isNumber"
-                            class="error-text"
-                          >
-                            Nhập số thập phân hoặc số nguyên cho trường này
-                          </div>
+                          <div v-if="!$v.job.salary_min.required" class="error-text">これは必須項目なので、必ず入力してください</div>
+                          <div v-if="!$v.job.salary_min.maxLength" class="error-text">10数字以下で入力してください</div>
+                          <div v-if="!$v.job.salary_min.isLowerThanSalaryMax" class="error-text">最多の月給以下で入力してください</div>
                         </div>
                     </div>
                     {{ displaySalary === 'salary_range' ? '～' : '' }}
@@ -408,26 +395,18 @@
                                 />
                             </span>
                             <input
-                                v-model="job.salary_max"
-                                type="text"
-                                class="form-control rounded-end"
-                                @input="$v.job.salary_max.$touch()"
-                                @blur="$v.job.salary_max.$touch()"
-                            />
+                              v-model="job.salary_max"
+                              type="text"
+                              class="form-control rounded-end"
+                              @input="onInputOrBlurSalaryMax"
+                              @blur="onInputOrBlurSalaryMax"
+                              @keypress="keyPressForNumberInput"
+                            >
                         </div>
                         <div v-if="$v.job.salary_max.$error">
-                          <div
-                            v-if="!$v.job.salary_max.required"
-                            class="error-text"
-                          >
-                            これは必須項目なので、必ず入力してください
-                          </div>
-                          <div
-                            v-if="!$v.job.salary_max.isNumber"
-                            class="error-text"
-                          >
-                            Nhập số thập phân hoặc số nguyên cho trường này
-                          </div>
+                          <div v-if="!$v.job.salary_max.required" class="error-text">これは必須項目なので、必ず入力してください</div>
+                          <div v-if="!$v.job.salary_max.maxLength" class="error-text">10数字以下で入力してください</div>
+                          <div v-if="!$v.job.salary_max.isGreaterThanSalaryMin" class="error-text">最低の月給以上で入力してください</div>
                         </div>
                     </div>
                 </div>
@@ -732,6 +711,7 @@ export default {
 
     data() {
         return {
+            showStatusStayList: false,
             openDateEndPicker: false,
             previewImageJobUrl: null,
             displaySalary: 'salary_max',
@@ -820,7 +800,28 @@ export default {
                 },
             ],
           provinceList: [],
-          job: {},
+          job: {
+            image_job: null,
+            title: '',
+            date_start: '',
+            type_plan: '',
+            display_month: '',
+            form_recruitment: '',
+            status_stay: [],
+            number_recruitments: '',
+            salary_max: '',
+            salary_min: '',
+            content_work: '',
+            conditions_apply: '',
+            province_id: 1,
+            address_work: '',
+            time_work: '',
+            break_time: '',
+            holidays: '',
+            welfare_regime: '',
+            has_vietnamese_staff: '',
+            overtime: ''
+          },
         }
     },
 
@@ -844,7 +845,9 @@ export default {
         },
         form_recruitment: {},
         status_stay: {
-          required
+          isNotEmpty(val) {
+            return this.job.status_stay.length !== 0
+          }
         },
         number_recruitments: {
           required,
@@ -856,23 +859,25 @@ export default {
         },
         salary_max: {
           required,
-          // isNumber(value) {
-          //   // eslint-disable-next-line prefer-regex-literals
-          //   const numberRegExp = new RegExp("/^\\d*\\.?\\d*$/")
-          //   return numberRegExp.test(value)
-          // },
-          maxLength: maxLength(10)
+          maxLength: maxLength(10),
+          isGreaterThanSalaryMin(value) {
+            if (value && this.job.salary_min) {
+              return parseInt(value) > parseInt(this.job.salary_min)
+            }
+            return true
+          }
         },
         salary_min: {
           required: requiredIf(function () {
             return this.displaySalary === 'salary_range'
           }),
-          // isNumber(value) {
-          //   // eslint-disable-next-line prefer-regex-literals
-          //   const numberRegExp = new RegExp("/^\\d*\\.?\\d*$/")
-          //   return numberRegExp.test(value)
-          // },
-          maxLength: maxLength(10)
+          maxLength: maxLength(10),
+          isLowerThanSalaryMax(value) {
+            if (value && this.job.salary_max) {
+              return parseInt(value) < parseInt(this.job.salary_max)
+            }
+            return true
+          }
         },
         content_work: {
           required,
@@ -931,11 +936,56 @@ export default {
     },
 
     methods: {
+      onInputOrBlurSalaryMin() {
+        if (this.job.salary_max) {
+          this.$v.job.salary_max.$reset()
+        }
+        this.$v.job.salary_min.$touch()
+      },
+
+      onInputOrBlurSalaryMax() {
+        if (this.job.salary_min) {
+          this.$v.job.salary_min.$reset()
+        }
+        this.$v.job.salary_max.$touch()
+      },
+
+      showStatusStayDropdown() {
+        this.showStatusStayList = !this.showStatusStayList
+      },
+
+      filterPreviewStatusStay(element) {
+        for (let i = 0; i < this.job.status_stay.length; i++) {
+          if (element.value === this.job.status_stay[i]) {
+            return true
+          }
+        }
+        return false
+      },
+
+      previewStatusStay() {
+        const statusStaySelected = this.statusStayList.filter(this.filterPreviewStatusStay)
+        let result = ''
+        statusStaySelected.forEach(function (item, index) {
+          if (index === statusStaySelected.length - 1) {
+            result += item.text
+          } else {
+            result += item.text + ' - '
+          }
+        })
+        return result
+      },
+
+      focusOutStatusStayListDropdown() {
+        this.$refs.statusStayDropdownRef.click()
+      },
+
         async showJob() {
           try {
             await this.$repositories.jobs.getJob(this.$route.params.id)
               .then((response) => {
-                this.job = response.data.job
+                this.job = Object.assign({}, response.data.job)
+                this.job.status_stay = response.data.job.status_stay.split(",")
 
                 this.job.salary_max = parseFloat(this.job.salary_max).toFixed(3);
                 this.job.salary_min = parseFloat(this.job.salary_min).toFixed(3);

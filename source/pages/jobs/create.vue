@@ -147,14 +147,16 @@
                         :id="'statusStay' +item.value"
                         v-model="job.status_stay"
                         type="checkbox"
-                        :value="item.value">
+                        :value="item.value"
+                        @click="$v.job.status_stay.$touch()"
+                      >
                       {{ item.text }}
                     </label>
                   </li>
                 </ul>
               </div>
-              <div class="invalid-feedback">
-                Please choose a 在留資格.
+              <div v-if="$v.job.status_stay.$error">
+                <div v-if="!$v.job.status_stay.isNotEmpty" class="error-text">これは必須項目なので、必ず入力してください</div>
               </div>
             </div>
           </div>
@@ -255,8 +257,7 @@
             <div v-if="$v.job.salary_min.$error">
               <div v-if="!$v.job.salary_min.required" class="error-text">これは必須項目なので、必ず入力してください</div>
               <div v-if="!$v.job.salary_min.maxLength" class="error-text">10数字以下で入力してください</div>
-              <div v-if="!$v.job.salary_min.isLowerThanSalaryMax" class="error-text">Must be lower than salary_max</div>
-
+              <div v-if="!$v.job.salary_min.isLowerThanSalaryMax" class="error-text">最多の月給以下で入力してください</div>
             </div>
           </div>
           {{ (displaySalary === 'salary_range') ? '～': ''}}
@@ -277,7 +278,7 @@
             <div v-if="$v.job.salary_max.$error">
               <div v-if="!$v.job.salary_max.required" class="error-text">これは必須項目なので、必ず入力してください</div>
               <div v-if="!$v.job.salary_max.maxLength" class="error-text">10数字以下で入力してください</div>
-              <div v-if="!$v.job.salary_max.isGreaterThanSalaryMin" class="error-text">Must be greater than salary_min</div>
+              <div v-if="!$v.job.salary_max.isGreaterThanSalaryMin" class="error-text">最低の月給以上で入力してください</div>
             </div>
           </div>
 
@@ -659,7 +660,11 @@
           required
         },
         form_recruitment: {},
-        status_stay: {},
+        status_stay: {
+          isNotEmpty(val) {
+            return this.job.status_stay.length !== 0
+          }
+        },
         number_recruitments: {
           required,
           isNumber(value) {
