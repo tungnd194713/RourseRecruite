@@ -244,8 +244,8 @@ table tbody td{
 .modal-header {
   display: -webkit-flex;
   display: flex;
-  -webkit-justify-content: end;
-  justify-content: end;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
 }
 
 .modal-body > h3 > img {

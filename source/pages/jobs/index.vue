@@ -170,7 +170,6 @@
           :per-page="perPage"
           :total-items="totalItems"
           :page-count="pageCount"
-          :description-pagination="descriptionPagination"
           @nextPage="pageChangeHandle('next')"
           @previousPage="pageChangeHandle('previous')"
           @customPage="pageChangeHandle"
@@ -184,8 +183,8 @@
       </div>
       <!-- Modal -->
       <div
-        class="modal fade"
         id="confirmDeleteModal"
+        class="modal fade"
         tabindex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
@@ -194,10 +193,10 @@
           <div class="modal-content box-modal">
             <div class="modal-header border-0">
               <img
+                id="closeConfirmDeleteModal"
                 class="close-modal"
                 data-bs-dismiss="modal"
                 aria-label="Close"
-                id="closeConfirmDeleteModal"
                 src="../../assets/images/ic_exit.svg"
                 alt=""
               />

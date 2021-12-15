@@ -40,7 +40,7 @@
           class="form-select rounded-pill"
           aria-label="ステータス"
         >
-          <option value="" disabled>ステータス</option>
+          <option value="" selected disabled>ステータス</option>
           <option value="1">未対応</option>
           <option value="2">折り返し待ち</option>
           <option value="3">面接待ち</option>
@@ -122,8 +122,14 @@
                   "
                 >
                   <img
+                    v-if="item.read === 0"
                     class=""
-                    :src="url_file + item.candidate.residence_card_front"
+                    src="../../assets/images/icon_postcard_active.svg"
+                  />
+                  <img
+                    v-else
+                    class=""
+                    src="../../assets/images/icon_postcard_inactive.svg"
                   />
                 </a>
               </td>
@@ -137,6 +143,7 @@
                     })
                   "
                 >
+                  <option value="" selected disabled>未選択</option>
                   <option value="1">特定技能</option>
                   <option value="2">技能実習</option>
                   <option value="3">特定活動</option>
@@ -156,6 +163,7 @@
                   class="form-select active rounded-3 status-select"
                   @change="updateItemStatus(item.id, { status: item.status })"
                 >
+                  <option value="" selected disabled>未選択</option>
                   <option value="0">未選択</option>
                   <option value="1">未対応</option>
                   <option value="2">折り返し待ち</option>
@@ -281,6 +289,7 @@
               aria-label="Confirmation"
             >
               <!--<option selected></option>-->
+              <option value="" selected disabled>未選択</option>
               <option value="1">特定技能</option>
               <option value="2">技能実習</option>
               <option value="3">特定活動</option>
@@ -297,7 +306,7 @@
               class="form-select rounded-pill pop-check-select"
               aria-label="Status"
             >
-              <option value="0">未選択</option>
+              <option value="" selected disabled>未選択</option>
               <option value="1">未対応</option>
               <option value="2">折り返し待ち</option>
               <option value="3">面接待ち</option>
