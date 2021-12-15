@@ -247,14 +247,15 @@
                 v-model="job.salary_min"
                 type="text"
                 class="form-control rounded-end"
-                @input="$v.job.salary_min.$touch()"
-                @blur="$v.job.salary_min.$touch()"
+                @input="onInputOrBlurSalaryMin"
+                @blur="onInputOrBlurSalaryMin"
                 @keypress="keyPressForNumberInput"
               >
             </div>
             <div v-if="$v.job.salary_min.$error">
               <div v-if="!$v.job.salary_min.required" class="error-text">これは必須項目なので、必ず入力してください</div>
               <div v-if="!$v.job.salary_min.maxLength" class="error-text">10数字以下で入力してください</div>
+              <div v-if="!$v.job.salary_min.isLowerThanSalaryMax" class="error-text">Must be lower than salary_max</div>
 
             </div>
           </div>
@@ -268,8 +269,8 @@
                 v-model="job.salary_max"
                 type="text"
                 class="form-control rounded-end"
-                @input="$v.job.salary_max.$touch()"
-                @blur="$v.job.salary_max.$touch()"
+                @input="onInputOrBlurSalaryMax"
+                @blur="onInputOrBlurSalaryMax"
                 @keypress="keyPressForNumberInput"
               >
             </div>
@@ -671,8 +672,8 @@
           required,
           maxLength: maxLength(10),
           isGreaterThanSalaryMin(value) {
-            if (this.job.salary_min) {
-              return value > this.job.salary_min
+            if (value && this.job.salary_min) {
+              return parseInt(value) > parseInt(this.job.salary_min)
             }
             return true
           }
@@ -682,12 +683,12 @@
             return this.displaySalary === 'salary_range'
           }),
           maxLength: maxLength(10),
-          // isLowerThanSalaryMax(value) {
-          //   if (this.job.salary_max) {
-          //     return value < this.job.salary_max
-          //   }
-          //   return true
-          // }
+          isLowerThanSalaryMax(value) {
+            if (value && this.job.salary_max) {
+              return parseInt(value) < parseInt(this.job.salary_max)
+            }
+            return true
+          }
         },
         content_work: {
           required,
@@ -765,6 +766,20 @@
     },
 
     methods: {
+      onInputOrBlurSalaryMin() {
+        if (this.job.salary_max) {
+          this.$v.job.salary_max.$reset()
+        }
+        this.$v.job.salary_min.$touch()
+      },
+
+      onInputOrBlurSalaryMax() {
+        if (this.job.salary_min) {
+          this.$v.job.salary_min.$reset()
+        }
+        this.$v.job.salary_max.$touch()
+      },
+
       showStatusStayDropdown() {
         this.showStatusStayList = !this.showStatusStayList
       },

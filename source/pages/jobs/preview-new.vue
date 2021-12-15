@@ -17,7 +17,7 @@
               <div class="row">
                 <div class="d-block">
                   <span class="badge">{{ previewFormRecruitment()}}</span>
-                  <span class="badge">{{ $store.getters['loggedInUser'].career}}</span>
+                  <span class="badge">{{ $t(careerList[$store.getters['loggedInUser'].career - 1])}}</span>
                 </div>
                 <div class="d-block">
                   <span v-for="item in previewStatusStay()" :key="item.value" class="badge">{{ item.text}}</span>
@@ -120,6 +120,7 @@
 <script>
   import StatusStayInfoModal from "~/components/StatusStayInfoModal";
   import CompleteCreateJobModal from "~/components/CompleteCreateJobModal";
+  import theCareers from '~/constants/careers'
 
   export default {
     name: "PreviewNewJob",
@@ -131,6 +132,7 @@
 
     data() {
       return {
+        careerList: theCareers,
         typePlanList:[
           {
             text: 'A',
@@ -173,11 +175,11 @@
         ],
         formRecruitmentList: [
           {
-            text: '1-フルタイム fulltime',
+            text: '1-フルタイム',
             value: 1
           },
           {
-            text: '2-アルバイト parttime',
+            text: '2-アルバイト',
             value: 2
           },
         ],
