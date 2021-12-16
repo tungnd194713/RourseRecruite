@@ -361,14 +361,8 @@
               aria-label="Confirmation"
             >
               <option value="0" disabled>未選択</option>
-              <option value="1">特定技能</option>
-              <option value="2">技能実習</option>
-              <option value="3">特定活動</option>
-              <option value="4">留学生</option>
-              <option value="5">技術・人文知識・国際業務</option>
-              <option value="6">定住</option>
-              <option value="7">永住</option>
-              <option value="8">家族滞在</option>
+              <option value="1">承認</option>
+              <option value="2">非承認</option>
             </select>
             <label for="status">ステータス</label>
             <select
@@ -377,7 +371,7 @@
               class="form-select rounded-pill pop-check-select"
               aria-label="Status"
             >
-              <option value="" disabled>未選択</option>
+              <option value="0" disabled>未選択</option>
               <option value="1">未対応</option>
               <option value="2">折り返し待ち</option>
               <option value="3">面接待ち</option>
@@ -817,9 +811,12 @@
       },
 
       async getListCV(currentPage) {
-        const condition = {...this.condition, currentPage};
+        const params = {
+          jobId: this.$route.params.id,
+          currentPage
+        }
         this.loadingListCv = true
-        const {data} = await this.$repositories.candidatesApply.getListCV(condition)
+        const {data} = await this.$repositories.candidatesApply.getListCvApplyToAJob(params)
         this.loadingListCv = false
 
         this.items = data.data
