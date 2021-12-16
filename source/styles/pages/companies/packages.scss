@@ -20,6 +20,7 @@
     background-color: #FFFFFF;
     padding-bottom: 40px;
     border-radius: 0 0 15px 15px;
+    margin-bottom: 3rem;
 }
 
 .nav-link.big-nav {
@@ -112,7 +113,7 @@ td, th {
     color: white;
     font-size: 16px;
     font-weight: 400;
-} 
+}
 .column-first-row {
     background-color: #7cb0c8;
     font-size: 13px;
@@ -184,7 +185,7 @@ td, th {
     .second-row-title {
         font-size: 16px;
         font-weight: 400;
-    } 
+    }
 }
 
 @media only screen and (max-width: 768px) {
@@ -239,5 +240,5 @@ td, th {
 
     .second-row-title {
         font-size: 10px;
-    } 
+    }
 }
