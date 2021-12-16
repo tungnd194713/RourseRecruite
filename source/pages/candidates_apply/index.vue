@@ -41,6 +41,7 @@
           aria-label="ステータス"
         >
           <option value="" selected>ステータス</option>
+          <option value="0">未選択</option>
           <option value="1">未対応</option>
           <option value="2">折り返し待ち</option>
           <option value="3">面接待ち</option>
@@ -143,7 +144,7 @@
                     })
                   "
                 >
-                  <option value="0">未選択</option>
+                  <option value="0" selected>未選択</option>
                   <option value="1">承認</option>
                   <option value="2">非承認</option>
                 </select>
@@ -157,6 +158,7 @@
                   class="form-select active rounded-3 status-select"
                   @change="updateItemStatus(item.id, { status: item.status })"
                 >
+                  <option value="0" selected>未選択</option>
                   <option value="1">未対応</option>
                   <option value="2">折り返し待ち</option>
                   <option value="3">面接待ち</option>
@@ -281,7 +283,7 @@
               aria-label="Confirmation"
             >
               <!--<option selected></option>-->
-              <option value="0">未選択</option>
+              <option value="0" selected>未選択</option>
               <option value="1">承認</option>
               <option value="2">非承認</option>
             </select>
@@ -292,6 +294,7 @@
               class="form-select rounded-pill pop-check-select"
               aria-label="Status"
             >
+              <option value="0" selected>未選択</option>
               <option value="1">未対応</option>
               <option value="2">折り返し待ち</option>
               <option value="3">面接待ち</option>
