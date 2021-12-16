@@ -5,6 +5,10 @@ export default ($axios) => ({
         return $axios.get(`${resource}?page=${data.currentPage}`, {params: data})
     },
 
+    getListCvApplyToAJob(data) {
+        return $axios.get(`${resource}/job/${data.jobId}?page=${data.currentPage}`)
+    },
+
     updateStatus(id, data) {
         return $axios.post(`${resource}/update/${id}`, data)
     },
