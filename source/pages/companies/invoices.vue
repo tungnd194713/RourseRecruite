@@ -1,22 +1,5 @@
 <template>
-  <main class="container my-3 my-lg-4">
-    <ul class="nav nav-tabs">
-      <li class="nav-item w-50">
-        <NuxtLink
-          class="nav-link big-nav nav-one"
-          aria-current="page"
-          to="/companies/packages"
-          >決済情報</NuxtLink
-        >
-      </li>
-      <li class="nav-item w-50">
-        <NuxtLink
-          class="nav-link big-nav nav-two active"
-          to="/companies/invoices"
-          >決済履歴</NuxtLink
-        >
-      </li>
-    </ul>
+  <div class="container tab-content mb-5">
     <div class="container tab-content">
       <div class="row">
         <h3 class="title-page">決済履歴</h3>
@@ -33,8 +16,9 @@
           <tbody>
             <tr v-for="item in items" :key="item.id" class="active">
               <td class="align-middle">{{ item.id }}</td>
-              <td class="align-middle">{{ item.paid_at.split(' ')[0] }}</td>
-              <td class="align-middle">{{ item.year_month }}</td>
+              <td v-if="item.paid_at" class="align-middle py-3">{{ item.paid_at.split(' ')[0] }}</td>
+              <td v-else class="align-middle py-3"></td>
+              <td class="align-middle" @click="$router.push('/invoices/detail?year_month=' + item.year_month)">{{ item.year_month }}</td>
               <td class="align-middle">
                 ¥{{ item.cost_job ? Math.ceil(item.cost_job).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null }}
               </td>
@@ -71,13 +55,12 @@
         :per-page="perPage"
         :total-items="totalItems"
         :page-count="pageCount"
-        :description-require="descriptionRequire"
         @nextPage="pageChangeHandle('next')"
         @previousPage="pageChangeHandle('previous')"
         @customPage="pageChangeHandle"
       />
     </div>
-  </main>
+  </div>
 </template>
 
 <script>
@@ -88,7 +71,7 @@ import theStatus from '~/constants/invoicesStatus'
 export default {
   name: 'InvoiceCompany',
   components: { Pagination },
-  layout: 'auth',
+  layout: 'payment',
 
   data() {
     return {
@@ -132,7 +115,6 @@ export default {
           tdClass: 'action',
         },
       ],
-      descriptionRequire: false,
       theStatus,
       currentPage: 1,
       perPage: 10,

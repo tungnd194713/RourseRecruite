@@ -10,12 +10,16 @@
     <div v-if="!loadingListCv" class="card detail-job-card position-relative">
       <div class="detail-job-content">
         <button id="btn-edit" class="btn p-0" @click="onClickEditJob()">
-          <img width="30" height="30" src="../../../assets/images/icon_edit.svg"/>
+          <img
+            width="30"
+            height="30"
+            src="../../../assets/images/icon_edit.svg"
+          />
         </button>
         <div class="mt-0 mt-lg-2 pt-0 pt-lg-3 pb-2">
           <div class="row">
             <div class="col-12 col-lg-6 pe-3 pe-xl-5">
-              <img class="img-fluid w-100" :src="previewImageJobUrl" alt="">
+              <img class="img-fluid w-100" :src="previewImageJobUrl" alt="" />
             </div>
             <div class="col-12 col-lg-6 mt-4 mt-lg-0">
               <h1 class="mb-3 mb-lg-4"> {{ job.title}}</h1>
@@ -26,11 +30,18 @@
 <!--              </div>-->
               <div class="row">
                 <div class="d-block">
-                  <span class="badge">{{ previewFormRecruitment()}}</span>
-                  <span class="badge">{{ $t(careerList[$store.getters['loggedInUser'].career - 1])}}</span>
+                  <span class="badge">{{ previewFormRecruitment() }}</span>
+                  <span class="badge">{{
+                    $t(careerList[$store.getters['loggedInUser'].career - 1])
+                  }}</span>
                 </div>
                 <div class="d-block">
-                  <span v-for="item in previewStatusStay()" :key="item.value" class="badge">{{ item.text}}</span>
+                  <span
+                    v-for="item in previewStatusStay()"
+                    :key="item.value"
+                    class="badge"
+                    >{{ item.text }}</span
+                  >
                   <img
                     width="22"
                     height="22"
@@ -38,27 +49,48 @@
                     alt=""
                     data-bs-toggle="modal"
                     data-bs-target="#statusStayInfoModal"
-                  >
+                  />
                 </div>
               </div>
               <div class="row mt-2">
                 <div class="d-flex mb-2">
                   <span class="me-2">
-                    <img width="20" height="20" src="../../../assets/images/icon_money_outline.svg">
+                    <img
+                      width="20"
+                      height="20"
+                      src="../../../assets/images/icon_money_outline.svg"
+                    />
                   </span>
-                  <span><b>{{ job.salary_min ? Intl.NumberFormat().format(job.salary_min) : 0}} - {{ Intl.NumberFormat().format(job.salary_max)}}</b></span>
+                  <span
+                    ><b
+                      >{{
+                        job.salary_min
+                          ? Intl.NumberFormat().format(job.salary_min)
+                          : 0
+                      }}
+                      - {{ Intl.NumberFormat().format(job.salary_max) }}</b
+                    ></span
+                  >
                 </div>
                 <div class="d-flex mb-2">
                   <span class="me-2">
-                    <img width="20" height="20" src="../../../assets/images/icon_address.svg">
+                    <img
+                      width="20"
+                      height="20"
+                      src="../../../assets/images/icon_address.svg"
+                    />
                   </span>
-                  <span class="flex-grow-1"> {{ job.address_work}}</span>
+                  <span class="flex-grow-1"> {{ job.address_work }}</span>
                 </div>
                 <div class="d-flex">
                   <span class="me-2">
-                    <img width="20" height="20" src="../../../assets/images/icon_clock.svg">
+                    <img
+                      width="20"
+                      height="20"
+                      src="../../../assets/images/icon_clock.svg"
+                    />
                   </span>
-                  <span>{{ previewDateStart}} - {{ previewDateEnd}}</span>
+                  <span>{{ previewDateStart }} - {{ previewDateEnd }}</span>
                 </div>
               </div>
             </div>
@@ -67,63 +99,73 @@
       </div>
       <div id="moreContent" class="collapse">
         <div class="detail-job-content py-0">
-          <hr class="my-0">
+          <hr class="my-0" />
           <div class="py-3">
             <div class="d-block mb-5">
               <h5>仕事内容</h5>
               <div class="ps-3">
-                {{ job.content_work}}
+                {{ job.content_work }}
               </div>
             </div>
             <div class="d-block">
               <table class="table table-bordered">
                 <tbody>
-                <tr>
-                  <td>採用人数</td>
-                  <td>{{ job.number_recruitments}}人</td>
-                </tr>
-                <tr>
-                  <td>応募条件</td>
-                  <td>{{ job.conditions_apply}}</td>
-                </tr>
-                <tr>
-                  <td>勤務地</td>
-                  <td>{{ job.address_work}}</td>
-                </tr>
-                <tr>
-                  <td>勤務時間</td>
-                  <td>{{ job.time_work}}</td>
-                </tr>
-                <tr>
-                  <td>休日</td>
-                  <td>{{ job.holidays}}</td>
-                </tr>
-                <tr>
-                  <td>休憩時間 </td>
-                  <td>{{ job.break_time}}</td>
-                </tr>
-                <tr>
-                  <td>福利厚生</td>
-                  <td>{{ job.welfare_regime}}</td>
-                </tr>
-                <tr>
-                  <td>ベトナム人在籍状況</td>
-                  <td>{{ job.has_vietnamese_staff ? 'はい': 'いいえ'}}</td>
-                </tr>
-                <tr>
-                  <td>残業見込み、休日出勤見込み</td>
-                  <td>{{ job.overtime}}</td>
-                </tr>
+                  <tr>
+                    <td>採用人数</td>
+                    <td>{{ job.number_recruitments }}人</td>
+                  </tr>
+                  <tr>
+                    <td>応募条件</td>
+                    <td>{{ job.conditions_apply }}</td>
+                  </tr>
+                  <tr>
+                    <td>勤務地</td>
+                    <td>{{ job.address_work }}</td>
+                  </tr>
+                  <tr>
+                    <td>勤務時間</td>
+                    <td>{{ job.time_work }}</td>
+                  </tr>
+                  <tr>
+                    <td>休日</td>
+                    <td>{{ job.holidays }}</td>
+                  </tr>
+                  <tr>
+                    <td>休憩時間</td>
+                    <td>{{ job.break_time }}</td>
+                  </tr>
+                  <tr>
+                    <td>福利厚生</td>
+                    <td>{{ job.welfare_regime }}</td>
+                  </tr>
+                  <tr>
+                    <td>ベトナム人在籍状況</td>
+                    <td>{{ job.has_vietnamese_staff ? 'はい' : 'いいえ' }}</td>
+                  </tr>
+                  <tr>
+                    <td>残業見込み、休日出勤見込み</td>
+                    <td>{{ job.overtime }}</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
           </div>
         </div>
       </div>
-      <hr class="my-0">
-      <button class="btn bg-transparent btn-more" type="button" data-bs-toggle="collapse"
-              data-bs-target="#moreContent" aria-expanded="false" aria-controls="moreContent">
-        <img width="20" height="20" src="../../../assets/images/icon_angle_down.svg">
+      <hr class="my-0" />
+      <button
+        class="btn bg-transparent btn-more"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#moreContent"
+        aria-expanded="false"
+        aria-controls="moreContent"
+      >
+        <img
+          width="20"
+          height="20"
+          src="../../../assets/images/icon_angle_down.svg"
+        />
       </button>
     </div>
 
@@ -131,19 +173,21 @@
       <div class="d-flex align-items-end title mb-1">
         <h2 class="flex-grow-1">応募者一覧</h2>
         <span>
-                <span class="me-0 me-lg-2">在留資格はこのリンクから確認できます</span>
-                <span class="ms-3 ms-lg-5">
-                    <a class="text-decoration-none" href="#">abc.com</a>
-                </span>
-            </span>
+          <span class="me-0 me-lg-2">在留資格はこのリンクから確認できます</span>
+          <span class="ms-3 ms-lg-5">
+            <a class="text-decoration-none" href="#">abc.com</a>
+          </span>
+        </span>
       </div>
       <div class="row table-responsive box-table">
         <table class="table table-list-cv">
           <thead>
-          <tr>
-            <th v-for="header in fields" :key="header.key">{{header.label}}</th>
-            <th scope="col"></th>
-          </tr>
+            <tr>
+              <th v-for="header in fields" :key="header.key">
+                {{ header.label }}
+              </th>
+              <th scope="col"></th>
+            </tr>
           </thead>
           <tbody>
           <tr v-for="(item, index) in items" :key="item.id" :class="item.read === 1 ? 'active' : ''">
@@ -230,17 +274,24 @@
           検索結果がありません
         </h4>
       </div>
-      <Pagination :current-page="currentPage"
-                  :per-page="perPage"
-                  :total-items="totalItems"
-                  :page-count="pageCount"
-                  @nextPage="pageChangeHandle('next')"
-                  @previousPage="pageChangeHandle('previous')"
-                  @customPage="pageChangeHandle"
-      />
+      <Pagination
+        :current-page="currentPage"
+        :per-page="perPage"
+        :total-items="totalItems"
+        :page-count="pageCount"
+        @nextPage="pageChangeHandle('next')"
+        @previousPage="pageChangeHandle('previous')"
+        @customPage="pageChangeHandle"
+      >
+        <p>
+          * 未読：白い背景、既読：浅い青色の背景<br />
+          * 3日以上未読の履歴書があったら、リマインダーが表示されます。
+        </p>
+      </Pagination>
     </div>
 
-    <div id="popUpId"
+    <div
+      id="popUpId"
       class="modal fade"
       data-bs-backdrop="static"
       data-bs-keyboard="false"
@@ -252,7 +303,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <a data-bs-dismiss="modal" class="btn-close" aria-label="Close">
-              <img src="../../../assets/images/icon_modal_close.svg" alt=""/>
+              <img src="../../../assets/images/icon_modal_close.svg" alt="" />
             </a>
           </div>
           <div class="d-flex justify-content-center align-items-center">
@@ -276,7 +327,8 @@
       </div>
     </div>
 
-    <div id="popUpCheck"
+    <div
+      id="popUpCheck"
       class="modal fade"
       data-bs-backdrop="static"
       data-bs-keyboard="false"
@@ -287,8 +339,12 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content check-content">
           <div class="modal-header">
-            <a data-bs-dismiss="modal" class="btn-close" aria-label="Close">
-              <img src="../../../assets/images/icon_modal_close.svg" alt=""/>
+            <a
+              ref="closePopUpUpdateStatusBtnRef"
+              data-bs-dismiss="modal"
+              class="btn-close"
+              aria-label="Close">
+              <img src="../../../assets/images/icon_modal_close.svg" alt="" />
             </a>
           </div>
           <div class="d-flex justify-content-center align-items-center">
@@ -352,7 +408,8 @@
       </div>
     </div>
 
-    <div id="popUpSuccess"
+    <div
+      id="popUpSuccess"
       class="modal fade"
       data-bs-backdrop="static"
       data-bs-keyboard="false"
@@ -364,11 +421,22 @@
         <div class="modal-content success-content">
           <div class="modal-header">
             <a data-bs-dismiss="modal" class="btn-close" aria-label="Close">
-              <img src="../../../assets/images/icon_modal_close.svg" alt=""/>
+              <img src="../../../assets/images/icon_modal_close.svg" alt="" />
             </a>
           </div>
-          <div class="d-flex justify-content-center align-items-center flex-column mt-4">
-            <img class="success-icon" src="../../../assets/images/icon_success.svg"/>
+          <div
+            class="
+              d-flex
+              justify-content-center
+              align-items-center
+              flex-column
+              mt-4
+            "
+          >
+            <img
+              class="success-icon"
+              src="../../../assets/images/icon_success.svg"
+            />
             <h1 class="confirm-text">新規求人登録が完了しました。</h1>
           </div>
         </div>
@@ -406,7 +474,8 @@
     components: {
       Pagination,
       CvUserModal,
-      StatusStayInfoModal},
+      StatusStayInfoModal
+    },
     mixins: [validationMixin],
     layout: 'auth',
 
@@ -697,33 +766,35 @@
       },
     },
 
-    created() {
-      this.careerList = defaultCareers
-      this.getJobFromApi()
-      this.getListCV(this.currentPage);
+  created() {
+    this.careerList = defaultCareers
+    this.getJobFromApi()
+    this.getListCV(this.currentPage)
+  },
+
+  methods: {
+    filterPreviewFormRecruitment(element) {
+      return element.value === this.job.form_recruitment
     },
 
-    methods: {
-      filterPreviewFormRecruitment(element) {
-        return element.value === this.job.form_recruitment
-      },
+    previewFormRecruitment() {
+      return this.job.form_recruitment
+        ? this.formRecruitmentList.filter(this.filterPreviewFormRecruitment)[0].text
+        : null
+    },
 
-      previewFormRecruitment() {
-        return this.job.form_recruitment ? this.formRecruitmentList.filter(this.filterPreviewFormRecruitment)[0].text : null
-      },
-
-      filterPreviewStatusStay(element) {
-        for (let i = 0; i < this.job.status_stay.length; i++) {
-          if (element.value === this.job.status_stay[i]) {
-            return true
-          }
+    filterPreviewStatusStay(element) {
+      for (let i = 0; i < this.job.status_stay.length; i++) {
+        if (element.value === this.job.status_stay[i]) {
+          return true
         }
-        return false
-      },
+      }
+      return false
+    },
 
-      previewStatusStay() {
-        return this.statusStayList.filter(this.filterPreviewStatusStay)
-      },
+    previewStatusStay() {
+      return this.statusStayList.filter(this.filterPreviewStatusStay)
+    },
 
       onClickEditJob() {
         if (this.$moment() < this.$moment(this.job.date_start)) {
@@ -751,33 +822,34 @@
         const {data} = await this.$repositories.candidatesApply.getListCV(condition)
         this.loadingListCv = false
 
-        this.items = data.data;
-        this.totalItems = data.total;
-        this.currentPage = data.current_page;
-        this.perPage = data.per_page;
-        this.pageCount = (this.totalItems > 0) ? parseInt(data.total / data.per_page, 10) + 1 : 1;
-      },
+        this.items = data.data
+        this.totalItems = data.total
+        this.currentPage = data.current_page
+        this.perPage = data.per_page
+        this.pageCount =
+          this.totalItems > 0 ? parseInt(data.total / data.per_page, 10) + 1 : 1
+    },
 
-      pageChangeHandle(value) {
-        switch (value) {
-          case 'next':
-            this.currentPage = this.next;
-            break;
-          case 'previous':
-            this.currentPage = this.previous;
-            break;
-          default:
-            this.currentPage = value
-        }
-        this.getListCV(this.currentPage);
-      },
+    pageChangeHandle(value) {
+      switch (value) {
+        case 'next':
+          this.currentPage = this.next
+          break
+        case 'previous':
+          this.currentPage = this.previous
+          break
+        default:
+          this.currentPage = value
+      }
+      this.getListCV(this.currentPage)
+    },
 
-      isWarningUnRead(date) {
-        const now = this.$moment().format('YYYY-MM-DD');
-        date = this.$moment(date);
+    isWarningUnRead(date) {
+      const now = this.$moment().format('YYYY-MM-DD')
+      date = this.$moment(date)
 
-        return now < date.add(3, 'days').format('YYYY-MM-DD')
-      },
+      return now < date.add(3, 'days').format('YYYY-MM-DD')
+    },
 
       popupUpdateStatus(data) {
         this.idRow = data.id
@@ -796,6 +868,7 @@
           ).then(res => {
             this.idRow = -1;
             if (res.status === 200) {
+              this.$refs.closePopUpUpdateStatusBtnRef.click()
               this.$toast.success('応募者の応募状態・' + this.user_name + 'の更新が完了しました')
               this.getListCV(this.currentPage);
             }
@@ -806,57 +879,63 @@
         }
       },
 
-      async updateCard(id, data) {
-        return await this.$repositories.candidatesApply.updateStatus(
-          id, data
-        ).then(res => {
-          this.idRow = -1;
+    async updateCard(id, data) {
+      return await this.$repositories.candidatesApply
+        .updateStatus(id, data)
+        .then((res) => {
+          this.idRow = -1
           if (res.status === 200) {
             this.$toast.success('応募者の応募状態・更新が完了しました')
-            this.getListCV(this.currentPage);
+            this.getListCV(this.currentPage)
           } else {
-            this.$toast.success('候補者の申請状況と候補者名の更新は完了していません。')
+            this.$toast.success(
+              '候補者の申請状況と候補者名の更新は完了していません。'
+            )
           }
         })
       },
 
-      async updateItemStatus(id, data) {
-        return await this.$repositories.candidatesApply.updateStatus(
-          id, data
-        ).then(res => {
-          this.idRow = -1;
+    async updateItemStatus(id, data) {
+      return await this.$repositories.candidatesApply
+        .updateStatus(id, data)
+        .then((res) => {
+          this.idRow = -1
           if (res.status === 200) {
             this.$toast.success('応募者の応募状態・更新が完了しました')
-            this.getListCV(this.currentPage);
+            this.getListCV(this.currentPage)
           } else {
-            this.$toast.success('候補者の申請状況と候補者名の更新は完了していません。')
+            this.$toast.success(
+              '候補者の申請状況と候補者名の更新は完了していません。'
+            )
           }
         })
-      },
+    },
 
-      popupImageCard(residenceCardFront, residenceCardBackside) {
-        this.image.residence_card_front = residenceCardFront;
-        this.image.residence_card_backside = residenceCardBackside
-      },
+    popupImageCard(residenceCardFront, residenceCardBackside) {
+      this.image.residence_card_front = residenceCardFront
+      this.image.residence_card_backside = residenceCardBackside
+    },
 
-      async changeLanguage(newLanguage) {
-        if (newLanguage !== this.language) {
-          this.language = newLanguage
-          this.$i18n.locale = this.language
-          if (this.language === this.lang_ja) {
-            await this.$repositories.candidatesApply.translateCvCandidate(this.idRow).then(res => {
+    async changeLanguage(newLanguage) {
+      if (newLanguage !== this.language) {
+        this.language = newLanguage
+        this.$i18n.locale = this.language
+        if (this.language === this.lang_ja) {
+          await this.$repositories.candidatesApply
+            .translateCvCandidate(this.idRow)
+            .then((res) => {
               if (res.status === 200) {
                 this.candidate = Object.assign({}, res.data)
                 this.initJobsAndEducationsOfCandidate()
               }
             })
-          }
-          if (this.language === this.lang_vi) {
-            this.candidate = Object.assign({}, this.defaultCandidate)
-            this.initJobsAndEducationsOfCandidate()
-          }
         }
-      },
+        if (this.language === this.lang_vi) {
+          this.candidate = Object.assign({}, this.defaultCandidate)
+          this.initJobsAndEducationsOfCandidate()
+        }
+      }
+    },
 
       async popupCvUser(candidateApply) {
         this.language = this.lang_vi
@@ -874,20 +953,23 @@
         }
       },
 
-      initJobsAndEducationsOfCandidate() {
-        this.educationsOfCandidate = this.candidate.candidate_educations_jobs.filter(function (element) {
+    initJobsAndEducationsOfCandidate() {
+      this.educationsOfCandidate =
+        this.candidate.candidate_educations_jobs.filter(function (element) {
           return element.type === 1
         })
-        this.jobsOfCandidate = this.candidate.candidate_educations_jobs.filter(function (element) {
+      this.jobsOfCandidate = this.candidate.candidate_educations_jobs.filter(
+        function (element) {
           return element.type === 2
-        })
-      }
-    }
-  }
+        }
+      )
+    },
+  },
+}
 </script>
 
 <style scoped>
-  @import '../../../styles/pages/jobs/detail_job.scss';
-  @import '../../../styles/pages/jobs/cv_user.scss';
-  @import '../../../styles/pages/candidates_apply/list.scss';
+@import '../../../styles/pages/jobs/detail_job.scss';
+@import '../../../styles/pages/jobs/cv_user.scss';
+@import '../../../styles/pages/candidates_apply/list.scss';
 </style>

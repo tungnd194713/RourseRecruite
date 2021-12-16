@@ -173,12 +173,18 @@
           @nextPage="pageChangeHandle('next')"
           @previousPage="pageChangeHandle('previous')"
           @customPage="pageChangeHandle"
-        />
+        >
+          <p>
+            * 太字は未読、細字は既読である。<br/>
+            * 白い背景は有効期限切れになった求人、浅い青色の背景は有効期間中の求人である。<br/>
+            * 3日以上未読の履歴書があったら、リマインダーが表示されます。
+          </p>
+        </Pagination>
       </div>
       <!-- Modal -->
       <div
-        class="modal fade"
         id="confirmDeleteModal"
+        class="modal fade"
         tabindex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
@@ -187,10 +193,10 @@
           <div class="modal-content box-modal">
             <div class="modal-header border-0">
               <img
+                id="closeConfirmDeleteModal"
                 class="close-modal"
                 data-bs-dismiss="modal"
                 aria-label="Close"
-                id="closeConfirmDeleteModal"
                 src="../../assets/images/ic_exit.svg"
                 alt=""
               />

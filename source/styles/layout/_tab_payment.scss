@@ -1,0 +1,29 @@
+.nav-link-payment.big-nav {
+  border-color: #F0F2F2 !important;
+  background-color: #F0F2F2 !important;
+  color: #B3B3B3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-link-payment.big-nav.active {
+  border-color: #FFFFFF #FFFFFF #EBF2F2 #FFFFFF !important;
+  background-color: #FFFFFF !important;
+}
+
+.payment-tab {
+  border-radius: 20px;
+}
+
+.nav-link-payment .nav-one {
+  border-top-left-radius: 15px;
+}
+
+.nav-link-payment .nav-two {
+  border-top-right-radius: 15px;
+}
+
+.nav-item-payment {
+  width: calc( 100%/3);
+}
