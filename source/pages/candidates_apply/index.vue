@@ -641,13 +641,20 @@ export default {
       }
     },
 
-    popupCvUser(candidateApply) {
+    async popupCvUser(candidateApply) {
       this.language = this.lang_vi
       this.$i18n.locale = this.language
       this.idRow = candidateApply.id
       this.defaultCandidate = Object.assign({}, candidateApply.candidate)
       this.candidate = Object.assign({}, this.defaultCandidate)
       this.initJobsAndEducationsOfCandidate()
+      if (candidateApply.read === 0) {
+        await this.$repositories.candidatesApply.updateStatus(this.idRow, { read: 1}).then(res => {
+          if (res.status === 200) {
+            this.getListCV(this.currentPage);
+          }
+        })
+      }
     },
 
     initJobsAndEducationsOfCandidate() {
