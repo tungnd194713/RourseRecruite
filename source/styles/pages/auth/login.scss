@@ -58,6 +58,10 @@ input:focus {
   margin: auto;
 }
 
+.btn-facebook span:hover {
+  background-color: #6e9ddf;
+}
+
 .btn-facebook a {
   color: #3B589C;
 }
@@ -89,10 +93,6 @@ input:focus {
 
 .box-form-login .form-group label span {
   color: red;
-}
-
-.box-form-login .form-group .input-group span {
-
 }
 
 .box-form-login .form-group .input-group span.input-group-text-pre {
@@ -152,12 +152,12 @@ input:focus {
   border-radius: 13%/50%;;
 }
 
-.box-form-login button:hover {
-  color: #ffffff;
+.link-forgot:hover {
+  color: #0071BC!important;
 }
 
-.link-forgot {
-  color: #0071BC!important;
+.box-form-login button:hover {
+  background-color: #6e9ddf;
 }
 
 @media only screen and (max-width: 600px) {

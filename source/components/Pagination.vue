@@ -1,13 +1,8 @@
 <template>
   <div class="row pb-3 pb-lg-4 mb-4 mb-lg-5 box-pagination">
     <div class="col-12 col-lg-6">
-      <p v-if="!descriptionRequire"></p>
-      <p v-else>
-        * 太字は未読、細字は既読である。<br />
-        *
-        白い背景は有効期限切れになった求人、浅い青色の背景は有効期間中の求人である。<br />
-        * 3日以上未読の履歴書があったら、リマインダーが表示されます。
-      </p>
+      <slot>
+      </slot>
     </div>
     <div class="col-12 col-lg-6">
       <nav v-if="totalItems > perPage" aria-label="Page navigation example">
@@ -72,10 +67,6 @@ export default {
     pageCount: {
       type: Number,
       required: true,
-    },
-    descriptionRequire: {
-      type: Boolean,
-      default: true,
     },
   },
 

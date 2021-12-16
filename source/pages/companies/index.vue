@@ -60,7 +60,7 @@
                   /></span>
                   <span>{{ $t(career) }} </span>
                 </div>
-                <div class="d-block item">
+                <div v-if="link_facebook" class="d-block item">
                   <span class="me-2"
                     ><img src="../../assets/images/icon_fb_outline.svg"
                   /></span>
@@ -107,7 +107,7 @@
         <div class="row">
           <div class="col-12 col-lg-6">
             <h2 class="title">住所</h2>
-            <div class="mt-4">{{ address }}, {{ district }}, {{ $t(province) }}</div>
+            <div class="mt-4">〒 {{ postal_code }} {{ $t(province) }} {{ district }} {{ address }}</div>
           </div>
           <div class="col-12 col-lg-6 mt-3 mt-lg-0">
             <div class="map">
@@ -171,6 +171,7 @@ export default {
       video_link: '',
       images: [],
       district: '',
+      postal_code: '',
       theProvinces,
     }
   },
@@ -203,6 +204,7 @@ export default {
       this.province = this.theProvinces[data.province_id]
       this.video_link = data.video_link
       this.images = data.images
+      this.postal_code = data.postal_code
 
       this.career = this.careers[data.career - 1]
     },

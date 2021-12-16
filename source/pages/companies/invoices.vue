@@ -71,7 +71,6 @@
         :per-page="perPage"
         :total-items="totalItems"
         :page-count="pageCount"
-        :description-require="descriptionRequire"
         @nextPage="pageChangeHandle('next')"
         @previousPage="pageChangeHandle('previous')"
         @customPage="pageChangeHandle"
@@ -132,7 +131,6 @@ export default {
           tdClass: 'action',
         },
       ],
-      descriptionRequire: false,
       theStatus,
       currentPage: 1,
       perPage: 10,
