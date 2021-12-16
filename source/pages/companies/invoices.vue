@@ -83,7 +83,7 @@ export default {
         },
         {
           key: 'payment_date',
-          label: '購入日',
+          label: '決済日',
         },
         {
           key: 'year_month',

@@ -1,28 +1,4 @@
 <template>
-    <main class="container my-3 my-lg-4">
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <NuxtLink
-                    to="/companies/packages"
-                    class="nav-link big-nav nav-one active"
-                    aria-current="page"
-                    >決済情報</NuxtLink
-                >
-            </li>
-            <li class="nav-item">
-                <NuxtLink to="/" class="nav-link big-nav nav-two"
-                    >請求書</NuxtLink
-                >
-            </li>
-            <li class="nav-item">
-                <NuxtLink
-                    to="/companies/invoices"
-                    class="nav-link big-nav nav-three"
-                    >決済履歴</NuxtLink
-                >
-            </li>
-        </ul>
-
         <div class="container tab-content">
             <div class="row">
                 <h3 class="title-page">料金プラン</h3>
