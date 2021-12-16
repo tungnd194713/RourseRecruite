@@ -24,7 +24,8 @@
 
           <div v-if="$v.job.image_job.$error" class="text-center error-text">
             <div v-if="!$v.job.image_job.name.imageRule">画像はpng / jpg / jpeg / gifの形式でアプロードしてください</div>
-            <div v-if="!$v.job.image_job.size.imageSize">2MB以下の写真をアップロードしてください</div>
+<!--            <div v-if="!$v.job.image_job.size.imageSize">2MB以下の写真をアップロードしてください</div>-->
+            <div v-if="!$v.job.image_job.size">2MB以下の写真をアップロードしてください</div>
           </div>
         </div>
         <div class="form-group mb-3 mb-lg-4 row">
@@ -50,7 +51,7 @@
           </div>
         </div>
         <div class="form-group mb-3 mb-lg-4 row">
-          <label for="exampleInput2" class="col-sm-2 col-form-label">開始日 <span>*</span></label>
+          <label for="date_start" class="col-sm-2 col-form-label">開始日 <span>*</span></label>
           <div class="col-12 col-sm-4 flex-column">
             <div class="input-group input-group-icon custom-input-group">
               <span class="input-group-text input-group-text-pre">
@@ -58,11 +59,13 @@
               </span>
               <no-ssr>
                 <date-picker
+                  id="date_start"
                   v-model="job.date_start"
                   value-type="format"
                   format="YYYY-MM-DD"
                   :clearable="false"
                   :editable="false"
+                  :disabled-date="notBeforeToday"
                   input-class="input-datepicker-create-job"
                   @input="$v.job.date_start.$touch()"
                   @blur="$v.job.date_start.$touch()"
@@ -119,15 +122,41 @@
         <div class="form-group mb-3 mb-lg-4 row">
           <label for="inputGroupSelect01" class="col-sm-2 col-form-label">在留資格 <span>*</span></label>
           <div class="col-12 col-sm-4">
-            <div class="input-group input-group-icon">
-              <span class="input-group-text input-group-text-pre">
+            <div class="input-group input-group-icon flex-column">
+              <div class="input-group input-group-icon flex-nowrap">
+                <span class="input-group-text input-group-text-pre">
                   <img src="../../assets/images/icon_stay.svg" alt="">
-              </span>
-              <select id="inputGroupSelect01" v-model="job.status_stay" class="form-select rounded-end" multiple>
-              <option v-for="item in statusStayList" :key="item.value" :value="item.value">{{ item.text }}</option>
-            </select>
-              <div class="invalid-feedback">
-                Please choose a 在留資格.
+                </span>
+                <div
+                  ref="statusStayDropdownRef"
+                  class="status-stay-dropdown"
+                  @click="showStatusStayDropdown"
+                  @focusout="focusOutStatusStayListDropdown"
+                >
+                  <div class="over-select"></div>
+                  <select class="form-select rounded-end">
+                    <option value="">{{ previewStatusStay()}}</option>
+                  </select>
+                </div>
+              </div>
+              <div v-if="showStatusStayList" class="multi-select-status-stay">
+                <ul>
+                  <li v-for="item in statusStayList" :key="item.value">
+                    <label :for="'statusStay' +item.value">
+                      <input
+                        :id="'statusStay' +item.value"
+                        v-model="job.status_stay"
+                        type="checkbox"
+                        :value="item.value"
+                        @click="$v.job.status_stay.$touch()"
+                      >
+                      {{ item.text }}
+                    </label>
+                  </li>
+                </ul>
+              </div>
+              <div v-if="$v.job.status_stay.$error">
+                <div v-if="!$v.job.status_stay.isNotEmpty" class="error-text">これは必須項目なので、必ず入力してください</div>
               </div>
             </div>
           </div>
@@ -171,7 +200,7 @@
         </div>
         <div class="form-group mb-1 row">
           <label class="col-sm-2 col-form-label">月給 <span>*</span></label>
-          <div class="col-12 col-sm-4">
+          <div class="col-12 col-sm-10">
             <div class="form-check">
               <div class="float-start">
                 <input id="gridCheck1" v-model="displaySalary" class="form-check-input" type="radio" value="salary_max">
@@ -202,6 +231,7 @@
                 class="form-control rounded-end"
                 @input="$v.job.salary_max.$touch()"
                 @blur="$v.job.salary_max.$touch()"
+                @keypress="keyPressForNumberInput"
               >
             </div>
             <div v-if="$v.job.salary_max.$error">
@@ -219,14 +249,15 @@
                 v-model="job.salary_min"
                 type="text"
                 class="form-control rounded-end"
-                @input="$v.job.salary_min.$touch()"
-                @blur="$v.job.salary_min.$touch()"
+                @input="onInputOrBlurSalaryMin"
+                @blur="onInputOrBlurSalaryMin"
+                @keypress="keyPressForNumberInput"
               >
             </div>
             <div v-if="$v.job.salary_min.$error">
               <div v-if="!$v.job.salary_min.required" class="error-text">これは必須項目なので、必ず入力してください</div>
               <div v-if="!$v.job.salary_min.maxLength" class="error-text">10数字以下で入力してください</div>
-
+              <div v-if="!$v.job.salary_min.isLowerThanSalaryMax" class="error-text">最多の月給以下で入力してください</div>
             </div>
           </div>
           {{ (displaySalary === 'salary_range') ? '～': ''}}
@@ -239,13 +270,15 @@
                 v-model="job.salary_max"
                 type="text"
                 class="form-control rounded-end"
-                @input="$v.job.salary_max.$touch()"
-                @blur="$v.job.salary_max.$touch()"
+                @input="onInputOrBlurSalaryMax"
+                @blur="onInputOrBlurSalaryMax"
+                @keypress="keyPressForNumberInput"
               >
             </div>
             <div v-if="$v.job.salary_max.$error">
               <div v-if="!$v.job.salary_max.required" class="error-text">これは必須項目なので、必ず入力してください</div>
               <div v-if="!$v.job.salary_max.maxLength" class="error-text">10数字以下で入力してください</div>
+              <div v-if="!$v.job.salary_max.isGreaterThanSalaryMin" class="error-text">最低の月給以上で入力してください</div>
             </div>
           </div>
 
@@ -291,14 +324,14 @@
         </div>
 
         <div class="form-group mb-3 mb-lg-4 row">
-          <label for="exampleInput4" class="col-sm-2 col-form-label">都道府県 <span>*</span></label>
+          <label for="province" class="col-sm-2 col-form-label">都道府県 <span>*</span></label>
           <div class="col-12 col-sm-4">
             <div class="input-group input-group-icon">
               <span class="input-group-text input-group-text-pre">
                   <img src="../../assets/images/icon_province.svg" alt="">
               </span>
               <select
-                id="exampleInput4"
+                id="province"
                 v-model="job.province_id"
                 class="form-select rounded-end"
               >
@@ -481,7 +514,8 @@
   import defaultProvinces from '~/constants/provinces'
 
   const imageRule = helpers.regex('image', /\.(jpeg|png|jpg|gif)$/)
-  const imageSize = (value) => value <= 2000000
+  // const imageSize = (value) => value <= 2000000
+  const maximumImageSize = 2000000
 
   export default {
     name: "CreateJob",
@@ -490,46 +524,48 @@
 
     data() {
       return {
+        previewNewRoute: '/jobs/preview-new',
+        showStatusStayList: false,
         openDateEndPicker: false,
         previewImageJobUrl: null,
         displaySalary: 'salary_max',
         typePlanList:[
           {
-            text: 'A',
+            text: 'プランA',
             value: 1
           },
           {
-            text: 'B',
+            text: 'プランB',
             value: 2
           },
           {
-            text: 'C',
+            text: 'プランC',
             value: 3
           },
           {
-            text: 'Standard plan',
+            text: '標準プラン',
             value: 4
           },
         ],
         displayMonthList: [
           {
-            text: '1 month',
+            text: '1ヶ月',
             value: 1
           },
           {
-            text: '2 months',
+            text: '2ヶ月',
             value: 2
           },
           {
-            text: '3 months',
+            text: '3ヶ月',
             value: 3
           },
           {
-            text: '4 months',
+            text: '4ヶ月',
             value: 4
           },
           {
-            text: '5 months',
+            text: '5ヶ月',
             value: 5
           },
         ],
@@ -581,7 +617,7 @@
         job: {
           image_job: null,
           title: '',
-          date_start: this.$moment().format('YYYY-MM-DD'),
+          date_start: this.$moment().add(1, 'day').format('YYYY-MM-DD'),
           type_plan: '',
           display_month: '',
           form_recruitment: '',
@@ -609,8 +645,11 @@
           name: {
             imageRule
           },
-          size: {
-            imageSize
+          size(val) {
+            if (this.job.image_job) {
+              return this.job.image_job.size <= maximumImageSize
+            }
+            return true
           }
         },
         title: {
@@ -621,7 +660,11 @@
           required
         },
         form_recruitment: {},
-        status_stay: {},
+        status_stay: {
+          isNotEmpty(val) {
+            return this.job.status_stay.length !== 0
+          }
+        },
         number_recruitments: {
           required,
           isNumber(value) {
@@ -632,13 +675,25 @@
         },
         salary_max: {
           required,
-          maxLength: maxLength(10)
+          maxLength: maxLength(10),
+          isGreaterThanSalaryMin(value) {
+            if (value && this.job.salary_min) {
+              return parseInt(value) > parseInt(this.job.salary_min)
+            }
+            return true
+          }
         },
         salary_min: {
           required: requiredIf(function () {
             return this.displaySalary === 'salary_range'
           }),
-          maxLength: maxLength(10)
+          maxLength: maxLength(10),
+          isLowerThanSalaryMax(value) {
+            if (value && this.job.salary_max) {
+              return parseInt(value) < parseInt(this.job.salary_max)
+            }
+            return true
+          }
         },
         content_work: {
           required,
@@ -701,17 +756,65 @@
     created() {
       this.provinceList = defaultProvinces
       this.resetData()
-      let jobStored = {}
-      jobStored = Object.assign({}, this.$store.getters['job/getJob'])
-      if (Object.keys(jobStored).length !== 0) {
-        this.job = Object.assign({}, jobStored)
-        if (this.job.image_job) {
-          this.previewImageJobUrl = URL.createObjectURL(this.job.image_job)
+      if (this.previewNewRoute === this.$store.getters['job/getPrevRoute']) {
+        let jobStored = {}
+        jobStored = Object.assign({}, this.$store.getters['job/getJob'])
+        if (Object.keys(jobStored).length !== 0) {
+          this.job = Object.assign({}, jobStored)
+          if (this.job.image_job) {
+            this.previewImageJobUrl = URL.createObjectURL(this.job.image_job)
+          }
         }
+        this.$store.dispatch('job/setPrevRoute', '')
       }
+
     },
 
     methods: {
+      onInputOrBlurSalaryMin() {
+        if (this.job.salary_max) {
+          this.$v.job.salary_max.$reset()
+        }
+        this.$v.job.salary_min.$touch()
+      },
+
+      onInputOrBlurSalaryMax() {
+        if (this.job.salary_min) {
+          this.$v.job.salary_min.$reset()
+        }
+        this.$v.job.salary_max.$touch()
+      },
+
+      showStatusStayDropdown() {
+        this.showStatusStayList = !this.showStatusStayList
+      },
+
+      filterPreviewStatusStay(element) {
+        for (let i = 0; i < this.job.status_stay.length; i++) {
+          if (element.value === this.job.status_stay[i]) {
+            return true
+          }
+        }
+        return false
+      },
+
+      previewStatusStay() {
+        const statusStaySelected = this.statusStayList.filter(this.filterPreviewStatusStay)
+        let result = ''
+        statusStaySelected.forEach(function (item, index) {
+          if (index === statusStaySelected.length - 1) {
+            result += item.text
+          } else {
+            result += item.text + ' - '
+          }
+        })
+        return result
+      },
+
+      focusOutStatusStayListDropdown() {
+        this.$refs.statusStayDropdownRef.click()
+      },
+
       onClickBoxUploadFile() {
         this.$refs.imageJob.click()
       },
@@ -744,11 +847,16 @@
         }
       },
 
+      notBeforeToday(date) {
+        // return date < new Date(new Date().setHours(0, 0, 0, 0));
+        return this.$moment(date) < this.$moment();
+      },
+
       resetData() {
         this.job = Object.assign({}, {
           image_job: null,
           title: '',
-          date_start: this.$moment().format('YYYY-MM-DD'),
+          date_start: this.$moment().add(1, 'day').format('YYYY-MM-DD'),
           type_plan: '',
           display_month: '',
           form_recruitment: '',
@@ -778,6 +886,7 @@
 
       resetForm() {
         this.resetData()
+        this.$store.dispatch('job/setJob', {})
         this.$refs.closeConfirmCancelModal.click()
       },
 

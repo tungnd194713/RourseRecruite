@@ -19,5 +19,9 @@ export default ($axios) => ({
 
   getJob(id) {
     return $axios.get(`${resource}/${id}`)
+  },
+
+  updateJob(id, data) {
+    return $axios.post(`${resource}/update/${id}`, data)
   }
 })

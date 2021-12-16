@@ -27,7 +27,7 @@
               <span>{{ company_name }}</span>
             </h2>
             <div class="row">
-              <div class="col-12 col-sm-6 col-lg-4 col-xxl-3">
+              <div class="col-12 col-sm-6 col-lg-4">
                 <div class="d-block item">
                   <span class="me-2"
                     ><img src="../../assets/images/icon_officer.svg"
@@ -47,7 +47,7 @@
                   <a :href="link_website">ウェーブサイトURL</a>
                 </div>
               </div>
-              <div class="col-12 col-sm-6 col-lg-4 col-xxl-3">
+              <div class="col-12 col-sm-6 col-lg-4">
                 <div class="d-block item">
                   <span class="me-2"
                     ><img src="../../assets/images/icon_calendar.svg"
@@ -60,11 +60,11 @@
                   /></span>
                   <span>{{ $t(career) }} </span>
                 </div>
-                <div class="d-block item">
+                <div v-if="link_facebook" class="d-block item">
                   <span class="me-2"
                     ><img src="../../assets/images/icon_fb_outline.svg"
                   /></span>
-                  <a :href="facebook_id">Facebookリンク</a>
+                  <a :href="link_facebook">FacebookのMessengerのURL</a>
                 </div>
               </div>
             </div>
@@ -107,7 +107,7 @@
         <div class="row">
           <div class="col-12 col-lg-6">
             <h2 class="title">住所</h2>
-            <div class="mt-4">{{ address }}, {{ district }}, {{ $t(province) }}</div>
+            <div class="mt-4">〒 {{ postal_code }} {{ $t(province) }} {{ district }} {{ address }}</div>
           </div>
           <div class="col-12 col-lg-6 mt-3 mt-lg-0">
             <div class="map">
@@ -131,11 +131,11 @@
       <div
         v-for="image in images"
         :key="image.id"
-        class="col-12 col-md-4 mb-3 mb-md-0"
+        class="col-12 col-md-4 mb-3"
       >
         <img
           class="img-fluid w-100"
-          :src="image.image_url"
+          :src="url_api_file + image.image_url"
           alt="Company Images"
         />
       </div>
@@ -165,12 +165,13 @@ export default {
       featured: '',
       career: '',
       link_website: '',
-      facebook_id: '',
+      link_facebook: '',
       description: '',
       logo: '',
       video_link: '',
       images: [],
       district: '',
+      postal_code: '',
       theProvinces,
     }
   },
@@ -195,7 +196,7 @@ export default {
       this.number_members = data.number_members
       this.featured = data.featured
       this.link_website = data.link_website
-      this.facebook_id = data.facebook_id
+      this.link_facebook = data.link_facebook
       this.description = data.description
       this.logo = data.logo
       this.address = data.address
@@ -203,6 +204,7 @@ export default {
       this.province = this.theProvinces[data.province_id]
       this.video_link = data.video_link
       this.images = data.images
+      this.postal_code = data.postal_code
 
       this.career = this.careers[data.career - 1]
     },

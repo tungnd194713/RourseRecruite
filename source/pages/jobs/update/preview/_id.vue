@@ -9,11 +9,11 @@
             </div>
             <div class="col-12 col-xl-6 mt-4 mt-lg-0">
               <h1 class="mb-3 mb-lg-4"> {{ job.title}}</h1>
-              <div class="row mb-4">
-                <div class="col-12">
-                  <button id="btn-apply" class="btn btn-secondary w-100 h4">応募する</button>
-                </div>
-              </div>
+              <!--              <div class="row mb-4">-->
+              <!--                <div class="col-12">-->
+              <!--                  <button id="btn-apply" class="btn btn-secondary w-100 h4">応募する</button>-->
+              <!--                </div>-->
+              <!--              </div>-->
               <div class="row">
                 <div class="d-block">
                   <span class="badge">{{ previewFormRecruitment()}}</span>
@@ -24,7 +24,7 @@
                   <img
                     width="22"
                     height="22"
-                    src="../../assets/images/icon_question.svg"
+                    src="../../../../assets/images/icon_question.svg"
                     alt=""
                     data-bs-toggle="modal"
                     data-bs-target="#statusStayInfoModal"
@@ -33,15 +33,15 @@
               </div>
               <div class="row mt-2">
                 <div class="d-block mb-2">
-                  <span class="mr-2"><img width="20" height="20" src="../../assets/images/icon_money_outline.svg"></span>
+                  <span class="mr-2"><img width="20" height="20" src="../../../../assets/images/icon_money_outline.svg"></span>
                   <span><b>{{ job.salary_min ? Intl.NumberFormat().format(job.salary_min) : 0}} - {{ Intl.NumberFormat().format(job.salary_max)}}</b></span>
                 </div>
                 <div class="d-block mb-2">
-                  <span class="mr-2"><img width="20" height="20" src="../../assets/images/icon_address.svg"></span>
+                  <span class="mr-2"><img width="20" height="20" src="../../../../assets/images/icon_address.svg"></span>
                   <span> {{ job.address_work}}</span>
                 </div>
                 <div class="d-block">
-                  <span class="mr-2"><img width="20" height="20" src="../../assets/images/icon_clock.svg"></span>
+                  <span class="mr-2"><img width="20" height="20" src="../../../../assets/images/icon_clock.svg"></span>
                   <span>{{ previewDateStart}} - {{ previewDateEnd}}</span>
                 </div>
               </div>
@@ -100,12 +100,12 @@
           </table>
         </div>
         <div class="d-flex justify-content-end footer">
-          <button id="btn_back" class="btn" @click="backToCreateJobPage">戻る</button>
-          <button id="btn_completion" class="btn" @click="completeCreateJob">完了</button>
+          <button id="btn_back" class="btn" @click="$router.push('/jobs/create')">戻る</button>
+          <button id="btn_completion" class="btn" @click="completeUpdateJob">完了</button>
           <button
-            ref="showCompleteCreateJobModal"
+            ref="showCompleteUpdateJobModal"
             data-bs-toggle="modal"
-            data-bs-target="#completeCreateJobModal"
+            data-bs-target="#completeUpdateJobModal"
             class="d-none"
           />
         </div>
@@ -113,19 +113,19 @@
     </div>
 
     <StatusStayInfoModal />
-    <CompleteCreateJobModal />
+    <CompleteUpdateJobModal />
   </main>
 </template>
 
 <script>
   import StatusStayInfoModal from "~/components/StatusStayInfoModal";
-  import CompleteCreateJobModal from "~/components/CompleteCreateJobModal";
+  import CompleteUpdateJobModal from "~/components/CompleteUpdateJobModal";
   import theCareers from '~/constants/careers'
 
   export default {
-    name: "PreviewNewJob",
+    name: "PreviewUpdateJob",
     components: {
-      CompleteCreateJobModal,
+      CompleteUpdateJobModal,
       StatusStayInfoModal
     },
     layout: 'preview-new',
@@ -135,41 +135,41 @@
         careerList: theCareers,
         typePlanList:[
           {
-            text: 'A',
+            text: 'プランA',
             value: 1
           },
           {
-            text: 'B',
+            text: 'プランB',
             value: 2
           },
           {
-            text: 'C',
+            text: 'プランC',
             value: 3
           },
           {
-            text: 'Standard plan',
+            text: '標準プラン',
             value: 4
           },
         ],
         displayMonthList: [
           {
-            text: '1 month',
+            text: '1ヶ月',
             value: 1
           },
           {
-            text: '2 months',
+            text: '2ヶ月',
             value: 2
           },
           {
-            text: '3 months',
+            text: '3ヶ月',
             value: 3
           },
           {
-            text: '4 months',
+            text: '4ヶ月',
             value: 4
           },
           {
-            text: '5 months',
+            text: '5ヶ月',
             value: 5
           },
         ],
@@ -289,12 +289,7 @@
         return this.isJobStored() ? this.statusStayList.filter(this.filterPreviewStatusStay) : []
       },
 
-      backToCreateJobPage() {
-        this.$store.dispatch('job/setPrevRoute', this.$route.path)
-        this.$router.push('/jobs/create')
-      },
-
-      async completeCreateJob() {
+      async completeUpdateJob() {
         if (this.job.salary_min === '') {
           this.job.salary_min = 0
         }
@@ -320,17 +315,12 @@
         formData.append('welfare_regime', this.job.welfare_regime)
         formData.append('has_vietnamese_staff', this.job.has_vietnamese_staff)
         formData.append('overtime', this.job.overtime)
-        return await this.$repositories.jobs.createJob(formData, {
-          header: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }).then(res => {
+        return await this.$repositories.jobs.updateJob(this.$route.params.id, formData).then(res => {
           if (res.status === 201) {
-            this.$refs.showCompleteCreateJobModal.click()
+            this.$refs.showCompleteUpdateJobModal.click()
             this.$store.dispatch('job/setJob', {})
-            this.$store.dispatch('job/setPrevRoute', '')
           }
-          if (res.response && res.response.status === 406) {
+          else {
             this.$toast.error(res.response.data.message)
           }
         })
@@ -340,5 +330,5 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '../../styles/pages/jobs/preview.scss';
+  @import '../../../../styles/pages/jobs/preview.scss';
 </style>

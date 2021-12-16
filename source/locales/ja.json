@@ -67,5 +67,68 @@
       "province_45": "宮崎県",
       "province_46": "鹿児島県",
       "province_47": "沖縄県"
+    },
+  "cv_user": {
+    "title": "履歴書",
+    "furigana": "スヌワル",
+    "gender": "性別",
+    "name": "氏名",
+    "birthday": "生年月日",
+    "nationality": "国 籍",
+    "language": "母 国 語",
+    "phone_number": "携帯電話番号",
+    "email": "E-mail",
+    "address": "現住所",
+    "year": "年",
+    "month": "月",
+    "educations": "学歴",
+    "jobs": "職歴（アルバイト含む）",
+    "end": "以上",
+    "self_assessment": "自己評価",
+    "level_1": "〇（仕事上、問題なし）",
+    "level_2": "△（仕事上、ある程度できる）",
+    "level_3": "×（仕事上、少し不安）",
+    "skill": "スキル",
+    "skill_listen": "聞くこと",
+    "skill_speak": "話すこと",
+    "skill_read": "読むこと",
+    "skill_write": "書くこと",
+    "certificates": "資格・免許・賞罰（上記以外のもの、取得予定含む）",
+    "reason_apply": "志望の動機",
+    "strength": "長所",
+    "married_status": "配偶者",
+    "dependent_person_part_1": "配偶者以外の",
+    "dependent_person_part_2": "扶養家族",
+    "health_part_1": "健康状態",
+    "health_part_2": "（持病など有無）",
+    "stay_experience_part_1": "日本滞在経歴",
+    "stay_experience_part_2": "（期間・目的）",
+    "visa_part_1": "取得ビザ",
+    "visa_part_2": "（種類・有効期限）",
+    "nationality_value": {
+      "1": "Japan",
+      "2": "ベトナム"
+    },
+    "gender_value": {
+      "0": "男",
+      "1": "女",
+      "2": "Other"
+    },
+    "language_value": {
+      "1": "Japanese",
+      "2": "ベトナム語"
+    },
+    "married_status_value": {
+      "1": "独身",
+      "2": "配偶者"
+    },
+    "dependent_person_value": {
+      "0": "いいえ",
+      "1": "はい"
+    },
+    "health_value": {
+      "1": "持病なし",
+      "2": "持病あり"
     }
+  }
 }

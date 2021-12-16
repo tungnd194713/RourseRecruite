@@ -114,12 +114,13 @@
 
 .box-form-info .btn-edit-profile {
   padding: 12px 39px;
-}
-
-.box-form-info .btn-edit-profile {
   background-color: #0071BC;
   color: #fff;
   font-size: 16px;
+}
+
+.box-form-info .btn-edit-profile:hover {
+  background-color: #6e9ddf;
 }
 
 .open-file-btn {
@@ -129,6 +130,10 @@
 .box-form-info .btn-cancel-profile {
   color: #B2B2B2;
   font-size: 16px;
+}
+
+.box-form-info .btn-cancel-profile:hover {
+  background-color: #e8e8e8;
 }
 
 @media only screen and (max-width: 800px) {
@@ -244,6 +249,40 @@
   display: flex;
   justify-content: space-around;
   align-items: baseline;
+}
+
+.box-modal {
+  border-radius: 15px;
+}
+
+.close-modal {
+  height: 30px;
+}
+
+.modal-header {
+  justify-content: end;
+}
+
+.modal-body > h3 > img {
+  height: 200px;
+}
+
+.btn-secondary-custom {
+  color: #fff;
+  background-color: #c9c9c9;
+  border-color: #c9c9c9;
+}
+
+.modal-body-text {
+  color: #076dad;
+}
+
+.modal-footer {
+  border-top: none !important;
+}
+
+.custom-input-group {
+  flex-wrap: unset !important;
 }
 
 @media (max-width: 768px) {
