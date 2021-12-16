@@ -1,7 +1,13 @@
 <template>
   <main class="container my-3 my-lg-4">
 
-    <div class="card detail-job-card position-relative">
+    <div v-if="loadingListCv" class="card detail-job-card position-relative">
+      <div class="outer-spinner">
+        <div class="loader"></div>
+      </div>
+    </div>
+
+    <div v-if="!loadingListCv" class="card detail-job-card position-relative">
       <div class="detail-job-content">
         <button id="btn-edit" class="btn p-0" @click="onClickEditJob()">
           <img width="30" height="30" src="../../../assets/images/icon_edit.svg"/>
@@ -150,7 +156,7 @@
             </td>
             <td class="align-middle py-3">
               <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop" @click="popupCvUser(item)">
-                {{item.candidate.name}}
+                {{ item.candidate.user.name }}
               </a>
             </td>
             <td class="align-middle py-3">{{item.jobs.title}}</td>
@@ -166,10 +172,8 @@
                                    item.candidate.residence_card_front,
                                    item.candidate.residence_card_backside
                                    )">
-                <img
-                  class=""
-                  :src="url_file+item.candidate.residence_card_front"
-                />
+                <img v-if="item.read === 0" class="" src="../../../assets/images/icon_postcard_active.svg"/>
+                <img v-else class="" src="../../../assets/images/icon_postcard_inactive.svg"/>
               </a>
             </td>
             <td class="align-middle py-3">
@@ -206,7 +210,8 @@
                                     id: item.id,
                                     residence_card_confirm: item.residence_card_confirm,
                                     status: item.status,
-                                    note: item.note
+                                    note: item.note,
+                                    user_name: item.candidate.user.name
                                     })"
               >
                 <img class="edit-icon" src="../../../assets/images/icon_edit.svg"/>
@@ -215,6 +220,15 @@
           </tr>
           </tbody>
         </table>
+        <div v-if="totalItems === 0 && loadingListCv" class="outer-spinner">
+          <div class="loader"></div>
+        </div>
+        <h4
+          v-if="totalItems === 0 && !loadingListCv"
+          class="text-center w-100 p-3 m-0 bg-white border-bottom border-1"
+        >
+          検索結果がありません
+        </h4>
       </div>
       <Pagination :current-page="currentPage"
                   :per-page="perPage"
@@ -248,13 +262,13 @@
             <a href="#"
             ><img
               class="link-modal"
-              src="../../../assets/images/icon_large_post_card.svg"
+              :src="url_file+image.residence_card_front"
               alt=""
             /></a>
             <a href="#"
             ><img
               class="link-modal"
-              src="../../../assets/images/icon_text_card.svg"
+              :src="url_file+image.residence_card_backside"
               alt=""
             /></a>
           </div>
@@ -286,36 +300,48 @@
             <label for="confirmation">在留資格確認</label>
             <select
               id="confirmation"
+              v-model="dataUpdateStatus.residence_card_confirm"
               class="form-select rounded-pill pop-check-select"
               aria-label="Confirmation"
             >
-              <option selected></option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+              <option value="0" disabled>未選択</option>
+              <option value="1">特定技能</option>
+              <option value="2">技能実習</option>
+              <option value="3">特定活動</option>
+              <option value="4">留学生</option>
+              <option value="5">技術・人文知識・国際業務</option>
+              <option value="6">定住</option>
+              <option value="7">永住</option>
+              <option value="8">家族滞在</option>
             </select>
             <label for="status">ステータス</label>
             <select
               id="status"
+              v-model="dataUpdateStatus.status"
               class="form-select rounded-pill pop-check-select"
               aria-label="Status"
             >
-              <option selected></option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+              <option value="" disabled>未選択</option>
+              <option value="1">未対応</option>
+              <option value="2">折り返し待ち</option>
+              <option value="3">面接待ち</option>
+              <option value="4">採用</option>
+              <option value="5">不採用（連絡取れず）</option>
+              <option value="6">不採用</option>
             </select>
             <label for="remarks">備考</label>
             <textarea
               id="remarks"
+              v-model="dataUpdateStatus.note"
               class="form-control"
-            ></textarea>
+              @input="$v.dataUpdateStatus.note.$touch()"
+              @blur="$v.dataUpdateStatus.note.$touch()"
+            />
+            <div class="error-text">{{ dataUpdateStatusNoteErrors[0]}}</div>
             <div class="submit-btn">
               <button
                 id="apply-btn"
                 class="btn btn-primary mt-4 rounded-pill"
-                data-bs-toggle="modal"
-                data-bs-target="#popUpSuccess"
                 @click="updateStatus()"
               >
                 更新
@@ -365,6 +391,10 @@
 
 <script>
   import 'bootstrap/dist/css/bootstrap.css'
+  import { validationMixin } from 'vuelidate'
+  import {
+    maxLength
+  } from 'vuelidate/lib/validators'
   import Pagination from "~/components/Pagination"
   import CvUserModal from "~/components/modal/CvUserModal";
   import StatusStayInfoModal from "~/components/StatusStayInfoModal"
@@ -377,10 +407,13 @@
       Pagination,
       CvUserModal,
       StatusStayInfoModal},
+    mixins: [validationMixin],
     layout: 'auth',
 
     data() {
       return {
+        loadingListCv: '',
+        loadingJobDetail: '',
         typePlanList:[
           {
             text: 'A',
@@ -543,6 +576,7 @@
           status: 0,
           note: '',
         },
+        user_name: '',
         image: {
           residence_card_front: '',
           residence_card_backside: ''
@@ -630,6 +664,14 @@
       }
     },
 
+    validations: {
+      dataUpdateStatus: {
+        note: {
+          maxLength: maxLength(500)
+        },
+      },
+    },
+
     head () {
       return {title: '求人詳細'}
     },
@@ -645,7 +687,14 @@
 
       previewDateEnd() {
         return this.$moment(this.job.date_start).add(this.job.display_month, 'M').format('YYYY/MM/DD')
-      }
+      },
+
+      dataUpdateStatusNoteErrors () {
+        const errors = []
+        if (!this.$v.dataUpdateStatus.note.$dirty) return errors
+        !this.$v.dataUpdateStatus.note.maxLength && errors.push('500文字以下で入力してください')
+        return errors
+      },
     },
 
     created() {
@@ -685,6 +734,7 @@
       },
 
       async getJobFromApi() {
+        this.loadingJobDetail = true
         const {data} = await this.$repositories.jobs.getJob(this.$route.params.id)
         if (data.job) {
           this.job = Object.assign({}, data.job)
@@ -692,12 +742,14 @@
         } else {
           this.$router.push('/jobs')
         }
+        this.loadingJobDetail = false
       },
 
       async getListCV(currentPage) {
         const condition = {...this.condition, currentPage};
-
-        const {data} = await this.$repositories.candidatesApply.getListCV(condition);
+        this.loadingListCv = true
+        const {data} = await this.$repositories.candidatesApply.getListCV(condition)
+        this.loadingListCv = false
 
         this.items = data.data;
         this.totalItems = data.total;
@@ -732,21 +784,26 @@
         this.dataUpdateStatus.residence_card_confirm = data.residence_card_confirm
         this.dataUpdateStatus.status = data.status
         this.dataUpdateStatus.note = data.note
+        this.user_name = data.user_name
       },
 
       async updateStatus() {
-        return await this.$repositories.candidatesApply.updateStatus(
-          this.idRow,
-          this.dataUpdateStatus
-        ).then(res => {
-          this.idRow = -1;
-          if (res.status === 200) {
-            this.$toast.success('応募者の応募状態・更新が完了しました')
-            this.getListCV(this.currentPage);
-          } else {
-            this.$toast.success('候補者の申請状況と候補者名の更新は完了していません。')
-          }
-        })
+        this.$v.dataUpdateStatus.$touch()
+        if (!this.$v.dataUpdateStatus.$invalid) {
+          return await this.$repositories.candidatesApply.updateStatus(
+            this.idRow,
+            this.dataUpdateStatus
+          ).then(res => {
+            this.idRow = -1;
+            if (res.status === 200) {
+              this.$toast.success('応募者の応募状態・' + this.user_name + 'の更新が完了しました')
+              this.getListCV(this.currentPage);
+            }
+            if (res.response && res.response.status === 500) {
+              this.$toast.error('候補者の申請状況と候補者名の更新は完了していません。')
+            }
+          })
+        }
       },
 
       async updateCard(id, data) {

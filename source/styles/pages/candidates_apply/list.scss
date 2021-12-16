@@ -281,6 +281,10 @@ tr.active td {
   text-decoration: none;
 }
 
+.link-modal {
+  max-width: 400px;
+}
+
 @media only screen and (max-width: 1199px) {
   .td-warning {
     margin-top: -26px !important;
@@ -380,4 +384,9 @@ tr.active td {
 
 textarea {
   resize: none;
+}
+
+.error-text {
+  color: red;
+  font-size: 12px;
 }
