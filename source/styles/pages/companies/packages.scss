@@ -92,6 +92,57 @@ picture img {
     width: calc( 100%/3);
 }
 
+table {
+    border-collapse: separate;
+    border-spacing: 10px 10px;
+}
+
+td, th {
+    border-radius: 5px;
+}
+
+.first-row-title {
+    background-color: #7cb0c8;
+    color: white;
+    font-size: 20px;
+}
+
+.second-row-title {
+    background-color: #E5AF6E;
+    color: white;
+    font-size: 16px;
+    font-weight: 400;
+} 
+.column-first-row {
+    background-color: #7cb0c8;
+    font-size: 13px;
+    font-weight: 400;
+    color: white;
+    padding: 15px 0px 15px;
+}
+
+.column-second-row {
+    background-color: #E5AF6E;
+    font-size: 13px;
+    font-weight: 400;
+    color: white;
+    padding: 15px 0px 15px;
+}
+
+.package {
+    background-color: #84AF6E;
+    color: white;
+    padding-bottom: 30px;
+    padding-top: 30px;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.package-value {
+    background-color: #E8EDED;
+    color: #7CB0C8;
+}
+
 @media only screen and (max-width: 991px) {
     .title-page {
         font-size: 25px;
@@ -114,6 +165,26 @@ picture img {
         padding-left: 20px;
         padding-right: 20px;
     }
+
+    .package {
+        font-size: 12px;
+        padding: 20px 10px;
+    }
+
+    .column-first-row {
+        font-size: 12px;
+        padding: 15px 0px;
+    }
+
+    .first-row-title {
+        font-size: 16px;
+        padding: 0px 10px;
+    }
+
+    .second-row-title {
+        font-size: 16px;
+        font-weight: 400;
+    } 
 }
 
 @media only screen and (max-width: 768px) {
@@ -131,4 +202,42 @@ picture img {
         font-size: 10px;
         width: 150px;
     }
+}
+
+@media only screen and (max-width: 991px) {
+    .title-page {
+        font-size: 25px;
+    }
+    .card-title {
+        height: 40px;
+        font-size: 18px;
+    }
+    .payment-explain {
+        font-size: 12px;
+    }
+    .info-pill {
+        font-size: 12px;
+        width: 200px;
+    }
+}
+
+@media only screen and (max-width: 750px) {
+    .package {
+        font-size: 12px;
+        padding: 10px 5px;
+    }
+
+    .column-first-row {
+        font-size: 12px;
+        padding: 5px 5px;
+    }
+
+    .first-row-title {
+        font-size: 10px;
+        // padding: 0px 20px;
+    }
+
+    .second-row-title {
+        font-size: 10px;
+    } 
 }
