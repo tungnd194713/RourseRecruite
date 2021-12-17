@@ -92,14 +92,21 @@
               .then((res) => {
                 const data = this.$handleResponse(res);
                 this.message = data.message;
-                this.error = data.errors.length === 0 ? '' : 'しばらくお待ちください';
+                this.error = data.errorMsg;
+                this.getMessage(this.error);
               });
           } catch (e) {
             this.message = '';
-            this.error = 'しばらくお待ちください';
+            this.error = e.response.data.message;
           }
         }
       },
+
+      getMessage(message) {
+        if (message === 'The given data was invalid.') {
+          this.error = 'しばらくお待ちください'
+        }
+      }
     }
   }
 </script>
