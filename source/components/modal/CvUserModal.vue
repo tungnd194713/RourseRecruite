@@ -33,7 +33,7 @@
                   <tr>
                     <td colspan="5" class="border-0">
                       <div class="d-flex align-items-end">
-                        <h2 class="fw-bold flex-grow-1">{{ $t('cv_user.title')}}</h2>
+                        <h2 class="fw-bold flex-grow-1 title-cv-user">{{ $t('cv_user.title')}}</h2>
                         <div v-if="language === lang_vi" class="">
                           Ngày<span class="mx-0 mx-md-3">{{ $moment(candidate.created_at).format('D')}}</span>
                           Tháng<span class="mx-0 mx-md-3">{{ $moment(candidate.created_at).format('M')}}</span>
@@ -348,7 +348,7 @@
                     <td rowspan="2">{{ $t('cv_user.stay_experience_part_1')}}<br>{{ $t('cv_user.stay_experience_part_2')}}</td>
                     <td class="border-bottom-dot">{{ candidate.stay_experience_date}}</td>
                     <td rowspan="2">{{ $t('cv_user.visa_part_1')}}<br>{{ $t('cv_user.visa_part_2')}}</td>
-                    <td class="border-bottom-dot">{{ candidate.visa_type}}</td>
+                    <td class="border-bottom-dot">{{ $t(visaTypesList[candidate.visa_type])}}</td>
                   </tr>
                   <tr>
                     <td class="border-top-dot">{{ candidate.stay_experience_purpose}}</td>
@@ -372,6 +372,7 @@
 
 <script>
   import defaultInCvUser from "~/constants/defaultInCvUser"
+  import visaTypes from "~/constants/visaTypes"
 
   export default {
     name: "CvUserModal",
@@ -389,7 +390,8 @@
         url_file: process.env.URL_FILE,
         lang_ja: defaultInCvUser.lang_ja,
         lang_vi: defaultInCvUser.lang_vi,
-        defaultLangAndText: defaultInCvUser
+        defaultLangAndText: defaultInCvUser,
+        visaTypesList: visaTypes
       }
     },
 

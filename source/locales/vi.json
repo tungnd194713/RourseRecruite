@@ -130,5 +130,14 @@
       "1": "Không có bệnh lý nền",
       "2": "Có bệnh lý nền"
     }
+  },
+  "visaTypes": {
+    "visa_type_1": "Visa ngoại giao",
+    "visa_type_2": "Visa công vụ",
+    "visa_type_3": "Visa làm việc",
+    "visa_type_4": "Visa phổ thông",
+    "visa_type_5": "Visa ngắn hạn",
+    "visa_type_6": "Visa cư trú",
+    "visa_type_7": "Visa lưu trú y tế"
   }
 }
