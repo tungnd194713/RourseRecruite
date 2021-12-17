@@ -7,10 +7,10 @@
           <h1 class="mb-3 mb-lg-4 fw-bold">パスワード変更</h1>
           <h5 class="mb-3 mb-lg-4 mt-3">入力されたメールアドレスに再設定メ-ルをお送りします</h5>
 
-          <div v-if="message && email" class="alert alert-success" role="alert">
+          <div v-if="message" class="alert alert-success" role="alert">
             {{message}}
           </div>
-          <div v-if="error && email" class="alert alert-danger" role="alert">
+          <div v-if="error" class="alert alert-danger" role="alert">
             {{error}}
           </div>
 
@@ -72,6 +72,15 @@
       return {title: 'パスワード忘れ'}
     },
 
+    watch: {
+      email (value) {
+        if (!value) {
+          this.message = ''
+          this.error = ''
+        }
+      }
+    },
+
     methods: {
       async forgotPassword() {
         this.$v.$touch();
@@ -83,11 +92,11 @@
               .then((res) => {
                 const data = this.$handleResponse(res);
                 this.message = data.message;
-                this.error = data.errorMsg;
+                this.error = data.errors.length === 0 ? '' : 'しばらくお待ちください';
               });
           } catch (e) {
             this.message = '';
-            this.error = e.response.data.message;
+            this.error = 'しばらくお待ちください';
           }
         }
       },
