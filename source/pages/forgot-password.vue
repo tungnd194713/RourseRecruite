@@ -7,10 +7,10 @@
           <h1 class="mb-3 mb-lg-4 fw-bold">パスワード変更</h1>
           <h5 class="mb-3 mb-lg-4 mt-3">入力されたメールアドレスに再設定メ-ルをお送りします</h5>
 
-          <div v-if="message" class="alert alert-success" role="alert">
+          <div v-if="message && email" class="alert alert-success" role="alert">
             {{message}}
           </div>
-          <div v-if="error" class="alert alert-danger" role="alert">
+          <div v-if="error && email" class="alert alert-danger" role="alert">
             {{error}}
           </div>
 
@@ -30,6 +30,13 @@
               <div v-if="!$v.email.email" class="error">メールアドレスの形式で入力してください</div>
             </div>
           </div>
+          <button
+            id="btn_cancel"
+            class="btn fw-bold my-3 my-lg-4 rounded-pill"
+            @click="$router.push('/login')"
+          >
+            キャンセル
+          </button>
           <button type="submit" class="btn fw-bold">送信</button>
         </div>
       </form>
