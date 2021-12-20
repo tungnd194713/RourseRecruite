@@ -5,7 +5,7 @@
       <div class="bg-white box-form-login">
         <h1 class="mb-3 mb-lg-4 fw-bold">パスワード変更</h1>
         <div class="form-group mt-5">
-          <label for="password">パスワード</label>
+          <label for="password">パスワード <span>*</span></label>
           <div class="input-group has-validation">
             <span class="input-group-text input-group-text-pre"><img src="../assets/images/icon_key.svg" alt=""></span>
             <input id="password"
@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="form-group mb-5">
-          <label for="passwordConfirm">パスワード確認</label>
+          <label for="passwordConfirm">パスワード確認 <span>*</span></label>
           <div class="input-group has-validation">
             <span class="input-group-text input-group-text-pre"><img src="../assets/images/icon_key.svg" alt=""></span>
             <input id="passwordConfirm"
@@ -36,7 +36,7 @@
             <div class="invalid-feedback"></div>
           </div>
           <div v-if="$v.password_confirm.$error">
-            <div v-if="!$v.password_confirm.sameAsPassword" class="error">入力したパスワードが一致しません</div>
+            <div v-if="!$v.password_confirm.sameAsPassword" class="error">これは必須項目なので、必ず選択してください</div>
           </div>
         </div>
         <button id="btn_change" type="submit" class="btn fw-bold">送信</button>

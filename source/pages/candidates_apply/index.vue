@@ -77,7 +77,7 @@
             <tr
               v-for="(item, index) in items"
               :key="item.id"
-              :class="item.read === 0 ? 'active' : ''"
+              :class="item.read === 1 ? 'active' : ''"
             >
               <td class="align-middle py-3">
                 <span

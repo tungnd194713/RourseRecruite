@@ -70,7 +70,7 @@
     },
   "cv_user": {
     "title": "履歴書",
-    "furigana": "スヌワル",
+    "furigana": "ふりがな",
     "gender": "性別",
     "name": "氏名",
     "birthday": "生年月日",
@@ -130,5 +130,14 @@
       "1": "持病なし",
       "2": "持病あり"
     }
+  },
+  "visaTypes": {
+    "visa_type_1": "外交査証",
+    "visa_type_2": "公用査証",
+    "visa_type_3": "就業査証",
+    "visa_type_4": "一般査証",
+    "visa_type_5": "短期滞在査証",
+    "visa_type_6": "特定査証",
+    "visa_type_7": "医療滞在査証"
   }
 }

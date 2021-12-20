@@ -18,7 +18,7 @@
               <td class="align-middle">{{ item.id }}</td>
               <td v-if="item.paid_at" class="align-middle py-3">{{ item.paid_at.split(' ')[0] }}</td>
               <td v-else class="align-middle py-3"></td>
-              <td class="align-middle" @click="$router.push('/invoices/detail?id=' + item.id)">{{ item.year_month }}</td>
+              <td class="align-middle" @click="$router.push('/invoices/detail?year_month=' + item.year_month)">{{ item.year_month }}</td>
               <td class="align-middle">
                 ¥{{ item.cost_job ? Math.ceil(item.cost_job).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null }}
               </td>
@@ -356,12 +356,12 @@ export default {
 
       await this.$repositories.payments.chargeInvoice(this.selectedItemId, dataForm).then(res => {
         if (res.status === 200) {
-          this.$toast.success('支払い成功！')
+          this.$toast.success('決済に成功しました')
           this.$refs.closeCheckoutPayjpModal.click()
 
           this.getInvoices(this.currentPage)
         } else {
-          this.$toast.error("払えない！")
+          this.$toast.error("決済が失敗しました")
         }
       }).catch((error) => {
         this.$toast.error(error)
