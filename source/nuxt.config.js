@@ -1,5 +1,6 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
+  mode: 'universal',
   head: {
     title: 'console',
     htmlAttrs: {
@@ -17,8 +18,8 @@ export default {
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=M+PLUS+1p'}
     ],
     script: [
-      { src: "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js", type: "text/javascript"}
-    ]
+      { src: "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js", type: "text/javascript"},
+    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
