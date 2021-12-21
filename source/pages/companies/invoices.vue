@@ -378,6 +378,7 @@ export default {
       dataForm.append('card[cvc]', this.card.cvc);
       dataForm.append('card[exp_month]', this.card.exp_month);
       dataForm.append('card[exp_year]', '20' + this.card.exp_year);
+      dataForm.append('card[name]', this.card.name);
 
       this.$v.card.$touch()
       if (!this.$v.card.$invalid) {
@@ -386,7 +387,6 @@ export default {
             'Content-Type': 'multipart/form-data',
           },
         }).then(res => {
-          console.log(res);
           if (res.status === 200) {
             this.payjpToken = res.data;
 
