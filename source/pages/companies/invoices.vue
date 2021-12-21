@@ -167,7 +167,9 @@
                                  name="ccname"
                                  class="payjp_simple-input-text"
                                  type="text" inputtype="email"
-                                 placeholder="TARO YAMADA">
+                                 placeholder="TARO YAMADA"
+                                 maxlength="255"
+                          >
                           <hr class="payjp_border" :style="$v.card.name.$error ? 'border: 1px solid red;' : ''">
                           <hr class="payjp_hiddenborder">
                         </div>
@@ -392,7 +394,7 @@ export default {
 
             this.submitPayment();
           } else {
-            this.$toast.error(res.message)
+            this.$toast.error('有効期限が無効です')
           }
         }).catch((error) => {
           this.$toast.error(error)
