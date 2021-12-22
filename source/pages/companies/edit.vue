@@ -391,7 +391,7 @@
                         style="width: 100px; height: 100px"
                       />
                       <button
-                        class="col-12 col-sm-3 col-md-6 form-control w-25"
+                        class="col-12 col-sm-3 col-md-6 form-control w-10"
                         type="button"
                         title="Remove file"
                         @click="remove(data.logo.indexOf(file), logo)"
@@ -457,7 +457,7 @@
                         style="width: 100px; height: 100px"
                       />
                       <button
-                        class="col-12 col-sm-3 col-md-6 form-control w-25"
+                        class="col-12 col-sm-3 col-md-6 form-control w-10"
                         type="button"
                         title="Remove file"
                         @click="removeImagesOnServer(file.id, index)"
@@ -478,7 +478,7 @@
                         style="width: 100px; height: 100px"
                       />
                       <button
-                        class="col-12 col-sm-3 col-md-6 form-control w-25"
+                        class="col-12 col-sm-3 col-md-6 form-control w-10"
                         type="button"
                         title="Remove file"
                         @click="
@@ -560,7 +560,7 @@
                   ></iframe>
 
                   <button
-                    class="col-12 col-sm-3 col-md-6 form-control w-25"
+                    class="col-12 col-sm-3 col-md-6 form-control w-10"
                     type="button"
                     title="Remove file"
                     @click="removeVideo()"
@@ -964,12 +964,13 @@ export default {
       event.preventDefault()
     },
     clearErrors() {
-      this.errors = ''
+      this.errors = []
     },
     async editCompanyProfile() {
       this.$v.data.$touch()
       if (this.uploadedImages.length + this.uploadedIntroImage.length > 5) {
         this.errors.images = ['5つ以下の写真をアップロードしてください']
+        this.$forceUpdate()
       } else {
         this.clearErrors()
         const dataCompany = new FormData()
@@ -986,7 +987,7 @@ export default {
         dataCompany.append('number_members', this.data.number_members)
         dataCompany.append('link_website', this.data.link_website)
         dataCompany.append('link_facebook', this.data.link_facebook ? this.data.link_facebook : '')
-        dataCompany.append('description', this.data.description)
+        dataCompany.append('description', this.data.description ? this.data.description : '')
         dataCompany.append('video_link', this.data.video_link)
         dataCompany.append('phone', this.data.phone)
         dataCompany.append('youtube', this.data.youtube)
