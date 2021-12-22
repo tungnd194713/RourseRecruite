@@ -16,3 +16,48 @@ input::placeholder {
   width: 20px;
   height: 20px;
 }
+
+.note {
+  word-break: break-word;
+}
+
+.error {
+  color: red;
+  padding-left: 10px;
+}
+
+#apply-btn:hover {
+  background-color: #6e9ddf;
+}
+
+@media only screen and (max-width: 768px) {
+  .note {
+    word-break: normal;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .box-search {
+    border-radius: 1rem !important;
+  }
+
+  .box-table table {
+    font-size: 12px;
+  }
+
+  .box-pagination p {
+    font-size: 10px;
+  }
+
+  .td-warning {
+    margin-top: -35px !important;
+    margin-left: -8px !important;
+  }
+}
+
+
+@media only screen and (max-width: 540px) {
+  .modal-candidate {
+    width: 95%;
+  }
+}

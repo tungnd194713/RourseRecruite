@@ -2,9 +2,7 @@
   <main class="container my-3 my-lg-4">
     <div class="card position-relative">
       <button id="btn-edit" class="btn border-0 p-0">
-        <NuxtLink
-          to="/companies/edit"
-        >
+        <NuxtLink to="/companies/edit">
           <img
             width="30"
             height="30"
@@ -16,9 +14,11 @@
         <div class="d-md-flex">
           <div class="align-items-center">
             <div class="logo mb-3 mb-md-0">
+              <img v-if="logo" :src="url_api_file + logo" alt="Company Logo" />
               <img
-                :src="url_api_file + logo"
-                alt="Company Profile Image"
+                v-else
+                src="../../assets/images/avatar1.svg"
+                alt="Company Logo"
               />
             </div>
           </div>
@@ -93,7 +93,11 @@
           <div v-if="video_link" class="col-12 col-lg-6 mt-3 mt-lg-0">
             <iframe
               class="img-fluid profile-img w-100"
-              :src="video_link.includes('youtube') ? video_link : url_api_file + video_link"
+              :src="
+                video_link.includes('youtube')
+                  ? video_link
+                  : url_api_file + video_link
+              "
               frameborder="0"
               allowfullscreen
             ></iframe>
@@ -107,7 +111,10 @@
         <div class="row">
           <div class="col-12 col-lg-6">
             <h2 class="title">住所</h2>
-            <div class="mt-4">〒 {{ postal_code }} {{ $t(province) }} {{ district }} {{ address }}</div>
+            <div class="mt-4">
+              〒 {{ postal_code }} {{ $t(province) }} {{ district }}
+              {{ address }}
+            </div>
           </div>
           <div class="col-12 col-lg-6 mt-3 mt-lg-0">
             <div class="map">
@@ -127,33 +134,44 @@
       </div>
     </div>
 
-    <div class="row img-group">
-      <div
-        v-for="image in images"
-        :key="image.id"
-        class="col-12 col-md-4 mb-3"
-      >
-        <img
-          class="img-fluid w-100"
-          :src="url_api_file + image.image_url"
-          alt="Company Images"
-        />
-      </div>
-    </div>
+    <swiper ref="swiper" class="swiper" :options="swiperOption">
+      <swiper-slide
+        v-for="(image, index) in images"
+        :key="index"
+        class="swiper-slide"
+        ><img :src="url_api_file + image.image_url" alt=""
+      /></swiper-slide>
+      <div slot="button-prev" class="swiper-button-prev" @click="prev()"></div>
+      <div slot="button-next" class="swiper-button-next" @click="next()"></div>
+    </swiper>
   </main>
 </template>
 
 <script>
 import 'bootstrap/dist/css/bootstrap.css'
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
+import 'swiper/swiper-bundle.min.css'
 import careers from '~/constants/careers'
 import theProvinces from '~/constants/provinces'
 
 export default {
   name: 'ProfileCompany',
+  components: {
+    Swiper,
+    SwiperSlide,
+  },
   layout: 'auth',
 
   data() {
     return {
+      swiperOption: {
+        slidesPerView: 3,
+        spaceBetween: 30,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+      },
       url_api_file: process.env.URL_FILE,
       address: '',
       careers,
@@ -177,7 +195,7 @@ export default {
   },
 
   head() {
-    return { title: 'Profile Company' }
+    return { title: 'プロフィール' }
   },
 
   computed: {},
@@ -187,6 +205,12 @@ export default {
   },
 
   methods: {
+    prev() {
+      this.$refs.swiper.$swiper.slidePrev()
+    },
+    next() {
+      this.$refs.swiper.$swiper.slideNext()
+    },
     async getProfileCompany() {
       const { data } = await this.$repositories.profiles.getCompanyProfile()
 

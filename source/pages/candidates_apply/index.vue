@@ -149,7 +149,7 @@
                   <option value="2">非承認</option>
                 </select>
               </td>
-              <td class="align-middle py-3 w-20">
+              <td class="align-middle py-3 w-20 note">
                 {{ item.note }}
               </td>
               <td class="align-middle py-3">
@@ -263,9 +263,14 @@
       aria-hidden="true"
     >
       <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content check-content">
+        <div class="modal-content check-content modal-candidate">
           <div class="modal-header">
-            <a data-bs-dismiss="modal" class="btn-close" aria-label="Close">
+            <a
+              ref="closeCheckModal"
+              data-bs-dismiss="modal"
+              class="btn-close"
+              aria-label="Close"
+            >
               <img src="../../assets/images/icon_modal_close.svg" alt="" />
             </a>
           </div>
@@ -305,14 +310,18 @@
             <label for="remarks">備考</label>
             <textarea
               id="remarks"
-              v-model="dataUpdateStatus.note"
+              v-model="$v.dataUpdateStatus.note.$model"
               class="form-control"
             ></textarea>
+            <div v-if="$v.dataUpdateStatus.note.$error">
+              <div v-if="!$v.dataUpdateStatus.note.maxLength" class="error">
+                100文字以上入力する場合
+              </div>
+            </div>
             <div class="submit-btn">
               <button
                 id="apply-btn"
                 class="btn btn-primary mt-4 rounded-pill"
-                data-bs-toggle="modal"
                 data-bs-target="#popUpSuccess"
                 @click="updateStatus()"
               >
@@ -337,6 +346,8 @@
 
 <script>
 import 'bootstrap/dist/css/bootstrap.css'
+import { validationMixin } from 'vuelidate'
+import { maxLength } from 'vuelidate/lib/validators'
 import DatePicker from 'vue2-datepicker'
 import 'vue2-datepicker/index.css'
 import 'vue2-datepicker/locale/ja'
@@ -351,6 +362,7 @@ export default {
     DatePicker,
     CvUserModal,
   },
+  mixins: [validationMixin],
   layout: 'auth',
 
   data() {
@@ -498,6 +510,14 @@ export default {
     }
   },
 
+  validations: {
+    dataUpdateStatus: {
+      note: {
+        maxLength: maxLength(500),
+      },
+    },
+  },
+
   head() {
     return { title: '応募者一覧' }
   },
@@ -568,19 +588,23 @@ export default {
     },
 
     async updateStatus() {
-      return await this.$repositories.candidatesApply
-        .updateStatus(this.idRow, this.dataUpdateStatus)
-        .then((res) => {
-          this.idRow = -1
-          if (res.status === 200) {
-            this.$toast.success('応募者の応募状態・更新が完了しました')
-            this.getListCV(this.currentPage)
-          } else {
-            this.$toast.success(
-              '候補者の申請状況と候補者名の更新は完了していません。'
-            )
-          }
-        })
+      this.$v.dataUpdateStatus.$touch()
+      if (!this.$v.dataUpdateStatus.$invalid) {
+        await this.$repositories.candidatesApply
+          .updateStatus(this.idRow, this.dataUpdateStatus)
+          .then((res) => {
+            this.idRow = -1
+            if (res.status === 200) {
+              this.$toast.success('応募者の応募状態・更新が完了しました')
+              this.getListCV(this.currentPage)
+            } else {
+              this.$toast.success(
+                '候補者の申請状況と候補者名の更新は完了していません。'
+              )
+            }
+          })
+        this.$refs.closeCheckModal.click()
+      }
     },
 
     async updateCard(id, data) {
@@ -641,14 +665,22 @@ export default {
       }
     },
 
-    popupCvUser(candidateApply) {
+    async popupCvUser(candidateApply) {
       this.language = this.lang_vi
       this.$i18n.locale = this.language
       this.idRow = candidateApply.id
       this.defaultCandidate = Object.assign({}, candidateApply.candidate)
       this.candidate = Object.assign({}, this.defaultCandidate)
       this.initJobsAndEducationsOfCandidate()
+      if (candidateApply.read === 0) {
+        await this.$repositories.candidatesApply.updateStatus(this.idRow, { read: 1}).then(res => {
+          if (res.status === 200) {
+            this.getListCV(this.currentPage);
+          }
+        })
+      }
     },
+
 
     initJobsAndEducationsOfCandidate() {
       this.educationsOfCandidate =
