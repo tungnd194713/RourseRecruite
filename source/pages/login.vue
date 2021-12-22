@@ -88,8 +88,20 @@
               <span
                 class="input-group-text input-group-text-next"
                 @click="showPassword"
-                ><img src="../assets/images/icon_eye.svg" alt=""
-              /></span>
+                >
+                <img
+                  v-if="isHide"
+                  class="show-hide-password-icon"
+                  src="../assets/images/icon_eye.svg"
+                  alt=""
+                />
+                <img
+                  v-else
+                  class="show-hide-password-icon"
+                  src="../assets/images/icon_eyes_show.svg"
+                  alt=""
+                />
+              </span>
               <div class="invalid-feedback"></div>
             </div>
             <div v-if="$v.data.password.$error">
