@@ -30,6 +30,13 @@
               <div v-if="!$v.email.email" class="error">メールアドレスの形式で入力してください</div>
             </div>
           </div>
+          <button
+            id="btn_cancel"
+            class="btn fw-bold my-3 my-lg-4 rounded-pill"
+            @click="$router.push('/login')"
+          >
+            キャンセル
+          </button>
           <button type="submit" class="btn fw-bold">送信</button>
         </div>
       </form>
@@ -65,6 +72,15 @@
       return {title: 'パスワード忘れ'}
     },
 
+    watch: {
+      email (value) {
+        if (!value) {
+          this.message = ''
+          this.error = ''
+        }
+      }
+    },
+
     methods: {
       async forgotPassword() {
         this.$v.$touch();
@@ -77,6 +93,7 @@
                 const data = this.$handleResponse(res);
                 this.message = data.message;
                 this.error = data.errorMsg;
+                this.getMessage(this.error);
               });
           } catch (e) {
             this.message = '';
@@ -84,6 +101,12 @@
           }
         }
       },
+
+      getMessage(message) {
+        if (message === 'The given data was invalid.') {
+          this.error = 'しばらくお待ちください'
+        }
+      }
     }
   }
 </script>

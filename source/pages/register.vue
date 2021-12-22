@@ -10,9 +10,7 @@
                     登録されたメールアドレスに確認用のリンクをお送りしました。
                 </div>
                 <div class="form-group">
-                    <label for="company-name"
-                        >会社名 <span>*</span></label
-                    >
+                    <label for="company-name">会社名 <span>*</span></label>
                     <input
                         id="company-name"
                         v-model.trim="user.company_name"
@@ -66,9 +64,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="mail"
-                        >メールアドレス <span>*</span></label
-                    >
+                    <label for="mail">メールアドレス <span>*</span></label>
                     <input
                         id="mail"
                         v-model.trim="user.email"
@@ -83,7 +79,7 @@
                             v-if="!$v.user.email.required"
                             class="invalid-feedback error"
                         >
-                            これは必須項目なので、必ず入力してください
+                            これは必須項目なので、必ず入力してくださいd
                         </div>
 
                         <div
@@ -94,12 +90,13 @@
                         </div>
                     </div>
                     <div
-                        v-if="errors.email && $v.user.email.required"
+                        v-if="errors.email && user.email === user.confirm_email"
                         class="invalid-feedback error"
                     >
                         このメールアドレスは既に存在しています
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label for="phone">電話番号 <span>*</span></label>
                     <input
@@ -130,12 +127,19 @@
                         </div>
 
                         <div
-                            v-else-if="
-                                !$v.user.phone.phone && $v.user.phone.required
-                            "
+                            v-else-if="!$v.user.phone.number && $v.user.phone.required"
                             class="invalid-feedback error"
                         >
                             整数を入力してください
+                        </div>
+                        <div
+                            v-if="
+                                errors.phone &&
+                                user.phone === user.confirm_phone
+                            "
+                            class="invalid-feedback error"
+                        >
+                            この電話番号は既に存在しています
                         </div>
                     </div>
                 </div>
@@ -200,9 +204,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="career"
-                        >業界・分野 <span>*</span></label
-                    >
+                    <label for="career">業界・分野 <span>*</span></label>
                     <select
                         id="career"
                         v-model="user.career"
@@ -256,9 +258,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="provinces"
-                        >都道府県<span>*</span></label
-                    >
+                    <label for="provinces">都道府県<span>*</span></label>
                     <select
                         id="provinces"
                         v-model="user.province_id"
@@ -401,9 +401,11 @@ import theCareers from '~/constants/careers'
 import theProvinces from '~/constants/provinces'
 
 const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/g)
-const phone = helpers.regex(
-    'phone',
-    /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{3})/)
+// const phone = helpers.regex(
+//     'phone',
+//     /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/
+// )
+const numbers = helpers.regex('numbers', /^[0-9]*$/)
 
 export default {
     name: 'Register',
@@ -454,7 +456,7 @@ export default {
                 required,
                 minLength: minLength(9),
                 maxLength: maxLength(13),
-                phone,
+                numbers,
             },
             password: {
                 required,
@@ -496,6 +498,8 @@ export default {
 
     methods: {
         async submit() {
+            this.user.confirm_email = this.user.email
+            this.user.confirm_phone = this.user.phone
             this.$v.user.$touch()
             this.$v.acceptTerms.$touch()
 

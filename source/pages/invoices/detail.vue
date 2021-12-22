@@ -33,7 +33,7 @@
 
           <td>{{ priceCheckNaN((job.invoice_job_detail)) ? '¥' : ''  }}
             {{  priceCheckNaN((job.invoice_job_detail))
-            ? calculateCostJob(job.invoice_job_detail, job.display_month)
+            ? Math.ceil(calculateCostJob(job.invoice_job_detail, job.display_month)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             : '' }}</td>
 
           <td>{{ job.invoices_applied_detail.length }}</td>
@@ -50,18 +50,34 @@
           <td class="border-0"></td>
           <td class="border-0"></td>
           <td class="border-0"></td>
-          <td class="border-1 title-total-cost-job">投稿費用合計</td>
-          <td class="border-1 title-total-cost-job">{{ showTotalCostJobs(invoice.cost_job) }}</td>
+          <td class="border-1 title-total-cost-job">
+            <p class="bold-text align-middle">投稿費用合計</p>
+          </td>
+          <td class="border-1 title-total-cost-job">
+            <p class="bold-text align-middle">{{ showTotalCostJobs(invoice.cost_job) }}</p>
+          </td>
           <td class="border-0"></td>
-          <td class="border-1 title-total-cost-job">応募合計</td>
-          <td class="border-1 title-total-cost-job">{{ showTotalCostJobs(invoice.cost_apply) }}</td>
-          <td class="border-1 title-total-cost-job">{{ showTotalCostJobs(invoice.total) }}</td>
+          <td class="border-1 title-total-cost-job">
+            <p class="bold-text align-middle">応募合計</p>
+          </td>
+          <td class="border-1 title-total-cost-job">
+            <p class="bold-text align-middle">{{ showTotalCostJobs(invoice.cost_apply) }}</p>
+          </td>
+          <td class="border-1 title-total-cost-job">
+            <p class="bold-text align-middle">{{ showTotalCostJobs(invoice.total) }}</p>
+          </td>
         </tr>
         </tbody>
       </table>
       <div v-if="jobs.length > 0" class="text-center table-responsive">
         <table class="table table-bordered mt-3">
           <tr class="border-0 mt-3">
+            <td class="border-1 total-cost col-1">
+              <p class="bold-text align-middle">合計費用</p>
+            </td>
+            <td class="border-1 total-cost col-1">
+              <p class="bold-text align-middle">{{ showTotalCostJobs(invoice.total) }}</p>
+            </td>
             <td class="border-0"></td>
             <td class="border-0"></td>
             <td class="border-0"></td>
@@ -70,8 +86,6 @@
             <td class="border-0"></td>
             <td class="border-0"></td>
             <td class="border-0"></td>
-            <td class="border-1 total-cost col-1">合計費用</td>
-            <td class="border-1 total-cost col-1">{{ showTotalCostJobs(invoice.total) }}</td>
           </tr>
         </table>
       </div>
@@ -107,7 +121,7 @@
             value: 3
           },
           {
-            text: 'Standard plan',
+            text: '標準プラン',
             value: 4
           },
         ],
@@ -169,7 +183,7 @@
       totalCost(costApplied, costJob) {
         const price = costApplied + costJob;
 
-        return price ? '¥' + price : '';
+        return price ? '¥' + Math.ceil(price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '';
       },
 
       priceCheckEmpty(invoicesAppliedDetail) {
@@ -187,23 +201,31 @@
       showTotalCostJobs(costJob) {
         const price = Math.round(costJob * 1000000) / 1000000;
 
-        return price ? '¥' + price : '';
+        return price
+          ? '¥' + Math.ceil(price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          : '';
       },
 
       showTotalApplied(total) {
-        return total ? ('¥' + total) : '';
+        return total
+          ? ('¥' + Math.ceil(total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+          : '';
       },
 
       showPriceApplied(job, packages) {
         const price = this.priceCheckEmpty(job.invoices_applied_detail) || this.priceApply(packages, job.type_plan)
 
-        return price ? '¥' + price : '';
+        return price
+          ? '¥' + Math.ceil(price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          : '';
       },
 
       showPrice(job) {
         const price = this.priceCheckNaN((job.invoice_job_detail));
 
-        return price ? '¥' + price : '';
+        return price
+          ? '¥' + Math.ceil(price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          : '';
       }
     }
   }

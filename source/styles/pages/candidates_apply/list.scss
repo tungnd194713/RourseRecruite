@@ -41,6 +41,7 @@ input::placeholder {
 
 .btn-search-job:hover {
   color: #ffffff;
+  background-color: #b7d5e5;
 }
 
 .td-warning {
@@ -307,6 +308,10 @@ tr.active td {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.link-modal {
+  max-width: 400px;
 }
 
 @media only screen and (max-width: 1199px) {
