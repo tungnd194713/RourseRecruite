@@ -53,49 +53,49 @@
       <div class="detail-job-content py-3">
         <div class="d-block mb-3 mb-lg-5">
           <h5>仕事内容</h5>
-          <div class="ps-3">
+          <div class="ps-3 pre-line">
             {{ job.content_work}}
           </div>
         </div>
         <div class="d-block">
           <table class="table table-bordered">
             <tbody>
-            <tr>
-              <td>採用人数</td>
-              <td>{{ job.number_recruitments}}人</td>
-            </tr>
-            <tr>
-              <td>応募条件</td>
-              <td>{{ job.conditions_apply}}</td>
-            </tr>
-            <tr>
-              <td>勤務地</td>
-              <td>{{ job.address_work}}</td>
-            </tr>
-            <tr>
-              <td>勤務時間</td>
-              <td>{{ job.time_work}}</td>
-            </tr>
-            <tr>
-              <td>休日</td>
-              <td>{{ job.holidays}}</td>
-            </tr>
-            <tr>
-              <td>休憩時間 </td>
-              <td>{{ job.break_time}}</td>
-            </tr>
-            <tr>
-              <td>福利厚生</td>
-              <td>{{ job.welfare_regime}}</td>
-            </tr>
-            <tr>
-              <td>ベトナム人在籍状況</td>
-              <td>{{ job.has_vietnamese_staff ? 'はい': 'いいえ'}}</td>
-            </tr>
-            <tr>
-              <td>残業見込み、休日出勤見込み</td>
-              <td>{{ job.overtime}}</td>
-            </tr>
+              <tr>
+                <td>採用人数</td>
+                <td class="pre-line">{{ job.number_recruitments}}人</td>
+              </tr>
+              <tr>
+                <td>応募条件</td>
+                <td class="pre-line">{{ job.conditions_apply}}</td>
+              </tr>
+              <tr>
+                <td>勤務地</td>
+                <td class="pre-line">{{ job.address_work}}</td>
+              </tr>
+              <tr>
+                <td>勤務時間</td>
+                <td class="pre-line">{{ job.time_work}}</td>
+              </tr>
+              <tr>
+                <td>休日</td>
+                <td class="pre-line">{{ job.holidays}}</td>
+              </tr>
+              <tr>
+                <td>休憩時間 </td>
+                <td class="pre-line">{{ job.break_time}}</td>
+              </tr>
+              <tr>
+                <td>福利厚生</td>
+                <td class="pre-line">{{ job.welfare_regime}}</td>
+              </tr>
+              <tr>
+                <td>ベトナム人在籍状況</td>
+                <td class="pre-line">{{ job.has_vietnamese_staff ? 'はい': 'いいえ'}}</td>
+              </tr>
+              <tr>
+                <td>残業見込み、休日出勤見込み</td>
+                <td class="pre-line">{{ job.overtime}}</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -240,6 +240,10 @@
           overtime: ''
         }
       }
+    },
+
+    head() {
+      return { title: '新規求人プレビュー'}
     },
 
     computed: {

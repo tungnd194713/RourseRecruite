@@ -5,7 +5,18 @@
         <div class="mt-0 mt-lg-2 pt-0 pt-lg-3 pb-2">
           <div class="row">
             <div class="col-12 col-xl-6 pe-3 pe-xl-5">
-              <img class="img-fluid w-100" :src="previewImageJobUrl" alt="">
+              <img
+                v-if="job.image_job"
+                class="img-fluid w-100"
+                :src="previewImageJobUrl"
+                alt=""
+              >
+              <img
+                v-else-if="oldImageJob"
+                class="img-fluid w-100"
+                :src="url_file + oldImageJob"
+                alt=""
+              >
             </div>
             <div class="col-12 col-xl-6 mt-4 mt-lg-0">
               <h1 class="mb-3 mb-lg-4"> {{ job.title}}</h1>
@@ -53,54 +64,54 @@
       <div class="detail-job-content py-3">
         <div class="d-block mb-3 mb-lg-5">
           <h5>仕事内容</h5>
-          <div class="ps-3">
+          <div class="ps-3 pre-line">
             {{ job.content_work}}
           </div>
         </div>
         <div class="d-block">
           <table class="table table-bordered">
             <tbody>
-            <tr>
-              <td>採用人数</td>
-              <td>{{ job.number_recruitments}}人</td>
-            </tr>
-            <tr>
-              <td>応募条件</td>
-              <td>{{ job.conditions_apply}}</td>
-            </tr>
-            <tr>
-              <td>勤務地</td>
-              <td>{{ job.address_work}}</td>
-            </tr>
-            <tr>
-              <td>勤務時間</td>
-              <td>{{ job.time_work}}</td>
-            </tr>
-            <tr>
-              <td>休日</td>
-              <td>{{ job.holidays}}</td>
-            </tr>
-            <tr>
-              <td>休憩時間 </td>
-              <td>{{ job.break_time}}</td>
-            </tr>
-            <tr>
-              <td>福利厚生</td>
-              <td>{{ job.welfare_regime}}</td>
-            </tr>
-            <tr>
-              <td>ベトナム人在籍状況</td>
-              <td>{{ job.has_vietnamese_staff ? 'はい': 'いいえ'}}</td>
-            </tr>
-            <tr>
-              <td>残業見込み、休日出勤見込み</td>
-              <td>{{ job.overtime}}</td>
-            </tr>
+              <tr>
+                <td>採用人数</td>
+                <td class="pre-line">{{ job.number_recruitments}}人</td>
+              </tr>
+              <tr>
+                <td>応募条件</td>
+                <td class="pre-line">{{ job.conditions_apply}}</td>
+              </tr>
+              <tr>
+                <td>勤務地</td>
+                <td class="pre-line">{{ job.address_work}}</td>
+              </tr>
+              <tr>
+                <td>勤務時間</td>
+                <td class="pre-line">{{ job.time_work}}</td>
+              </tr>
+              <tr>
+                <td>休日</td>
+                <td class="pre-line">{{ job.holidays}}</td>
+              </tr>
+              <tr>
+                <td>休憩時間 </td>
+                <td class="pre-line">{{ job.break_time}}</td>
+              </tr>
+              <tr>
+                <td>福利厚生</td>
+                <td class="pre-line">{{ job.welfare_regime}}</td>
+              </tr>
+              <tr>
+                <td>ベトナム人在籍状況</td>
+                <td class="pre-line">{{ job.has_vietnamese_staff ? 'はい': 'いいえ'}}</td>
+              </tr>
+              <tr>
+                <td>残業見込み、休日出勤見込み</td>
+                <td class="pre-line">{{ job.overtime}}</td>
+              </tr>
             </tbody>
           </table>
         </div>
         <div class="d-flex justify-content-end footer">
-          <button id="btn_back" class="btn" @click="$router.push('/jobs/create')">戻る</button>
+          <button id="btn_back" class="btn" @click="backToUpdateJobPage">戻る</button>
           <button id="btn_completion" class="btn" @click="completeUpdateJob">完了</button>
           <button
             ref="showCompleteUpdateJobModal"
@@ -118,6 +129,10 @@
 </template>
 
 <script>
+  import {
+    mapActions,
+    mapGetters
+  } from 'vuex'
   import StatusStayInfoModal from "~/components/StatusStayInfoModal";
   import CompleteUpdateJobModal from "~/components/CompleteUpdateJobModal";
   import theCareers from '~/constants/careers'
@@ -132,6 +147,8 @@
 
     data() {
       return {
+        url_file: process.env.URL_FILE,
+        oldImageJob: '',
         careerList: theCareers,
         typePlanList:[
           {
@@ -242,6 +259,10 @@
       }
     },
 
+    head() {
+      return { title: 'ジョブプレビュー'}
+    },
+
     computed: {
       previewImageJobUrl() {
         return this.job.image_job ? URL.createObjectURL(this.job.image_job) : null
@@ -257,13 +278,25 @@
     },
 
     created() {
-      this.job = Object.assign({}, this.$store.getters['job/getJob'])
+      this.job = Object.assign({}, this.gettersGetJobUpdate())
+      this.oldImageJob = this.gettersGetOldImageJobUpdate()
       if (Object.keys(this.job).length === 0 && this.job.constructor === Object) {
-        this.$router.push('/jobs/create')
+        this.$router.push(`/jobs/update/${this.$route.params.id}`)
       }
     },
 
     methods: {
+      ...mapActions({
+        'dispatchSetJobUpdate': 'job/setJobUpdate',
+        'dispatchSetOldImageJobUpdate': 'job/setOldImageJobUpdate',
+        'dispatchSetPrevRouteUpdate': 'job/setPrevRouteUpdate',
+      }),
+
+      ...mapGetters({
+        'gettersGetJobUpdate': 'job/getJobUpdate',
+        'gettersGetOldImageJobUpdate': 'job/getOldImageJobUpdate',
+      }),
+
       isJobStored() {
         return !(Object.keys(this.job).length === 0 && this.job.constructor === Object)
       },
@@ -289,13 +322,20 @@
         return this.isJobStored() ? this.statusStayList.filter(this.filterPreviewStatusStay) : []
       },
 
+      backToUpdateJobPage() {
+        this.dispatchSetPrevRouteUpdate(this.$route.path)
+        this.$router.push(`/jobs/update/${this.$route.params.id}`)
+      },
+
       async completeUpdateJob() {
         if (this.job.salary_min === '') {
           this.job.salary_min = 0
         }
         this.job.has_vietnamese_staff = this.job.has_vietnamese_staff ? 1 : 0
         const formData = new FormData()
-        formData.append('image_job', this.job.image_job)
+        if (this.job.image_job) {
+          formData.append('image_job', this.job.image_job)
+        }
         formData.append('title', this.job.title)
         formData.append('date_start', this.job.date_start)
         formData.append('type_plan', this.job.type_plan)
@@ -318,9 +358,9 @@
         return await this.$repositories.jobs.updateJob(this.$route.params.id, formData).then(res => {
           if (res.status === 201) {
             this.$refs.showCompleteUpdateJobModal.click()
-            this.$store.dispatch('job/setJob', {})
-          }
-          else {
+            this.dispatchSetJobUpdate({})
+            this.dispatchSetOldImageJobUpdate('')
+          } else if (res.response) {
             this.$toast.error(res.response.data.message)
           }
         })

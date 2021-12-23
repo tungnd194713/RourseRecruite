@@ -37,10 +37,10 @@
                 </div>
                 <div class="d-block">
                   <span
-                    v-for="item in previewStatusStay()"
-                    :key="item.value"
+                    v-for="(item, index) in job.status_stay"
+                    :key="index"
                     class="badge"
-                    >{{ item.text }}</span
+                    >{{ $t(statusStays[item]) }}</span
                   >
                   <img
                     width="22"
@@ -64,11 +64,11 @@
                   <span
                     ><b
                       >{{
-                        job.salary_min
-                          ? Intl.NumberFormat().format(job.salary_min)
-                          : 0
+                        job.salary_min > 0
+                          ? Intl.NumberFormat().format(job.salary_min) + ' - '
+                          : 'Up to'
                       }}
-                      - {{ Intl.NumberFormat().format(job.salary_max) }}</b
+                      {{ Intl.NumberFormat().format(job.salary_max) }}</b
                     ></span
                   >
                 </div>
@@ -103,7 +103,7 @@
           <div class="py-3">
             <div class="d-block mb-5">
               <h5>仕事内容</h5>
-              <div class="ps-3">
+              <div class="ps-3 pre-line">
                 {{ job.content_work }}
               </div>
             </div>
@@ -112,39 +112,39 @@
                 <tbody>
                   <tr>
                     <td>採用人数</td>
-                    <td>{{ job.number_recruitments }}人</td>
+                    <td class="pre-line">{{ job.number_recruitments}}人</td>
                   </tr>
                   <tr>
                     <td>応募条件</td>
-                    <td>{{ job.conditions_apply }}</td>
+                    <td class="pre-line">{{ job.conditions_apply}}</td>
                   </tr>
                   <tr>
                     <td>勤務地</td>
-                    <td>{{ job.address_work }}</td>
+                    <td class="pre-line">{{ job.address_work}}</td>
                   </tr>
                   <tr>
                     <td>勤務時間</td>
-                    <td>{{ job.time_work }}</td>
+                    <td class="pre-line">{{ job.time_work}}</td>
                   </tr>
                   <tr>
                     <td>休日</td>
-                    <td>{{ job.holidays }}</td>
+                    <td class="pre-line">{{ job.holidays}}</td>
                   </tr>
                   <tr>
-                    <td>休憩時間</td>
-                    <td>{{ job.break_time }}</td>
+                    <td>休憩時間 </td>
+                    <td class="pre-line">{{ job.break_time}}</td>
                   </tr>
                   <tr>
                     <td>福利厚生</td>
-                    <td>{{ job.welfare_regime }}</td>
+                    <td class="pre-line">{{ job.welfare_regime}}</td>
                   </tr>
                   <tr>
                     <td>ベトナム人在籍状況</td>
-                    <td>{{ job.has_vietnamese_staff ? 'はい' : 'いいえ' }}</td>
+                    <td class="pre-line">{{ job.has_vietnamese_staff ? 'はい': 'いいえ'}}</td>
                   </tr>
                   <tr>
                     <td>残業見込み、休日出勤見込み</td>
-                    <td>{{ job.overtime }}</td>
+                    <td class="pre-line">{{ job.overtime === 'null' ? '' : job.overtime }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -462,6 +462,7 @@
   import StatusStayInfoModal from "~/components/StatusStayInfoModal"
   import defaultCareers from '~/constants/careers'
   import defaultInCvUser from "~/constants/defaultInCvUser"
+  import theStatusStay from "~/constants/statusStay"
 
   export default {
     name: "JobDetail",
@@ -477,6 +478,7 @@
       return {
         loadingListCv: '',
         loadingJobDetail: '',
+        statusStays: theStatusStay,
         typePlanList:[
           {
             text: 'A',
@@ -749,7 +751,7 @@
       },
 
       previewDateEnd() {
-        return this.$moment(this.job.date_start).add(this.job.display_month, 'M').format('YYYY/MM/DD')
+        return this.$moment(this.job.date_end).format('YYYY/MM/DD')
       },
 
       dataUpdateStatusNoteErrors () {

@@ -191,7 +191,11 @@
                           >
                             <div class="over-select"></div>
                             <select class="form-select rounded-end">
-                              <option value="">{{ previewStatusStay()}}</option>
+                              <option value="">
+                                <span v-for="(item, index) in job.status_stay" :key="index">
+                                  {{ $t(statusStayTextList[item]) }} -
+                                </span>
+                              </option>
                             </select>
                           </div>
                         </div>
@@ -684,9 +688,14 @@
 
 <script>
 import 'bootstrap/dist/css/bootstrap.css'
+import {
+  mapActions,
+  mapGetters
+} from 'vuex'
 import { validationMixin } from 'vuelidate'
 import {required, maxLength, requiredIf, helpers, minLength} from 'vuelidate/lib/validators'
 import defaultProvinces from '~/constants/provinces'
+import theStatusStay from "~/constants/statusStay"
 
 const imageRule = helpers.regex('image', /\.(jpeg|png|jpg|gif)$/)
 const maximumImageSize = 2000000
@@ -698,12 +707,14 @@ export default {
 
     data() {
         return {
+            previewUpdateRoute: `/jobs/update/preview/${this.$route.params.id}`,
             url_file: process.env.URL_FILE,
             oldImageJob: null,
             showStatusStayList: false,
             openDateEndPicker: false,
             previewImageJobUrl: null,
             displaySalary: 'salary_max',
+            statusStayTextList: theStatusStay,
             typePlanList:[
               {
                 text: 'プランA',
@@ -908,7 +919,7 @@ export default {
     },
 
     head() {
-        return { title: 'Edit job' }
+        return { title: '仕事の訂正' }
     },
     //
     // watch: {
@@ -924,10 +935,35 @@ export default {
     // },
 
     created() {
-        this.showJob();
+        if (this.previewUpdateRoute === this.gettersGetPrevRouteUpdate()) {
+          this.oldImageJob = this.gettersGetOldImageJobUpdate()
+          let jobUpdateStored = {}
+          jobUpdateStored = Object.assign({}, this.gettersGetJobUpdate())
+          if (Object.keys(jobUpdateStored).length !== 0) {
+            this.job = Object.assign({}, jobUpdateStored)
+            if (this.job.image_job) {
+              this.previewImageJobUrl = URL.createObjectURL(this.job.image_job)
+            }
+          }
+          this.dispatchSetPrevRouteUpdate('')
+        } else {
+          this.showJob();
+        }
     },
 
     methods: {
+      ...mapActions({
+        'dispatchSetJobUpdate': 'job/setJobUpdate',
+        'dispatchSetOldImageJobUpdate': 'job/setOldImageJobUpdate',
+        'dispatchSetPrevRouteUpdate': 'job/setPrevRouteUpdate',
+      }),
+
+      ...mapGetters({
+        'gettersGetJobUpdate': 'job/getJobUpdate',
+        'gettersGetOldImageJobUpdate': 'job/getOldImageJobUpdate',
+        'gettersGetPrevRouteUpdate': 'job/getPrevRouteUpdate',
+      }),
+
       onInputOrBlurSalaryMin() {
         if (this.job.salary_max) {
           this.$v.job.salary_max.$reset()
@@ -981,9 +1017,9 @@ export default {
                 this.job.image_job = null
                 this.previewImageJobUrl = null
                 this.oldImageJob = response.data.job.image_job
-
-                this.job.salary_max = parseFloat(this.job.salary_max).toFixed(3);
-                this.job.salary_min = parseFloat(this.job.salary_min).toFixed(3);
+                this.job.salary_min = parseFloat(response.data.job.salary_min.toString())
+                this.job.salary_max = parseFloat(response.data.job.salary_max.toString())
+                if (this.job.overtime === 'null') this.job.overtime = ''
 
                 this.displaySalary = this.job.salary_max ? 'salary_range' : ''
               });
@@ -1043,7 +1079,8 @@ export default {
       previewJob() {
         this.$v.job.$touch()
         if (!this.$v.job.$invalid) {
-          this.$store.dispatch('job/setJob', this.job)
+          this.dispatchSetJobUpdate(this.job)
+          this.dispatchSetOldImageJobUpdate(this.oldImageJob)
           this.$router.push('/jobs/update/preview/' + this.$route.params.id)
         }
       },
