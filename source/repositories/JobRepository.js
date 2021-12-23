@@ -23,5 +23,9 @@ export default ($axios) => ({
 
   updateJob(id, data) {
     return $axios.post(`${resource}/update/${id}`, data)
+  },
+
+  checkCreateJob() {
+    return $axios.get(`${resource}/package-company`)
   }
 })

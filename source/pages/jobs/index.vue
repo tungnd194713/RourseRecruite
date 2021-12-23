@@ -10,7 +10,7 @@
             id="btn_create_job"
             type="button"
             class="btn rounded-pill btn-add-job"
-            @click="$router.push('/jobs/create')"
+            @click="checkCreateJob"
           >
             <img class="" src="../../assets/images/icon_plus.svg" />
             新規求人登録
@@ -175,8 +175,9 @@
           @customPage="pageChangeHandle"
         >
           <p>
-            * 太字は未読、細字は既読である。<br/>
-            * 白い背景は有効期限切れになった求人、浅い青色の背景は有効期間中の求人である。<br/>
+            * 太字は未読、細字は既読である。<br />
+            *
+            白い背景は有効期限切れになった求人、浅い青色の背景は有効期間中の求人である。<br />
             * 3日以上未読の履歴書があったら、リマインダーが表示されます。
           </p>
         </Pagination>
@@ -334,6 +335,22 @@ export default {
     mouseLeave() {
       this.isHover = !this.isHover
     },
+
+    async checkCreateJob() {
+      try {
+        await this.$repositories.jobs.checkCreateJob().then((res) => {
+          if (res.status === 200) {
+            this.$router.push('/jobs/create')
+          } else {
+            this.$toast.error('求人プランを設定するために、管理者までご連絡ください')
+          }
+        })
+      } catch (e) {
+        this.message = ''
+        this.error = e.response.data.message
+      }
+    },
+
     async getListJob(currentPage) {
       const condition = { ...this.condition, currentPage }
       this.spinner = true
