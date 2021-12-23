@@ -10,11 +10,24 @@
             <span class="input-group-text input-group-text-pre"><img src="../assets/images/icon_key.svg" alt=""></span>
             <input id="password"
                    v-model="password"
-                   type="password"
+                   :type="isHidePassword ? 'password' : 'text'"
                    class="form-control form-control-lg"
                    maxlength="32"
             >
-            <span class="input-group-text input-group-text-next"><img src="../assets/images/icon_eye.svg" alt=""></span>
+            <span class="input-group-text input-group-text-next" @click="showPassword">
+              <img
+                v-if="isHidePassword"
+                class="show-hide-password-icon"
+                src="../assets/images/icon_eye.svg"
+                alt=""
+              >
+              <img
+                v-else
+                class="show-hide-password-icon"
+                src="../assets/images/icon_eyes_show.svg"
+                alt=""
+              >
+            </span>
             <div class="invalid-feedback"></div>
           </div>
           <div v-if="$v.password.$error">
@@ -28,11 +41,24 @@
             <span class="input-group-text input-group-text-pre"><img src="../assets/images/icon_key.svg" alt=""></span>
             <input id="passwordConfirm"
                    v-model.trim="$v.password_confirm.$model"
-                   type="password"
+                   :type="isHideConfirmPassword ? 'password' : 'text'"
                    class="form-control form-control-lg"
                    maxlength="32"
             >
-            <span class="input-group-text input-group-text-next"><img src="../assets/images/icon_eye.svg" alt=""></span>
+            <span class="input-group-text input-group-text-next" @click="showConfirmPassword">
+              <img
+                v-if="isHideConfirmPassword"
+                class="show-hide-password-icon"
+                src="../assets/images/icon_eye.svg"
+                alt=""
+              >
+              <img
+                v-else
+                class="show-hide-password-icon"
+                src="../assets/images/icon_eyes_show.svg"
+                alt=""
+              >
+            </span>
             <div class="invalid-feedback"></div>
           </div>
           <div v-if="$v.password_confirm.$error">
@@ -59,6 +85,9 @@
         token: this.$route.query.token ?? '',
         password: '',
         password_confirm: '',
+
+        isHidePassword: true,
+        isHideConfirmPassword: true,
       }
     },
 
@@ -94,6 +123,15 @@
           }
         }
       },
+
+      showPassword() {
+        this.isHidePassword = !this.isHidePassword
+      },
+
+      showConfirmPassword() {
+        this.isHideConfirmPassword = !this.isHideConfirmPassword
+      },
+
     }
   }
 </script>

@@ -56,13 +56,12 @@ h2.title {
   background-color: darkgray;
 }
 
-.img-group {
-  margin-bottom: 100px;
+.swiper-button-prev {
+  color: darkgray
 }
 
-.img-group img {
-  border-radius: 20px;
-  height: 100%;
+.swiper-button-next {
+  color: darkgray
 }
 
 @media (max-width: 1199.98px) {
@@ -78,6 +77,12 @@ h2.title {
   .basic .logo img {
     transform: translate(0, 0);
   }
+}
+
+.swiper-slide img {
+  width: 100%;
+  height: 350px;
+  border-radius: 20px;
 }
 
 @media only screen and (max-width: 991.98px) {

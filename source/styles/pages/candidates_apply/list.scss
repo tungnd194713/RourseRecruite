@@ -392,25 +392,6 @@ tr.active td {
   }
 }
 
-@media only screen and (max-width: 600px) {
-  .box-search {
-    border-radius: 1rem !important;
-  }
-
-  .box-table table {
-    font-size: 12px;
-  }
-
-  .box-pagination p {
-    font-size: 10px;
-  }
-
-  .td-warning {
-    margin-top: -35px !important;
-    margin-left: -8px !important;
-  }
-}
-
 textarea {
   resize: none;
 }
