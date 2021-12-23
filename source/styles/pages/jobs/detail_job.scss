@@ -219,3 +219,8 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.pre-line {
+  white-space: pre-line;
+  margin-top: -20px;
+}

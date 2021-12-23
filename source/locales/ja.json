@@ -131,6 +131,17 @@
       "2": "持病あり"
     }
   },
+  "status_stay": {
+    "status_0": "在留資格",
+    "status_1": "特定技能",
+    "status_2": "技能実習",
+    "status_3": "特定活動",
+    "status_4": "留学生",
+    "status_5": "技術・人文知識・国際業務",
+    "status_6": "定住",
+    "status_7": "永住",
+    "status_8": "家族滞在"
+  },
   "visaTypes": {
     "visa_type_1": "外交査証",
     "visa_type_2": "公用査証",
