@@ -3,7 +3,9 @@
     <div class="container">
       <div class="row">
         <div class="col-12 col-lg-3 mb-3 text-center text-lg-start ">
+          <a href="https://findjob-frontend.kiaidev.com/ja" target="_blank">
           <img src="../assets/images/icon_logo.svg" alt="" />
+          </a>
         </div>
         <div class="col-6 col-lg-3 mb-2">
           <h5 class="fw-bold text-white">サイト名について</h5>

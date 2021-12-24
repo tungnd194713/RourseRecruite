@@ -6,5 +6,8 @@
 <script>
 export default {
 
+    created() {
+        this.$router.push('/jobs')
+    },
 }
 </script>
