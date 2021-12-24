@@ -101,7 +101,7 @@
         </div>
         <div class="d-flex justify-content-end footer">
           <button id="btn_back" class="btn" @click="backToCreateJobPage">戻る</button>
-          <button id="btn_completion" class="btn" @click="completeCreateJob">完了</button>
+          <button id="btn_completion" class="btn" :disabled="isDisabledSaveBtn" @click="completeCreateJob">完了</button>
           <button
             ref="showCompleteCreateJobModal"
             data-bs-toggle="modal"
@@ -132,6 +132,7 @@
 
     data() {
       return {
+        isDisabledSaveBtn: false,
         careerList: theCareers,
         typePlanList:[
           {
@@ -304,7 +305,9 @@
         }
         this.job.has_vietnamese_staff = this.job.has_vietnamese_staff ? 1 : 0
         const formData = new FormData()
-        formData.append('image_job', this.job.image_job)
+        if (this.job.image_job) {
+          formData.append('image_job', this.job.image_job)
+        }
         formData.append('title', this.job.title)
         formData.append('date_start', this.job.date_start)
         formData.append('type_plan', this.job.type_plan)
@@ -324,6 +327,7 @@
         formData.append('welfare_regime', this.job.welfare_regime)
         formData.append('has_vietnamese_staff', this.job.has_vietnamese_staff)
         formData.append('overtime', this.job.overtime)
+        this.isDisabledSaveBtn = true
         return await this.$repositories.jobs.createJob(formData, {
           header: {
             'Content-Type': 'multipart/form-data',
@@ -337,6 +341,7 @@
           if (res.response && res.response.status === 406) {
             this.$toast.error(res.response.data.message)
           }
+          this.isDisabledSaveBtn = false
         })
       }
     }

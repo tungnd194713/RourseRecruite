@@ -3,7 +3,10 @@
        aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl position-relative">
       <div class="modal-content">
-        <div class="container-btn-language">
+        <div
+          v-if="cvType === defaultCvInSite"
+          class="container-btn-language"
+        >
           <button
             type="button"
             class="btn-language btn-language-first"
@@ -24,7 +27,10 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
           <img src="../../assets/images/icon_modal_close.svg" alt="">
         </button>
-        <div class="modal-body">
+        <div
+          v-if="cvType === defaultCvInSite"
+          class="modal-body"
+        >
           <div class="content">
             <div class="row">
               <div class="col-12 list-user">
@@ -252,12 +258,12 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr v-for="(language, index) in candidate.candidate_foreign_languages" :key="index">
-                    <td>{{ language.language_name}}</td>
-                    <td>{{ showIconSkill(JSON.parse(language.skill).listen)}}</td>
-                    <td>{{ showIconSkill(JSON.parse(language.skill).speak)}}</td>
-                    <td>{{ showIconSkill(JSON.parse(language.skill).read)}}</td>
-                    <td>{{ showIconSkill(JSON.parse(language.skill).write)}}</td>
+                  <tr v-for="(foreignLanguage, index) in candidate.candidate_foreign_languages" :key="index">
+                    <td>{{ foreignLanguage.language_name}}</td>
+                    <td>{{ showIconSkill(JSON.parse(foreignLanguage.skill).listen)}}</td>
+                    <td>{{ showIconSkill(JSON.parse(foreignLanguage.skill).speak)}}</td>
+                    <td>{{ showIconSkill(JSON.parse(foreignLanguage.skill).read)}}</td>
+                    <td>{{ showIconSkill(JSON.parse(foreignLanguage.skill).write)}}</td>
                   </tr>
                   <tr>
                     <td></td>
@@ -361,10 +367,38 @@
           </div>
 
           <div class="d-flex justify-content-end footer">
-            <img src="../../assets/images/icon_pdf_download.svg" alt="" @click="exportPdf()">
+            <img
+              src="../../assets/images/icon_pdf_download.svg"
+              alt=""
+              @click="exportPdf()"
+              class="cursor-pointer"
+            >
             <button class="btn btn-outline-secondary ms-5" data-bs-dismiss="modal" aria-label="Close">クローズ</button>
           </div>
         </div>
+
+        <div
+          v-if="cvType === defaultCvUpload"
+          class="modal-body"
+        >
+          <div class="content">
+            <object
+              type="application/pdf"
+              :data="url_file + candidate.file_cv_upload"
+              width="100%"
+              height="500px"
+              style="height: 1000px"
+            >
+              No Support
+            </object>
+          </div>
+
+          <div class="d-flex justify-content-end footer">
+<!--            <img src="../../assets/images/icon_pdf_download.svg" alt="" @click="exportPdf()">-->
+            <button class="btn btn-outline-secondary ms-5" data-bs-dismiss="modal" aria-label="Close">クローズ</button>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -374,16 +408,47 @@
   import defaultInCvUser from "~/constants/defaultInCvUser"
   import visaTypes from "~/constants/visaTypes"
 
+  const CV_IN_SITE = 1
+  const CV_UPLOAD = 2
+
   export default {
     name: "CvUserModal",
 
-    props: [
-      'candidate',
-      'language',
-      'educationsOfCandidate',
-      'jobsOfCandidate',
-      'idRow'
-    ],
+    // props: [
+    //   'candidate',
+    //   'language',
+    //   'educationsOfCandidate',
+    //   'jobsOfCandidate',
+    //   'idRow',
+    //   'cvType'
+    // ],
+
+    props: {
+      candidate: {
+        type: Object,
+        required: true
+      },
+      language: {
+        type: String,
+        required: true
+      },
+      educationsOfCandidate: {
+        type: Array,
+        required: true
+      },
+      jobsOfCandidate: {
+        type: Array,
+        required: true
+      },
+      idRow: {
+        type: Number,
+        required: true
+      },
+      cvType: {
+        type: Number,
+        required: true
+      }
+    },
 
     data() {
       return {
@@ -391,7 +456,9 @@
         lang_ja: defaultInCvUser.lang_ja,
         lang_vi: defaultInCvUser.lang_vi,
         defaultLangAndText: defaultInCvUser,
-        visaTypesList: visaTypes
+        visaTypesList: visaTypes,
+        defaultCvInSite: CV_IN_SITE,
+        defaultCvUpload: CV_UPLOAD
       }
     },
 

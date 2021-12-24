@@ -112,7 +112,7 @@
         </div>
         <div class="d-flex justify-content-end footer">
           <button id="btn_back" class="btn" @click="backToUpdateJobPage">戻る</button>
-          <button id="btn_completion" class="btn" @click="completeUpdateJob">完了</button>
+          <button id="btn_completion" class="btn" :disabled="isDisabledSaveBtn" @click="completeUpdateJob">完了</button>
           <button
             ref="showCompleteUpdateJobModal"
             data-bs-toggle="modal"
@@ -147,6 +147,7 @@
 
     data() {
       return {
+        isDisabledSaveBtn: false,
         url_file: process.env.URL_FILE,
         oldImageJob: '',
         careerList: theCareers,
@@ -355,6 +356,7 @@
         formData.append('welfare_regime', this.job.welfare_regime)
         formData.append('has_vietnamese_staff', this.job.has_vietnamese_staff)
         formData.append('overtime', this.job.overtime)
+        this.isDisabledSaveBtn = true
         return await this.$repositories.jobs.updateJob(this.$route.params.id, formData).then(res => {
           if (res.status === 201) {
             this.$refs.showCompleteUpdateJobModal.click()
@@ -363,6 +365,7 @@
           } else if (res.response) {
             this.$toast.error(res.response.data.message)
           }
+          this.isDisabledSaveBtn = false
         })
       }
     }
