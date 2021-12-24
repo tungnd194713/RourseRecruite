@@ -4,7 +4,9 @@
       <div class="container">
         <div class="row flex-nowrap justify-content-between align-items-center">
           <div class="col-3 pt-1">
+            <a href="https://findjob-frontend.kiaidev.com/ja" target="_blank">
             <img src="../assets/images/icon_logo.svg" alt="">
+            </a>
           </div>
           <div class="col-3">
           </div>

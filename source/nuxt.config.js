@@ -117,9 +117,9 @@ export default {
       watchLoggedIn: true,
       redirect: {
         login: '/login',
-        logout: '/',
+        logout: '/login',
         callback: '/login',
-        home: '/'
+        home: '/jobs'
       },
       token: {
         prefix: '_token.',

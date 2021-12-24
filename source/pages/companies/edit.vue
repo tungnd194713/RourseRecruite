@@ -522,7 +522,7 @@
                 v-if="data.video.length == 0"
                 class="form-group mb-2 mb-lg-3"
               >
-                <label for="youtube">会社の公式サイトのリンク</label>
+                <label for="youtube">Youtube動画のURL</label>
                 <div
                   class="input-group input-group-icon"
                   :class="{
