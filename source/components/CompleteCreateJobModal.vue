@@ -1,6 +1,7 @@
 <template>
   <!-- Modal -->
-  <div class="modal fade" id="completeCreateJobModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="completeCreateJobModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+       aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content box-modal">
         <div class="modal-header border-0">

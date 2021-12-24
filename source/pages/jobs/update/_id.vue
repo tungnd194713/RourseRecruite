@@ -424,6 +424,12 @@
                                 これは必須項目なので、必ず入力してください
                             </div>
                             <div
+                                v-if="!$v.job.content_work.minLength"
+                                class="error-text"
+                            >
+                                50文字以上で入力してください
+                            </div>
+                            <div
                                 v-if="!$v.job.content_work.maxLength"
                                 class="error-text"
                             >

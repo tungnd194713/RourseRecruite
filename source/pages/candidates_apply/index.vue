@@ -236,18 +236,20 @@
             <h5 id="popUpIdLabel" class="modal-title">在留カード</h5>
           </div>
           <div class="modal-body d-flex justify-content-around">
-            <a href="#"
-              ><img
-                class="link-modal"
-                :src="url_file + image.residence_card_front"
-                alt=""
-            /></a>
-            <a href="#"
-              ><img
-                class="link-modal"
-                :src="url_file + image.residence_card_backside"
-                alt=""
-            /></a>
+            <a
+              class="residence-card-image"
+              :style="{
+                backgroundImage: `url(${url_file}${image.residence_card_front})`
+              }"
+            >
+            </a>
+            <a
+              class="residence-card-image"
+              :style="{
+                backgroundImage: `url(${url_file}${image.residence_card_backside})`
+              }"
+            >
+            </a>
           </div>
         </div>
       </div>
@@ -339,6 +341,7 @@
       :educations-of-candidate="educationsOfCandidate"
       :jobs-of-candidate="jobsOfCandidate"
       :id-row="idRow"
+      :cv-type="cvType"
       @changeLanguageEvent="changeLanguage($event)"
     />
   </main>
@@ -367,6 +370,7 @@ export default {
 
   data() {
     return {
+      cvType: 1,
       url_file: process.env.URL_FILE,
       items: [],
       fields: [
@@ -671,6 +675,7 @@ export default {
       this.idRow = candidateApply.id
       this.defaultCandidate = Object.assign({}, candidateApply.candidate)
       this.candidate = Object.assign({}, this.defaultCandidate)
+      this.cvType = candidateApply.cv_type
       this.initJobsAndEducationsOfCandidate()
       if (candidateApply.read === 0) {
         await this.$repositories.candidatesApply.updateStatus(this.idRow, { read: 1}).then(res => {
