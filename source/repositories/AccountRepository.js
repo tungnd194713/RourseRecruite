@@ -11,5 +11,9 @@ export default ($axios) => ({
 
   registerAccount(payload) {
     return $axios.post(`${resource}/register`, payload)
+  },
+
+  sendVerification(payload) {
+    return $axios.post(`${resource}/email/verify/resend`, payload)
   }
 })
