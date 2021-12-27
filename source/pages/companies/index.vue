@@ -64,7 +64,7 @@
                   <span class="me-2"
                     ><img src="../../assets/images/icon_fb_outline.svg"
                   /></span>
-                  <a :href="link_facebook">FacebookのMessengerのURL</a>
+                  <a :href="link_facebook">会社のFacebookファンページ</a>
                 </div>
               </div>
             </div>

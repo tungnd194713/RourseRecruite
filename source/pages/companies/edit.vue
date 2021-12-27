@@ -284,7 +284,7 @@
             <div class="my-3 my-lg-4 line"></div>
             <div class="container">
               <div class="form-group mb-2 mb-lg-3">
-                <label for="link_facebook">FacebookのMessengerのリンク</label>
+                <label for="link_facebook">FacebookのLinkのリンク</label>
                 <div
                   class="input-group input-group-icon"
                   :class="{
@@ -305,8 +305,39 @@
                 </div>
                 <div v-if="$v.data.link_facebook.$error">
                   <div v-if="!$v.data.link_facebook.facebook" class="error">
-                    入力したリンクはFacebookのMessengerのリンクではありません
+                    FacebookのメッセージIDを取得する説明のための テキストリンク
                   </div>
+                </div>
+              </div>
+              <div class="form-group mb-2 mb-lg-3">
+                <label for="page_id">FacebookファンページのメッセージID</label>
+                <div
+                        class="input-group input-group-icon"
+                        :class="{
+                          invalid:
+                            $v.data.link_facebook.$invalid &&
+                            $v.data.link_facebook.$dirty,
+                        }"
+                >
+                  <span class="input-group-text input-group-text-pre">
+                    <img src="../../assets/images/ic_mess.svg" alt="" />
+                  </span>
+                  <input
+                          id="page_id"
+                          v-model.trim="$v.data.page_id.$model"
+                          type="text"
+                          class="form-control"
+                  />
+                </div>
+                <div v-if="$v.data.page_id.$error">
+                  <div v-if="!$v.data.page_id.maxLength" class="error">
+                    100文字以上入力する場合
+                  </div>
+                </div>
+                <div class="m-1">
+                  <NuxtLink class="light text-decoration-none" to="/" target="_blank">
+                    FacebookのメッセージIDを取得する説明
+                  </NuxtLink>
                 </div>
               </div>
               <div class="form-group mb-2 mb-lg-3">
@@ -739,6 +770,7 @@ export default {
         number_members: '',
         link_website: '',
         link_facebook: '',
+        page_id: '',
         description: '',
         video_link: '',
         phone: '',
@@ -813,6 +845,9 @@ export default {
       link_facebook: {
         facebook,
       },
+      page_id:{
+          maxLength: maxLength(100),
+      },
       link_website: {
         required,
         url,
@@ -885,6 +920,7 @@ export default {
       this.data.number_members = data.number_members
       this.data.link_website = data.link_website
       this.data.link_facebook = data.link_facebook
+      this.data.page_id = data.page_id
       this.data.description = data.description
       this.data.address = data.address
       this.data.phone = data.phone
@@ -987,6 +1023,7 @@ export default {
         dataCompany.append('number_members', this.data.number_members)
         dataCompany.append('link_website', this.data.link_website)
         dataCompany.append('link_facebook', this.data.link_facebook ? this.data.link_facebook : '')
+        dataCompany.append('page_id', this.data.page_id ? this.data.page_id : '')
         dataCompany.append('description', this.data.description ? this.data.description : '')
         dataCompany.append('video_link', this.data.video_link)
         dataCompany.append('phone', this.data.phone)

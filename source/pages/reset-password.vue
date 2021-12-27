@@ -1,7 +1,9 @@
 <template>
   <div class="text-center form-body">
     <form class="p-2 p-lg-0 form-login" @submit.prevent="resetPassword">
-      <img class="mb-3 mb-lg-4" src="../assets/images/icon_logo.svg" alt="" height="59">
+      <a href="https://findjob-frontend.kiaidev.com/ja" target="_blank">
+        <img class="mb-3 mb-lg-4" src="../assets/images/icon_logo.svg" alt="" height="59">
+      </a>
       <div class="bg-white box-form-login">
         <h1 class="mb-3 mb-lg-4 fw-bold">パスワード変更</h1>
         <div class="form-group mt-5">
