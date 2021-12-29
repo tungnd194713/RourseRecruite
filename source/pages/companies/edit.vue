@@ -243,9 +243,6 @@
                   <div v-if="!$v.data.manager_name.required" class="error">
                     これは必須項目なので、必ず入力してください
                   </div>
-                  <div v-if="!$v.data.manager_name.alphabet" class="error">
-                    数字・特殊文字を使用する場合
-                  </div>
                   <div v-if="!$v.data.manager_name.maxLength" class="error">
                     50文字以下で入力してください
                   </div>
@@ -749,7 +746,6 @@ const phone = helpers.regex(
 const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/)
 const imageRule = helpers.regex('image', /\.(gif|jpe?g|png|PNG|GIF|JPE?G)$/)
 const videoRule = helpers.regex('video', /\.(mp4|wmv|avi|mov|flv)$/)
-const alphabet = helpers.regex('alphabet', /^[a-zA-Z ]*$/)
 const imageSize = (value) => value <= 2000000
 const videoSize = (value) => value <= 100000000
 
@@ -839,7 +835,6 @@ export default {
       },
       manager_name: {
         required,
-        alphabet,
         maxLength: maxLength(50),
       },
       link_facebook: {
