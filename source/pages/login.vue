@@ -125,11 +125,22 @@
           </p>
           <button type="submit" class="btn fw-bold login-btn">ログイン</button>
 
-          <p class="mt-1 mt-lg-2 mb-0 mb-lg-1">
-            <NuxtLink to="/register" class="text-decoration-none link-forgot"
-              >まだ会員登録がお済みでない方</NuxtLink
-            >
-          </p>
+          <div class="justify-content-center mt-1 mt-lg-2 mb-0 mb-lg-1 p-0 link">
+            <ul class="d-flex list-link">
+              <li>
+                <NuxtLink to="/verify" class="text-decoration-none link-forgot"
+                >ログインできませんか？</NuxtLink
+                >
+              </li>
+              <div class="dot-link">•</div>
+              <li>
+                <NuxtLink to="/register" class="text-decoration-none link-forgot"
+                >まだ会員登録がお済みでない方</NuxtLink
+                >
+              </li>
+            </ul>
+
+          </div>
         </div>
       </form>
     </main>

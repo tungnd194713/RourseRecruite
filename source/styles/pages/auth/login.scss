@@ -152,6 +152,10 @@ input:focus {
   border-radius: 13%/50%;;
 }
 
+.link-forgot {
+  color: #003156;
+}
+
 .link-forgot:hover {
   color: #0071BC!important;
 }
@@ -208,4 +212,13 @@ input:focus {
 
 .show-hide-password-icon {
   height: 20px;
+}
+
+.list-link {
+  list-style: none;
+  justify-content: center;
+}
+
+.dot-link {
+  margin-inline: 9px;
 }
