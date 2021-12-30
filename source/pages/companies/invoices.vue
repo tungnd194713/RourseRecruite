@@ -38,7 +38,7 @@
                 ¥{{ item.total ? Math.ceil(item.total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null }}
               </td>
               <td class="align-middle">
-                <div v-if="item.status === 2" class="btn-payment">
+                <div v-if="item.status === 2 && item.total >= 50 && item.total <= 9999999" class="btn-payment">
                   <img
                     class="text-center btn btn-inside"
                     src="../../assets/images/icon_money_jp.svg"
