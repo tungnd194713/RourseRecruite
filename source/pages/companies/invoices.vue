@@ -38,7 +38,7 @@
                 ¥{{ item.total ? Math.ceil(item.total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null }}
               </td>
               <td class="align-middle">
-                <div v-if="item.status === 2" class="btn-payment">
+                <div v-if="item.status === 2 && item.total >= 50 && item.total <= 9999999" class="btn-payment">
                   <img
                     class="text-center btn btn-inside"
                     src="../../assets/images/icon_money_jp.svg"
@@ -67,7 +67,11 @@
         @nextPage="pageChangeHandle('next')"
         @previousPage="pageChangeHandle('previous')"
         @customPage="pageChangeHandle"
-      />
+      >
+        <p>
+          * Payjpでの決済可能な金額は50円〜9,999,999円までです。<br />
+        </p>
+      </Pagination>
     </div>
     <!-- Modal -->
     <div id="checkoutPayjpModal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

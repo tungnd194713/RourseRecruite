@@ -50,7 +50,7 @@
 
                     <tr>
                         <th scope="row" class="second-row-title">
-                            応募1件につ <br />
+                          応募1件につき <br />
                             （受けた履歴書）
                         </th>
                         <td class="column-second-row">応募確認</td>
