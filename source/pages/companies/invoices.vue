@@ -1,3 +1,4 @@
+
 <template>
   <div class="container tab-content mb-5">
     <div class="container tab-content">
@@ -15,24 +16,23 @@
           </thead>
           <tbody>
             <tr v-for="item in items" :key="item.id" class="active">
-              <td class="align-middle">{{ item.id }}</td>
+              <td class="align-middle">{{ item.invoice_code }}</td>
               <td v-if="item.paid_at" class="align-middle py-3">{{ item.paid_at.split(' ')[0] }}</td>
               <td v-else class="align-middle py-3"></td>
               <td class="align-middle" @click="$router.push('/invoices/detail?year_month=' + item.year_month)">{{ item.year_month }}</td>
               <td class="align-middle">
-                ¥{{ item.cost_job ? Math.ceil(item.cost_job).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null }}
+                ¥{{ item.cost_job ? Math.ceil(item.cost_job).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0 }}
               </td>
               <td class="align-middle">
-                ¥{{ item.cost_apply ? Math.ceil(item.cost_apply).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null }}
+                ¥{{ item.cost_apply ? Math.ceil(item.cost_apply).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0 }}
               </td>
-              <td class="align-middle">
-                {{
-                  item.transaction == null ||
-                  item.transaction.payment_method == 1
-                    ? 'クレジットカード'
-                    : '振込'
-                }}
+              <td v-if="item.transaction && item.transaction.payment_method === 1" class="align-middle">
+                クレジットカード
               </td>
+              <td v-if="item.transaction && item.transaction.payment_method === 0" class="align-middle">
+                振込
+              </td>
+              <td v-if="item.transaction === null || (item.transaction && item.transaction.payment_method === null)" class="align-middle"></td>
               <td class="align-middle">{{ theStatus[item.status] }}</td>
               <td class="align-middle">
                 ¥{{ item.total ? Math.ceil(item.total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null }}
