@@ -19,7 +19,7 @@
               <td class="align-middle">{{ item.invoice_code }}</td>
               <td v-if="item.paid_at" class="align-middle py-3">{{ item.paid_at.split(' ')[0] }}</td>
               <td v-else class="align-middle py-3"></td>
-              <td class="align-middle" @click="$router.push('/invoices/detail?year_month=' + item.year_month)">{{ item.year_month }}</td>
+              <td class="align-middle link-invoice" @click="$router.push('/invoices/detail?year_month=' + item.year_month)">{{ item.year_month }}</td>
               <td class="align-middle">
                 ¥{{ item.cost_job ? Math.ceil(item.cost_job).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0 }}
               </td>
@@ -52,6 +52,12 @@
             </tr>
           </tbody>
         </table>
+        <h4
+          v-if="totalItems === 0"
+          class="text-center w-100 p-3 m-0 bg-white border-bottom border-1"
+        >
+          検索結果がありません
+        </h4>
       </div>
       <Pagination
         :current-page="currentPage"

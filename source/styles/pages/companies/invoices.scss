@@ -387,6 +387,7 @@ table tbody td{
 
 .tab-content {
   padding: 0 5%;
+  min-height: 29rem;
 }
 
 .mod--form .form_control {
@@ -550,4 +551,8 @@ table tbody td{
   font-size: 14px;
   cursor: pointer;
   box-shadow: none;
+}
+
+.link-invoice {
+  cursor: pointer;
 }
