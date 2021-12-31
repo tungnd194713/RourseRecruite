@@ -3,6 +3,26 @@
     <div class="row">
       <h3 class="title-page">{{ loggedInUser.company_name }}社の{{month}}月請求書</h3>
     </div>
+    <div v-if="jobs.length > 0" class="text-center table-responsive">
+      <table class="table table-bordered mt-3">
+        <tr class="border-0 mt-3">
+          <td class="border-1 total-cost col-2">
+            <h5 class="bold-text align-middle">合計費用</h5>
+          </td>
+          <td class="border-1 total-cost col-2">
+            <h5 class="bold-text align-middle">{{ showTotalCostJobs(invoice.total) }}</h5>
+          </td>
+          <td class="border-0"></td>
+          <td class="border-0"></td>
+          <td class="border-0"></td>
+          <td class="border-0"></td>
+          <td class="border-0"></td>
+          <td class="border-0"></td>
+          <td class="border-0"></td>
+          <td class="border-0"></td>
+        </tr>
+      </table>
+    </div>
     <div class="text-center table-responsive list">
       <table class="table table-bordered pb-0 mb-0">
         <thead>
@@ -11,12 +31,12 @@
           <th scope="col">プラン</th>
           <th scope="col">仕事タイトル</th>
           <th scope="col" class="blue-head">１ヶ月間の掲載費用</th>
-          <th scope="col" class="blue-head">掲載された期間(月単位)</th>
+          <th scope="col" class="blue-head">掲載された期間<p>(月単位)</p></th>
           <th scope="col" class="blue-head">費用</th>
-          <th scope="col" class="violet-head">応募数（件）</th>
+          <th scope="col" class="violet-head">応募数<p>（件）</p></th>
           <th scope="col" class="violet-head">応募1件につき</th>
-          <th scope="col" class="violet-head">総計（応募）</th>
-          <th scope="col">総計（投稿＋応募）</th>
+          <th scope="col" class="violet-head">総計<p>（応募）</p></th>
+          <th scope="col">総計<p>（投稿＋応募）</p></th>
         </tr>
         </thead>
         <tbody>
@@ -25,21 +45,21 @@
         >
           <th scope="row">{{ index + 1}}</th>
           <td>{{ convertTypePlan(job.type_plan) }}</td>
-          <td>{{ job.title }}</td>
-          <td>{{ showPrice(job) }}</td>
+          <td class="col-3 text-left">{{ job.title }}</td>
+          <td class="text-right">{{ showPrice(job) }}</td>
 
           <td v-if="priceCheckNaN((job.invoice_job_detail))">{{ job.display_month }}</td>
           <td v-else></td>
 
-          <td>{{ priceCheckNaN((job.invoice_job_detail)) ? '¥' : ''  }}
+          <td class="text-right">{{ priceCheckNaN((job.invoice_job_detail)) ? '¥' : ''  }}
             {{  priceCheckNaN((job.invoice_job_detail))
             ? Math.ceil(calculateCostJob(job.invoice_job_detail, job.display_month)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             : '' }}</td>
 
           <td>{{ job.invoices_applied_detail.length }}</td>
-          <td>{{ (showPriceApplied(job, packages)) }}</td>
-          <td>{{ showTotalApplied(job.invoices_applied_detail.length * priceCheckEmpty(job.invoices_applied_detail)) }}</td>
-          <td>{{ totalCost(
+          <td class="text-right">{{ (showPriceApplied(job, packages)) }}</td>
+          <td class="text-right">¥{{ showTotalApplied(job.invoices_applied_detail.length * priceCheckEmpty(job.invoices_applied_detail)) }}</td>
+          <td class="text-right">{{ totalCost(
             calculateCostJob(job.invoice_job_detail, job.display_month),
             job.invoices_applied_detail.length *  priceCheckEmpty(job.invoices_applied_detail)
             ) }}
@@ -69,26 +89,6 @@
         </tr>
         </tbody>
       </table>
-      <div v-if="jobs.length > 0" class="text-center table-responsive">
-        <table class="table table-bordered mt-3">
-          <tr class="border-0 mt-3">
-            <td class="border-1 total-cost col-1">
-              <p class="bold-text align-middle">合計費用</p>
-            </td>
-            <td class="border-1 total-cost col-1">
-              <p class="bold-text align-middle">{{ showTotalCostJobs(invoice.total) }}</p>
-            </td>
-            <td class="border-0"></td>
-            <td class="border-0"></td>
-            <td class="border-0"></td>
-            <td class="border-0"></td>
-            <td class="border-0"></td>
-            <td class="border-0"></td>
-            <td class="border-0"></td>
-            <td class="border-0"></td>
-          </tr>
-        </table>
-      </div>
       <h4 v-if="jobs.length === 0" class="text-center w-100 p-3 m-0 bg-white border border-1">検索結果がありません</h4>
     </div>
   </div>
@@ -208,8 +208,8 @@
 
       showTotalApplied(total) {
         return total
-          ? ('¥' + Math.ceil(total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
-          : '';
+          ? Math.ceil(total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          : 0;
       },
 
       showPriceApplied(job, packages) {
