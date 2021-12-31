@@ -40,13 +40,12 @@
           aria-label="ステータス"
         >
           <option value="" selected>ステータス</option>
-          <option value="0">未選択</option>
-          <option value="1">未対応</option>
-          <option value="2">折り返し待ち</option>
-          <option value="3">面接待ち</option>
-          <option value="4">採用</option>
-          <option value="5">不採用（連絡取れず)</option>
-          <option value="6">不採用</option>
+          <option value="0">未対応</option>
+          <option value="1">折り返し待ち</option>
+          <option value="2">面接待ち</option>
+          <option value="3">採用</option>
+          <option value="4">不採用（連絡取れず）</option>
+          <option value="5">不採用</option>
         </select>
       </div>
       <div class="col-12 col-lg-2">
@@ -137,12 +136,11 @@
                 <select
                   v-model="item.residence_card_confirm"
                   class="form-select active rounded-3 confirm-select"
-                  @change="
-                    updateCard(item.id, {
-                      residence_card_confirm: item.residence_card_confirm,
-                    })
-                  "
+                  @change="confirmUpdate(item)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#confirmUpdateResidenceCardModal"
                 >
+
                   <option value="0" selected>未選択</option>
                   <option value="1">承認</option>
                   <option value="2">非承認</option>
@@ -155,7 +153,9 @@
                 <select
                   v-model="item.status"
                   class="form-select active rounded-3 status-select"
-                  @change="updateItemStatus(item.id, { status: item.status })"
+                  @change="confirmUpdateStatus(item)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#confirmUpdateStatusModal"
                 >
                   <option value="0" selected>未選択</option>
                   <option value="1">未対応</option>
@@ -343,6 +343,119 @@
       :cv-type="cvType"
       @changeLanguageEvent="changeLanguage($event)"
     />
+
+    <!-- Modal Update Residence Card-->
+    <div
+      id="confirmUpdateResidenceCardModal"
+      class="modal fade update-modal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content box-modal">
+          <div class="modal-header border-0">
+            <img
+              id="closeConfirmUpdateResidenceCardModal"
+              class="close-modal"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              src="../../assets/images/ic_exit.svg"
+              alt=""
+            />
+          </div>
+          <div class="modal-body-content my-3">
+            <h3 class="text-center modal-body-text">
+              ステータスを変更してもよろしいか？
+            </h3>
+          </div>
+          <div
+            class="
+                modal-footer
+                align-items-center
+                d-flex
+                justify-content-center
+                flex-row
+              "
+          >
+            <button
+              type="button"
+              class="btn btn-cancel-update rounded-pill w-20 mt-4 mb-4"
+              data-bs-dismiss="modal"
+            >
+              いいえ
+            </button>
+            <button
+              type="button"
+              class="btn btn-ok-update btn-custom rounded-pill w-20"
+              @click="
+                  updateCard(selectedItemId, {
+                    residence_card_confirm: residenceCardConfirm,
+                  })
+              "
+            >
+              はい
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+
+    <!-- Modal Update Status Card-->
+    <div
+      id="confirmUpdateStatusModal"
+      class="modal fade update-modal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content box-modal">
+          <div class="modal-header border-0">
+            <img
+              id="closeConfirmUpdateStatusModal"
+              class="close-modal"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              src="../../assets/images/ic_exit.svg"
+              alt=""
+            />
+          </div>
+          <div class="modal-body-content my-3">
+            <h3 class="text-center modal-body-text">
+              ステータスを変更してもよろしいか？
+            </h3>
+          </div>
+          <div
+            class="
+                modal-footer
+                align-items-center
+                d-flex
+                justify-content-center
+                flex-row
+              "
+          >
+            <button
+              type="button"
+              class="btn btn-cancel-update rounded-pill w-20 mt-4 mb-4"
+              data-bs-dismiss="modal"
+            >
+              いいえ
+            </button>
+            <button
+              type="button"
+              class="btn btn-ok-update btn-custom rounded-pill w-20"
+              @click="updateItemStatus(selectedItemId, { status: status })"
+            >
+              はい
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+
   </main>
 </template>
 
@@ -510,6 +623,9 @@ export default {
       },
       educationsOfCandidate: [],
       jobsOfCandidate: [],
+      selectedItemId: 0,
+      residenceCardConfirm: '',
+      status: '',
     }
   },
 
@@ -616,6 +732,7 @@ export default {
         .then((res) => {
           this.idRow = -1
           if (res.status === 200) {
+            document.getElementById('closeConfirmUpdateResidenceCardModal').click()
             this.$toast.success('応募者の応募状態・更新が完了しました')
             this.getListCV(this.currentPage)
           } else {
@@ -632,6 +749,7 @@ export default {
         .then((res) => {
           this.idRow = -1
           if (res.status === 200) {
+            document.getElementById('closeConfirmUpdateStatusModal').click()
             this.$toast.success('応募者の応募状態・更新が完了しました')
             this.getListCV(this.currentPage)
           } else {
@@ -696,6 +814,16 @@ export default {
           return element.type === 2
         }
       )
+    },
+
+    confirmUpdate(item) {
+      this.selectedItemId = item.id;
+      this.residenceCardConfirm = item.residence_card_confirm
+    },
+
+    confirmUpdateStatus(item) {
+      this.selectedItemId = item.id;
+      this.status = item.status
     },
   },
 }
