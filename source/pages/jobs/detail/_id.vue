@@ -80,7 +80,7 @@
                       src="../../../assets/images/icon_address.svg"
                     />
                   </span>
-                  <span class="flex-grow-1"> {{ job.address_work }}</span>
+                  <span class="flex-grow-1"> {{ $t(provincesList[job.province_id]) }} - 日本</span>
                 </div>
                 <div class="d-flex">
                   <span class="me-2">
@@ -466,6 +466,7 @@
   import defaultCareers from '~/constants/careers'
   import defaultInCvUser from "~/constants/defaultInCvUser"
   import theStatusStay from "~/constants/statusStay"
+  import theProvinces from "~/constants/provinces"
 
   export default {
     name: "JobDetail",
@@ -483,6 +484,7 @@
         loadingListCv: '',
         loadingJobDetail: '',
         statusStays: theStatusStay,
+        provincesList: theProvinces,
         typePlanList:[
           {
             text: 'A',
