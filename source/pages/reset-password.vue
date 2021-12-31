@@ -118,7 +118,10 @@
               password: this.password
             })
               .then((res) => {
-                this.$router.push({ path: '/login' });
+                  if (res.status === 200) {
+                      this.$toast.success('パスワードの変更に成功しました')
+                      this.$router.push({ path: '/login' });
+                  }
               });
           } catch (e) {
 //            console.log(e.message)
