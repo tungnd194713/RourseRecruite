@@ -167,10 +167,6 @@ input::placeholder {
   color: #0071C1;
   font-size: 14px;
   margin: 0;
-  //justify-content: flex-end;
-  //right: 0;
-  //position: absolute;
-  //padding-right: 16rem;
 }
 
 .text-above-search a {
@@ -328,6 +324,10 @@ tr.active td {
     margin-top: -26px !important;
     margin-left: -8px !important;
   }
+
+  .update-modal .modal-dialog {
+    width: 40% !important;
+  }
 }
 
 @media only screen and (max-width: 991px) {
@@ -354,6 +354,10 @@ tr.active td {
   }
   .btn-search-job {
     font-size: 11px !important;
+  }
+
+  .update-modal .modal-dialog {
+    width: 100% !important;
   }
 }
 
@@ -400,6 +404,10 @@ tr.active td {
   .confirm-text {
     font-size: 22px;
   }
+
+  .update-modal .modal-dialog {
+    width: 100% !important;
+  }
 }
 
 textarea {
@@ -412,4 +420,28 @@ textarea {
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
+}
+
+.btn-cancel-update {
+  background: #CBCBCB;
+}
+
+.btn-ok-update {
+  background: #005586;
+  color: white;
+}
+
+.close-modal {
+  height: 30px;
+}
+
+.update-modal .modal-dialog {
+  width: 30% !important;
+}
+
+.modal-header {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
 }
