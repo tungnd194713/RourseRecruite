@@ -25,7 +25,7 @@
     </div>
     <div class="text-center table-responsive list">
       <table class="table table-bordered pb-0 mb-0">
-        <thead>
+        <thead class="align-middle">
         <tr>
           <th scope="col">No</th>
           <th scope="col">プラン</th>
