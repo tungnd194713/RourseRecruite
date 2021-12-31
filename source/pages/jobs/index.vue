@@ -89,7 +89,10 @@
               <tr
                 v-for="(item, index) in items"
                 :key="item.id"
-                :class="item.read === 0 ? 'unread' : ''"
+                :class="{
+                  'expired-job-active': checkExpiredJob(item.date_end),
+                  'font-weight-bold': !(item.read || isWarningUnRead(item.date_start))
+                }"
               >
                 <td class="align-middle text-center">
                   <span
@@ -409,6 +412,13 @@ export default {
       date = this.$moment(date)
 
       return now < date.add(3, 'days').format('YYYY-MM-DD')
+    },
+
+    checkExpiredJob(date) {
+      const now = this.$moment().format('YYYY-MM-DD')
+      date = this.$moment(date)
+
+      return now > date.format('YYYY-MM-DD')
     },
 
     confirmDelete(itemId) {
