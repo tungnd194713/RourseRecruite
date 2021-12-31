@@ -1,11 +1,11 @@
 <template>
   <main class="container my-3 my-lg-4">
     <div class="row box-title mb-1 mb-lg-2">
-      <div class="col-md-6 col-12">
+      <div class="col-md-6 col-6">
         <h4 class="page-header-title">応募者一覧</h4>
       </div>
-      <div class="col-md-6 col-12 d-flex part-above-search">
-        <h6 class="me-5 text-above-search text-right">
+      <div class="col-md-6 col-6 part-above-search">
+        <h6 class="mt-3 text-above-search text-right">
           <a class="text-decoration-none" href="https://lapse-immi.moj.go.jp/ZEC/appl/e0/ZEC2/pages/FZECST021.aspx">在留資格はこのリンクから確認できます</a>
         </h6>
       </div>
