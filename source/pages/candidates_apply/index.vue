@@ -97,7 +97,7 @@
                   {{ item.candidate.user.name }}
                 </a>
               </td>
-              <td class="align-middle py-3">{{ item.jobs.title }}</td>
+              <td class="align-middle py-3 col-text">{{ item.jobs.title }}</td>
               <td class="align-middle py-3">
                 {{ $moment(item.created_at).format('YYYY-MM-DD') }}
               </td>
@@ -146,7 +146,7 @@
                   <option value="2">非承認</option>
                 </select>
               </td>
-              <td class="align-middle py-3 w-20 note">
+              <td class="align-middle py-3 col-2 note">
                 {{ item.note }}
               </td>
               <td class="align-middle py-3">
