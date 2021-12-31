@@ -360,9 +360,10 @@ export default {
       this.totalItems = data.meta.total
       this.currentPage = data.meta.current_page
       this.perPage = data.meta.per_page
+
       this.pageCount =
         this.totalItems > 0
-          ? parseInt(data.meta.total / data.meta.per_page, 10) + 1
+          ? parseInt((data.meta.total - 1) / data.meta.per_page, 10) + 1
           : 1
     },
 
