@@ -5,10 +5,9 @@
         <h4 class="page-header-title">応募者一覧</h4>
       </div>
       <div class="col-md-6 col-12 d-flex part-above-search">
-        <h6 class="me-5 text-above-search">
-          在留資格はこのリンクから確認できます
+        <h6 class="me-5 text-above-search text-right">
+          <a class="text-decoration-none" href="https://lapse-immi.moj.go.jp/ZEC/appl/e0/ZEC2/pages/FZECST021.aspx">在留資格はこのリンクから確認できます</a>
         </h6>
-        <a href="#" class="text-above-search link-above-search">abc.com</a>
       </div>
     </div>
 
@@ -87,7 +86,7 @@
                   3日以上未対応!
                   <img class="" src="../../assets/images/icon_warning.svg" />
                 </span>
-                {{ index + 1 }}
+                {{ ( perPage * (currentPage - 1)) + (index + 1) }}
               </td>
               <td class="align-middle py-3">
                 <a
