@@ -29,7 +29,7 @@
               <td v-if="item.transaction && item.transaction.payment_method === 1" class="align-middle">
                 クレジットカード
               </td>
-              <td v-if="item.transaction && item.transaction.payment_method === 0" class="align-middle">
+              <td v-if="item.transaction && item.transaction.payment_method === 2" class="align-middle">
                 振込
               </td>
               <td v-if="item.transaction === null || (item.transaction && item.transaction.payment_method === null)" class="align-middle"></td>
