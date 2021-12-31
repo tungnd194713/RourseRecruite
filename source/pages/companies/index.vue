@@ -44,7 +44,7 @@
                   <span class="me-2"
                     ><img src="../../assets/images/icon_globe.svg"
                   /></span>
-                  <a :href="link_website">ウェーブサイトURL</a>
+                  <a :href="link_website">WebサイトのURL</a>
                 </div>
               </div>
               <div class="col-12 col-sm-6 col-lg-4">

@@ -173,9 +173,8 @@
       <div class="d-flex align-items-end title mb-1">
         <h2 class="flex-grow-1">応募者一覧</h2>
         <span>
-          <span class="me-0 me-lg-2">在留資格はこのリンクから確認できます</span>
-          <span class="ms-3 ms-lg-5">
-            <a class="text-decoration-none" href="#">abc.com</a>
+          <span class="me-0 me-lg-2">
+            <a class="text-decoration-none" href="https://lapse-immi.moj.go.jp/ZEC/appl/e0/ZEC2/pages/FZECST021.aspx">在留資格はこのリンクから確認できます</a>
           </span>
         </span>
       </div>
@@ -271,7 +270,7 @@
           v-if="totalItems === 0 && !loadingListCv"
           class="text-center w-100 p-3 m-0 bg-white border-bottom border-1"
         >
-          検索結果がありません
+          データなし
         </h4>
       </div>
       <Pagination
@@ -285,7 +284,7 @@
       >
         <p>
           * 未読：白い背景、既読：浅い青色の背景<br />
-          * 3日以上未読の履歴書があったら、リマインダーが表示されます。
+          * 3日以上未読の履歴書があったら、リマインダーが表示される。
         </p>
       </Pagination>
     </div>
@@ -525,7 +524,7 @@
         ],
         formRecruitmentList: [
           {
-            text: '1-フルタイム',
+            text: 'フルタイム',
             value: 1
           },
           {

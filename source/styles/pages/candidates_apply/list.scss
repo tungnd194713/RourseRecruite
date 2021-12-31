@@ -167,6 +167,14 @@ input::placeholder {
   color: #0071C1;
   font-size: 14px;
   margin: 0;
+  //justify-content: flex-end;
+  //right: 0;
+  //position: absolute;
+  //padding-right: 16rem;
+}
+
+.text-above-search a {
+  color: #0071C1;
 }
 
 .link-above-search {
@@ -181,6 +189,7 @@ input::placeholder {
 }
 
 .part-above-search {
+  font-family: 'M PLUS 1p', sans-serif;
   justify-content: end;
   align-items: baseline;
 }
@@ -336,6 +345,7 @@ tr.active td {
     margin-left: -8px !important;
   }
   .part-above-search {
+    font-family: 'M PLUS 1p', sans-serif;
     flex-direction: column;
     align-items: end;
   }

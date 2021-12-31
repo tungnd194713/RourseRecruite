@@ -7,7 +7,7 @@
         </a>
         <div class="bg-white box-form-login">
           <h1 class="mb-3 mb-lg-4 fw-bold">パスワード変更</h1>
-          <h5 class="mb-3 mb-lg-4 mt-3">入力されたメールアドレスに再設定メ-ルをお送りします</h5>
+          <h5 class="mb-3 mb-lg-4 mt-3">パスワード再設定メールをお送りします</h5>
 
           <div v-if="message" class="alert alert-success" role="alert">
             {{message}}
@@ -96,6 +96,7 @@
                 this.message = data.message;
                 this.error = data.errorMsg;
                 this.getMessage(this.error);
+                this.getMessage(this.message);
               });
           } catch (e) {
             this.message = '';
@@ -107,6 +108,9 @@
       getMessage(message) {
         if (message === 'The given data was invalid.') {
           this.error = 'しばらくお待ちください'
+        }
+        if (message === 'We have emailed your password reset link!') {
+          this.message = 'パスワード再設定用のURLが記載されたメールを送信しました。'
         }
       }
     }

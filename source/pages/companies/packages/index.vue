@@ -1,7 +1,7 @@
 <template>
         <div class="container tab-content">
             <div class="row">
-                <h3 class="title-page">料金プラン</h3>
+                <h3 class="title-page">求人のプラン</h3>
             </div>
 
             <!-- <picture class="">
@@ -107,7 +107,7 @@
                                 "
             >
               <h5 class="info-pill rounded-pill">
-                Phone: 098 000 000
+                TEL: 098-000-0000
               </h5>
             </div>
           </div>
