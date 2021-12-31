@@ -554,7 +554,7 @@ export default {
       this.currentPage = data.current_page
       this.perPage = data.per_page
       this.pageCount =
-        this.totalItems > 0 ? parseInt(data.total / data.per_page, 10) + 1 : 1
+        this.totalItems > 0 ? parseInt((data.total - 1) / data.per_page, 10) + 1 : 1
     },
 
     pageChangeHandle(value) {
