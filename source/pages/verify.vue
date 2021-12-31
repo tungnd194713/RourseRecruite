@@ -4,7 +4,7 @@
       <form @submit.prevent="sendVerifyMail">
         <img class="mb-3 mb-lg-4" src="../assets/images/icon_logo.svg" alt="" height="59">
         <div class="bg-white box-form-login">
-          <h1 class="mb-3 mb-lg-4 fw-bold">確認メールを送信</h1>
+          <h1 class="mb-3 mb-lg-4 fw-bold">確認メール再送信</h1>
           <h5 class="mb-3 mb-lg-4 mt-3">入力したメールアドレスに確認メールが送信されます。</h5>
 
           <div v-if="message" class="alert alert-success" role="alert">

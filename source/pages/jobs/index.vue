@@ -101,7 +101,7 @@
                     }}通
                     <img class="" src="../../assets/images/icon_warning.svg" />
                   </span>
-                  {{ index + 1 }}
+                  {{ ( perPage * (currentPage - 1)) + (index + 1) }}
                 </td>
 
                 <td class="align-middle text-left min-width-200px">
@@ -126,7 +126,7 @@
                         'btn btn-sm btn-check-active rounded-pill ' +
                         (item.status === 1 ? 'active' : '')
                       "
-                      @click="changeStatus(item.id, item.status)"
+                      @click="changeStatus(item.id, item.status, item.date_end)"
                     >
                       表示
                     </button>
@@ -135,7 +135,7 @@
                         'btn btn-sm btn-check-unactive rounded-pill ' +
                         (item.status === 0 ? 'unactive' : '')
                       "
-                      @click="changeStatus(item.id, item.status)"
+                      @click="changeStatus(item.id, item.status, item.date_end)"
                     >
                       非表示
                     </button>
@@ -187,9 +187,8 @@
         >
           <p>
             * 太字は未読、細字は既読である。<br />
-            *
-            白い背景は有効期限切れになった求人、浅い青色の背景は有効期間中の求人である。<br />
-            * 3日以上未読の履歴書があったら、リマインダーが表示されます。
+            * 白い背景は有効期間中の求人 、浅い青色の背景は有効期限切れになった求人である。<br />
+            * 3日以上未読の履歴書があったら、リマインダーが表示される。
           </p>
         </Pagination>
       </div>
@@ -379,9 +378,10 @@ export default {
       this.totalItems = data.meta.total
       this.currentPage = data.meta.current_page
       this.perPage = data.meta.per_page
+
       this.pageCount =
         this.totalItems > 0
-          ? parseInt(data.meta.total / data.meta.per_page, 10) + 1
+          ? parseInt((data.meta.total - 1) / data.meta.per_page, 10) + 1
           : 1
     },
 
@@ -432,23 +432,29 @@ export default {
         })
     },
 
-    async changeStatus(itemId, oldStatus) {
-      return await this.$repositories.jobs
-        .changeStatus(itemId, {
-          status: oldStatus === 1 ? 0 : 1,
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            this.getListJob(this.currentPage)
+      async changeStatus(itemId, oldStatus, dateEnd) {
+          const now = this.$moment().unix()
+          const end = this.$moment(dateEnd).unix()
+          if (parseInt(end) < parseInt(now)) {
+              this.$toast.error('有効期限切れになった求人ですので、ステータスを変えることはできません')
+          } else {
+              return await this.$repositories.jobs
+                  .changeStatus(itemId, {
+                      status: oldStatus === 1 ? 0 : 1,
+                  })
+                  .then((res) => {
+                      if (res.status === 200) {
+                          this.getListJob(this.currentPage)
 
-            if (oldStatus === 1) {
-              this.$toast.success('求人が非表示されました')
-            } else if (oldStatus === 0) {
-              this.$toast.success('求人が表示されました')
-            }
+                          if (oldStatus === 1) {
+                              this.$toast.success('求人が非表示されました')
+                          } else if (oldStatus === 0) {
+                              this.$toast.success('求人が表示されました')
+                          }
+                      }
+                  })
           }
-        })
-    },
+      },
   },
 }
 </script>

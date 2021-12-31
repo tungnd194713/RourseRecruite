@@ -91,7 +91,7 @@
           </div>
         </div>
         <div class="form-group mb-3 mb-lg-4 row">
-          <label for="displayMonthSelect" class="col-sm-2 col-form-label">仕事の有効期限 (月単位) <span>*</span></label>
+          <label for="displayMonthSelect" class="col-sm-2 col-form-label">仕事の掲載期間（月単位)<span>*</span></label>
           <div class="col-12 col-sm-4">
             <div class="input-group input-group-icon">
               <span class="input-group-text input-group-text-pre">

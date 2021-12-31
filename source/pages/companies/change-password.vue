@@ -58,7 +58,7 @@
                     v-model="company.old_password"
                     type="text"
                     class="form-control"
-                    placeholder="新しいパスワードを入力してください"
+                    placeholder="現在のパスワードを入力してください"
                     @input="onInputOldPassword"
                     @blur="$v.company.old_password.$touch()"
                   >
