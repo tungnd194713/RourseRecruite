@@ -67,7 +67,7 @@
                   </tr>
                   <tr>
                     <td class="border-top-dot text-center">{{ $t('cv_user.name')}}</td>
-                    <td colspan="3" class="border-top-dot">
+                    <td colspan="3" class="border-top-dot word-break-break-all">
                       {{ candidate.first_name ? candidate.first_name.toUpperCase() : ''}}
                       {{ candidate.name ? candidate.name.toUpperCase() : ''}}
                     </td>
@@ -114,7 +114,7 @@
                     </td>
                     <td colspan="3">
                       <div class="text-start">{{ $t('cv_user.email')}}</div>
-                      <div class="text-center">{{ candidate.email}}</div>
+                      <div class="text-center word-break-break-all">{{ candidate.email}}</div>
                     </td>
                   </tr>
                   <tr>
@@ -123,7 +123,7 @@
                   </tr>
                   <tr>
                     <td class="border-top-dot text-center">{{ $t('cv_user.address')}}</td>
-                    <td colspan="5" class="border-top-dot">{{ candidate.address}}</td>
+                    <td colspan="5" class="border-top-dot word-break-break-all">{{ candidate.address}}</td>
                   </tr>
                   </tbody>
                 </table>
@@ -147,7 +147,7 @@
                     <td v-if="language === lang_ja" class="text-center">{{ $moment(education.start_at).format('M')}}月</td>
                     <td>
                       <div class="row">
-                        <div class="col-9">{{ education.name}}</div>
+                        <div class="col-9 word-break-break-all">{{ education.name}}</div>
                         <div v-if="language === lang_vi" class="col-3">
                           {{ defaultLangAndText.defaultEducationsListVi[education.status - 1]}}
                         </div>
@@ -192,7 +192,7 @@
                     <td v-if="language === lang_ja" class="text-center">{{ $moment(job.start_at).format('M')}}月</td>
                     <td>
                       <div class="row">
-                        <div class="col-9">{{ job.name}}</div>
+                        <div class="col-9 word-break-break-all">{{ job.name}}</div>
                         <div v-if="language === lang_vi" class="col-3">
                           {{ job.status === 1 ?
                           '～' + $moment(job.end_at).format('M/YYYY') :
@@ -259,7 +259,7 @@
                   </thead>
                   <tbody>
                   <tr v-for="(foreignLanguage, index) in candidate.candidate_foreign_languages" :key="index">
-                    <td>{{ foreignLanguage.language_name}}</td>
+                    <td class="word-break-break-all">{{ foreignLanguage.language_name}}</td>
                     <td>{{ showIconSkill(JSON.parse(foreignLanguage.skill).listen)}}</td>
                     <td>{{ showIconSkill(JSON.parse(foreignLanguage.skill).speak)}}</td>
                     <td>{{ showIconSkill(JSON.parse(foreignLanguage.skill).read)}}</td>
@@ -285,9 +285,16 @@
                   </thead>
                   <tbody>
                   <tr v-for="(certificate, index) in candidate.candidate_certificates" :key="index">
-                    <td>Năm {{ $moment(certificate.receive_at).format('YYYY')}}</td>
-                    <td>{{ $moment(certificate.receive_at).format('M')}}</td>
-                    <td class="text-start">{{ certificate.name}}</td>
+                    <td>
+                      {{ language === lang_vi ? $t('cv_user.year') : '' }}
+                      {{ $moment(certificate.receive_at).format('YYYY')}}
+                      {{ language === lang_ja ? $t('cv_user.year') : '' }}
+                    </td>
+                    <td>
+                      {{ $moment(certificate.receive_at).format('M')}}
+                      {{ language === lang_ja ? $t('cv_user.month') : '' }}
+                    </td>
+                    <td class="text-start word-break-break-all">{{ certificate.name}}</td>
                   </tr>
                   <tr>
                     <td></td>
@@ -318,13 +325,13 @@
                     <td>{{ $t('cv_user.reason_apply')}}</td>
                   </tr>
                   <tr>
-                    <td class="py-4">{{ candidate.reason_apply}}</td>
+                    <td class="py-4 white-space-pre-line word-break-break-all">{{ candidate.reason_apply}}</td>
                   </tr>
                   <tr>
                     <td>{{ $t('cv_user.strength')}}</td>
                   </tr>
                   <tr>
-                    <td class="py-4">{{ candidate.strength}}</td>
+                    <td class="py-4 white-space-pre-line word-break-break-all">{{ candidate.strength}}</td>
                   </tr>
                   </tbody>
                 </table>
@@ -352,12 +359,16 @@
                   <tbody>
                   <tr>
                     <td rowspan="2">{{ $t('cv_user.stay_experience_part_1')}}<br>{{ $t('cv_user.stay_experience_part_2')}}</td>
-                    <td class="border-bottom-dot">{{ candidate.stay_experience_date}}</td>
+                    <td class="border-bottom-dot white-space-pre-line word-break-break-all">
+                      {{ candidate.stay_experience_date}}
+                    </td>
                     <td rowspan="2">{{ $t('cv_user.visa_part_1')}}<br>{{ $t('cv_user.visa_part_2')}}</td>
                     <td class="border-bottom-dot">{{ $t(visaTypesList[candidate.visa_type])}}</td>
                   </tr>
                   <tr>
-                    <td class="border-top-dot">{{ candidate.stay_experience_purpose}}</td>
+                    <td class="border-top-dot white-space-pre-line word-break-break-all">
+                      {{ candidate.stay_experience_purpose}}
+                    </td>
                     <td class="border-top-dot">{{ $moment(candidate.visa_date).format('D/M/YYYY')}}</td>
                   </tr>
                   </tbody>
