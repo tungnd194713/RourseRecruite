@@ -3,7 +3,7 @@
     <div class="row">
       <h3 class="title-page">{{ loggedInUser.company_name }}社の{{month}}月請求書</h3>
     </div>
-    <div v-if="jobs.length > 0" class="text-center table-responsive">
+    <div v-if="jobs.length > 0" class="text-center table-responsive d-flex">
       <table class="table table-bordered mt-3">
         <tr class="border-0 mt-3">
           <td class="border-1 total-cost col-2">
@@ -19,7 +19,16 @@
           <td class="border-0"></td>
           <td class="border-0"></td>
           <td class="border-0"></td>
-          <td class="border-0"></td>
+          <td class="border-0 col-3">
+            <label class="fw-bold">1ページあたりのレコード数：</label>
+            <br/>
+            <select v-model="perPage" @change="getInvoiceInMonth(perPage)" class="border-2 rounded-2">
+              <option id="any" value="any">Any</option>
+              <option id="10" value="20">20</option>
+              <option id="25" value="35">35</option>
+              <option id="50" value="50">50</option>
+            </select>
+          </td>
         </tr>
       </table>
     </div>
@@ -125,6 +134,7 @@
             value: 4
           },
         ],
+        perPage: 20,
       }
     },
     head () {
@@ -136,15 +146,16 @@
     },
 
     created() {
-      this.getInvoiceInMonth();
+      this.getInvoiceInMonth(this.perPage);
     },
 
     methods: {
-      async getInvoiceInMonth() {
+      async getInvoiceInMonth(perPage) {
         this.month = this.$moment(this.$route.query.year_month).format('M') || this.$moment().format('M');
 
         const params = {
-          year_month: this.$route.query.year_month
+          year_month: this.$route.query.year_month,
+          per_page: perPage
         };
 
         const res = await this.$repositories.invoices.getInvoiceInMonth(params);
