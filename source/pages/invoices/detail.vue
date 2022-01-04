@@ -65,7 +65,7 @@
             ) }}
           </td>
         </tr>
-        <tr v-if="pageCount <= perPage" class="border-0 d-flex tr-empty"></tr>
+        <tr v-if="totalItems > perPage" class="border-0 d-flex tr-empty"></tr>
         <tr v-if="totalItems > 0" class="border-0">
           <td class="border-0"></td>
           <td class="border-0"></td>
