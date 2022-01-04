@@ -232,7 +232,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="postal-code">郵便番号 <span>*</span></label>
+                    <label for="postal-code">郵便番号</label>
                     <input
                         id="postal-code"
                         v-model.trim="user.postal_code"
