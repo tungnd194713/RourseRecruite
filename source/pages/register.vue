@@ -243,12 +243,6 @@
                     />
                     <div v-if="$v.user.postal_code.$error">
                         <div
-                            v-if="!$v.user.postal_code.required"
-                            class="invalid-feedback error"
-                        >
-                            これは必須項目なので、必ず選択してください
-                        </div>
-                        <div
                             v-if="!$v.user.postal_code.postalCode"
                             class="invalid-feedback error"
                         >
@@ -471,7 +465,6 @@ export default {
                 required,
             },
             postal_code: {
-                required,
                 postalCode,
             },
             province_id: {
