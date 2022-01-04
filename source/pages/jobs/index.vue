@@ -96,7 +96,7 @@
               >
                 <td class="align-middle text-center">
                   <span
-                    v-if="(item.cv_read || !isWarningUnRead(item.cv_created_at_three_day))"
+                    v-if="(item.cv_read && !isWarningUnRead(item.cv_created_at_three_day))"
                     :class="(perPage * (currentPage - 1)) + (index + 1) < 10 ? 'td-warning' : 'td-warning-large'"
                   >
                     未対応の履歴書{{ item.cv_read }}/{{
