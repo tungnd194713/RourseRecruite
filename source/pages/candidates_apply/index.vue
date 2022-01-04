@@ -136,9 +136,9 @@
                 <select
                   v-model="item.residence_card_confirm"
                   class="form-select active rounded-3 confirm-select"
-                  @change="confirmUpdate(item)"
                   data-bs-toggle="modal"
                   data-bs-target="#confirmUpdateResidenceCardModal"
+                  @change="confirmUpdate(item)"
                 >
 
                   <option value="0" selected>未選択</option>
@@ -153,9 +153,9 @@
                 <select
                   v-model="item.status"
                   class="form-select active rounded-3 status-select"
-                  @change="confirmUpdateStatus(item)"
                   data-bs-toggle="modal"
                   data-bs-target="#confirmUpdateStatusModal"
+                  @change="confirmUpdateStatus(item)"
                 >
                   <option value="0" selected>未選択</option>
                   <option value="1">未対応</option>
@@ -316,7 +316,7 @@
             ></textarea>
             <div v-if="$v.dataUpdateStatus.note.$error">
               <div v-if="!$v.dataUpdateStatus.note.maxLength" class="error">
-                100文字以上入力する場合
+                500文字以下で入力してください
               </div>
             </div>
             <div class="submit-btn">
@@ -638,7 +638,7 @@ export default {
   },
 
   head() {
-    return { title: '応募者一覧' }
+    return { title: '応募者一覧 | 求人' }
   },
 
   computed: {

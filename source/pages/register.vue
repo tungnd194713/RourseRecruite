@@ -435,7 +435,7 @@ export default {
     },
 
     head() {
-        return { title: '会員登録' }
+        return { title: '会員登録 | 求人' }
     },
 
     validations: {

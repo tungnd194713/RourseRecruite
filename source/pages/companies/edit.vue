@@ -898,7 +898,7 @@ export default {
 
   head() {
     return {
-      title: '会社情報編集',
+      title: '会社情報編集 | 求人',
     }
   },
 
