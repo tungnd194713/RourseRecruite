@@ -136,7 +136,7 @@
             value: 4
           },
         ],
-        perPage: '',
+        perPage: 20,
       }
     },
     head () {

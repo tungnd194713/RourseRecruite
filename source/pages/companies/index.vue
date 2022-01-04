@@ -195,7 +195,7 @@ export default {
   },
 
   head() {
-    return { title: 'プロフィール' }
+    return { title: 'プロフィール | 求人' }
   },
 
   computed: {},

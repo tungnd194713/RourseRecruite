@@ -124,7 +124,7 @@
     name: 'Packages',
     layout: 'payment',
     head() {
-      return {title: 'Packages'}
+      return {title: '決済情報 | 求人'}
     },
   }
 </script>

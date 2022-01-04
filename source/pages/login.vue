@@ -167,7 +167,7 @@ export default {
   },
 
   head() {
-    return { title: 'ログイン' }
+    return { title: 'ログイン | 求人' }
   },
 
   validations: {

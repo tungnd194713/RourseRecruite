@@ -328,7 +328,7 @@ export default {
   },
 
   head() {
-    return { title: '求人一覧' }
+    return { title: '求人一覧 | 求人' }
   },
 
   computed: {
