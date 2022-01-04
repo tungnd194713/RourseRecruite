@@ -22,7 +22,7 @@
           <td class="border-0 col-3">
             <label class="fw-bold">1ページあたりのレコード数：</label>
             <br/>
-            <select v-model="perPage" @change="getInvoiceInMonth(perPage)" class="border-2 rounded-2">
+            <select v-model="perPage" class="border-2 rounded-2" @change="getInvoiceInMonth(perPage)">
               <option id="all" value="" selected>All</option>
               <option value="20">20</option>
               <option value="40">40</option>
