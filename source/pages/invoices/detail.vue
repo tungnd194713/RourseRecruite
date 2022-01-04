@@ -24,9 +24,11 @@
             <br/>
             <select v-model="perPage" @change="getInvoiceInMonth(perPage)" class="border-2 rounded-2">
               <option id="all" value="" selected>All</option>
-              <option id="10" value="20">20</option>
-              <option id="25" value="35">35</option>
-              <option id="50" value="50">50</option>
+              <option value="20">20</option>
+              <option value="40">40</option>
+              <option value="60">60</option>
+              <option value="80">80</option>
+              <option value="100">100</option>
             </select>
           </td>
         </tr>
