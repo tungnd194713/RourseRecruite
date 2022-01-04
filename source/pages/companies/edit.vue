@@ -398,14 +398,15 @@
                     >
                   </p>
                   <div
-                    v-if="uploadedProfileImage != ''"
+                    v-if="uploadedProfileImage"
                     class="mt-4 w-100 row file-preview"
                   >
-                    <img
-                      :src="url_api_file + uploadedProfileImage"
-                      alt=""
-                      style="width: 100px; height: 100px"
-                    />
+                    <div
+                      class="image-company"
+                      :style="{
+                        backgroundImage: `url(${url_api_file + uploadedProfileImage})`
+                      }"
+                    ></div>
                   </div>
                   <div v-if="data.logo.length" class="mt-4 w-100">
                     <div
@@ -413,13 +414,14 @@
                       :key="index"
                       class="p-1 row file-preview"
                     >
-                      <img
-                        :src="logoUrl"
-                        alt=""
-                        style="width: 100px; height: 100px"
-                      />
+                      <div
+                        class="image-company"
+                        :style="{
+                          backgroundImage: `url(${logoUrl})`
+                        }"
+                      ></div>
                       <button
-                        class="col-12 col-sm-3 col-md-6 form-control w-10"
+                        class="col-12 col-sm-3 col-md-6 form-control remove-image mt-2"
                         type="button"
                         title="Remove file"
                         @click="remove(data.logo.indexOf(file), logo)"
@@ -479,13 +481,14 @@
                       :key="index"
                       class="p-1 row file-preview"
                     >
-                      <img
-                        :src="url_api_file + file.image_url"
-                        alt=""
-                        style="width: 100px; height: 100px"
-                      />
+                      <div
+                        class="image-company"
+                        :style="{
+                          backgroundImage: `url(${url_api_file + file.image_url})`
+                        }"
+                      ></div>
                       <button
-                        class="col-12 col-sm-3 col-md-6 form-control w-10"
+                        class="col-12 col-sm-3 col-md-6 form-control remove-image mt-2 mb-2"
                         type="button"
                         title="Remove file"
                         @click="removeImagesOnServer(file.id, index)"
@@ -500,13 +503,14 @@
                       :key="index"
                       class="p-1 row file-preview"
                     >
-                      <img
-                        :src="imageUrl[index]"
-                        alt=""
-                        style="width: 100px; height: 100px"
-                      />
+                      <div
+                        class="image-company"
+                        :style="{
+                          backgroundImage: `url(${imageUrl[index]})`
+                        }"
+                      ></div>
                       <button
-                        class="col-12 col-sm-3 col-md-6 form-control w-10"
+                        class="col-12 col-sm-3 col-md-6 form-control remove-image mt-2 mb-2"
                         type="button"
                         title="Remove file"
                         @click="
@@ -527,16 +531,23 @@
                   @change="onChange(introImages)"
                 />
                 <div v-if="$v.data.images.$error">
-                  <div
-                    v-for="(v, index) in $v.data.images.$each.$iter"
-                    :key="index"
-                  >
-                    <div v-if="!v.name.imageRule" class="error">
-                      画像はpng / jpg / jpeg / gifの形式でアプロードしてください
-                    </div>
-                    <div v-if="!v.size.imageSize" class="error">
-                      2MB以下の写真をアップロードしてください
-                    </div>
+<!--                  <div-->
+<!--                    v-for="(v, index) in $v.data.images.$each.$iter"-->
+<!--                    :key="index"-->
+<!--                  >-->
+<!--                    <div v-if="!v.name.imageRule" class="error">-->
+<!--                      画像はpng / jpg / jpeg / gifの形式でアプロードしてください-->
+<!--                    </div>-->
+<!--                    <div v-if="!v.size.imageSize" class="error">-->
+<!--                      2MB以下の写真をアップロードしてください-->
+<!--                    </div>-->
+<!--                  </div>-->
+
+                  <div v-if="introImageTypeError" class="error">
+                    画像はpng / jpg / jpeg / gifの形式でアプロードしてください
+                  </div>
+                  <div v-if="introImageSizeError" class="error">
+                    2MB以下の写真をアップロードしてください
                   </div>
                 </div>
                 <div v-if="errors.images" class="error">
@@ -796,6 +807,8 @@ export default {
       logo: PROFILEIMAGE,
       introImages: INTROIMAGES,
       introVideo: INTROVIDEO,
+      introImageTypeError: false,
+      introImageSizeError: false,
     }
   },
 
@@ -944,12 +957,24 @@ export default {
     onChange(fileType) {
       if (fileType === 1) {
         this.data.logo = [...this.$refs.logoInput.files]
-        this.logoUrl = window.URL.createObjectURL(this.$refs.logoInput.files[0])
-        this.uploadedProfileImage = ''
+        if (this.$refs.logoInput.files[0]) {
+          this.$v.data.logo.$each.$iter[0].$touch()
+          this.logoUrl = window.URL.createObjectURL(this.$refs.logoInput.files[0])
+          this.uploadedProfileImage = ''
+        }
       }
       if (fileType === 2) {
         this.data.images = [...this.$refs.introImageInput.files]
+        this.introImageTypeError = false
+        this.introImageSizeError = false
         for (let i = 0; i < this.data.images.length; i++) {
+          this.$v.data.images.$each.$iter[i].$touch()
+          if (!this.$v.data.images.$each.$iter[i].name.imageRule) {
+            this.introImageTypeError = true
+          }
+          if (!this.$v.data.images.$each.$iter[i].size.imageSize) {
+            this.introImageSizeError = true
+          }
           const file = this.data.images[i]
 
           this.uploadedImages.push(file)

@@ -45,11 +45,11 @@
               <div class="row mt-2">
                 <div class="d-block mb-2">
                   <span class="mr-2"><img width="20" height="20" src="../../../../assets/images/icon_money_outline.svg"></span>
-                  <span><b>{{ job.salary_min ? Intl.NumberFormat().format(job.salary_min) : 0}} - {{ Intl.NumberFormat().format(job.salary_max)}}</b></span>
+                  <span><b>{{ job.salary_min ? Intl.NumberFormat().format(job.salary_min) + ' - ' : 'Upto '}}{{ Intl.NumberFormat().format(job.salary_max)}}</b></span>
                 </div>
                 <div class="d-block mb-2">
                   <span class="mr-2"><img width="20" height="20" src="../../../../assets/images/icon_address.svg"></span>
-                  <span> {{ job.address_work}}</span>
+                  <span> {{ $t(provincesList[job.province_id]) }} - 日本</span>
                 </div>
                 <div class="d-block">
                   <span class="mr-2"><img width="20" height="20" src="../../../../assets/images/icon_clock.svg"></span>
@@ -136,6 +136,7 @@
   import StatusStayInfoModal from "~/components/StatusStayInfoModal";
   import CompleteUpdateJobModal from "~/components/CompleteUpdateJobModal";
   import theCareers from '~/constants/careers'
+  import theProvinces from "~/constants/provinces"
 
   export default {
     name: "PreviewUpdateJob",
@@ -151,6 +152,7 @@
         url_file: process.env.URL_FILE,
         oldImageJob: '',
         careerList: theCareers,
+        provincesList: theProvinces,
         typePlanList:[
           {
             text: 'プランA',

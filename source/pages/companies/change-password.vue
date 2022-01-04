@@ -53,42 +53,102 @@
               <form @submit.prevent="submitChangePassword">
                 <div class="form-group mb-2 mb-lg-3">
                   <label for="exampleInput1c">現在のパスワード <span>*</span></label>
-                  <input
-                          id="exampleInput1c"
-                    v-model="company.old_password"
-                    type="text"
-                    class="form-control"
-                    placeholder="現在のパスワードを入力してください"
-                    @input="onInputOldPassword"
-                    @blur="$v.company.old_password.$touch()"
-                  >
+                  <div class="input-group">
+                    <input
+                      id="exampleInput1c"
+                      v-model="company.old_password"
+                      :type="isHideOldPassword ? 'password' : 'text'"
+                      class="form-control"
+                      placeholder="現在のパスワードを入力してください"
+                      @input="onInputOldPassword"
+                      @blur="$v.company.old_password.$touch()"
+                    >
+                    <span
+                      class="input-group-text input-group-text-next"
+                      @click="isHideOldPassword = !isHideOldPassword"
+                    >
+                      <img
+                        v-if="isHideOldPassword"
+                        class="show-hide-password-icon"
+                        src="~/assets/images/icon_eye.svg"
+                        alt=""
+                      />
+                      <img
+                        v-else
+                        class="show-hide-password-icon"
+                        src="~/assets/images/icon_eyes_show.svg"
+                        alt=""
+                      />
+                    </span>
+                  </div>
+
                   <div class="error-text">{{ oldPasswordErrors[0]}}</div>
                   <div class="error-text">{{ wrongOldPasswordText}}</div>
                 </div>
                 <div class="form-group mb-2 mb-lg-3">
                   <label for="exampleInput2c">新しいパスワード <span>*</span></label>
-                  <input
-                          id="exampleInput2c"
-                    v-model="company.new_password"
-                    type="text"
-                    class="form-control"
-                    placeholder="新しいパスワードを入力してください"
-                    @input="$v.company.new_password.$touch()"
-                    @blur="$v.company.new_password.$touch()"
-                  >
+                  <div class="input-group">
+                    <input
+                      id="exampleInput2c"
+                      v-model="company.new_password"
+                      :type="isHideNewPassword ? 'password' : 'text'"
+                      class="form-control"
+                      placeholder="新しいパスワードを入力してください"
+                      @input="$v.company.new_password.$touch()"
+                      @blur="$v.company.new_password.$touch()"
+                    >
+                    <span
+                      class="input-group-text input-group-text-next"
+                      @click="isHideNewPassword = !isHideNewPassword"
+                    >
+                      <img
+                        v-if="isHideNewPassword"
+                        class="show-hide-password-icon"
+                        src="~/assets/images/icon_eye.svg"
+                        alt=""
+                      />
+                      <img
+                        v-else
+                        class="show-hide-password-icon"
+                        src="~/assets/images/icon_eyes_show.svg"
+                        alt=""
+                      />
+                    </span>
+                  </div>
+
                   <div class="error-text">{{ newPasswordErrors[0]}}</div>
                 </div>
                 <div class="form-group mb-2 mb-lg-3">
                   <label for="exampleInput3c">新しいパスワード（確認）<span>*</span></label>
-                  <input
-                    id="exampleInput3c"
-                    v-model="company.confirm_password"
-                    type="text"
-                    class="form-control"
-                    placeholder="新しいパスワードを改めて入力してください"
-                    @input="$v.company.confirm_password.$touch()"
-                    @blur="$v.company.confirm_password.$touch()"
-                  >
+                  <div class="input-group">
+                    <input
+                      id="exampleInput3c"
+                      v-model="company.confirm_password"
+                      :type="isHideConfirmNewPassword ? 'password' : 'text'"
+                      class="form-control"
+                      placeholder="新しいパスワードを改めて入力してください"
+                      @input="$v.company.confirm_password.$touch()"
+                      @blur="$v.company.confirm_password.$touch()"
+                    >
+                    <span
+                      class="input-group-text input-group-text-next"
+                      @click="isHideConfirmNewPassword = !isHideConfirmNewPassword"
+                    >
+                      <img
+                        v-if="isHideConfirmNewPassword"
+                        class="show-hide-password-icon"
+                        src="~/assets/images/icon_eye.svg"
+                        alt=""
+                      />
+                      <img
+                        v-else
+                        class="show-hide-password-icon"
+                        src="~/assets/images/icon_eyes_show.svg"
+                        alt=""
+                      />
+                    </span>
+                  </div>
+
                   <div class="error-text">{{ confirmPasswordErrors[0]}}</div>
                 </div>
                 <div class="text-end">
@@ -160,6 +220,10 @@
 
     data() {
       return {
+        url_file: process.env.URL_FILE,
+        isHideOldPassword: true,
+        isHideNewPassword: true,
+        isHideConfirmNewPassword: true,
         previewProfileImageUrl: '',
         profile_image: null,
         company: {
@@ -250,7 +314,7 @@
     methods: {
       initData() {
         const currentProfileImage = this.$store.getters.loggedInUser.profile_image
-        this.previewProfileImageUrl = currentProfileImage ? process.env.API_URL.replace('api', 'storage') + currentProfileImage : ''
+        this.previewProfileImageUrl = currentProfileImage ? this.url_file + currentProfileImage : ''
       },
 
       onChangeProfileImage(e) {
@@ -301,7 +365,7 @@
             }
           ).then(res => {
             if (res.status === 200) {
-              this.previewProfileImageUrl = process.env.API_URL.replace('api', 'storage') + res.data
+              this.previewProfileImageUrl = this.url_file + res.data
               this.$auth.fetchUser()
               this.$toast.success('画像アップロードに成功しました')
             }

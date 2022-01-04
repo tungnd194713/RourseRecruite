@@ -199,7 +199,11 @@
                             </select>
                           </div>
                         </div>
-                        <div v-if="showStatusStayList" class="multi-select-status-stay">
+                        <div
+                          v-if="showStatusStayList"
+                          v-click-outside="showStatusStayDropdown"
+                          class="multi-select-status-stay"
+                        >
                           <ul>
                             <li v-for="item in statusStayList" :key="item.value">
                               <label :for="'statusStay' +item.value">
@@ -208,7 +212,7 @@
                                   v-model="job.status_stay"
                                   type="checkbox"
                                   :value="item.value"
-                                  @click="$v.job.status_stay.$touch()"
+                                  @click.stop="$v.job.status_stay.$touch()"
                                 >
                                 {{ item.text }}
                               </label>
@@ -700,6 +704,7 @@ import {
 } from 'vuex'
 import { validationMixin } from 'vuelidate'
 import {required, maxLength, requiredIf, helpers, minLength} from 'vuelidate/lib/validators'
+import vClickOutside from 'v-click-outside'
 import defaultProvinces from '~/constants/provinces'
 import theStatusStay from "~/constants/statusStay"
 
@@ -708,6 +713,11 @@ const maximumImageSize = 2000000
 
 export default {
     name: 'EditJob',
+
+    directives: {
+      clickOutside: vClickOutside.directive
+    },
+
     mixins: [validationMixin],
     layout: 'auth',
 
@@ -984,7 +994,7 @@ export default {
         this.$v.job.salary_max.$touch()
       },
 
-      showStatusStayDropdown() {
+      showStatusStayDropdown(event) {
         this.showStatusStayList = !this.showStatusStayList
       },
 

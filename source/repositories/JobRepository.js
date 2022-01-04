@@ -27,5 +27,9 @@ export default ($axios) => ({
 
   checkCreateJob() {
     return $axios.get(`${resource}/package-company`)
+  },
+
+  countJobsPlanA(data) {
+    return $axios.post(`${resource}/count-jobs-plan-a`, data)
   }
 })

@@ -123,7 +123,12 @@
                   </tr>
                   <tr>
                     <td class="border-top-dot text-center">{{ $t('cv_user.address')}}</td>
-                    <td colspan="5" class="border-top-dot word-break-break-all">{{ candidate.address}}</td>
+                    <td colspan="5" class="border-top-dot word-break-break-all">
+                      〒 {{ candidate.postal_code }},
+                      {{ $t(provincesList[candidate.province_id]) }},
+                      {{ candidate.district }},
+                      {{ candidate.address}}
+                    </td>
                   </tr>
                   </tbody>
                 </table>
@@ -418,6 +423,7 @@
 <script>
   import defaultInCvUser from "~/constants/defaultInCvUser"
   import visaTypes from "~/constants/visaTypes"
+  import theProvinces from "~/constants/provinces"
 
   const CV_IN_SITE = 1
   const CV_UPLOAD = 2
@@ -469,7 +475,8 @@
         defaultLangAndText: defaultInCvUser,
         visaTypesList: visaTypes,
         defaultCvInSite: CV_IN_SITE,
-        defaultCvUpload: CV_UPLOAD
+        defaultCvUpload: CV_UPLOAD,
+        provincesList: theProvinces
       }
     },
 
