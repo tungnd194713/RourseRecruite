@@ -743,7 +743,7 @@
     },
 
     head () {
-      return {title: '求人詳細'}
+      return {title: '求人詳細 | 求人'}
     },
 
     computed: {

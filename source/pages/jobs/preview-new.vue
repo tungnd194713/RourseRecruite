@@ -246,7 +246,7 @@
     },
 
     head() {
-      return { title: '新規求人プレビュー'}
+      return { title: '新規求人プレビュー | 求人'}
     },
 
     computed: {

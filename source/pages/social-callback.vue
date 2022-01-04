@@ -17,7 +17,7 @@
         },
 
         head () {
-            return {title: 'お待ちください'}
+            return {title: 'お待ちください | 求人'}
         },
 
         mounted() {
