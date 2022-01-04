@@ -300,4 +300,29 @@
     font-size: 10px;
     overflow-wrap: break-word;
   }
+
+  .remove-image {
+    width: 100% !important;
+  }
+
+  .image-company {
+    width: 100% !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .remove-image {
+    width: fit-content !important;
+  }
+
+  .image-company {
+    width: 50% !important;
+  }
+}
+
+.image-company {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  min-height: 120px;
 }
