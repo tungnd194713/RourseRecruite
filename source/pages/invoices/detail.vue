@@ -44,7 +44,7 @@
             :key="job.id"
         >
           <th scope="row">{{ parseInt(index, 10) + 1 }}</th>
-          <td>{{ convertTypePlan(job.type_plan) }}</td>
+          <td class="type-plan">{{ convertTypePlan(job.type_plan) }}</td>
           <td class="text-left title">{{ job.title }}</td>
           <td class="text-right">{{ showPrice(job) }}</td>
 
