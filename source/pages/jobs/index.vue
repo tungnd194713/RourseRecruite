@@ -28,12 +28,23 @@
           />
         </div>
         <div class="col-12 col-lg-3 mb-2 form-group">
-          <input
+<!--          <input-->
+<!--            v-model="condition.date_start"-->
+<!--            type="text"-->
+<!--            class="form-control rounded-pill"-->
+<!--            placeholder="開始日"-->
+<!--          />-->
+          <date-picker
+            id="date_start"
             v-model="condition.date_start"
-            type="text"
-            class="form-control rounded-pill"
+            :clearable="false"
+            format="YYYY-MM-DD"
+            value-type="YYYY/MM/DD"
+            class="date-picker"
             placeholder="開始日"
-          />
+          >
+            <i slot="icon-calendar"></i>
+          </date-picker>
         </div>
         <div class="col-12 col-lg-3 mb-2 form-group">
           <select
@@ -74,7 +85,7 @@
                 <th scope="col"></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody v-if="!spinner">
               <tr
                 v-for="(item, index) in items"
                 :key="item.id"
@@ -93,7 +104,7 @@
                   {{ ( perPage * (currentPage - 1)) + (index + 1) }}
                 </td>
 
-                <td class="align-middle">
+                <td class="align-middle text-left min-width-200px">
                   <a
                     href=""
                     class="text-decoration-none"
@@ -101,13 +112,13 @@
                     >{{ item.title }}</a
                   >
                 </td>
-                <td class="align-middle">{{ item.date_start }}</td>
-                <td class="align-middle">{{ item.date_end }}</td>
-                <td class="align-middle">
+                <td class="align-middle min-width-100px">{{ item.date_start }}</td>
+                <td class="align-middle min-width-100px">{{ item.date_end }}</td>
+                <td class="align-middle min-width-100px">
                   {{ item.form_recruitment == 1 ? 'フルタイム' : 'アルバイト' }}
                 </td>
-                <td class="align-middle">{{ theTypePlan[item.type_plan] }}</td>
-                <td class="align-middle">{{ item.total_cv_applied }}</td>
+                <td class="align-middle min-width-100px">{{ theTypePlan[item.type_plan] }}</td>
+                <td class="align-middle min-width-80px">{{ item.total_cv_applied }}</td>
                 <td class="align-middle">
                   <div class="btn-group btn-toggle rounded-pill btn-switch">
                     <button
@@ -242,12 +253,18 @@
 
 <script>
 import 'bootstrap/dist/css/bootstrap.css'
+import DatePicker from 'vue2-datepicker'
+import 'vue2-datepicker/index.css'
+import 'vue2-datepicker/locale/ja'
 import Pagination from '../../components/Pagination'
 import theTypePlan from '~/constants/typePlan'
 
 export default {
   name: 'ListJob',
-  components: { Pagination },
+  components: {
+    Pagination,
+    DatePicker
+  },
   layout: 'auth',
 
   data() {
@@ -353,6 +370,7 @@ export default {
     async getListJob(currentPage) {
       const condition = { ...this.condition, currentPage }
       this.spinner = true
+      this.totalItems = 0
       const { data } = await this.$repositories.jobs.getJobs(condition)
       this.spinner = false
 
@@ -443,4 +461,8 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../styles/pages/jobs/list.scss';
+</style>
+
+<style lang="scss">
+@import '../../styles/pages/candidates_apply/listnotscoped.scss';
 </style>

@@ -139,7 +139,11 @@
                   </select>
                 </div>
               </div>
-              <div v-if="showStatusStayList" class="multi-select-status-stay">
+              <div
+                v-if="showStatusStayList"
+                v-click-outside="showStatusStayDropdown"
+                class="multi-select-status-stay"
+              >
                 <ul>
                   <li v-for="item in statusStayList" :key="item.value">
                     <label :for="'statusStay' +item.value">
@@ -148,7 +152,7 @@
                         v-model="job.status_stay"
                         type="checkbox"
                         :value="item.value"
-                        @click="$v.job.status_stay.$touch()"
+                        @click.stop="$v.job.status_stay.$touch()"
                       >
                       {{ item.text }}
                     </label>
@@ -260,7 +264,12 @@
               <div v-if="!$v.job.salary_min.isLowerThanSalaryMax" class="error-text">最多の月給以下で入力してください</div>
             </div>
           </div>
-          {{ (displaySalary === 'salary_range') ? '～': ''}}
+          <div
+            v-if="displaySalary === 'salary_range'"
+            class="col-12 col-sm-1 range-salary-character text-center pt-1"
+          >
+            ～
+          </div>
           <div v-if="displaySalary === 'salary_range'" class="col-12 col-sm-4">
             <div class="input-group input-group-icon">
               <span class="input-group-text input-group-text-pre">
@@ -511,14 +520,21 @@
     requiredIf,
     helpers
   } from 'vuelidate/lib/validators'
+  import vClickOutside from 'v-click-outside'
   import defaultProvinces from '~/constants/provinces'
 
   const imageRule = helpers.regex('image', /\.(jpeg|png|jpg|gif)$/)
   // const imageSize = (value) => value <= 2000000
   const maximumImageSize = 2000000
+  const JOBS_PLAN_A_LIMIT = 12
 
   export default {
     name: "CreateJob",
+
+    directives: {
+      clickOutside: vClickOutside.directive
+    },
+
     mixins: [validationMixin],
     layout: 'auth',
 
@@ -785,7 +801,7 @@
         this.$v.job.salary_max.$touch()
       },
 
-      showStatusStayDropdown() {
+      showStatusStayDropdown(event) {
         this.showStatusStayList = !this.showStatusStayList
       },
 
@@ -899,8 +915,16 @@
       previewJob() {
         this.$v.job.$touch()
         if (!this.$v.job.$invalid) {
-          this.$store.dispatch('job/setJob', this.job)
-          this.$router.push('/jobs/preview-new')
+          this.$repositories.jobs.countJobsPlanA({ date_start: this.job.date_start }).then(res => {
+            if (res.status === 200) {
+              if (res.data < JOBS_PLAN_A_LIMIT) {
+                this.$store.dispatch('job/setJob', this.job)
+                this.$router.push('/jobs/preview-new')
+              } else {
+                this.$toast.error('プランAの求人件数は上限に達しましたので、他のプランを選択してください')
+              }
+            }
+          })
         }
       }
     }

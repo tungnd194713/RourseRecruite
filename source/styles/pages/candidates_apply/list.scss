@@ -50,6 +50,7 @@ input::placeholder {
   font-size: 10px;
   background-color: #87B0C6;
   position: absolute;
+  top: 30px;
   margin-top: -18px;
   margin-left: -18px;
   border-top-right-radius: 15px;
@@ -83,6 +84,10 @@ input::placeholder {
   font-weight: normal;
   padding-top: 12px;
   padding-bottom: 12px;
+}
+
+.box-table table tbody tr {
+  position: relative;
 }
 
 .box-table table tbody tr td {
@@ -343,6 +348,7 @@ tr.active td {
     font-size: 7px;
     margin-top: -38px !important;
     margin-left: -8px !important;
+    top: 50px !important;
   }
   .part-above-search {
     font-family: 'M PLUS 1p', sans-serif;
@@ -368,6 +374,7 @@ tr.active td {
   .td-warning {
     padding: 1px 0px 1px 10px;
     font-size: 7px;
+    top: 50px !important;
   }
   .page-header-title {
     font-size: 25px !important;

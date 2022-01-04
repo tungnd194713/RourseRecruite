@@ -113,6 +113,10 @@ input::placeholder {
   padding-bottom: 12px;
 }
 
+.box-table table tbody tr {
+  position: relative;
+}
+
 .box-table table tbody tr td {
   color: #333333;
 }
@@ -200,6 +204,7 @@ table tbody td{
   margin-left: -21px;
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
+  top: 20px
 }
 
 .td-warning img {
@@ -296,6 +301,7 @@ table tbody td{
   .td-warning {
     margin-top: -36px;
     margin-left: -12px;
+    top: 32px !important;
   }
 }
 
@@ -329,6 +335,7 @@ table tbody td{
     font-size: 7px;
     margin-top: -17px;
     margin-left: -11px;
+    top: 20px !important;
   }
 
   .box-pagination p {
@@ -367,5 +374,10 @@ table tbody td{
 @media only screen and (max-width: 489px) {
   .td-warning {
     margin-top: -26px;
+    top: 35px !important;
   }
+}
+
+.expired-job-active {
+  background-color: #F4F6F6;
 }

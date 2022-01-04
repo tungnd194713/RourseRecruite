@@ -34,7 +34,8 @@ export default {
     '~/plugins/repositories',
     '~/plugins/handle-response.js',
     {src: '~/plugins/vuelidate'},
-    { src: '~/plugins/datepicker.js', ssr: false }
+    { src: '~/plugins/datepicker.js', ssr: false },
+    { src: "@/plugins/vClickOutside", ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
