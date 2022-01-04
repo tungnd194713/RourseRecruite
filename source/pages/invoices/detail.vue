@@ -23,7 +23,7 @@
             <label class="fw-bold">1ページあたりのレコード数：</label>
             <br/>
             <select v-model="perPage" @change="getInvoiceInMonth(perPage)" class="border-2 rounded-2">
-              <option id="any" value="any">Any</option>
+              <option id="all" value="" selected>All</option>
               <option id="10" value="20">20</option>
               <option id="25" value="35">35</option>
               <option id="50" value="50">50</option>
@@ -134,7 +134,7 @@
             value: 4
           },
         ],
-        perPage: 20,
+        perPage: '',
       }
     },
     head () {
