@@ -315,7 +315,7 @@ export default {
       deleteActive: '../../assets/images/icon_trash_active.svg',
       theTypePlan,
       currentPage: 1,
-      perPage: 10,
+      perPage: 20,
       totalItems: 0,
       pageCount: 1,
       condition: {

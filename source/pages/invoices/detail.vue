@@ -3,7 +3,7 @@
     <div class="row">
       <h3 class="title-page">{{ loggedInUser.company_name }}社の{{month}}月請求書</h3>
     </div>
-    <div v-if="jobs.length > 0" class="text-center table-responsive d-flex">
+    <div v-if="totalItems > 0" class="text-center table-responsive">
       <table class="table table-bordered mt-3">
         <tr class="border-0 mt-3">
           <td class="border-1 total-cost col-2">
@@ -19,18 +19,7 @@
           <td class="border-0"></td>
           <td class="border-0"></td>
           <td class="border-0"></td>
-          <td class="border-0 col-3">
-            <label class="fw-bold">1ページあたりのレコード数：</label>
-            <br/>
-            <select v-model="perPage" @change="getInvoiceInMonth(perPage)" class="border-2 rounded-2">
-              <option id="all" value="" selected>All</option>
-              <option value="20">20</option>
-              <option value="40">40</option>
-              <option value="60">60</option>
-              <option value="80">80</option>
-              <option value="100">100</option>
-            </select>
-          </td>
+          <td class="border-0"></td>
         </tr>
       </table>
     </div>
@@ -50,11 +39,11 @@
           <th scope="col">総計<p>（投稿＋応募）</p></th>
         </tr>
         </thead>
-        <tbody>
+        <tbody v-if="!spinner && totalItems > 0">
         <tr v-for="(job, index) in jobs"
             :key="job.id"
         >
-          <th scope="row">{{ index + 1}}</th>
+          <th scope="row">{{ parseInt(index, 10) + 1 }}</th>
           <td>{{ convertTypePlan(job.type_plan) }}</td>
           <td class="col-3 text-left">{{ job.title }}</td>
           <td class="text-right">{{ showPrice(job) }}</td>
@@ -76,7 +65,8 @@
             ) }}
           </td>
         </tr>
-        <tr v-if="jobs.length > 0" class="border-0">
+        <tr v-if="pageCount <= perPage" class="border-0 d-flex tr-empty"></tr>
+        <tr v-if="totalItems > 0" class="border-0">
           <td class="border-0"></td>
           <td class="border-0"></td>
           <td class="border-0"></td>
@@ -100,17 +90,33 @@
         </tr>
         </tbody>
       </table>
-      <h4 v-if="jobs.length === 0" class="text-center w-100 p-3 m-0 bg-white border border-1">検索結果がありません</h4>
+      <div v-if="totalItems === 0 && spinner" class="outer-spinner">
+        <div class="loader"></div>
+      </div>
+      <h4 v-if="totalItems === 0  && !spinner" class="text-center w-100 p-3 m-0 bg-white border border-1">検索結果がありません</h4>
     </div>
+    <Pagination
+      :current-page="currentPage"
+      :per-page="perPage"
+      :total-items="totalItems"
+      :page-count="pageCount"
+      @nextPage="pageChangeHandle('next')"
+      @previousPage="pageChangeHandle('previous')"
+      @customPage="pageChangeHandle"
+    />
   </div>
 </template>
 
 <script>
   import {mapGetters} from 'vuex';
+  import Pagination from '../../components/Pagination'
 
   export default {
     name: "Detail",
     layout: 'payment',
+    components: {
+      Pagination,
+    },
 
     data () {
       return {
@@ -136,7 +142,11 @@
             value: 4
           },
         ],
-        perPage: '',
+        spinner: '',
+        currentPage: 1,
+        perPage: 20,
+        totalItems: 0,
+        pageCount: 1,
       }
     },
     head () {
@@ -144,27 +154,44 @@
     },
 
     computed: {
-      ...mapGetters(['loggedInUser'])
+      ...mapGetters(['loggedInUser']),
+
+      next() {
+        return this.currentPage < this.pageCount
+          ? this.currentPage + 1
+          : this.pageCount
+      },
+      previous() {
+        return this.currentPage > 0 ? this.currentPage - 1 : this.currentPage
+      },
     },
 
     created() {
-      this.getInvoiceInMonth(this.perPage);
+      this.getInvoiceInMonth(this.currentPage);
     },
 
     methods: {
-      async getInvoiceInMonth(perPage) {
+      async getInvoiceInMonth(currentPage) {
         this.month = this.$moment(this.$route.query.year_month).format('M') || this.$moment().format('M');
 
         const params = {
           year_month: this.$route.query.year_month,
-          per_page: perPage
+          current_page: currentPage
         };
+        this.spinner = true
+        this.totalItems = 0
 
         const res = await this.$repositories.invoices.getInvoiceInMonth(params);
 
+        this.spinner = false
         this.invoice = res.data.invoice;
-        this.jobs = res.data.jobs;
+        this.jobs = res.data.jobs.data;
         this.packages = res.data.packages;
+
+        this.totalItems = res.data.total_job;
+        this.currentPage = res.data.jobs.current_page
+        this.perPage = res.data.jobs.per_page
+        this.pageCount = res.data.jobs.last_page
       },
 
       convertTypePlan(typePlan) {
@@ -239,7 +266,21 @@
         return price
           ? '¥' + Math.ceil(price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
           : '';
-      }
+      },
+
+      pageChangeHandle(value) {
+        switch (value) {
+          case 'next':
+            this.currentPage = this.next
+            break
+          case 'previous':
+            this.currentPage = this.previous
+            break
+          default:
+            this.currentPage = value
+        }
+        this.getInvoiceInMonth(this.currentPage)
+      },
     }
   }
 </script>
