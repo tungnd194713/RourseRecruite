@@ -97,14 +97,14 @@
                 <td class="align-middle text-center">
                   <span
                     v-if="!(item.read || isWarningUnRead(item.date_start))"
-                    class="td-warning"
+                    :class="(perPage * (currentPage - 1)) + (index + 1) < 10 ? 'td-warning' : 'td-warning-large'"
                   >
                     未対応の履歴書{{ item.cv_read }}/{{
                       item.total_cv_applied
                     }}通
                     <img class="" src="../../assets/images/icon_warning.svg" />
                   </span>
-                  {{ ( perPage * (currentPage - 1)) + (index + 1) }}
+                  {{ (perPage * (currentPage - 1)) + (index + 1) }}
                 </td>
 
                 <td class="align-middle text-left min-width-200px">
