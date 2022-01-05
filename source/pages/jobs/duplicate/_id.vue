@@ -759,6 +759,7 @@ import theStatusStay from "~/constants/statusStay"
 
 const imageRule = helpers.regex('image', /\.(jpeg|png|jpg|gif)$/)
 const maximumImageSize = 2000000
+const JOBS_PLAN_A_LIMIT = 12
 
 export default {
     name: 'EditJob',
@@ -772,7 +773,7 @@ export default {
 
     data() {
         return {
-            previewUpdateRoute: `/jobs/update/preview/${this.$route.params.id}`,
+            previewJobDuplicateRoute: `/jobs/duplicate/preview/${this.$route.params.id}`,
             url_file: process.env.URL_FILE,
             oldImageJob: null,
             showStatusStayList: false,
@@ -1000,17 +1001,17 @@ export default {
     // },
 
     created() {
-        if (this.previewUpdateRoute === this.gettersGetPrevRouteUpdate()) {
-          this.oldImageJob = this.gettersGetOldImageJobUpdate()
-          let jobUpdateStored = {}
-          jobUpdateStored = Object.assign({}, this.gettersGetJobUpdate())
-          if (Object.keys(jobUpdateStored).length !== 0) {
-            this.job = Object.assign({}, jobUpdateStored)
+        if (this.previewJobDuplicateRoute === this.gettersGetPrevRouteJobDuplicate()) {
+          this.oldImageJob = this.gettersGetOldImageJobDuplicate()
+          let jobDuplicateStored = {}
+          jobDuplicateStored = Object.assign({}, this.gettersGetJobDuplicate())
+          if (Object.keys(jobDuplicateStored).length !== 0) {
+            this.job = Object.assign({}, jobDuplicateStored)
             if (this.job.image_job) {
               this.previewImageJobUrl = URL.createObjectURL(this.job.image_job)
             }
           }
-          this.dispatchSetPrevRouteUpdate('')
+          this.dispatchSetPrevRouteJobDuplicate('')
         } else {
           this.showJob();
         }
@@ -1018,15 +1019,15 @@ export default {
 
     methods: {
       ...mapActions({
-        'dispatchSetJobUpdate': 'job/setJobUpdate',
-        'dispatchSetOldImageJobUpdate': 'job/setOldImageJobUpdate',
-        'dispatchSetPrevRouteUpdate': 'job/setPrevRouteUpdate',
+        'dispatchSetJobDuplicate': 'job/setJobDuplicate',
+        'dispatchSetOldImageJobDuplicate': 'job/setOldImageJobDuplicate',
+        'dispatchSetPrevRouteJobDuplicate': 'job/setPrevRouteJobDuplicate',
       }),
 
       ...mapGetters({
-        'gettersGetJobUpdate': 'job/getJobUpdate',
-        'gettersGetOldImageJobUpdate': 'job/getOldImageJobUpdate',
-        'gettersGetPrevRouteUpdate': 'job/getPrevRouteUpdate',
+        'gettersGetJobDuplicate': 'job/getJobDuplicate',
+        'gettersGetOldImageJobDuplicate': 'job/getOldImageJobDuplicate',
+        'gettersGetPrevRouteJobDuplicate': 'job/getPrevRouteJobDuplicate',
       }),
 
       onInputOrBlurSalaryMin() {
@@ -1145,9 +1146,22 @@ export default {
       previewJob() {
         this.$v.job.$touch()
         if (!this.$v.job.$invalid) {
-          this.dispatchSetJobUpdate(this.job)
-          this.dispatchSetOldImageJobUpdate(this.oldImageJob)
-          this.$router.push('/jobs/update/preview/' + this.$route.params.id)
+          if (parseInt(this.job.type_plan) === 1) {
+            this.$repositories.jobs.countJobsPlanA({ date_start: this.job.date_start }).then(res => {
+              if (res.status === 200) {
+                if (res.data < JOBS_PLAN_A_LIMIT) {
+                  this.$store.dispatch('job/setJob', this.job)
+                  this.$router.push('/jobs/preview-new')
+                } else {
+                  this.$toast.error('プランAの求人件数は上限に達しましたので、他のプランを選択してください')
+                }
+              }
+            })
+          } else {
+            this.dispatchSetJobDuplicate(this.job)
+            this.dispatchSetOldImageJobDuplicate(this.oldImageJob)
+            this.$router.push('/jobs/duplicate/preview/' + this.$route.params.id)
+          }
         }
       },
 

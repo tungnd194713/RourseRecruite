@@ -101,12 +101,14 @@
               </tr>
               <tr>
                 <td>ベトナム人在籍状況</td>
-                <td class="pre-line">{{ job.has_vietnamese_staff ? 'はい': 'いいえ'}}</td>
+                <td class="pre-line">
+                  {{ hasVietnameseStaffLabelList[parseInt(job.has_vietnamese_staff)]}}
+                </td>
               </tr>
-              <tr>
+              <!--<tr>
                 <td>残業見込み、休日出勤見込み</td>
                 <td class="pre-line">{{ job.overtime}}</td>
-              </tr>
+              </tr>-->
             </tbody>
           </table>
         </div>
@@ -153,6 +155,11 @@
         oldImageJob: '',
         careerList: theCareers,
         provincesList: theProvinces,
+        hasVietnameseStaffLabelList: [
+          'いない',
+          'いる',
+          '採用予定',
+        ],
         typePlanList:[
           {
             text: 'プランA',
@@ -334,7 +341,7 @@
         if (this.job.salary_min === '') {
           this.job.salary_min = 0
         }
-        this.job.has_vietnamese_staff = this.job.has_vietnamese_staff ? 1 : 0
+        // this.job.has_vietnamese_staff = this.job.has_vietnamese_staff ? 1 : 0
         const formData = new FormData()
         if (this.job.image_job) {
           formData.append('image_job', this.job.image_job)
