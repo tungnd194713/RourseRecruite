@@ -12,7 +12,7 @@
     </div>
 
     <div class="row box-search mt-2 px-3 pt-3 pb-2 rounded-pill">
-      <div class="col-12 col-lg-4 mb-2">
+      <div class="col-12 col-lg-3 mb-2">
         <input
           v-model="condition.key_word"
           type="text"
@@ -33,7 +33,7 @@
           <i slot="icon-calendar"></i>
         </date-picker>
       </div>
-      <div class="col-12 col-lg-3 mb-2">
+      <div class="col-12 col-lg-2 mb-2">
         <select
           v-model="condition.status_stay"
           class="form-select rounded-pill"
@@ -46,6 +46,17 @@
           <option value="3">採用</option>
           <option value="4">不採用（連絡取れず）</option>
           <option value="5">不採用</option>
+        </select>
+      </div>
+      <div class="col-12 col-lg-2 mb-2">
+        <select
+                v-model="condition.read"
+                class="form-select rounded-pill"
+                aria-label="ステータス"
+        >
+          <option value="" selected>すべて</option>
+          <option value="0">未読</option>
+          <option value="1">既読</option>
         </select>
       </div>
       <div class="col-12 col-lg-2">
@@ -532,6 +543,7 @@ export default {
         key_word: '',
         apply_date: '',
         status_stay: '',
+        read: '',
       },
       idRow: -1,
       dataUpdateStatus: {
