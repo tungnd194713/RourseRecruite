@@ -259,7 +259,7 @@
                         class="form-select form-select-lg"
                     >
                         <option
-                            v-for="(province, index) in provinces"
+                            v-for="(province, index) in provinces.slice(1)"
                             :key="index"
                             :value="index + 1"
                         >
