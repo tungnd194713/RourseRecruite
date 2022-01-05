@@ -496,11 +496,14 @@
           responseType: 'blob'
         }).then(res => {
           if (res.status === 200) {
-            const file = new Blob(
-              [res.data],
-              {type: 'application/pdf'});
-            const fileURL = URL.createObjectURL(file);
-            window.open(fileURL, '_blank');
+            const file = new Blob([res.data], {type: 'application/pdf'})
+            // const fileURL = URL.createObjectURL(file)
+            // window.open(fileURL, '_blank')
+            const link = document.createElement("a")
+            link.href = URL.createObjectURL(file)
+            link.download = 'cv-' + this.candidate.name + '.pdf'
+            link.click()
+            URL.revokeObjectURL(link.href)
           }
         })
       },

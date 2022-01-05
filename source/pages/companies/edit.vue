@@ -965,20 +965,19 @@ export default {
       }
       if (fileType === 2) {
         this.data.images = [...this.$refs.introImageInput.files]
-        this.introImageTypeError = false
-        this.introImageSizeError = false
+        // this.introImageTypeError = false
+        // this.introImageSizeError = false
         for (let i = 0; i < this.data.images.length; i++) {
-          this.$v.data.images.$each.$iter[i].$touch()
-          if (!this.$v.data.images.$each.$iter[i].name.imageRule) {
-            this.introImageTypeError = true
-          }
-          if (!this.$v.data.images.$each.$iter[i].size.imageSize) {
-            this.introImageSizeError = true
-          }
           const file = this.data.images[i]
 
           this.uploadedImages.push(file)
           this.imageUrl.push(window.URL.createObjectURL(file))
+        }
+
+        // assign and validate intro images to upload
+        this.data.images = [...this.uploadedImages]
+        for (let i = 0; i < this.data.images.length; i++) {
+          this.validateIntroImagesToUpload(i)
         }
       }
       if (fileType === 3) {
@@ -988,6 +987,17 @@ export default {
         )
       }
     },
+
+    validateIntroImagesToUpload(i) {
+      this.$v.data.images.$each.$iter[i].$touch()
+      if (!this.$v.data.images.$each.$iter[i].name.imageRule) {
+        this.introImageTypeError = true
+      }
+      if (!this.$v.data.images.$each.$iter[i].size.imageSize) {
+        this.introImageSizeError = true
+      }
+    },
+
     drop(event, fileType) {
       event.preventDefault()
       if (fileType === 1) {
@@ -1007,8 +1017,16 @@ export default {
       if (fileType === 2) {
         this.clearErrors()
         this.imageUrl.splice(i, 1)
-        this.data.images = []
         this.uploadedImages.splice(i, 1)
+
+        // assign and validate intro images to upload
+        this.data.images = [...this.uploadedImages]
+        this.introImageTypeError = false
+        this.introImageSizeError = false
+        for (let i = 0; i < this.data.images.length; i++) {
+          this.validateIntroImagesToUpload(i)
+        }
+
         this.$refs.introImageInput.value = ''
       }
       if (fileType === 3) {
