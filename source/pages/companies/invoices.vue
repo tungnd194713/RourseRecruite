@@ -84,7 +84,7 @@
           <div class="modal-body">
             <div class="card_block__body">
               <div id="payjp_spinner" class="spinner" style="display: none;"><img src="https://checkout.pay.jp/images/loading.gif" alt=""></div>
-              <div class="tab-content">
+              <div class="modal-body-content">
                 <div id="payjp_supportedBrands d-flex" class="mod--cardlist">
                   <ul class="row">
                     <li class="img-supported-brands col-2"><img src="https://checkout.pay.jp/images/creditcard/visa.png"></li>

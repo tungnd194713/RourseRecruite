@@ -71,7 +71,7 @@
               <th scope="col"></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="!spinner">
             <tr
               v-for="(item, index) in items"
               :key="item.id"
@@ -134,16 +134,18 @@
               </td>
               <td class="align-middle py-3">
                 <select
-                  v-model="item.residence_card_confirm"
                   class="form-select active rounded-3 confirm-select"
                   data-bs-toggle="modal"
                   data-bs-target="#confirmUpdateResidenceCardModal"
-                  @change="confirmUpdate(item)"
+                  @change="confirmUpdate(item, $event)"
                 >
 
-                  <option value="0" selected>未選択</option>
-                  <option value="1">承認</option>
-                  <option value="2">非承認</option>
+                  <option v-for="(residenceCardConfirmItem, index) in residenceCardConfirm"
+                          :key="index"
+                          :value="index"
+                          :selected="item.residence_card_confirm === index"
+                  >{{ residenceCardConfirmItem }}
+                  </option>
                 </select>
               </td>
               <td class="align-middle py-3 col-2 note">
@@ -151,19 +153,18 @@
               </td>
               <td class="align-middle py-3">
                 <select
-                  v-model="item.status"
                   class="form-select active rounded-3 status-select"
+                  @change="confirmUpdateStatus(item, $event)"
                   data-bs-toggle="modal"
                   data-bs-target="#confirmUpdateStatusModal"
-                  @change="confirmUpdateStatus(item)"
                 >
-                  <option value="0" selected>未選択</option>
-                  <option value="1">未対応</option>
-                  <option value="2">折り返し待ち</option>
-                  <option value="3">面接待ち</option>
-                  <option value="4">採用</option>
-                  <option value="5">不採用（連絡取れず）</option>
-                  <option value="6">不採用</option>
+                  <option v-for="(status, index) in statusCandidateApply"
+                          :key="index"
+                          :value="index"
+                          :selected="item.status === index"
+                  >
+                    {{status}}
+                  </option>
                 </select>
               </td>
               <td class="align-middle py-3">
@@ -362,6 +363,7 @@
               aria-label="Close"
               src="../../assets/images/ic_exit.svg"
               alt=""
+              @click="reloadList"
             />
           </div>
           <div class="modal-body-content my-3">
@@ -382,6 +384,7 @@
               type="button"
               class="btn btn-cancel-update rounded-pill w-20 mt-4 mb-4"
               data-bs-dismiss="modal"
+              @click="reloadList"
             >
               いいえ
             </button>
@@ -390,7 +393,7 @@
               class="btn btn-ok-update btn-custom rounded-pill w-20"
               @click="
                   updateCard(selectedItemId, {
-                    residence_card_confirm: residenceCardConfirm,
+                    residence_card_confirm: dataUpdateStatus.residence_card_confirm,
                   })
               "
             >
@@ -402,58 +405,67 @@
     </div>
     <!-- Modal -->
 
-    <!-- Modal Update Status Card-->
-    <div
-      id="confirmUpdateStatusModal"
-      class="modal fade update-modal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content box-modal">
-          <div class="modal-header border-0">
-            <img
-              id="closeConfirmUpdateStatusModal"
-              class="close-modal"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-              src="../../assets/images/ic_exit.svg"
-              alt=""
-            />
-          </div>
-          <div class="modal-body-content my-3">
-            <h3 class="text-center modal-body-text">
-              ステータスを変更してもよろしいか？
-            </h3>
-          </div>
-          <div
-            class="
-                modal-footer
-                align-items-center
-                d-flex
-                justify-content-center
-                flex-row
-              "
-          >
-            <button
-              type="button"
-              class="btn btn-cancel-update rounded-pill w-20 mt-4 mb-4"
-              data-bs-dismiss="modal"
-            >
-              いいえ
-            </button>
-            <button
-              type="button"
-              class="btn btn-ok-update btn-custom rounded-pill w-20"
-              @click="updateItemStatus(selectedItemId, { status: status })"
-            >
-              はい
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Modal Update Status-->
+<!--    <div-->
+<!--      v-if="selectChange"-->
+<!--      id="confirmUpdateStatusModal"-->
+<!--      class="modal fade update-modal"-->
+<!--      tabindex="-1"-->
+<!--      aria-labelledby="exampleModalLabel"-->
+<!--      aria-hidden="true"-->
+<!--      ref="confirmUpdateStatusModal"-->
+<!--    >-->
+<!--      <div class="modal-dialog modal-dialog-centered modal-sm">-->
+<!--        <div class="modal-content box-modal">-->
+<!--          <div class="modal-header border-0">-->
+<!--            <img-->
+<!--              id="closeConfirmUpdateStatusModal"-->
+<!--              class="close-modal"-->
+<!--              data-bs-dismiss="modal"-->
+<!--              aria-label="Close"-->
+<!--              src="../../assets/images/ic_exit.svg"-->
+<!--              alt=""-->
+<!--              @click="reloadList"-->
+<!--            />-->
+<!--          </div>-->
+<!--          <div class="modal-body-content my-3">-->
+<!--            <h3 class="text-center modal-body-text">-->
+<!--              ステータスを変更してもよろしいか？-->
+<!--            </h3>-->
+<!--          </div>-->
+<!--          <div-->
+<!--            class="-->
+<!--                modal-footer-->
+<!--                align-items-center-->
+<!--                d-flex-->
+<!--                justify-content-center-->
+<!--                flex-row-->
+<!--              "-->
+<!--          >-->
+<!--            <button-->
+<!--              type="button"-->
+<!--              class="btn btn-cancel-update rounded-pill w-20 mt-4 mb-4"-->
+<!--              data-bs-dismiss="modal"-->
+<!--              @click="reloadList"-->
+<!--            >-->
+<!--              いいえ-->
+<!--            </button>-->
+<!--            <button-->
+<!--              type="button"-->
+<!--              class="btn btn-ok-update btn-custom rounded-pill w-20"-->
+<!--              @click="updateItemStatus(selectedItemId, { status: dataUpdateStatus.status })"-->
+<!--            >-->
+<!--              はい-->
+<!--            </button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+    <ConfirmModal
+      v-show="selectChange"
+      @reloadList="reloadList"
+      @updateItemStatus="updateItemStatus(selectedItemId, { status: dataUpdateStatus.status })"
+    />
     <!-- Modal -->
 
   </main>
@@ -468,7 +480,10 @@ import 'vue2-datepicker/index.css'
 import 'vue2-datepicker/locale/ja'
 import Pagination from '../../components/Pagination'
 import CvUserModal from '~/components/modal/CvUserModal'
+import ConfirmModal from '~/components/modal/ConfirmModal'
 import defaultInCvUser from '~/constants/defaultInCvUser'
+import residenceCardConfirm from '~/constants/residenceCardConfirm'
+import statusCandidateApply from '~/constants/statusCandidateApply'
 
 export default {
   name: 'CandidateApply',
@@ -476,6 +491,7 @@ export default {
     Pagination,
     DatePicker,
     CvUserModal,
+    ConfirmModal
   },
   mixins: [validationMixin],
   layout: 'auth',
@@ -624,8 +640,9 @@ export default {
       educationsOfCandidate: [],
       jobsOfCandidate: [],
       selectedItemId: 0,
-      residenceCardConfirm: '',
-      status: '',
+      residenceCardConfirm,
+      statusCandidateApply,
+      selectChange: false
     }
   },
 
@@ -717,7 +734,7 @@ export default {
               this.$toast.success('応募者の応募状態・更新が完了しました')
               this.getListCV(this.currentPage)
             } else {
-              this.$toast.success(
+              this.$toast.error(
                 '候補者の申請状況と候補者名の更新は完了していません。'
               )
             }
@@ -736,7 +753,7 @@ export default {
             this.$toast.success('応募者の応募状態・更新が完了しました')
             this.getListCV(this.currentPage)
           } else {
-            this.$toast.success(
+            this.$toast.error(
               '候補者の申請状況と候補者名の更新は完了していません。'
             )
           }
@@ -750,10 +767,11 @@ export default {
           this.idRow = -1
           if (res.status === 200) {
             document.getElementById('closeConfirmUpdateStatusModal').click()
+            this.selectChange = false;
             this.$toast.success('応募者の応募状態・更新が完了しました')
             this.getListCV(this.currentPage)
           } else {
-            this.$toast.success(
+            this.$toast.error(
               '候補者の申請状況と候補者名の更新は完了していません。'
             )
           }
@@ -816,15 +834,22 @@ export default {
       )
     },
 
-    confirmUpdate(item) {
+    confirmUpdate(item, event) {
       this.selectedItemId = item.id;
-      this.residenceCardConfirm = item.residence_card_confirm
+      this.dataUpdateStatus.residence_card_confirm = event.target.value
+      this.selectChange = true;
     },
 
-    confirmUpdateStatus(item) {
+    confirmUpdateStatus(item, event) {
       this.selectedItemId = item.id;
-      this.status = item.status
+      this.dataUpdateStatus.status = event.target.value;
+      this.selectChange = true;
     },
+
+    reloadList() {
+      this.selectChange = false;
+      this.getListCV(this.currentPage)
+    }
   },
 }
 </script>

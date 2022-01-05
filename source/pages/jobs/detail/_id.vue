@@ -191,11 +191,13 @@
           <tbody>
           <tr v-for="(item, index) in items" :key="item.id" :class="item.read === 1 ? 'active' : ''">
             <td class="align-middle py-3">
-                          <span v-if="!(item.read || isWarningUnRead(item.created_at))" class="td-warning">
+                          <span v-if="!(item.read || isWarningUnRead(item.created_at))"
+                                :class="(perPage * (currentPage - 1)) + (index + 1) < 10 ? 'td-warning' : 'td-warning-large'"
+                          >
                             3日以上未対応
                             <img class="" src="../../../assets/images/icon_warning.svg"/>
                           </span>
-              {{index + 1}}
+              {{ (perPage * (currentPage - 1)) + (index + 1) }}
             </td>
             <td class="align-middle py-3">
               <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop" @click="popupCvUser(item)">
@@ -222,7 +224,10 @@
             <td class="align-middle py-3">
               <select v-model="item.residence_card_confirm"
                       class="form-select active rounded-3 confirm-select"
-                      @change="updateCard(item.id, {residence_card_confirm: item.residence_card_confirm})">
+                      @change="confirmUpdate(item)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#confirmUpdateResidenceCardModal"
+                >
                 <option value="0">未選択</option>
                 <option value="1">承認</option>
                 <option value="2">非承認</option>
@@ -234,7 +239,10 @@
             <td class="align-middle py-3">
               <select v-model="item.status"
                       class="form-select active rounded-3 status-select"
-                      @change="updateItemStatus(item.id, {status: item.status})">
+                      @change="confirmUpdateStatus(item)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#confirmUpdateStatusModal"
+              >
                 <option value="0">未選択</option>
                 <option value="1">未対応</option>
                 <option value="2">折り返し待ち</option>
@@ -449,6 +457,118 @@
     />
 
     <StatusStayInfoModal />
+
+    <!-- Modal Update Residence Card-->
+    <div
+      id="confirmUpdateResidenceCardModal"
+      class="modal fade update-modal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content box-modal">
+          <div class="modal-header border-0">
+            <img
+              id="closeConfirmUpdateResidenceCardModal"
+              class="close-modal"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              src="../../../assets/images/ic_exit.svg"
+              alt=""
+            />
+          </div>
+          <div class="modal-body-content my-3">
+            <h3 class="text-center modal-body-text">
+              ステータスを変更してもよろしいか？
+            </h3>
+          </div>
+          <div
+            class="
+                modal-footer
+                align-items-center
+                d-flex
+                justify-content-center
+                flex-row
+              "
+          >
+            <button
+              type="button"
+              class="btn btn-cancel-update rounded-pill w-20 mt-4 mb-4"
+              data-bs-dismiss="modal"
+            >
+              いいえ
+            </button>
+            <button
+              type="button"
+              class="btn btn-ok-update btn-custom rounded-pill w-20"
+              @click="
+                  updateCard(selectedItemId, {
+                    residence_card_confirm: residenceCardConfirm,
+                  })
+              "
+            >
+              はい
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+
+    <!-- Modal Update Status Card-->
+    <div
+      id="confirmUpdateStatusModal"
+      class="modal fade update-modal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content box-modal">
+          <div class="modal-header border-0">
+            <img
+              id="closeConfirmUpdateStatusModal"
+              class="close-modal"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              src="../../../assets/images/ic_exit.svg"
+              alt=""
+            />
+          </div>
+          <div class="modal-body-content my-3">
+            <h3 class="text-center modal-body-text">
+              ステータスを変更してもよろしいか？
+            </h3>
+          </div>
+          <div
+            class="
+                modal-footer
+                align-items-center
+                d-flex
+                justify-content-center
+                flex-row
+              "
+          >
+            <button
+              type="button"
+              class="btn btn-cancel-update rounded-pill w-20 mt-4 mb-4"
+              data-bs-dismiss="modal"
+            >
+              いいえ
+            </button>
+            <button
+              type="button"
+              class="btn btn-ok-update btn-custom rounded-pill w-20"
+              @click="updateItemStatus(selectedItemId, { status: status })"
+            >
+              はい
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
 
   </main>
 </template>
@@ -730,7 +850,10 @@
           candidate_certificates : []
         },
         educationsOfCandidate: [],
-        jobsOfCandidate: []
+        jobsOfCandidate: [],
+        selectedItemId: 0,
+        residenceCardConfirm: '',
+        status: '',
       }
     },
 
@@ -968,6 +1091,16 @@
           return element.type === 2
         }
       )
+    },
+
+    confirmUpdate(item) {
+      this.selectedItemId = item.id;
+      this.residenceCardConfirm = item.residence_card_confirm
+    },
+
+    confirmUpdateStatus(item) {
+      this.selectedItemId = item.id;
+      this.status = item.status
     },
   },
 }
