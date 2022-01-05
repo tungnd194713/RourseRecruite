@@ -21,7 +21,7 @@ body {
 .basic .logo {
   width: 200px;
   height: 200px;
-  background-color: #f2f2f2;
+  //background-color: #f2f2f2;
   border-radius: 40px;
   padding: 50%;
 }
@@ -30,6 +30,7 @@ body {
   transform: translate(-50%, -50%);
   width: inherit;
   height: inherit;
+  border-radius: 40px;
 }
 
 .basic #name {

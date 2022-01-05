@@ -19,6 +19,7 @@
                 v-else
                 src="../../assets/images/avatar1.svg"
                 alt="Company Logo"
+
               />
             </div>
           </div>
