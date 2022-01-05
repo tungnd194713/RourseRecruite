@@ -36,8 +36,8 @@
               </ul>
             </div>
             <img
-              v-if="loggedInUser.profile_image"
-              :src="url_file + loggedInUser.profile_image"
+              v-if="loggedInUser.logo"
+              :src="url_file + loggedInUser.logo"
               alt="mdo" width="32" height="32" class="rounded-circle">
             <img
               v-else
