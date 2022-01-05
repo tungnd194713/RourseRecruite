@@ -192,11 +192,41 @@
         <div class="form-group mb-3 mb-lg-4 row">
           <label class="col-sm-2 col-form-label">ベトナム人在籍状況</label>
           <div class="col-12 col-sm-10">
-            <div class="form-check">
-              <div class="float-start">
-                <input id="hasVietnameseStaffCheckbox" v-model="job.has_vietnamese_staff" class="form-check-input" type="checkbox" value="salary_max">
-                <label class="form-check-label" for="hasVietnameseStaffCheckbox">
+            <div class="row">
+              <div class="col-12 col-sm-4 col-md-2">
+                <input
+                  id="hasVietnameseStaffStatus_1"
+                  v-model="job.has_vietnamese_staff"
+                  class="form-check-input"
+                  type="radio"
+                  value="1"
+                >
+                <label class="form-check-label" for="hasVietnameseStaffStatus_1">
                   いる
+                </label>
+              </div>
+              <div class="col-12 col-sm-4 col-md-2">
+                <input
+                  id="hasVietnameseStaffStatus_0"
+                  v-model="job.has_vietnamese_staff"
+                  class="form-check-input"
+                  type="radio"
+                  value="0"
+                >
+                <label class="form-check-label" for="hasVietnameseStaffStatus_0">
+                  いない
+                </label>
+              </div>
+              <div class="col-12 col-sm-4 col-md-2">
+                <input
+                  id="hasVietnameseStaffStatus_2"
+                  v-model="job.has_vietnamese_staff"
+                  class="form-check-input"
+                  type="radio"
+                  value="2"
+                >
+                <label class="form-check-label" for="hasVietnameseStaffStatus_2">
+                  採用予定
                 </label>
               </div>
             </div>
@@ -206,13 +236,13 @@
           <label class="col-sm-2 col-form-label">月給 <span>*</span></label>
           <div class="col-12 col-sm-10">
             <div class="form-check">
-              <div class="float-start">
+              <!--<div class="float-start">
                 <input id="gridCheck1" v-model="displaySalary" class="form-check-input" type="radio" value="salary_max">
                 <label class="form-check-label" for="gridCheck1">
                   上限額
                 </label>
-              </div>
-              <div class="checkbox_two">
+              </div>-->
+              <div class="float-start">
                 <input id="gridCheck2" v-model="displaySalary" class="form-check-input" type="radio" value="salary_range">
                 <label class="form-check-label" for="gridCheck2">
                   ○○から○○まで
@@ -305,10 +335,26 @@
               @input="$v.job.content_work.$touch()"
               @blur="$v.job.content_work.$touch()"
             />
-            <div v-if="$v.job.content_work.$error">
-              <div v-if="!$v.job.content_work.required" class="error-text">これは必須項目なので、必ず入力してください</div>
-              <div v-if="!$v.job.content_work.maxLength" class="error-text">1000文字以下で入力してください</div>
-              <div v-if="!$v.job.content_work.minLength" class="error-text">50文字以上で入力してください</div>
+            <div class="row">
+              <div v-if="$v.job.content_work.$error" class="col-6 align-items-start">
+                <div v-if="!$v.job.content_work.required" class="error-text">これは必須項目なので、必ず入力してください</div>
+                <div v-if="!$v.job.content_work.maxLength" class="error-text">1000文字以下で入力してください</div>
+                <div v-if="!$v.job.content_work.minLength" class="error-text">50文字以上で入力してください</div>
+              </div>
+              <div
+                class="col-6 text-right"
+                :class="{
+                  'offset-6': !$v.job.content_work.$error
+                }"
+              >
+                <div
+                  v-if="job.content_work.length < 1000"
+                  class="error-text text-black"
+                >
+                  残り{{ 1000 - job.content_work.length }}文字
+                </div>
+                <div v-else class="error-text text-black">残り0文字</div>
+              </div>
             </div>
           </div>
         </div>
@@ -447,7 +493,8 @@
             </div>
           </div>
         </div>
-        <div class="form-group mb-3 mb-lg-4 row">
+
+        <!--<div class="form-group mb-3 mb-lg-4 row">
           <label for="example15" class="col-sm-2 col-form-label">残業見込み、休日出勤見込み</label>
           <div class="col-12 col-sm-10">
             <textarea
@@ -461,7 +508,8 @@
               <div v-if="!$v.job.overtime.maxLength" class="error-text">1000文字以下で入力してください</div>
             </div>
           </div>
-        </div>
+        </div>-->
+
         <div class="text-end">
           <button
             type="button"
@@ -544,7 +592,12 @@
         showStatusStayList: false,
         openDateEndPicker: false,
         previewImageJobUrl: null,
-        displaySalary: 'salary_max',
+        displaySalary: 'salary_range',
+        hasVietnameseStaffLabelList: [
+          'いない',
+          'いる',
+          '採用予定',
+        ],
         typePlanList:[
           {
             text: 'プランA',
@@ -888,7 +941,7 @@
           break_time: '',
           holidays: '',
           welfare_regime: '',
-          has_vietnamese_staff: '',
+          has_vietnamese_staff: 1,
           overtime: ''
         })
         this.job.type_plan = this.typePlanList[0].value
@@ -896,7 +949,7 @@
         this.job.form_recruitment = this.formRecruitmentList[0].value
         this.job.status_stay.push(this.statusStayList[0].value)
         this.previewImageJobUrl = null
-        this.displaySalary = 'salary_max'
+        this.displaySalary = 'salary_range'
         this.$v.$reset()
       },
 
