@@ -5,10 +5,10 @@
             <div class="bg-white box-form-register">
                 <h1 class="mb-3 mb-lg-4 fw-bold">会員登録フォーム</h1>
                 <!--<form>-->
-                <div v-if="message === 200" class="valid-feedback error">
-                    ご登録ありがとうございます。<br />
-                    登録されたメールアドレスに確認用のリンクをお送りしました。
-                </div>
+<!--                <div v-if="message === 200" class="valid-feedback error">-->
+<!--                    ご登録ありがとうございます。<br />-->
+<!--                    登録されたメールアドレスに確認用のリンクをお送りしました。-->
+<!--                </div>-->
                 <div class="form-group">
                     <label for="company-name">会社名 <span>*</span></label>
                     <input
@@ -89,6 +89,7 @@
                             メールアドレスの形式で入力してください
                         </div>
                     </div>
+
                     <div
                         v-if="errors.email && user.email === user.confirm_email"
                         class="invalid-feedback error"
@@ -132,27 +133,47 @@
                         >
                             整数を入力してください
                         </div>
-                        <div
-                            v-if="
-                                errors.phone &&
-                                user.phone === user.confirm_phone
-                            "
-                            class="invalid-feedback error"
-                        >
-                            この電話番号は既に存在しています
-                        </div>
+                    </div>
+
+                    <div
+                        v-if="
+                            errors.phone &&
+                            user.phone === user.confirm_phone
+                        "
+                        class="invalid-feedback error"
+                    >
+                        この電話番号は既に存在しています
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="password">パスワード <span>*</span></label>
-                    <input
+                    <div class="input-group">
+                      <input
                         id="password"
                         v-model.trim="user.password"
-                        type="text"
+                        :type="isHidePassword ? 'password' : 'text'"
                         class="form-control form-control-lg"
                         @input="$v.user.password.$touch()"
                         @blur="$v.user.password.$touch()"
-                    />
+                      />
+                      <span
+                        class="input-group-text input-group-text-next"
+                        @click="isHidePassword = !isHidePassword"
+                      >
+                        <img
+                          v-if="isHidePassword"
+                          class="show-hide-password-icon"
+                          src="~/assets/images/icon_eye.svg"
+                          alt=""
+                        />
+                        <img
+                          v-else
+                          class="show-hide-password-icon"
+                          src="~/assets/images/icon_eyes_show.svg"
+                          alt=""
+                        />
+                      </span>
+                    </div>
                     <div v-if="$v.user.password.$error">
                         <div
                             v-if="!$v.user.password.required"
@@ -176,14 +197,33 @@
                     <label for="confirm-password"
                         >パスワード（確認) <span>*</span></label
                     >
-                    <input
+                    <div class="input-group">
+                      <input
                         id="confirm-password"
                         v-model.trim="user.confirm_password"
-                        type="text"
+                        :type="isHideConfirmPassword ? 'password' : 'text'"
                         class="form-control form-control-lg"
                         @input="$v.user.confirm_password.$touch()"
                         @blur="$v.user.confirm_password.$touch()"
-                    />
+                      />
+                      <span
+                        class="input-group-text input-group-text-next"
+                        @click="isHideConfirmPassword = !isHideConfirmPassword"
+                      >
+                        <img
+                          v-if="isHideConfirmPassword"
+                          class="show-hide-password-icon"
+                          src="~/assets/images/icon_eye.svg"
+                          alt=""
+                        />
+                        <img
+                          v-else
+                          class="show-hide-password-icon"
+                          src="~/assets/images/icon_eyes_show.svg"
+                          alt=""
+                        />
+                      </span>
+                    </div>
                     <div v-if="$v.user.confirm_password.$error">
                         <div
                             v-if="!$v.user.confirm_password.required"
@@ -238,6 +278,7 @@
                         v-model.trim="user.postal_code"
                         type="text"
                         class="form-control form-control-lg"
+                        placeholder="xxx-xxxx"
                         @input="$v.user.postal_code.$touch()"
                         @blur="$v.user.postal_code.$touch()"
                     />
@@ -253,19 +294,31 @@
 
                 <div class="form-group">
                     <label for="provinces">都道府県<span>*</span></label>
-                    <select
-                        id="provinces"
-                        v-model="user.province_id"
-                        class="form-select form-select-lg"
+<!--                    <select-->
+<!--                        id="provinces"-->
+<!--                        v-model="user.province_id"-->
+<!--                        class="form-select form-select-lg"-->
+<!--                    >-->
+<!--                        <option-->
+<!--                            v-for="(province, index) in provinces"-->
+<!--                            :key="index"-->
+<!--                            :value="index + 1"-->
+<!--                        >-->
+<!--                            {{ $t(province) }}-->
+<!--                        </option>-->
+<!--                    </select>-->
+                    <v-select
+                      v-model="user.province_id"
+                      :options="provinces"
+                      :reduce="(province) => province.value"
+                      label="label"
                     >
-                        <option
-                            v-for="(province, index) in provinces.slice(1)"
-                            :key="index"
-                            :value="index + 1"
-                        >
-                            {{ $t(province) }}
-                        </option>
-                    </select>
+                      <template #no-options="{ searching }">
+                        <template v-if="searching">
+                          データがありません。
+                        </template>
+                      </template>
+                    </v-select>
                     <div v-if="$v.user.province_id.$error">
                         <div
                             v-if="!$v.user.province_id.required"
@@ -332,8 +385,7 @@
                         v-model="acceptTerms"
                         class="form-check-input"
                         type="checkbox"
-                        value="1"
-                        @input="$v.acceptTerms.$touch()"
+                        @change="$v.acceptTerms.$touch()"
                         @blur="$v.acceptTerms.$touch()"
                     />
                     <label class="form-check-label" for="flexCheckDefault">
@@ -341,7 +393,7 @@
                     </label>
                     <div v-if="$v.acceptTerms.$error">
                         <div
-                            v-if="!$v.acceptTerms.required"
+                            v-if="!$v.acceptTerms.checked"
                             class="invalid-feedback error"
                         >
                             これは必須項目なので、必ずチェックしてください
@@ -390,9 +442,11 @@ import {
     maxLength,
     helpers,
 } from 'vuelidate/lib/validators'
+import VSelect from 'vue-select'
 
 import theCareers from '~/constants/careers'
 import theProvinces from '~/constants/provinces'
+import provincesInRegisterPage from '~/constants/provincesInRegisterPage'
 
 const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/g)
 // const phone = helpers.regex(
@@ -403,6 +457,10 @@ const numbers = helpers.regex('numbers', /^[0-9]*$/)
 
 export default {
     name: 'Register',
+    components: {
+      VSelect
+    },
+
     data() {
         return {
             user: {
@@ -418,13 +476,16 @@ export default {
                 district: '',
                 address: '',
             },
-            acceptTerms: '',
+            acceptTerms: false,
             errors: [],
             message: '',
             theCareers,
             theProvinces,
             careers: [],
-            provinces: [],
+            provinces: provincesInRegisterPage,
+            isHidePassword: true,
+            isHideConfirmPassword: true,
+            isLoading: false
         }
     },
 
@@ -480,35 +541,63 @@ export default {
             },
         },
         acceptTerms: {
-            required,
+            checked(val) {
+              return val
+            }
         },
     },
 
     created() {
         this.careers = theCareers
-        this.provinces = theProvinces
+        // this.provinces = theProvinces
     },
 
     methods: {
+
+        resetData() {
+          this.user = Object.assign({}, {
+            company_name: '',
+            manager_name: '',
+            email: '',
+            phone: '',
+            password: '',
+            confirm_password: '',
+            career: '',
+            postal_code: '',
+            province_id: '',
+            district: '',
+            address: '',
+          })
+          this.acceptTerms =  false
+          this.errors =  []
+          this.message =  ''
+          this.$v.$reset()
+        },
+
         async submit() {
             this.user.confirm_email = this.user.email
             this.user.confirm_phone = this.user.phone
             this.$v.user.$touch()
             this.$v.acceptTerms.$touch()
-
-            if (!this.$v.user.$invalid) {
+            if (!this.$v.acceptTerms.$invalid) {
+              if (!this.$v.user.$invalid) {
                 try {
-                    await this.$repositories.accounts
-                        .registerAccount(this.user)
-                        .then((response) => {
-                            const data = this.$handleResponse(response)
-                            this.message = response.status
-                            this.errors = data.errors
-                        })
+                  await this.$repositories.accounts
+                    .registerAccount(this.user)
+                    .then((response) => {
+                      const data = this.$handleResponse(response)
+                      this.message = response.status
+                      this.errors = data.errors
+                      if (response.status === 200) {
+                        this.$toast.success('ご登録ありがとうございます。登録されたメールアドレスに確認用のリンクをお送りしました。')
+                        this.resetData()
+                      }
+                    })
                 } catch (error) {
-                    const data = this.$handleResponse(error)
-                    this.errors = data.errors
+                  const data = this.$handleResponse(error)
+                  this.errors = data.errors
                 }
+              }
             }
         },
     },
@@ -517,4 +606,8 @@ export default {
 
 <style lang="scss" scoped>
 @import '../styles/pages/jobs/register.scss';
+</style>
+
+<style lang="scss">
+@import "../styles/pages/jobs/vue-select.scss";
 </style>

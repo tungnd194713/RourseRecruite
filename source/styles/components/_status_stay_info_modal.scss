@@ -7,7 +7,9 @@
 }
 
 .modal-header {
-  justify-content: end;
+  -webkit-justify-content: flex-end;
+  align-items: flex-end;
+  -webkit-align-items: flex-end;
 }
 
 .modal-body {

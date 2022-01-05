@@ -19,7 +19,7 @@
             >
             <img v-if="previewImageJobUrl" class="preview-image" :src="previewImageJobUrl" alt="">
             <img v-else src="../../assets/images/icon_upload_file.svg" alt="">
-            <p class="m-0">画像ファイルをドラグドロップ<span>、或いは選択してください</span></p>
+            <p class="m-0">画像ファイルをドラグドロップ <span>、或いは選択してください</span></p>
           </div>
 
           <div v-if="$v.job.image_job.$error" class="text-center error-text">
@@ -915,16 +915,21 @@
       previewJob() {
         this.$v.job.$touch()
         if (!this.$v.job.$invalid) {
-          this.$repositories.jobs.countJobsPlanA({ date_start: this.job.date_start }).then(res => {
-            if (res.status === 200) {
-              if (res.data < JOBS_PLAN_A_LIMIT) {
-                this.$store.dispatch('job/setJob', this.job)
-                this.$router.push('/jobs/preview-new')
-              } else {
-                this.$toast.error('プランAの求人件数は上限に達しましたので、他のプランを選択してください')
+          if (parseInt(this.job.type_plan) === 1) {
+            this.$repositories.jobs.countJobsPlanA({ date_start: this.job.date_start }).then(res => {
+              if (res.status === 200) {
+                if (res.data < JOBS_PLAN_A_LIMIT) {
+                  this.$store.dispatch('job/setJob', this.job)
+                  this.$router.push('/jobs/preview-new')
+                } else {
+                  this.$toast.error('プランAの求人件数は上限に達しましたので、他のプランを選択してください')
+                }
               }
-            }
-          })
+            })
+          } else {
+            this.$store.dispatch('job/setJob', this.job)
+            this.$router.push('/jobs/preview-new')
+          }
         }
       }
     }

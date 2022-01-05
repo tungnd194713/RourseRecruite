@@ -377,7 +377,12 @@
                           <div v-if="!$v.job.salary_min.isLowerThanSalaryMax" class="error-text">最多の月給以下で入力してください</div>
                         </div>
                     </div>
-                    {{ displaySalary === 'salary_range' ? '～' : '' }}
+                    <div
+                      v-if="displaySalary === 'salary_range'"
+                      class="col-12 col-sm-1 range-salary-character text-center pt-1"
+                    >
+                      ～
+                    </div>
                     <div
                         v-if="displaySalary === 'salary_range'"
                         class="col-12 col-sm-4"
