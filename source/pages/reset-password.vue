@@ -104,7 +104,7 @@
     },
 
     head() {
-      return {title: 'パスワード変更'}
+      return {title: 'パスワード変更 | 求人'}
     },
 
     methods: {

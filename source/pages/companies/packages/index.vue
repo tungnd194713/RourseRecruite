@@ -1,7 +1,7 @@
 <template>
         <div class="container tab-content">
             <div class="row">
-                <h3 class="title-page">求人のプラン</h3>
+                <h3 class="title-page">求人プラン</h3>
             </div>
 
             <!-- <picture class="">
@@ -124,7 +124,7 @@
     name: 'Packages',
     layout: 'payment',
     head() {
-      return {title: 'Packages'}
+      return {title: '決済情報 | 求人'}
     },
   }
 </script>

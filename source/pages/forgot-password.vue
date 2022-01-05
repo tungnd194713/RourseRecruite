@@ -71,7 +71,7 @@
     },
 
     head() {
-      return {title: 'パスワード忘れ'}
+      return {title: 'パスワード忘れ | 求人'}
     },
 
     watch: {

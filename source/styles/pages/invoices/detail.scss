@@ -141,10 +141,6 @@ picture img {
   background: #c19bdd;
 }
 
-.list {
-  min-height: 21rem;
-}
-
 .title-total-cost-job {
   border-color: #dee2e6;
 }
@@ -158,4 +154,23 @@ picture img {
 .bold-text {
   font-weight: bold;
   margin: 0;
+}
+
+.tr-empty {
+  min-height: 1rem;
+}
+
+.outer-spinner {
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  min-width: 200px;
+}
+
+.type-plan {
+  min-width: 100px;
 }

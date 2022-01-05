@@ -309,7 +309,7 @@ export default {
   },
 
   head() {
-    return { title: '決済履歴' }
+    return { title: '決済履歴 | 求人' }
   },
 
   computed: {

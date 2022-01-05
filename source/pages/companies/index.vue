@@ -19,6 +19,7 @@
                 v-else
                 src="../../assets/images/avatar1.svg"
                 alt="Company Logo"
+
               />
             </div>
           </div>
@@ -36,12 +37,6 @@
                 </div>
                 <div class="d-block item">
                   <span class="me-2"
-                    ><img src="../../assets/images/icon_users.svg"
-                  /></span>
-                  <span>{{ number_members }}人</span>
-                </div>
-                <div class="d-block item">
-                  <span class="me-2"
                     ><img src="../../assets/images/icon_globe.svg"
                   /></span>
                   <a :href="link_website">WebサイトのURL</a>
@@ -50,21 +45,9 @@
               <div class="col-12 col-sm-6 col-lg-4">
                 <div class="d-block item">
                   <span class="me-2"
-                    ><img src="../../assets/images/icon_calendar.svg"
-                  /></span>
-                  <span>{{ founded_year }}</span>
-                </div>
-                <div class="d-block item">
-                  <span class="me-2"
                     ><img src="../../assets/images/icon_cube.svg"
                   /></span>
                   <span>{{ $t(career) }} </span>
-                </div>
-                <div v-if="link_facebook" class="d-block item">
-                  <span class="me-2"
-                    ><img src="../../assets/images/icon_fb_outline.svg"
-                  /></span>
-                  <a :href="link_facebook">会社のFacebookファンページ</a>
                 </div>
               </div>
             </div>
@@ -77,7 +60,7 @@
         <div class="row">
           <div class="col-12 col-lg-6">
             <h2 class="title">
-              <span>{{ company_name }} </span>について
+              <span>会社について</span>
             </h2>
             <div class="d-block my-4 ps-0 ps-sm-3 ps-lg-5">
               <!-- <small>
@@ -189,13 +172,14 @@ export default {
       video_link: '',
       images: [],
       district: '',
+      province: '',
       postal_code: '',
       theProvinces,
     }
   },
 
   head() {
-    return { title: 'プロフィール' }
+    return { title: 'プロフィール | 求人' }
   },
 
   computed: {},
@@ -236,6 +220,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../../styles/pages/companies/profile-company.scss';
 </style>

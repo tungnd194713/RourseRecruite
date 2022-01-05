@@ -748,7 +748,7 @@
     },
 
     head() {
-      return { title: '新規求人登録'}
+      return { title: '新規求人登録 | 求人'}
     },
 
     computed: {

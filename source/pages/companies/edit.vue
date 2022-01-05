@@ -107,26 +107,6 @@
                   </div>
                 </div>
                 <div class="form-group col-12 col-lg-6 mb-2 mb-lg-3">
-                  <label for="number_members">従業員数 <span>*</span></label>
-                  <input
-                    id="number_members"
-                    v-model.trim="$v.data.number_members.$model"
-                    type="number"
-                    :class="{
-                      invalid:
-                        $v.data.number_members.$invalid &&
-                        $v.data.number_members.$dirty,
-                    }"
-                    class="form-control"
-                  />
-                  <div v-if="$v.data.number_members.$error">
-                    <div v-if="!$v.data.number_members.required" class="error">
-                      これは必須項目なので、必ず入力してください
-                    </div>
-                    <div v-if="!$v.data.number_members.numbers" class="error">
-                      整数を入力してください
-                    </div>
-                  </div>
                 </div>
               </div>
               <div class="mt-3 mb-3 mt-lg-4 mb-lg-4 line"></div>
@@ -258,62 +238,17 @@
                   disabled
                 />
               </div>
-              <div class="form-group col-12 mb-2 mb-lg-3">
-                <label for="founded_year">創立年月日</label>
-                <div class="input-group input-group-icon">
-                  <span class="input-group-text input-group-text-pre">
-                    <img src="../../assets/images/icon_calendar.svg" alt="" />
-                  </span>
-                  <date-picker
-                    id="founded_year"
-                    v-model.trim="data.founded_year"
-                    :clearable="false"
-                    format="YYYY-MM-DD"
-                    value-type="YYYY/MM/DD"
-                    class="date-picker"
-                    :placeholder="data.founded_year"
-                  >
-                    <i slot="icon-calendar"></i>
-                  </date-picker>
-                </div>
-              </div>
             </div>
             <div class="my-3 my-lg-4 line"></div>
             <div class="container">
-              <div class="form-group mb-2 mb-lg-3">
-                <label for="link_facebook">FacebookのLinkのリンク</label>
-                <div
-                  class="input-group input-group-icon"
-                  :class="{
-                    invalid:
-                      $v.data.link_facebook.$invalid &&
-                      $v.data.link_facebook.$dirty,
-                  }"
-                >
-                  <span class="input-group-text input-group-text-pre">
-                    <img src="../../assets/images/icon_facebook.svg" alt="" />
-                  </span>
-                  <input
-                    id="link_facebook"
-                    v-model.trim="$v.data.link_facebook.$model"
-                    type="text"
-                    class="form-control"
-                  />
-                </div>
-                <div v-if="$v.data.link_facebook.$error">
-                  <div v-if="!$v.data.link_facebook.facebook" class="error">
-                    FacebookのメッセージIDを取得する説明のための テキストリンク
-                  </div>
-                </div>
-              </div>
               <div class="form-group mb-2 mb-lg-3">
                 <label for="page_id">FacebookファンページのメッセージID</label>
                 <div
                         class="input-group input-group-icon"
                         :class="{
                           invalid:
-                            $v.data.link_facebook.$invalid &&
-                            $v.data.link_facebook.$dirty,
+                            $v.data.page_id.$invalid &&
+                            $v.data.page_id.$dirty,
                         }"
                 >
                   <span class="input-group-text input-group-text-pre">
@@ -732,7 +667,6 @@ import {
   url,
   helpers,
 } from 'vuelidate/lib/validators'
-import DatePicker from 'vue2-datepicker'
 import 'vue2-datepicker/index.css'
 import 'vue2-datepicker/locale/ja'
 import theCareers from '~/constants/careers'
@@ -741,15 +675,10 @@ import theProvinces from '~/constants/provinces'
 const PROFILEIMAGE = 1
 const INTROIMAGES = 2
 const INTROVIDEO = 3
-const facebook = helpers.regex(
-  'facebook',
-  /(?:(?:http|https):\/\/)?(?:www.)?facebook.com\/(?:messages\/)?(?:[?\w-]*\/)([\w-]*)/
-)
 const youtube = helpers.regex(
   'youtube',
   /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w-]+\?v=|embed\/|v\/)?)([\w-]+)(\S+)?$/
 )
-const numbers = helpers.regex('numbers', /^[0-9]*$/)
 const phone = helpers.regex(
   'phone',
   /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{3})/
@@ -762,7 +691,7 @@ const videoSize = (value) => value <= 100000000
 
 export default {
   name: 'EditProfileCompany',
-  components: { DatePicker },
+  components: { },
   mixins: [validationMixin],
   layout: 'auth',
 
@@ -831,10 +760,6 @@ export default {
       career: {
         required,
       },
-      number_members: {
-        required,
-        numbers,
-      },
       postal_code: {
         required,
         postalCode,
@@ -849,9 +774,6 @@ export default {
       manager_name: {
         required,
         maxLength: maxLength(50),
-      },
-      link_facebook: {
-        facebook,
       },
       page_id:{
           maxLength: maxLength(100),
@@ -898,7 +820,7 @@ export default {
 
   head() {
     return {
-      title: '会社情報編集',
+      title: '会社情報編集 | 求人',
     }
   },
 
@@ -924,10 +846,7 @@ export default {
 
       this.data.company_name = data.company_name
       this.data.manager_name = data.manager_name
-      this.data.founded_year = data.founded_year
-      this.data.number_members = data.number_members
       this.data.link_website = data.link_website
-      this.data.link_facebook = data.link_facebook
       this.data.page_id = data.page_id
       this.data.description = data.description
       this.data.address = data.address
@@ -1052,15 +971,7 @@ export default {
         dataCompany.append('address', this.data.address)
         dataCompany.append('company_name', this.data.company_name)
         dataCompany.append('manager_name', this.data.manager_name)
-        dataCompany.append(
-          'founded_year',
-          this.data.founded_year
-            ? this.data.founded_year
-            : this.$moment(new Date()).format('L')
-        )
-        dataCompany.append('number_members', this.data.number_members)
         dataCompany.append('link_website', this.data.link_website)
-        dataCompany.append('link_facebook', this.data.link_facebook ? this.data.link_facebook : '')
         dataCompany.append('page_id', this.data.page_id ? this.data.page_id : '')
         dataCompany.append('description', this.data.description ? this.data.description : '')
         dataCompany.append('video_link', this.data.video_link)
@@ -1136,6 +1047,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../../styles/pages/companies/edit-profile-company.scss';
 </style>

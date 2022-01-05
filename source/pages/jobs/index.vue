@@ -91,12 +91,12 @@
                 :key="item.id"
                 :class="{
                   'expired-job-active': checkExpiredJob(item.date_end),
-                  'font-weight-bold': !(item.read || isWarningUnRead(item.date_start))
+                  'font-weight-bold': (item.cv_read)
                 }"
               >
                 <td class="align-middle text-center">
                   <span
-                    v-if="!(item.read || isWarningUnRead(item.date_start))"
+                    v-if="(item.cv_read && !isWarningUnRead(item.cv_created_at_three_day))"
                     :class="(perPage * (currentPage - 1)) + (index + 1) < 10 ? 'td-warning' : 'td-warning-large'"
                   >
                     未対応の履歴書{{ item.cv_read }}/{{
@@ -315,7 +315,7 @@ export default {
       deleteActive: '../../assets/images/icon_trash_active.svg',
       theTypePlan,
       currentPage: 1,
-      perPage: 10,
+      perPage: 20,
       totalItems: 0,
       pageCount: 1,
       condition: {
@@ -328,7 +328,7 @@ export default {
   },
 
   head() {
-    return { title: '求人一覧' }
+    return { title: '求人一覧 | 求人' }
   },
 
   computed: {

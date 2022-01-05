@@ -272,7 +272,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="postal-code">郵便番号 <span>*</span></label>
+                    <label for="postal-code">郵便番号</label>
                     <input
                         id="postal-code"
                         v-model.trim="user.postal_code"
@@ -283,12 +283,6 @@
                         @blur="$v.user.postal_code.$touch()"
                     />
                     <div v-if="$v.user.postal_code.$error">
-                        <div
-                            v-if="!$v.user.postal_code.required"
-                            class="invalid-feedback error"
-                        >
-                            これは必須項目なので、必ず選択してください
-                        </div>
                         <div
                             v-if="!$v.user.postal_code.postalCode"
                             class="invalid-feedback error"
@@ -496,7 +490,7 @@ export default {
     },
 
     head() {
-        return { title: '会員登録' }
+        return { title: '会員登録 | 求人' }
     },
 
     validations: {
@@ -532,7 +526,6 @@ export default {
                 required,
             },
             postal_code: {
-                required,
                 postalCode,
             },
             province_id: {
@@ -582,7 +575,6 @@ export default {
         },
 
         async submit() {
-            this.isLoading = true
             this.user.confirm_email = this.user.email
             this.user.confirm_phone = this.user.phone
             this.$v.user.$touch()
