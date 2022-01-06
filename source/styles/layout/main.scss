@@ -7,7 +7,7 @@
 }
 
 .white-space-pre-line::first-line {
-  //line-height: 0;
+  line-height: 0;
 }
 
 .word-break-break-all {
@@ -39,17 +39,17 @@
 
 .tooltip-custom .tooltiptext {
   visibility: hidden;
-  width: 120px;
+  width: max-content;
   background-color: #555;
   color: #fff;
   text-align: center;
   border-radius: 6px;
-  padding: 5px 0;
+  padding: 5px 10px;
   position: absolute;
   z-index: 1;
   bottom: 125%;
-  left: 50%;
-  margin-left: -60px;
+  left: 0;
+  //margin-left: -60px;
   opacity: 0;
   transition: opacity 0.3s;
   font-weight: normal;
