@@ -2,7 +2,7 @@
   <div class="text-center form-body">
     <main class="p-2 p-lg-0 form-login">
       <form @submit.prevent="login">
-        <a href="https://findjob-frontend.kiaidev.com/ja" target="_blank">
+        <a :href="data.home_url" target="_blank">
         <img
           class="mb-3 mb-lg-4"
           src="../assets/images/icon_logo.svg"
@@ -159,6 +159,7 @@ export default {
       data: {
         email: '',
         password: '',
+        home_url: process.env.HOME_URL ?? 'https://findjob-frontend.kiaidev.com/ja'
       },
       isHide: true,
       errors: [],

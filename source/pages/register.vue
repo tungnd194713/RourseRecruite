@@ -513,10 +513,8 @@ export default {
     watch: {
         'user.postal_code_1': {
           handler(newVal) {
-            console.log(this.user.postal_code_1.length)
             if (this.user.postal_code_1.length === 3 && this.user.postal_code_2.length === 4) {
             this.user.postal_code = this.user.postal_code_1 + this.user.postal_code_2
-            console.log('post_code ' + this.user.postal_code)
             }
           },
           deep: true
@@ -525,7 +523,6 @@ export default {
           handler(newVal) {
             if (this.user.postal_code_2.length === 4 && this.user.postal_code_1.length === 3) {
               this.user.postal_code = this.user.postal_code_1 + this.user.postal_code_2
-              console.log(this.user.postal_code)
             }
           },
           deep:true
