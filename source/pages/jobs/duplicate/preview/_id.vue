@@ -98,7 +98,8 @@
               <tr>
                 <td>休日</td>
                 <td class="pre-line word-break-break-all">
-                  {{ job.holidays}}</td>
+                  {{ job.holidays}}
+                </td>
               </tr>
               <tr>
                 <td>休憩時間 </td>
@@ -301,23 +302,23 @@
     },
 
     created() {
-      this.job = Object.assign({}, this.gettersGetJobUpdate())
-      this.oldImageJob = this.gettersGetOldImageJobUpdate()
+      this.job = Object.assign({}, this.gettersGetJobDuplicate())
+      this.oldImageJob = this.gettersGetOldImageJobDuplicate()
       if (Object.keys(this.job).length === 0 && this.job.constructor === Object) {
-        this.$router.push(`/jobs/update/${this.$route.params.id}`)
+        this.$router.push(`/jobs/duplicate/${this.$route.params.id}`)
       }
     },
 
     methods: {
       ...mapActions({
-        'dispatchSetJobUpdate': 'job/setJobUpdate',
-        'dispatchSetOldImageJobUpdate': 'job/setOldImageJobUpdate',
-        'dispatchSetPrevRouteUpdate': 'job/setPrevRouteUpdate',
+        'dispatchSetJobDuplicate': 'job/setJobDuplicate',
+        'dispatchSetOldImageJobDuplicate': 'job/setOldImageJobDuplicate',
+        'dispatchSetPrevRouteJobDuplicate': 'job/setPrevRouteJobDuplicate',
       }),
 
       ...mapGetters({
-        'gettersGetJobUpdate': 'job/getJobUpdate',
-        'gettersGetOldImageJobUpdate': 'job/getOldImageJobUpdate',
+        'gettersGetJobDuplicate': 'job/getJobDuplicate',
+        'gettersGetOldImageJobDuplicate': 'job/getOldImageJobDuplicate',
       }),
 
       isJobStored() {
@@ -346,8 +347,8 @@
       },
 
       backToUpdateJobPage() {
-        this.dispatchSetPrevRouteUpdate(this.$route.path)
-        this.$router.push(`/jobs/update/${this.$route.params.id}`)
+        this.dispatchSetPrevRouteJobDuplicate(this.$route.path)
+        this.$router.push(`/jobs/duplicate/${this.$route.params.id}`)
       },
 
       async completeUpdateJob() {
@@ -359,6 +360,8 @@
         if (this.job.image_job) {
           formData.append('image_job', this.job.image_job)
         }
+        formData.append('old_image_job_duplicate', this.oldImageJob)
+
         formData.append('title', this.job.title)
         formData.append('date_start', this.job.date_start)
         formData.append('type_plan', this.job.type_plan)
@@ -379,11 +382,15 @@
         formData.append('has_vietnamese_staff', this.job.has_vietnamese_staff)
         formData.append('overtime', this.job.overtime)
         this.isDisabledSaveBtn = true
-        return await this.$repositories.jobs.updateJob(this.$route.params.id, formData).then(res => {
+        return await this.$repositories.jobs.createJob(formData, {
+          header: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }).then(res => {
           if (res.status === 201) {
             this.$refs.showCompleteUpdateJobModal.click()
-            this.dispatchSetJobUpdate({})
-            this.dispatchSetOldImageJobUpdate('')
+            this.dispatchSetJobDuplicate({})
+            this.dispatchSetOldImageJobDuplicate('')
           } else if (res.response) {
             this.$toast.error(res.response.data.message)
           }

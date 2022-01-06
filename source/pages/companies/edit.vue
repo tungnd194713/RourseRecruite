@@ -136,7 +136,7 @@
                 </div>
                 <div class="form-group col-12 col-lg-6 mb-2 mb-lg-3">
                   <label for="province">都道府県 <span>*</span></label>
-                  <select
+                  <!--<select
                     id="province"
                     v-model="$v.data.province.$model"
                     :class="{
@@ -153,7 +153,20 @@
                     >
                       {{ $t(province) }}
                     </option>
-                  </select>
+                  </select>-->
+
+                  <v-select
+                    v-model="$v.data.province.$model"
+                    :options="provinces"
+                    :reduce="(province) => province.value"
+                    label="label"
+                  >
+                    <template #no-options="{ searching }">
+                      <template v-if="searching">
+                        データがありません。
+                      </template>
+                    </template>
+                  </v-select>
                   <div v-if="$v.data.province.$error">
                     <div v-if="!$v.data.province.required" class="error">
                       これは必須項目なので、必ず入力してください
@@ -671,6 +684,7 @@ import 'vue2-datepicker/index.css'
 import 'vue2-datepicker/locale/ja'
 import theCareers from '~/constants/careers'
 import theProvinces from '~/constants/provinces'
+import provincesInRegisterPage from '~/constants/provincesInRegisterPage'
 
 const PROFILEIMAGE = 1
 const INTROIMAGES = 2
@@ -727,7 +741,7 @@ export default {
       logoUrl: null,
       videoUrl: null,
       imageUrl: [],
-      provinces: [],
+      provinces: provincesInRegisterPage,
       theCareers,
       theProvinces,
       careers: [],
@@ -828,7 +842,7 @@ export default {
 
   created() {
     this.careers = theCareers
-    this.provinces = theProvinces
+    // this.provinces = theProvinces
     this.getProfileCompany()
   },
 
@@ -1049,4 +1063,8 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../styles/pages/companies/edit-profile-company.scss';
+</style>
+
+<style lang="scss">
+  @import "../../styles/pages/jobs/vue-select.scss";
 </style>

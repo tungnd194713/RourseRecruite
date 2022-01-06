@@ -7,7 +7,7 @@
 }
 
 .white-space-pre-line::first-line {
-  //line-height: 0;
+  line-height: 0;
 }
 
 .word-break-break-all {
@@ -28,4 +28,45 @@
 
 .min-width-200px {
   min-width: 200px !important;
+}
+
+.tooltip-custom {
+  position: relative;
+  display: inline-block;
+  min-width: 45px;
+  //border-bottom: 1px dotted black;
+}
+
+.tooltip-custom .tooltiptext {
+  visibility: hidden;
+  width: max-content;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 10px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 0;
+  //margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-weight: normal;
+}
+
+.tooltip-custom .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip-custom:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }

@@ -1,0 +1,59 @@
+main {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+}
+
+.title-page {
+    font-size: 32px;
+    margin: 50px 0px 30px;
+}
+
+.title-page.second {
+    font-size: 20px;
+    margin: 20px 0px 25px;
+}
+
+.card {
+    border: none;
+}
+
+.content {
+    margin-bottom: 25px;
+}
+
+.row {
+    padding: 0px 75px;
+}
+
+.card-content-two {
+    margin-bottom: 80px;
+}
+
+@media only screen and (max-width: 975px) {
+    .row {
+        padding: 0px 30px;
+    }
+
+    .title-page {
+        font-size: 25px;
+        margin: 50px 0px 30px;
+    }
+
+    .title-page.second {
+        font-size: 18px!important;
+        margin: 20px 0px 25px;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    main {
+        margin: 0px 30px;
+    }
+
+    .row {
+        padding: 0px;
+    }
+    .container {
+      width: initial;
+    }
+}

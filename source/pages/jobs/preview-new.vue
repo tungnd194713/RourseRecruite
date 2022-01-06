@@ -53,7 +53,7 @@
       <div class="detail-job-content py-3">
         <div class="d-block mb-3 mb-lg-5">
           <h5>仕事内容</h5>
-          <div class="ps-3 pre-line">
+          <div class="ps-3 pre-line word-break-break-all">
             {{ job.content_work}}
           </div>
         </div>
@@ -62,40 +62,56 @@
             <tbody>
               <tr>
                 <td>採用人数</td>
-                <td class="pre-line">{{ job.number_recruitments}}人</td>
+                <td class="pre-line word-break-break-all">
+                  {{ job.number_recruitments}}人
+                </td>
               </tr>
               <tr>
                 <td>応募条件</td>
-                <td class="pre-line">{{ job.conditions_apply}}</td>
+                <td class="pre-line word-break-break-all">
+                  {{ job.conditions_apply}}
+                </td>
               </tr>
               <tr>
                 <td>勤務地</td>
-                <td class="pre-line">{{ job.address_work}}</td>
+                <td class="pre-line word-break-break-all">
+                  {{ job.address_work}}
+                </td>
               </tr>
               <tr>
                 <td>勤務時間</td>
-                <td class="pre-line">{{ job.time_work}}</td>
+                <td class="pre-line word-break-break-all">
+                  {{ job.time_work}}
+                </td>
               </tr>
               <tr>
                 <td>休日</td>
-                <td class="pre-line">{{ job.holidays}}</td>
+                <td class="pre-line word-break-break-all">
+                  {{ job.holidays}}
+                </td>
               </tr>
               <tr>
                 <td>休憩時間 </td>
-                <td class="pre-line">{{ job.break_time}}</td>
+                <td class="pre-line word-break-break-all">
+                  {{ job.break_time}}
+                </td>
               </tr>
               <tr>
                 <td>福利厚生</td>
-                <td class="pre-line">{{ job.welfare_regime}}</td>
+                <td class="pre-line word-break-break-all">
+                  {{ job.welfare_regime}}
+                </td>
               </tr>
               <tr>
                 <td>ベトナム人在籍状況</td>
-                <td class="pre-line">{{ job.has_vietnamese_staff ? 'はい': 'いいえ'}}</td>
+                <td class="pre-line word-break-break-all">
+                  {{ hasVietnameseStaffLabelList[parseInt(job.has_vietnamese_staff)]}}
+                </td>
               </tr>
-              <tr>
+              <!--<tr>
                 <td>残業見込み、休日出勤見込み</td>
                 <td class="pre-line">{{ job.overtime}}</td>
-              </tr>
+              </tr>-->
             </tbody>
           </table>
         </div>
@@ -136,6 +152,11 @@
         isDisabledSaveBtn: false,
         careerList: theCareers,
         provincesList: theProvinces,
+        hasVietnameseStaffLabelList: [
+          'いない',
+          'いる',
+          '採用予定',
+        ],
         typePlanList:[
           {
             text: 'A',
@@ -305,7 +326,7 @@
         if (this.job.salary_min === '') {
           this.job.salary_min = 0
         }
-        this.job.has_vietnamese_staff = this.job.has_vietnamese_staff ? 1 : 0
+        // this.job.has_vietnamese_staff = this.job.has_vietnamese_staff ? 1 : 0
         const formData = new FormData()
         if (this.job.image_job) {
           formData.append('image_job', this.job.image_job)
