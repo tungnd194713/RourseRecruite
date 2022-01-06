@@ -330,13 +330,17 @@
                     <td>{{ $t('cv_user.reason_apply')}}</td>
                   </tr>
                   <tr>
-                    <td class="py-4 white-space-pre-line word-break-break-all">{{ candidate.reason_apply}}</td>
+                    <td class="py-4 white-space-pre-line word-break-break-all">
+                      {{ candidate.reason_apply}}
+                    </td>
                   </tr>
                   <tr>
                     <td>{{ $t('cv_user.strength')}}</td>
                   </tr>
                   <tr>
-                    <td class="py-4 white-space-pre-line word-break-break-all">{{ candidate.strength}}</td>
+                    <td class="py-4 white-space-pre-line word-break-break-all">
+                      {{ candidate.strength}}
+                    </td>
                   </tr>
                   </tbody>
                 </table>

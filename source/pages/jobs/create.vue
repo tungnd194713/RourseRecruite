@@ -235,20 +235,21 @@
         <div class="form-group mb-1 row">
           <label class="col-sm-2 col-form-label">月給 <span>*</span></label>
           <div class="col-12 col-sm-10">
-            <div class="form-check">
-              <!--<div class="float-start">
+            <!--<div class="form-check">
+              &lt;!&ndash;<div class="float-start">
                 <input id="gridCheck1" v-model="displaySalary" class="form-check-input" type="radio" value="salary_max">
                 <label class="form-check-label" for="gridCheck1">
                   上限額
                 </label>
-              </div>-->
+              </div>&ndash;&gt;
               <div class="float-start">
                 <input id="gridCheck2" v-model="displaySalary" class="form-check-input" type="radio" value="salary_range">
                 <label class="form-check-label" for="gridCheck2">
                   ○○から○○まで
                 </label>
               </div>
-            </div>
+            </div>-->
+            〇〇円から〇〇円
           </div>
         </div>
 
@@ -338,8 +339,8 @@
             <div class="row">
               <div v-if="$v.job.content_work.$error" class="col-6 align-items-start">
                 <div v-if="!$v.job.content_work.required" class="error-text">これは必須項目なので、必ず入力してください</div>
-                <div v-if="!$v.job.content_work.maxLength" class="error-text">1000文字以下で入力してください</div>
-                <div v-if="!$v.job.content_work.minLength" class="error-text">50文字以上で入力してください</div>
+                <div v-if="!$v.job.content_work.maxLength" class="error-text">200文字以下で入力してください</div>
+                <div v-if="!$v.job.content_work.minLength" class="error-text">30文字以上で入力してください</div>
               </div>
               <div
                 class="col-6 text-right"
@@ -348,10 +349,10 @@
                 }"
               >
                 <div
-                  v-if="job.content_work.length < 1000"
+                  v-if="job.content_work.length < 200"
                   class="error-text text-black"
                 >
-                  残り{{ 1000 - job.content_work.length }}文字
+                  残り{{ 200 - job.content_work.length }}文字
                 </div>
                 <div v-else class="error-text text-black">残り0文字</div>
               </div>
@@ -766,8 +767,8 @@
         },
         content_work: {
           required,
-          maxLength: maxLength(1000),
-          minLength: minLength(50)
+          maxLength: maxLength(200),
+          minLength: minLength(30)
         },
         conditions_apply: {
           required,

@@ -205,5 +205,8 @@
 
 .pre-line {
   white-space: pre-line;
-  margin-top: -20px;
+}
+
+.pre-line:first-line {
+  line-height: 0;
 }
