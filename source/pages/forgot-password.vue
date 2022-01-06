@@ -2,7 +2,7 @@
   <div class="text-center form-body">
     <main class="p-2 p-lg-0 form-login">
       <form @submit.prevent="forgotPassword">
-        <a href="https://findjob-frontend.kiaidev.com/ja" target="_blank">
+        <a :href="home_url" target="_blank">
           <img class="mb-3 mb-lg-4" src="../assets/images/icon_logo.svg" alt="" height="59">
         </a>
         <div class="bg-white box-form-login">
@@ -59,7 +59,8 @@
       return {
         email: '',
         message: '',
-        error: ''
+        error: '',
+        home_url: process.env.HOME_URL ?? 'https://findjob-frontend.kiaidev.com/ja'
       }
     },
 
