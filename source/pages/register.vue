@@ -429,6 +429,13 @@
             </div>
             <!--</form>-->
         </div>
+
+        <div
+          v-if="isLoading"
+          class="loading style-2"
+        >
+          <div class="loading-wheel"></div>
+        </div>
     </form>
 </template>
 
@@ -581,6 +588,7 @@ export default {
             this.$v.acceptTerms.$touch()
             if (!this.$v.acceptTerms.$invalid) {
               if (!this.$v.user.$invalid) {
+                this.isLoading = true
                 try {
                   await this.$repositories.accounts
                     .registerAccount(this.user)
@@ -597,6 +605,7 @@ export default {
                   const data = this.$handleResponse(error)
                   this.errors = data.errors
                 }
+                this.isLoading = false
               }
             }
         },

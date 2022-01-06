@@ -11,18 +11,38 @@
           <h5 class="fw-bold text-white">サイト名について</h5>
           <div class="my-2 my-lg-3 line-title"></div>
           <ul class="nav flex-column">
-            <li class="nav-item mb-1"><a href="#" class="nav-link p-0 ">ホーム</a></li>
-            <li class="nav-item mb-1"><a href="#" class="nav-link p-0 ">お問い合わせ</a></li>
-            <li class="nav-item mb-1"><a href="#" class="nav-link p-0 ">求人一覧</a></li>
-            <li class="nav-item mb-1"><a href="#" class="nav-link p-0 ">よくある質問</a></li>
+            <li class="nav-item mb-1">
+              <a class="nav-link p-0 " :href="user_site_url" target="_blank">
+                ホーム
+              </a>
+            </li>
+<!--            <li class="nav-item mb-1"><a href="#" class="nav-link p-0 ">お問い合わせ</a></li>-->
+            <li class="nav-item mb-1">
+              <NuxtLink class="nav-link p-0 " to="/jobs">
+                求人一覧
+              </NuxtLink>
+            </li>
+            <li class="nav-item mb-1">
+              <NuxtLink class="nav-link p-0" to="/faq">
+                よくある質問
+              </NuxtLink>
+            </li>
           </ul>
         </div>
         <div class="col-6 col-lg-3 mb-2">
           <h5 class="fw-bold text-white">サイト運営について</h5>
           <div class="my-2 my-lg-3 line-title"></div>
           <ul class="nav flex-column">
-            <li class="nav-item mb-1"><a href="#" class="nav-link p-0 ">利用規約</a></li>
-            <li class="nav-item mb-1"><a href="#" class="nav-link p-0 ">プライバシーポリシー</a></li>
+            <li class="nav-item mb-1">
+              <NuxtLink class="nav-link p-0" to="/term-use">
+                利用規約
+              </NuxtLink>
+            </li>
+            <li class="nav-item mb-1">
+              <NuxtLink class="nav-link p-0" to="privacy-policy">
+                プライバシーポリシー
+              </NuxtLink>
+            </li>
           </ul>
         </div>
         <div class="col-12 col-lg-3">
@@ -48,6 +68,24 @@
 
   </footer>
 </template>
+
+<script>
+  export default {
+    name: "Footer",
+
+    data() {
+      return {
+        user_site_url: process.env.USER_SITE_URL
+      }
+    },
+
+    methods: {
+      routeToUserSite() {
+        window.open(this.user_site_url, '_blank')
+      }
+    }
+  }
+</script>
 
 <style>
   @import '../styles/layout/_footer.scss';
