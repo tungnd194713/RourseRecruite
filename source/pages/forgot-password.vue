@@ -112,6 +112,9 @@
         if (message === 'We have emailed your password reset link!') {
           this.message = 'パスワード再設定用のURLが記載されたメールを送信しました。'
         }
+        if (message === 'Too Many Attempts.') {
+          this.message = 'しばらくお待ちください'
+        }
       }
     }
   }
