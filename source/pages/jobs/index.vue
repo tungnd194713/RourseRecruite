@@ -3,7 +3,7 @@
     <div class="nav-content container">
       <div class="row box-title mb-1 mb-lg-2">
         <div class="col-6">
-          <h4>求人一覧</h4>
+          <h4 class="page-header-title">応募者一覧</h4>
         </div>
         <div class="col-6">
           <button
