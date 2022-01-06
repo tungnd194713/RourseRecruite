@@ -6,7 +6,7 @@
       </div>
       <div class="col-md-6 col-6 part-above-search">
         <h6 class="mt-3 text-above-search text-right">
-          <a class="text-decoration-none" href="https://lapse-immi.moj.go.jp/ZEC/appl/e0/ZEC2/pages/FZECST021.aspx">在留資格はこのリンクから確認できます</a>
+          <a class="text-decoration-none" href="https://lapse-immi.moj.go.jp/ZEC/appl/e0/ZEC2/pages/FZECST021.aspx" target="_blank">在留資格はこのリンクから確認できます</a>
         </h6>
       </div>
     </div>
@@ -88,10 +88,10 @@
               :key="item.id"
               :class="item.read === 1 ? 'active' : ''"
             >
-              <td class="align-middle py-3">
+              <td class="align-middle py-3 text-center">
                 <span
                   v-if="!(item.read || isWarningUnRead(item.created_at))"
-                  class="td-warning"
+                  :class="(perPage * (currentPage - 1)) + (index + 1) < 10 ? 'td-warning' : 'td-warning-large'"
                 >
                   3日以上未対応!
                   <img class="" src="../../assets/images/icon_warning.svg" />
@@ -112,7 +112,7 @@
               <td class="align-middle py-3">
                 {{ $moment(item.created_at).format('YYYY-MM-DD') }}
               </td>
-              <td class="align-middle py-3">
+              <td class="align-middle py-3 col-status">
                 {{ item.candidate.form_recruitment }}
                 <template v-if="item.candidate.form_recruitment == 1"
                   >フルタイム</template
@@ -143,7 +143,7 @@
                   />
                 </a>
               </td>
-              <td class="align-middle py-3">
+              <td class="align-middle py-3 col-card">
                 {{ item.status ? residenceCardConfirm[item.residence_card_confirm] : residenceCardConfirm[0] }}
               </td>
               <td class="align-middle py-3 col-2 note">

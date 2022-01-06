@@ -190,7 +190,7 @@
         <h2 class="flex-grow-1">応募者一覧</h2>
         <span>
           <span class="me-0 me-lg-2">
-            <a class="text-decoration-none" href="https://lapse-immi.moj.go.jp/ZEC/appl/e0/ZEC2/pages/FZECST021.aspx">在留資格はこのリンクから確認できます</a>
+            <a class="text-decoration-none" href="https://lapse-immi.moj.go.jp/ZEC/appl/e0/ZEC2/pages/FZECST021.aspx" target="_blank">在留資格はこのリンクから確認できます</a>
           </span>
         </span>
       </div>
@@ -206,7 +206,7 @@
           </thead>
           <tbody>
           <tr v-for="(item, index) in items" :key="item.id" :class="item.read === 1 ? 'active' : ''">
-            <td class="align-middle py-3">
+            <td class="align-middle py-3 text-center">
                           <span v-if="!(item.read || isWarningUnRead(item.created_at))"
                                 :class="(perPage * (currentPage - 1)) + (index + 1) < 10 ? 'td-warning' : 'td-warning-large'"
                           >
@@ -222,7 +222,7 @@
             </td>
             <td class="align-middle py-3">{{item.jobs.title}}</td>
             <td class="align-middle py-3">{{$moment(item.created_at).format('YYYY-MM-DD')}}</td>
-            <td class="align-middle py-3">
+            <td class="align-middle py-3 col-status">
               {{item.candidate.form_recruitment}}
               <template v-if="item.candidate.form_recruitment == 1">フルタイム</template>
               <template v-else>アルバイト</template>
@@ -237,13 +237,13 @@
                 <img v-else class="" src="../../../assets/images/icon_postcard_inactive.svg"/>
               </a>
             </td>
-            <td class="align-middle py-3">
+            <td class="align-middle py-3 col-card">
               {{ item.status ? residenceCardConfirm[item.residence_card_confirm] : residenceCardConfirm[0] }}
             </td>
             <td class="align-middle py-3 w-20">
               {{item.note}}
             </td>
-            <td class="align-middle py-3">
+            <td class="align-middle py-3 col-status">
               {{ item.status ? statusCandidateApply[item.status] : statusCandidateApply[0] }}
             </td>
             <td class="align-middle py-3">
