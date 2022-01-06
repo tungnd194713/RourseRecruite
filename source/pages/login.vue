@@ -24,7 +24,7 @@
             >
               <span>
                 <img
-                  class=""
+                  class="mt-2"
                   src="../assets/images/icon_fb.svg"
                   alt="Facebookでログイン"
                 />
@@ -88,7 +88,7 @@
                 @change="clearErrors"
               />
               <span
-                class="input-group-text input-group-text-next"
+                class="input-group-text input-group-text-next d-flex justify-content-center"
                 @click="showPassword"
                 >
                 <img

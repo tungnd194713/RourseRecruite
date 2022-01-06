@@ -33,6 +33,7 @@ export default {
     '~/plugins/api',
     '~/plugins/repositories',
     '~/plugins/handle-response.js',
+    '~/plugins/vue-select.js',
     {src: '~/plugins/vuelidate'},
     { src: '~/plugins/datepicker.js', ssr: false },
     { src: "@/plugins/vClickOutside", ssr: false },

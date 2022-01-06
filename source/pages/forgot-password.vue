@@ -17,9 +17,9 @@
           </div>
 
           <div class="form-group my-5">
-            <label for="email">メールアドレス</label>
+            <label for="email">メールアドレス<span>*</span></label>
             <div class="input-group has-validation">
-              <span class="input-group-text input-group-text-pre"><img src="../assets/images/icon_email.svg" alt=""></span>
+              <span class="input-group-text input-group-text-pre"><img class="d-flex justify-content-center" src="../assets/images/icon_email.svg" alt=""></span>
               <input id="email"
                      v-model="$v.email.$model"
                      class="form-control form-control-lg"

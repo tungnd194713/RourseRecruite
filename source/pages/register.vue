@@ -5,16 +5,16 @@
             <div class="bg-white box-form-register">
                 <h1 class="mb-3 mb-lg-4 fw-bold">会員登録フォーム</h1>
                 <!--<form>-->
-                <div v-if="message === 200" class="valid-feedback error">
-                    ご登録ありがとうございます。<br />
-                    登録されたメールアドレスに確認用のリンクをお送りしました。
-                </div>
+<!--                <div v-if="message === 200" class="valid-feedback error">-->
+<!--                    ご登録ありがとうございます。<br />-->
+<!--                    登録されたメールアドレスに確認用のリンクをお送りしました。-->
+<!--                </div>-->
                 <div class="form-group">
                     <label for="company-name">会社名 <span>*</span></label>
                     <input
                         id="company-name"
                         v-model.trim="user.company_name"
-                        class="form-control form-control-lg"
+                        class="form-control form-control-lg rounded-pill"
                         aria-describedby="emailHelp"
                         @input="$v.user.company_name.$touch()"
                         @blur="$v.user.company_name.$touch()"
@@ -42,7 +42,7 @@
                         id="manager-name"
                         v-model.trim="user.manager_name"
                         type="text"
-                        class="form-control form-control-lg"
+                        class="form-control form-control-lg rounded-pill"
                         @input="$v.user.manager_name.$touch()"
                         @blur="$v.user.manager_name.$touch()"
                     />
@@ -69,7 +69,7 @@
                         id="mail"
                         v-model.trim="user.email"
                         type="text"
-                        class="form-control form-control-lg"
+                        class="form-control form-control-lg rounded-pill"
                         @input="$v.user.email.$touch()"
                         @blur="$v.user.email.$touch()"
                     />
@@ -89,6 +89,7 @@
                             メールアドレスの形式で入力してください
                         </div>
                     </div>
+
                     <div
                         v-if="errors.email && user.email === user.confirm_email"
                         class="invalid-feedback error"
@@ -103,7 +104,7 @@
                         id="phone"
                         v-model.trim="user.phone"
                         type="text"
-                        class="form-control form-control-lg"
+                        class="form-control form-control-lg rounded-pill"
                         @input="$v.user.phone.$touch()"
                         @blur="$v.user.phone.$touch()"
                     />
@@ -132,27 +133,47 @@
                         >
                             整数を入力してください
                         </div>
-                        <div
-                            v-if="
-                                errors.phone &&
-                                user.phone === user.confirm_phone
-                            "
-                            class="invalid-feedback error"
-                        >
-                            この電話番号は既に存在しています
-                        </div>
+                    </div>
+
+                    <div
+                        v-if="
+                            errors.phone &&
+                            user.phone === user.confirm_phone
+                        "
+                        class="invalid-feedback error"
+                    >
+                        この電話番号は既に存在しています
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="password">パスワード <span>*</span></label>
-                    <input
+                    <div class="input-group">
+                      <input
                         id="password"
                         v-model.trim="user.password"
-                        type="text"
-                        class="form-control form-control-lg"
+                        :type="isHidePassword ? 'password' : 'text'"
+                        class="form-control form-control-lg input-password"
                         @input="$v.user.password.$touch()"
                         @blur="$v.user.password.$touch()"
-                    />
+                      />
+                      <span
+                        class="input-group-text input-group-text-next"
+                        @click="isHidePassword = !isHidePassword"
+                      >
+                        <img
+                          v-if="isHidePassword"
+                          class="show-hide-password-icon"
+                          src="~/assets/images/icon_eye.svg"
+                          alt=""
+                        />
+                        <img
+                          v-else
+                          class="show-hide-password-icon"
+                          src="~/assets/images/icon_eyes_show.svg"
+                          alt=""
+                        />
+                      </span>
+                    </div>
                     <div v-if="$v.user.password.$error">
                         <div
                             v-if="!$v.user.password.required"
@@ -176,14 +197,33 @@
                     <label for="confirm-password"
                         >パスワード（確認) <span>*</span></label
                     >
-                    <input
+                    <div class="input-group">
+                      <input
                         id="confirm-password"
                         v-model.trim="user.confirm_password"
-                        type="text"
-                        class="form-control form-control-lg"
+                        :type="isHideConfirmPassword ? 'password' : 'text'"
+                        class="form-control form-control-lg input-password"
                         @input="$v.user.confirm_password.$touch()"
                         @blur="$v.user.confirm_password.$touch()"
-                    />
+                      />
+                      <span
+                        class="input-group-text input-group-text-next"
+                        @click="isHideConfirmPassword = !isHideConfirmPassword"
+                      >
+                        <img
+                          v-if="isHideConfirmPassword"
+                          class="show-hide-password-icon"
+                          src="~/assets/images/icon_eye.svg"
+                          alt=""
+                        />
+                        <img
+                          v-else
+                          class="show-hide-password-icon"
+                          src="~/assets/images/icon_eyes_show.svg"
+                          alt=""
+                        />
+                      </span>
+                    </div>
                     <div v-if="$v.user.confirm_password.$error">
                         <div
                             v-if="!$v.user.confirm_password.required"
@@ -208,7 +248,7 @@
                     <select
                         id="career"
                         v-model="user.career"
-                        class="form-select form-select-lg"
+                        class="form-select form-select-lg rounded-pill"
                     >
                         <option
                             v-for="(career, index) in careers"
@@ -227,45 +267,75 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>住所 </label>
+              <br>
+                <div class="form-group my-2">
+                    <label id="title-address">住所 </label>
                 </div>
 
                 <div class="form-group">
                     <label for="postal-code">郵便番号</label>
+                  <div class="d-flex">
                     <input
-                        id="postal-code"
-                        v-model.trim="user.postal_code"
-                        type="text"
-                        class="form-control form-control-lg"
-                        @input="$v.user.postal_code.$touch()"
-                        @blur="$v.user.postal_code.$touch()"
+                      id="postal-code-1"
+                      v-model.trim="user.postal_code_1"
+                      type="text"
+                      class="form-control form-control-lg rounded-pill w-25 pr-1"
+                      placeholder="xxx"
+                      @input="$v.user.postal_code_1.$touch()"
+                      @blur="$v.user.postal_code_1.$touch()"
+                      maxlength="3"
                     />
-                    <div v-if="$v.user.postal_code.$error">
-                        <div
-                            v-if="!$v.user.postal_code.postalCode"
-                            class="invalid-feedback error"
-                        >
-                            郵便番号の形式で入力してください
-                        </div>
+                    <p class="mx-3 mt-2">ー</p>
+                    <input
+                      id="postal-code-2"
+                      v-model.trim="user.postal_code_2"
+                      type="text"
+                      class="form-control form-control-lg rounded-pill w-50"
+                      placeholder="xxxx"
+                      @input="$v.user.postal_code_2.$touch()"
+                      @blur="$v.user.postal_code_2.$touch()"
+                      maxlength="4"
+                    />
+                  </div>
+                  <div v-if="$v.user.postal_code_1.$error">
+                    <div
+                      v-if="!$v.user.postal_code_1.numeric"
+                      class="invalid-feedback error"
+                    >
+                      郵便番号の形式で入力してください
                     </div>
+                  </div>
+                  <div v-if="$v.user.postal_code_2.$error">
+                    <div
+                      v-if="!$v.user.postal_code_2.numeric"
+                      class="invalid-feedback error"
+                    >
+                      郵便番号の形式で入力してください
+                    </div>
+                  </div>
                 </div>
 
                 <div class="form-group">
                     <label for="provinces">都道府県<span>*</span></label>
-                    <select
-                        id="provinces"
-                        v-model="user.province_id"
-                        class="form-select form-select-lg"
-                    >
-                        <option
-                            v-for="(province, index) in provinces"
-                            :key="index"
-                            :value="index + 1"
-                        >
-                            {{ $t(province) }}
-                        </option>
-                    </select>
+<!--                    <select-->
+<!--                        id="provinces"-->
+<!--                        v-model="user.province_id"-->
+<!--                        class="form-select form-select-lg"-->
+<!--                    >-->
+<!--                        <option-->
+<!--                            v-for="(province, index) in provinces"-->
+<!--                            :key="index"-->
+<!--                            :value="index + 1"-->
+<!--                        >-->
+<!--                            {{ $t(province) }}-->
+<!--                        </option>-->
+<!--                    </select>-->
+                    <input
+                      id="province_id"
+                      v-model="user.province_id"
+                      type="text"
+                      class="form-control form-control-lg rounded-pill"
+                    />
                     <div v-if="$v.user.province_id.$error">
                         <div
                             v-if="!$v.user.province_id.required"
@@ -282,7 +352,7 @@
                         id="district"
                         v-model.trim="user.district"
                         type="text"
-                        class="form-control form-control-lg"
+                        class="form-control form-control-lg rounded-pill"
                         @input="$v.user.district.$touch()"
                         @blur="$v.user.district.$touch()"
                     />
@@ -308,7 +378,7 @@
                         id="address"
                         v-model.trim="user.address"
                         type="text"
-                        class="form-control form-control-lg"
+                        class="form-control form-control-lg rounded-pill"
                     />
                     <div v-if="$v.user.address.$error">
                         <div
@@ -332,8 +402,7 @@
                         v-model="acceptTerms"
                         class="form-check-input"
                         type="checkbox"
-                        value="1"
-                        @input="$v.acceptTerms.$touch()"
+                        @change="$v.acceptTerms.$touch()"
                         @blur="$v.acceptTerms.$touch()"
                     />
                     <label class="form-check-label" for="flexCheckDefault">
@@ -341,7 +410,7 @@
                     </label>
                     <div v-if="$v.acceptTerms.$error">
                         <div
-                            v-if="!$v.acceptTerms.required"
+                            v-if="!$v.acceptTerms.checked"
                             class="invalid-feedback error"
                         >
                             これは必須項目なので、必ずチェックしてください
@@ -358,8 +427,6 @@
                                 background-color: white;
                                 border-color: black;
                                 color: black;
-                                width: 50%;
-                                font-size: 16px;
                             "
                         >
                             キャンセル
@@ -389,12 +456,14 @@ import {
     minLength,
     maxLength,
     helpers,
+    numeric,
 } from 'vuelidate/lib/validators'
 
 import theCareers from '~/constants/careers'
 import theProvinces from '~/constants/provinces'
+import provincesInRegisterPage from '~/constants/provincesInRegisterPage'
 
-const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/g)
+// const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/g)
 // const phone = helpers.regex(
 //     'phone',
 //     /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/
@@ -403,6 +472,7 @@ const numbers = helpers.regex('numbers', /^[0-9]*$/)
 
 export default {
     name: 'Register',
+
     data() {
         return {
             user: {
@@ -414,18 +484,53 @@ export default {
                 confirm_password: '',
                 career: '',
                 postal_code: '',
+                postal_code_1: '',
+                postal_code_2: '',
                 province_id: '',
                 district: '',
                 address: '',
             },
-            acceptTerms: '',
+            acceptTerms: false,
             errors: [],
             message: '',
             theCareers,
             theProvinces,
             careers: [],
-            provinces: [],
+            provinces: provincesInRegisterPage,
+            isHidePassword: true,
+            isHideConfirmPassword: true,
+            isLoading: false
         }
+    },
+
+    watch: {
+        'user.postal_code_1': {
+          handler(newVal) {
+            console.log(this.user.postal_code_1.length)
+            if (this.user.postal_code_1.length === 3 && this.user.postal_code_2.length === 4) {
+            this.user.postal_code = this.user.postal_code_1 + this.user.postal_code_2
+            console.log('post_code ' + this.user.postal_code)
+            }
+          },
+          deep: true
+        },
+        'user.postal_code_2': {
+          handler(newVal) {
+            if (this.user.postal_code_2.length === 4 && this.user.postal_code_1.length === 3) {
+              this.user.postal_code = this.user.postal_code_1 + this.user.postal_code_2
+              console.log(this.user.postal_code)
+            }
+          },
+          deep:true
+        },
+        'user.postal_code': {
+          handler(newVal) {
+            if (this.user.postal_code > 0) {
+              this.getDetailAddress();
+            }
+          },
+          deep:true
+        },
     },
 
     head() {
@@ -464,8 +569,11 @@ export default {
             career: {
                 required,
             },
-            postal_code: {
-                postalCode,
+            postal_code_1: {
+                numeric,
+            },
+            postal_code_2: {
+              numeric,
             },
             province_id: {
                 required,
@@ -480,37 +588,80 @@ export default {
             },
         },
         acceptTerms: {
-            required,
+            checked(val) {
+              return val
+            }
         },
     },
 
     created() {
         this.careers = theCareers
-        this.provinces = theProvinces
+        // this.provinces = theProvinces
     },
 
     methods: {
+
+        resetData() {
+          this.user = Object.assign({}, {
+            company_name: '',
+            manager_name: '',
+            email: '',
+            phone: '',
+            password: '',
+            confirm_password: '',
+            career: '',
+            postal_code: '',
+            postal_code_1: '',
+            postal_code_2: '',
+            province_id: '',
+            district: '',
+            address: '',
+          })
+          this.acceptTerms =  false
+          this.errors =  []
+          this.message =  ''
+          this.$v.$reset()
+        },
+
         async submit() {
             this.user.confirm_email = this.user.email
             this.user.confirm_phone = this.user.phone
             this.$v.user.$touch()
             this.$v.acceptTerms.$touch()
-
-            if (!this.$v.user.$invalid) {
+            if (!this.$v.acceptTerms.$invalid) {
+              if (!this.$v.user.$invalid) {
                 try {
-                    await this.$repositories.accounts
-                        .registerAccount(this.user)
-                        .then((response) => {
-                            const data = this.$handleResponse(response)
-                            this.message = response.status
-                            this.errors = data.errors
-                        })
+                  await this.$repositories.accounts
+                    .registerAccount(this.user)
+                    .then((response) => {
+                      const data = this.$handleResponse(response)
+                      this.message = response.status
+                      this.errors = data.errors
+                      if (response.status === 200) {
+                        this.$toast.success('ご登録ありがとうございます。登録されたメールアドレスに確認用のリンクをお送りしました。')
+                        this.resetData()
+                      }
+                    })
                 } catch (error) {
-                    const data = this.$handleResponse(error)
-                    this.errors = data.errors
+                  const data = this.$handleResponse(error)
+                  this.errors = data.errors
                 }
+              }
             }
         },
+
+        async getDetailAddress() {
+          if (this.user.postal_code) {
+            await this.$axios.get('https://apis.postcode-jp.com/api/v5/postcodes/' + this.user.postal_code).then((res) => {
+              if(res.data.length > 0) {
+                this.user.province_id = res.data[0].pref;
+                this.user.district = res.data[0].city;
+                this.user.address = res.data[0].allAddress;
+              }
+            })
+          }
+
+        }
     },
 }
 </script>

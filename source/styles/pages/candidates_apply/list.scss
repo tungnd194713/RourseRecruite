@@ -285,7 +285,6 @@ tr.active td {
   font-weight: bold;
   font-size: 32px;
   color: #003159;
-  margin-bottom: 2rem;
 }
 
 .btn-close {
@@ -435,7 +434,7 @@ tr.active td {
   }
   .check-title {
     font-size: 26px;
-    margin-bottom: 5px;
+    //margin-bottom: 5px;
   }
   .pop-check-input {
     margin: 0;
@@ -491,4 +490,8 @@ textarea {
 
 .col-text {
   min-width: 10rem !important;
+}
+
+.col-status {
+  min-width: 123px;
 }

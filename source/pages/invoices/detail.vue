@@ -113,10 +113,10 @@
 
   export default {
     name: "Detail",
+      components: {
+          Pagination,
+      },
     layout: 'payment',
-    components: {
-      Pagination,
-    },
 
     data () {
       return {
