@@ -524,6 +524,7 @@
                     v-model.trim="$v.data.youtube.$model"
                     type="text"
                     class="form-control"
+                    placeholder="https://www.youtube.com/embed/..."
                   />
                 </div>
                 <div v-if="$v.data.youtube.$error">
