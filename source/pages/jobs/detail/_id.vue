@@ -207,11 +207,13 @@
           <tbody>
           <tr v-for="(item, index) in items" :key="item.id" :class="item.read === 1 ? 'active' : ''">
             <td class="align-middle py-3">
-                          <span v-if="!(item.read || isWarningUnRead(item.created_at))" class="td-warning">
+                          <span v-if="!(item.read || isWarningUnRead(item.created_at))"
+                                :class="(perPage * (currentPage - 1)) + (index + 1) < 10 ? 'td-warning' : 'td-warning-large'"
+                          >
                             3日以上未対応
                             <img class="" src="../../../assets/images/icon_warning.svg"/>
                           </span>
-              {{index + 1}}
+              {{ (perPage * (currentPage - 1)) + (index + 1) }}
             </td>
             <td class="align-middle py-3">
               <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop" @click="popupCvUser(item)">
@@ -236,29 +238,13 @@
               </a>
             </td>
             <td class="align-middle py-3">
-              <select v-model="item.residence_card_confirm"
-                      class="form-select active rounded-3 confirm-select"
-                      @change="updateCard(item.id, {residence_card_confirm: item.residence_card_confirm})">
-                <option value="0">未選択</option>
-                <option value="1">承認</option>
-                <option value="2">非承認</option>
-              </select>
+              {{ item.status ? residenceCardConfirm[item.residence_card_confirm] : residenceCardConfirm[0] }}
             </td>
             <td class="align-middle py-3 w-20">
               {{item.note}}
             </td>
             <td class="align-middle py-3">
-              <select v-model="item.status"
-                      class="form-select active rounded-3 status-select"
-                      @change="updateItemStatus(item.id, {status: item.status})">
-                <option value="0">未選択</option>
-                <option value="1">未対応</option>
-                <option value="2">折り返し待ち</option>
-                <option value="3">面接待ち</option>
-                <option value="4">採用</option>
-                <option value="5">不採用（連絡取れず）</option>
-                <option value="6">不採用</option>
-              </select>
+              {{ item.status ? statusCandidateApply[item.status] : statusCandidateApply[0] }}
             </td>
             <td class="align-middle py-3">
               <a
@@ -369,6 +355,9 @@
               応募者の応募状態更新
             </h5>
           </div>
+          <h5 class="d-flex justify-content-center align-items-center">氏名:
+            <strong>{{ user_name }}</strong>
+          </h5>
           <div class="modal-body pop-check-input">
             <label for="confirmation">在留資格確認</label>
             <select
@@ -482,6 +471,8 @@
   import defaultInCvUser from "~/constants/defaultInCvUser"
   import theStatusStay from "~/constants/statusStay"
   import theProvinces from "~/constants/provinces"
+  import residenceCardConfirm from "~/constants/residenceCardConfirm";
+  import statusCandidateApply from "~/constants/statusCandidateApply";
 
   export default {
     name: "JobDetail",
@@ -751,7 +742,10 @@
           candidate_certificates : []
         },
         educationsOfCandidate: [],
-        jobsOfCandidate: []
+        jobsOfCandidate: [],
+        selectedItemId: 0,
+        residenceCardConfirm,
+        statusCandidateApply,
       }
     },
 
@@ -903,38 +897,6 @@
           })
         }
       },
-
-    async updateCard(id, data) {
-      return await this.$repositories.candidatesApply
-        .updateStatus(id, data)
-        .then((res) => {
-          this.idRow = -1
-          if (res.status === 200) {
-            this.$toast.success('応募者の応募状態・更新が完了しました')
-            this.getListCV(this.currentPage)
-          } else {
-            this.$toast.success(
-              '候補者の申請状況と候補者名の更新は完了していません。'
-            )
-          }
-        })
-      },
-
-    async updateItemStatus(id, data) {
-      return await this.$repositories.candidatesApply
-        .updateStatus(id, data)
-        .then((res) => {
-          this.idRow = -1
-          if (res.status === 200) {
-            this.$toast.success('応募者の応募状態・更新が完了しました')
-            this.getListCV(this.currentPage)
-          } else {
-            this.$toast.success(
-              '候補者の申請状況と候補者名の更新は完了していません。'
-            )
-          }
-        })
-    },
 
     popupImageCard(residenceCardFront, residenceCardBackside) {
       this.image.residence_card_front = residenceCardFront

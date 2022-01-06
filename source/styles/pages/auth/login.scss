@@ -67,7 +67,7 @@ input:focus {
 }
 
 .btn-facebook span {
-  padding: 6px 40px 10px 0px;
+  padding: 6px 40px 9px 0px;
   border-bottom: 1px solid #3B589C;
   border-top: 1px solid #3B589C;
   border-right: 1px solid #3B589C;
@@ -175,7 +175,7 @@ input:focus {
   }
 
   .btn-facebook span {
-    padding: 5px 20px 10px 0px;
+    padding: 5px 20px 9px 0px;
     font-size: 12px;
   }
 
@@ -221,4 +221,8 @@ input:focus {
 
 .dot-link {
   margin-inline: 9px;
+}
+
+#password:focus {
+  border-right: 0;
 }
