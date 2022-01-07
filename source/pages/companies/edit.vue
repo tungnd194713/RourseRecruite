@@ -27,6 +27,7 @@
                 <label for="company_name">会社名 <span>*</span></label>
                 <input
                   id="company_name"
+                  ref="companyNameTextBox"
                   v-model.trim="$v.data.company_name.$model"
                   type="text"
                   :class="{
@@ -79,6 +80,7 @@
                   <label for="phone">電話番号 <span>*</span></label>
                   <input
                     id="phone"
+                    ref="phoneTextBox"
                     v-model.trim="$v.data.phone.$model"
                     type="tel"
                     :class="{
@@ -113,7 +115,7 @@
               <h5>住所</h5>
               <div class="row">
                 <div class="form-group col-12 col-lg-6 mb-2 mb-lg-3">
-                  <label for="postal_code">郵便番号 <span>*</span></label>
+                  <label for="postal_code">郵便番号</label>
                   <input
                     id="postal_code"
                     v-model.trim="$v.data.postal_code.$model"
@@ -124,11 +126,12 @@
                         $v.data.postal_code.$dirty,
                     }"
                     class="form-control"
+                    placeholder="xxx-xxxx"
                   />
                   <div v-if="$v.data.postal_code.$error">
-                    <div v-if="!$v.data.postal_code.required" class="error">
+                    <!--<div v-if="!$v.data.postal_code.required" class="error">
                       これは必須項目なので、必ず入力してください
-                    </div>
+                    </div>-->
                     <div v-if="!$v.data.postal_code.postalCode" class="error">
                       郵便番号の形式で入力してください
                     </div>
@@ -179,6 +182,7 @@
                   <label for="district">市区町村 <span>*</span></label>
                   <input
                     id="district"
+                    ref="districtTextBox"
                     v-model.trim="$v.data.district.$model"
                     :class="{
                       invalid:
@@ -200,6 +204,7 @@
                   <label for="address">番地 <span>*</span></label>
                   <input
                     id="address"
+                    ref="addressTextBox"
                     v-model.trim="$v.data.address.$model"
                     type="text"
                     :class="{
@@ -223,6 +228,7 @@
                 <label for="manager_name">担当者名 <span>*</span></label>
                 <input
                   id="manager_name"
+                  ref="managerNameTextBox"
                   v-model.trim="$v.data.manager_name.$model"
                   :class="{
                     invalid:
@@ -302,6 +308,7 @@
                   </span>
                   <input
                     id="link_website"
+                    ref="linkWebsiteTextBox"
                     v-model.trim="$v.data.link_website.$model"
                     type="text"
                     class="form-control"
@@ -556,6 +563,7 @@
                   </button>
                 </div>
                 <button
+                  type="button"
                   class="btn btn-upload-video border rounded-3"
                   @click="triggerVideoInput"
                 >
@@ -775,7 +783,7 @@ export default {
         required,
       },
       postal_code: {
-        required,
+        // required,
         postalCode,
       },
       district: {
@@ -1040,6 +1048,34 @@ export default {
           } catch (e) {
             this.errors = e.response.data.errors
           }
+        } else if (this.$v.data.company_name.$error) {
+          this.$nextTick(() => {
+            this.$refs.companyNameTextBox.focus()
+          })
+        } else if (this.$v.data.phone.$error) {
+          this.$nextTick(() => {
+            this.$refs.phoneTextBox.focus()
+          })
+        } else if (this.$v.data.province.$error) {
+          this.$nextTick(() => {
+            document.getElementsByClassName('vs__search')[0].focus()
+          })
+        } else if (this.$v.data.district.$error) {
+          this.$nextTick(() => {
+            this.$refs.districtTextBox.focus()
+          })
+        } else if (this.$v.data.address.$error) {
+          this.$nextTick(() => {
+            this.$refs.addressTextBox.focus()
+          })
+        } else if (this.$v.data.manager_name.$error) {
+          this.$nextTick(() => {
+            this.$refs.managerNameTextBox.focus()
+          })
+        } else if (this.$v.data.link_website.$error) {
+          this.$nextTick(() => {
+            this.$refs.linkWebsiteTextBox.focus()
+          })
         }
       }
     },

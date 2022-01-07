@@ -13,6 +13,7 @@
                     <label for="company-name">会社名 <span>*</span></label>
                     <input
                         id="company-name"
+                        ref="companyNameTextBox"
                         v-model.trim="user.company_name"
                         class="form-control form-control-lg"
                         aria-describedby="emailHelp"
@@ -40,6 +41,7 @@
                     <label for="manager-name">担当者名 <span>*</span></label>
                     <input
                         id="manager-name"
+                        ref="managerNameTextBox"
                         v-model.trim="user.manager_name"
                         type="text"
                         class="form-control form-control-lg"
@@ -67,6 +69,7 @@
                     <label for="mail">メールアドレス <span>*</span></label>
                     <input
                         id="mail"
+                        ref="emailTextBox"
                         v-model.trim="user.email"
                         type="text"
                         class="form-control form-control-lg"
@@ -102,6 +105,7 @@
                     <label for="phone">電話番号 <span>*</span></label>
                     <input
                         id="phone"
+                        ref="phoneTextBox"
                         v-model.trim="user.phone"
                         type="text"
                         class="form-control form-control-lg"
@@ -150,6 +154,7 @@
                     <div class="input-group">
                       <input
                         id="password"
+                        ref="passwordTextBox"
                         v-model.trim="user.password"
                         :type="isHidePassword ? 'password' : 'text'"
                         class="form-control form-control-lg"
@@ -200,6 +205,7 @@
                     <div class="input-group">
                       <input
                         id="confirm-password"
+                        ref="confirmPasswordTextBox"
                         v-model.trim="user.confirm_password"
                         :type="isHideConfirmPassword ? 'password' : 'text'"
                         class="form-control form-control-lg"
@@ -247,6 +253,7 @@
                     <label for="career">業界・分野 <span>*</span></label>
                     <select
                         id="career"
+                        ref="careerSelectBox"
                         v-model="user.career"
                         class="form-select form-select-lg"
                     >
@@ -275,6 +282,7 @@
                     <label for="postal-code">郵便番号</label>
                     <input
                         id="postal-code"
+                        ref="postalCodeTextBox"
                         v-model.trim="user.postal_code"
                         type="text"
                         class="form-control form-control-lg"
@@ -308,6 +316,7 @@
 <!--                        </option>-->
 <!--                    </select>-->
                     <v-select
+                      ref="provinceIdSelectBox"
                       v-model="user.province_id"
                       :options="provinces"
                       :reduce="(province) => province.value"
@@ -333,6 +342,7 @@
                     <label for="district">市区町村<span>*</span></label>
                     <input
                         id="district"
+                        ref="districtTextBox"
                         v-model.trim="user.district"
                         type="text"
                         class="form-control form-control-lg"
@@ -359,6 +369,7 @@
                     <label for="address">番地<span>*</span></label>
                     <input
                         id="address"
+                        ref="addressTextBox"
                         v-model.trim="user.address"
                         type="text"
                         class="form-control form-control-lg"
@@ -382,6 +393,7 @@
                 <div class="form-check">
                     <input
                         id="flexCheckDefault"
+                        ref="acceptTermsCheckbox"
                         v-model="acceptTerms"
                         class="form-check-input"
                         type="checkbox"
@@ -404,7 +416,7 @@
                     <NuxtLink to="/login">
                         <button
                             id="btn_cancel"
-                            type="submit"
+                            type="button"
                             class="btn fw-bold my-3 my-lg-4 rounded-pill"
                             style="
                                 background-color: white;
@@ -586,8 +598,8 @@ export default {
             this.user.confirm_phone = this.user.phone
             this.$v.user.$touch()
             this.$v.acceptTerms.$touch()
-            if (!this.$v.acceptTerms.$invalid) {
-              if (!this.$v.user.$invalid) {
+            if (!this.$v.user.$invalid) {
+              if (!this.$v.acceptTerms.$invalid) {
                 this.isLoading = true
                 try {
                   await this.$repositories.accounts
@@ -600,13 +612,72 @@ export default {
                         this.$toast.success('ご登録ありがとうございます。登録されたメールアドレスに確認用のリンクをお送りしました。')
                         this.resetData()
                       }
+                      if (response.response && response.response.status === 422) {
+                        if (response.response.data.errors.email) {
+                          this.$nextTick(() => {
+                            this.$refs.emailTextBox.focus()
+                          })
+                        } else if (response.response.data.errors.phone) {
+                          this.$nextTick(() => {
+                            this.$refs.phoneTextBox.focus()
+                          })
+                        }
+                      }
                     })
                 } catch (error) {
                   const data = this.$handleResponse(error)
                   this.errors = data.errors
                 }
                 this.isLoading = false
+              } else {
+                this.$nextTick(() => {
+                  this.$refs.acceptTermsCheckbox.focus()
+                })
               }
+            } else if (this.$v.user.company_name.$error) {
+              this.$nextTick(() => {
+                this.$refs.companyNameTextBox.focus()
+              })
+            } else if (this.$v.user.manager_name.$error) {
+              this.$nextTick(() => {
+                this.$refs.managerNameTextBox.focus()
+              })
+            } else if (this.$v.user.email.$error) {
+              this.$nextTick(() => {
+                this.$refs.emailTextBox.focus()
+              })
+            } else if (this.$v.user.phone.$error) {
+              this.$nextTick(() => {
+                this.$refs.phoneTextBox.focus()
+              })
+            } else if (this.$v.user.password.$error) {
+              this.$nextTick(() => {
+                this.$refs.passwordTextBox.focus()
+              })
+            } else if (this.$v.user.confirm_password.$error) {
+              this.$nextTick(() => {
+                this.$refs.confirmPasswordTextBox.focus()
+              })
+            } else if (this.$v.user.career.$error) {
+              this.$nextTick(() => {
+                this.$refs.careerSelectBox.focus()
+              })
+            } else if (this.$v.user.postal_code.$error) {
+              this.$nextTick(() => {
+                this.$refs.postalCodeTextBox.focus()
+              })
+            } else if (this.$v.user.province_id.$error) {
+              this.$nextTick(() => {
+                document.getElementsByClassName('vs__search')[0].focus()
+              })
+            } else if (this.$v.user.district.$error) {
+              this.$nextTick(() => {
+                this.$refs.districtTextBox.focus()
+              })
+            } else if (this.$v.user.address.$error) {
+              this.$nextTick(() => {
+                this.$refs.addressTextBox.focus()
+              })
             }
         },
     },
