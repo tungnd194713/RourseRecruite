@@ -133,6 +133,11 @@
                       id="postal-code-2"
                       v-model.trim="$v.data.postal_code_2.$model"
                       type="text"
+                      :class="{
+                        invalid:
+                          $v.data.postal_code_2.$invalid &&
+                          $v.data.postal_code_2.$dirty,
+                      }"
                       class="form-control w-50"
                       placeholder="xxxx"
                       @blur="$v.data.postal_code_2.$touch()"
@@ -177,10 +182,18 @@
                     </option>
                   </select>-->
 
-                  <input v-model="$v.data.province.$model"
-                         type="text"
-                         class="form-control"
-                  />
+                  <v-select
+                    v-model="$v.data.province.$model"
+                    :options="provinces"
+                    :reduce="(province) => province.value"
+                    label="label"
+                  >
+                    <template #no-options="{ searching }">
+                      <template v-if="searching">
+                        データがありません。
+                      </template>
+                    </template>
+                  </v-select>
                   <div v-if="$v.data.province.$error">
                     <div v-if="!$v.data.province.required" class="error">
                       これは必須項目なので、必ず入力してください
@@ -1107,7 +1120,12 @@ export default {
       if (this.data.postal_code) {
         await this.$axios.get('https://apis.postcode-jp.com/api/v5/postcodes/' + this.data.postal_code).then((res) => {
           if(res.data.length > 0) {
-            this.data.province = res.data[0].pref;
+            this.provinces.forEach((item) => {
+              if (item.label === res.data[0].pref) {
+                this.data.province = item.value;
+              }
+            });
+
             this.data.district = res.data[0].city;
             this.data.address = res.data[0].allAddress;
           }
