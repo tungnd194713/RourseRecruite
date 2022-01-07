@@ -113,23 +113,45 @@
               <h5>住所</h5>
               <div class="row">
                 <div class="form-group col-12 col-lg-6 mb-2 mb-lg-3">
-                  <label for="postal_code">郵便番号 <span>*</span></label>
-                  <input
-                    id="postal_code"
-                    v-model.trim="$v.data.postal_code.$model"
-                    type="text"
-                    :class="{
-                      invalid:
-                        $v.data.postal_code.$invalid &&
-                        $v.data.postal_code.$dirty,
-                    }"
-                    class="form-control"
-                  />
-                  <div v-if="$v.data.postal_code.$error">
-                    <div v-if="!$v.data.postal_code.required" class="error">
-                      これは必須項目なので、必ず入力してください
+                  <label for="postal-code-1">郵便番号 <span>*</span></label>
+                  <div class="d-flex postal-code">
+                    <input
+                      id="postal-code-1"
+                      v-model.trim="$v.data.postal_code_1.$model"
+                      type="text"
+                      :class="{
+                        invalid:
+                          $v.data.postal_code_1.$invalid &&
+                          $v.data.postal_code_1.$dirty,
+                      }"
+                      class="form-control w-25 pr-1"
+                      placeholder="xxx"
+                      maxlength="3"
+                    />
+                    <p class="mx-2 mt-2">ー</p>
+                    <input
+                      id="postal-code-2"
+                      v-model.trim="$v.data.postal_code_2.$model"
+                      type="text"
+                      class="form-control w-50"
+                      placeholder="xxxx"
+                      @blur="$v.data.postal_code_2.$touch()"
+                      maxlength="4"
+                    />
+                  </div>
+                  <div v-if="$v.data.postal_code_1.$error">
+                    <div
+                      v-if="!$v.data.postal_code_1.numeric"
+                      class="invalid-feedback error"
+                    >
+                      郵便番号の形式で入力してください
                     </div>
-                    <div v-if="!$v.data.postal_code.postalCode" class="error">
+                  </div>
+                  <div v-if="$v.data.postal_code_2.$error">
+                    <div
+                      v-if="!$v.data.postal_code_2.numeric"
+                      class="invalid-feedback error"
+                    >
                       郵便番号の形式で入力してください
                     </div>
                   </div>
@@ -155,18 +177,10 @@
                     </option>
                   </select>-->
 
-                  <v-select
-                    v-model="$v.data.province.$model"
-                    :options="provinces"
-                    :reduce="(province) => province.value"
-                    label="label"
-                  >
-                    <template #no-options="{ searching }">
-                      <template v-if="searching">
-                        データがありません。
-                      </template>
-                    </template>
-                  </v-select>
+                  <input v-model="$v.data.province.$model"
+                         type="text"
+                         class="form-control"
+                  />
                   <div v-if="$v.data.province.$error">
                     <div v-if="!$v.data.province.required" class="error">
                       これは必須項目なので、必ず入力してください
@@ -679,7 +693,7 @@ import {
   maxLength,
   minLength,
   url,
-  helpers,
+  helpers, numeric,
 } from 'vuelidate/lib/validators'
 import 'vue2-datepicker/index.css'
 import 'vue2-datepicker/locale/ja'
@@ -698,7 +712,6 @@ const phone = helpers.regex(
   'phone',
   /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{3})/
 )
-const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/)
 const imageRule = helpers.regex('image', /\.(gif|jpe?g|png|PNG|GIF|JPE?G)$/)
 const videoRule = helpers.regex('video', /\.(mp4|wmv|avi|mov|flv)$/)
 const imageSize = (value) => value <= 2000000
@@ -727,6 +740,8 @@ export default {
         phone: '',
         youtube: '',
         postal_code: '',
+        postal_code_1: '',
+        postal_code_2: '',
         district: '',
         province: '',
         images: [],
@@ -775,9 +790,11 @@ export default {
       career: {
         required,
       },
-      postal_code: {
-        required,
-        postalCode,
+      postal_code_1: {
+        numeric,
+      },
+      postal_code_2: {
+        numeric,
       },
       district: {
         required,
@@ -830,6 +847,33 @@ export default {
       youtube: {
         youtube,
       },
+    },
+  },
+
+  watch: {
+    'data.postal_code_1': {
+      handler(newVal) {
+        if (this.data.postal_code_1.length === 3 && this.data.postal_code_2.length === 4) {
+          this.data.postal_code = this.data.postal_code_1 + this.data.postal_code_2
+        }
+      },
+      deep: true
+    },
+    'data.postal_code_2': {
+      handler(newVal) {
+        if (this.data.postal_code_2.length === 4 && this.data.postal_code_1.length === 3) {
+          this.data.postal_code = this.data.postal_code_1 + this.data.postal_code_2
+        }
+      },
+      deep:true
+    },
+    'data.postal_code': {
+      handler(newVal) {
+        if (this.data.postal_code > 0) {
+          this.getDetailAddress();
+        }
+      },
+      deep:true
     },
   },
 
@@ -1058,6 +1102,19 @@ export default {
     resetFormToStart() {
       window.location.reload()
     },
+
+    async getDetailAddress() {
+      if (this.data.postal_code) {
+        await this.$axios.get('https://apis.postcode-jp.com/api/v5/postcodes/' + this.data.postal_code).then((res) => {
+          if(res.data.length > 0) {
+            this.data.province = res.data[0].pref;
+            this.data.district = res.data[0].city;
+            this.data.address = res.data[0].allAddress;
+          }
+        })
+      }
+
+    }
   },
 }
 </script>

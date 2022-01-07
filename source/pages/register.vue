@@ -273,7 +273,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="postal-code">郵便番号</label>
+                    <label for="postal-code-1">郵便番号</label>
                   <div class="d-flex">
                     <input
                       id="postal-code-1"
@@ -666,7 +666,6 @@ export default {
               }
             })
           }
-
         }
     },
 }
