@@ -924,7 +924,8 @@ export default {
       this.data.address = data.address
       this.data.phone = data.phone
       this.data.email = data.email
-      this.data.postal_code = data.postal_code
+      this.data.postal_code_1 = data.postal_code.substring(0,3);
+      this.data.postal_code_2 = data.postal_code.substring(3,7);
       this.data.province = data.province_id
       this.data.district = data.district
       this.data.career = data.career
