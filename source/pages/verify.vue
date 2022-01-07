@@ -103,6 +103,15 @@
           }
         }
       },
+
+      getMessage(message) {
+        if (message === 'The given data was invalid.') {
+          this.error = 'しばらくお待ちください'
+        }
+        if (message === 'Too Many Attempts.') {
+          this.message = 'しばらくお待ちください'
+        }
+      }
     }
   }
 </script>

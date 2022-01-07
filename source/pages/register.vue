@@ -330,12 +330,18 @@
 <!--                            {{ $t(province) }}-->
 <!--                        </option>-->
 <!--                    </select>-->
-                    <input
-                      id="province_id"
+                    <v-select
                       v-model="user.province_id"
-                      type="text"
-                      class="form-control form-control-lg rounded-pill"
-                    />
+                      :options="provinces"
+                      :reduce="(province) => province.value"
+                      label="label"
+                    >
+                      <template #no-options="{ searching }">
+                        <template v-if="searching">
+                          データがありません。
+                        </template>
+                      </template>
+                    </v-select>
                     <div v-if="$v.user.province_id.$error">
                         <div
                             v-if="!$v.user.province_id.required"
@@ -660,7 +666,11 @@ export default {
           if (this.user.postal_code) {
             await this.$axios.get('https://apis.postcode-jp.com/api/v5/postcodes/' + this.user.postal_code).then((res) => {
               if(res.data.length > 0) {
-                this.user.province_id = res.data[0].pref;
+                this.provinces.forEach((item) => {
+                  if (item.label === res.data[0].pref) {
+                    this.user.province_id = item.value;
+                  }
+                });
                 this.user.district = res.data[0].city;
                 this.user.address = res.data[0].allAddress;
               }
