@@ -72,7 +72,7 @@
     },
 
     head() {
-      return {title: '確認メールを再送'}
+      return {title: '求人'}
     },
 
     watch: {
