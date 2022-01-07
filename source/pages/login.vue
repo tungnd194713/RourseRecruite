@@ -2,7 +2,7 @@
   <div class="text-center form-body">
     <main class="p-2 p-lg-0 form-login">
       <form @submit.prevent="login">
-        <a href="https://findjob-frontend.kiaidev.com/ja" target="_blank">
+        <a :href="data.home_url" target="_blank">
         <img
           class="mb-3 mb-lg-4"
           src="../assets/images/icon_logo.svg"
@@ -24,7 +24,7 @@
             >
               <span>
                 <img
-                  class=""
+                  class="mt-2"
                   src="../assets/images/icon_fb.svg"
                   alt="Facebookでログイン"
                 />
@@ -88,7 +88,7 @@
                 @change="clearErrors"
               />
               <span
-                class="input-group-text input-group-text-next"
+                class="input-group-text input-group-text-next d-flex justify-content-center"
                 @click="showPassword"
                 >
                 <img
@@ -159,6 +159,7 @@ export default {
       data: {
         email: '',
         password: '',
+        home_url: process.env.HOME_URL ?? 'https://findjob-frontend.kiaidev.com/ja'
       },
       isHide: true,
       errors: [],

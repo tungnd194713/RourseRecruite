@@ -115,24 +115,50 @@
               <h5>住所</h5>
               <div class="row">
                 <div class="form-group col-12 col-lg-6 mb-2 mb-lg-3">
-                  <label for="postal_code">郵便番号</label>
-                  <input
-                    id="postal_code"
-                    v-model.trim="$v.data.postal_code.$model"
-                    type="text"
-                    :class="{
-                      invalid:
-                        $v.data.postal_code.$invalid &&
-                        $v.data.postal_code.$dirty,
-                    }"
-                    class="form-control"
-                    placeholder="xxx-xxxx"
-                  />
-                  <div v-if="$v.data.postal_code.$error">
-                    <!--<div v-if="!$v.data.postal_code.required" class="error">
-                      これは必須項目なので、必ず入力してください
-                    </div>-->
-                    <div v-if="!$v.data.postal_code.postalCode" class="error">
+                  <label for="postal-code-1">郵便番号</label>
+                  <div class="d-flex postal-code">
+                    <input
+                      id="postal-code-1"
+                      v-model.trim="$v.data.postal_code_1.$model"
+                      type="text"
+                      :class="{
+                        invalid:
+                          $v.data.postal_code_1.$invalid &&
+                          $v.data.postal_code_1.$dirty,
+                      }"
+                      class="form-control w-25 pr-1"
+                      placeholder="xxx"
+                      maxlength="3"
+                    />
+                    <p class="mx-2 mt-2">ー</p>
+                    <input
+                      id="postal-code-2"
+                      v-model.trim="$v.data.postal_code_2.$model"
+                      type="text"
+                      :class="{
+                        invalid:
+                          $v.data.postal_code_2.$invalid &&
+                          $v.data.postal_code_2.$dirty,
+                      }"
+                      class="form-control w-50"
+                      placeholder="xxxx"
+                      @blur="$v.data.postal_code_2.$touch()"
+                      maxlength="4"
+                    />
+                  </div>
+                  <div v-if="$v.data.postal_code_1.$error">
+                    <div
+                      v-if="!$v.data.postal_code_1.numeric"
+                      class="invalid-feedback error"
+                    >
+                      郵便番号の形式で入力してください
+                    </div>
+                  </div>
+                  <div v-if="$v.data.postal_code_2.$error">
+                    <div
+                      v-if="!$v.data.postal_code_2.numeric"
+                      class="invalid-feedback error"
+                    >
                       郵便番号の形式で入力してください
                     </div>
                   </div>
@@ -531,6 +557,7 @@
                     v-model.trim="$v.data.youtube.$model"
                     type="text"
                     class="form-control"
+                    placeholder="https://www.youtube.com/embed/..."
                   />
                 </div>
                 <div v-if="$v.data.youtube.$error">
@@ -686,7 +713,7 @@ import {
   maxLength,
   minLength,
   url,
-  helpers,
+  helpers, numeric,
 } from 'vuelidate/lib/validators'
 import 'vue2-datepicker/index.css'
 import 'vue2-datepicker/locale/ja'
@@ -705,7 +732,7 @@ const phone = helpers.regex(
   'phone',
   /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{3})/
 )
-const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/)
+// const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/)
 const imageRule = helpers.regex('image', /\.(gif|jpe?g|png|PNG|GIF|JPE?G)$/)
 const videoRule = helpers.regex('video', /\.(mp4|wmv|avi|mov|flv)$/)
 const imageSize = (value) => value <= 2000000
@@ -734,6 +761,8 @@ export default {
         phone: '',
         youtube: '',
         postal_code: '',
+        postal_code_1: '',
+        postal_code_2: '',
         district: '',
         province: '',
         images: [],
@@ -782,9 +811,11 @@ export default {
       career: {
         required,
       },
-      postal_code: {
-        // required,
-        postalCode,
+      postal_code_1: {
+        numeric,
+      },
+      postal_code_2: {
+        numeric,
       },
       district: {
         required,
@@ -840,6 +871,33 @@ export default {
     },
   },
 
+  watch: {
+    'data.postal_code_1': {
+      handler(newVal) {
+        if (this.data.postal_code_1.length === 3 && this.data.postal_code_2.length === 4) {
+          this.data.postal_code = this.data.postal_code_1 + this.data.postal_code_2
+        }
+      },
+      deep: true
+    },
+    'data.postal_code_2': {
+      handler(newVal) {
+        if (this.data.postal_code_2.length === 4 && this.data.postal_code_1.length === 3) {
+          this.data.postal_code = this.data.postal_code_1 + this.data.postal_code_2
+        }
+      },
+      deep:true
+    },
+    'data.postal_code': {
+      handler(newVal) {
+        if (this.data.postal_code > 0) {
+          this.getDetailAddress();
+        }
+      },
+      deep:true
+    },
+  },
+
   head() {
     return {
       title: '会社情報編集 | 求人',
@@ -875,6 +933,10 @@ export default {
       this.data.phone = data.phone
       this.data.email = data.email
       this.data.postal_code = data.postal_code
+      if (this.data.postal_code) {
+        this.data.postal_code_1 = this.data.postal_code.slice(0, 3)
+        this.data.postal_code_2 = this.data.postal_code.slice(3)
+      }
       this.data.province = data.province_id
       this.data.district = data.district
       this.data.career = data.career
@@ -1093,6 +1155,24 @@ export default {
     resetFormToStart() {
       window.location.reload()
     },
+
+    async getDetailAddress() {
+      if (this.data.postal_code) {
+        await this.$axios.get('https://apis.postcode-jp.com/api/v5/postcodes/' + this.data.postal_code).then((res) => {
+          if(res.data.length > 0) {
+            this.provinces.forEach((item) => {
+              if (item.label === res.data[0].pref) {
+                this.data.province = item.value;
+              }
+            });
+
+            this.data.district = res.data[0].city;
+            this.data.address = res.data[0].allAddress;
+          }
+        })
+      }
+
+    }
   },
 }
 </script>

@@ -6,7 +6,7 @@
       </div>
       <div class="col-md-6 col-6 part-above-search">
         <h6 class="mt-3 text-above-search text-right">
-          <a class="text-decoration-none" href="https://lapse-immi.moj.go.jp/ZEC/appl/e0/ZEC2/pages/FZECST021.aspx">在留資格はこのリンクから確認できます</a>
+          <a class="text-decoration-none" href="https://lapse-immi.moj.go.jp/ZEC/appl/e0/ZEC2/pages/FZECST021.aspx" target="_blank">在留資格はこのリンクから確認できます</a>
         </h6>
       </div>
     </div>
@@ -82,16 +82,16 @@
               <th scope="col"></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="!spinner">
             <tr
               v-for="(item, index) in items"
               :key="item.id"
               :class="item.read === 1 ? 'active' : ''"
             >
-              <td class="align-middle py-3">
+              <td class="align-middle py-3 text-center">
                 <span
                   v-if="!(item.read || isWarningUnRead(item.created_at))"
-                  class="td-warning"
+                  :class="(perPage * (currentPage - 1)) + (index + 1) < 10 ? 'td-warning' : 'td-warning-large'"
                 >
                   3日以上未対応!
                   <img class="" src="../../assets/images/icon_warning.svg" />
@@ -112,7 +112,7 @@
               <td class="align-middle py-3">
                 {{ $moment(item.created_at).format('YYYY-MM-DD') }}
               </td>
-              <td class="align-middle py-3">
+              <td class="align-middle py-3 col-status">
                 {{ item.candidate.form_recruitment }}
                 <template v-if="item.candidate.form_recruitment == 1"
                   >フルタイム</template
@@ -143,39 +143,14 @@
                   />
                 </a>
               </td>
-              <td class="align-middle py-3">
-                <select
-                  v-model="item.residence_card_confirm"
-                  class="form-select active rounded-3 confirm-select"
-                  data-bs-toggle="modal"
-                  data-bs-target="#confirmUpdateResidenceCardModal"
-                  @change="confirmUpdate(item)"
-                >
-
-                  <option value="0" selected>未選択</option>
-                  <option value="1">承認</option>
-                  <option value="2">非承認</option>
-                </select>
+              <td class="align-middle py-3 col-card">
+                {{ item.status ? residenceCardConfirm[item.residence_card_confirm] : residenceCardConfirm[0] }}
               </td>
               <td class="align-middle py-3 col-2 note">
                 {{ item.note }}
               </td>
-              <td class="align-middle py-3">
-                <select
-                  v-model="item.status"
-                  class="form-select active rounded-3 status-select"
-                  data-bs-toggle="modal"
-                  data-bs-target="#confirmUpdateStatusModal"
-                  @change="confirmUpdateStatus(item)"
-                >
-                  <option value="0" selected>未選択</option>
-                  <option value="1">未対応</option>
-                  <option value="2">折り返し待ち</option>
-                  <option value="3">面接待ち</option>
-                  <option value="4">採用</option>
-                  <option value="5">不採用（連絡取れず）</option>
-                  <option value="6">不採用</option>
-                </select>
+              <td class="align-middle py-3 col-status">
+                  {{ item.status ? statusCandidateApply[item.status] : statusCandidateApply[0] }}
               </td>
               <td class="align-middle py-3">
                 <a
@@ -185,6 +160,7 @@
                   @click="
                     popupUpdateStatus({
                       id: item.id,
+                      name: item.candidate.user.name,
                       residence_card_confirm: item.residence_card_confirm,
                       status: item.status,
                       note: item.note,
@@ -291,6 +267,9 @@
               応募者の応募状態更新
             </h5>
           </div>
+          <h5 class="d-flex justify-content-center align-items-center">氏名:
+            <strong>{{ name }}</strong>
+          </h5>
           <div class="modal-body pop-check-input">
             <label for="confirmation">在留資格確認</label>
             <select
@@ -355,118 +334,6 @@
       @changeLanguageEvent="changeLanguage($event)"
     />
 
-    <!-- Modal Update Residence Card-->
-    <div
-      id="confirmUpdateResidenceCardModal"
-      class="modal fade update-modal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content box-modal">
-          <div class="modal-header border-0">
-            <img
-              id="closeConfirmUpdateResidenceCardModal"
-              class="close-modal"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-              src="../../assets/images/ic_exit.svg"
-              alt=""
-            />
-          </div>
-          <div class="modal-body-content my-3">
-            <h3 class="text-center modal-body-text">
-              ステータスを変更してもよろしいか？
-            </h3>
-          </div>
-          <div
-            class="
-                modal-footer
-                align-items-center
-                d-flex
-                justify-content-center
-                flex-row
-              "
-          >
-            <button
-              type="button"
-              class="btn btn-cancel-update rounded-pill w-20 mt-4 mb-4"
-              data-bs-dismiss="modal"
-            >
-              いいえ
-            </button>
-            <button
-              type="button"
-              class="btn btn-ok-update btn-custom rounded-pill w-20"
-              @click="
-                  updateCard(selectedItemId, {
-                    residence_card_confirm: residenceCardConfirm,
-                  })
-              "
-            >
-              はい
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Modal -->
-
-    <!-- Modal Update Status Card-->
-    <div
-      id="confirmUpdateStatusModal"
-      class="modal fade update-modal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content box-modal">
-          <div class="modal-header border-0">
-            <img
-              id="closeConfirmUpdateStatusModal"
-              class="close-modal"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-              src="../../assets/images/ic_exit.svg"
-              alt=""
-            />
-          </div>
-          <div class="modal-body-content my-3">
-            <h3 class="text-center modal-body-text">
-              ステータスを変更してもよろしいか？
-            </h3>
-          </div>
-          <div
-            class="
-                modal-footer
-                align-items-center
-                d-flex
-                justify-content-center
-                flex-row
-              "
-          >
-            <button
-              type="button"
-              class="btn btn-cancel-update rounded-pill w-20 mt-4 mb-4"
-              data-bs-dismiss="modal"
-            >
-              いいえ
-            </button>
-            <button
-              type="button"
-              class="btn btn-ok-update btn-custom rounded-pill w-20"
-              @click="updateItemStatus(selectedItemId, { status: status })"
-            >
-              はい
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Modal -->
-
   </main>
 </template>
 
@@ -480,6 +347,8 @@ import 'vue2-datepicker/locale/ja'
 import Pagination from '../../components/Pagination'
 import CvUserModal from '~/components/modal/CvUserModal'
 import defaultInCvUser from '~/constants/defaultInCvUser'
+import residenceCardConfirm from '~/constants/residenceCardConfirm'
+import statusCandidateApply from '~/constants/statusCandidateApply'
 
 export default {
   name: 'CandidateApply',
@@ -636,8 +505,9 @@ export default {
       educationsOfCandidate: [],
       jobsOfCandidate: [],
       selectedItemId: 0,
-      residenceCardConfirm: '',
-      status: '',
+      residenceCardConfirm,
+      statusCandidateApply,
+      name: '',
     }
   },
 
@@ -713,6 +583,7 @@ export default {
 
     popupUpdateStatus(data) {
       this.idRow = data.id
+      this.name = data.name
       this.dataUpdateStatus.residence_card_confirm = data.residence_card_confirm
       this.dataUpdateStatus.status = data.status
       this.dataUpdateStatus.note = data.note
@@ -729,47 +600,13 @@ export default {
               this.$toast.success('応募者の応募状態・更新が完了しました')
               this.getListCV(this.currentPage)
             } else {
-              this.$toast.success(
+              this.$toast.error(
                 '候補者の申請状況と候補者名の更新は完了していません。'
               )
             }
           })
         this.$refs.closeCheckModal.click()
       }
-    },
-
-    async updateCard(id, data) {
-      return await this.$repositories.candidatesApply
-        .updateStatus(id, data)
-        .then((res) => {
-          this.idRow = -1
-          if (res.status === 200) {
-            document.getElementById('closeConfirmUpdateResidenceCardModal').click()
-            this.$toast.success('応募者の応募状態・更新が完了しました')
-            this.getListCV(this.currentPage)
-          } else {
-            this.$toast.success(
-              '候補者の申請状況と候補者名の更新は完了していません。'
-            )
-          }
-        })
-    },
-
-    async updateItemStatus(id, data) {
-      return await this.$repositories.candidatesApply
-        .updateStatus(id, data)
-        .then((res) => {
-          this.idRow = -1
-          if (res.status === 200) {
-            document.getElementById('closeConfirmUpdateStatusModal').click()
-            this.$toast.success('応募者の応募状態・更新が完了しました')
-            this.getListCV(this.currentPage)
-          } else {
-            this.$toast.success(
-              '候補者の申請状況と候補者名の更新は完了していません。'
-            )
-          }
-        })
     },
 
     popupImageCard(residenceCardFront, residenceCardBackside) {
@@ -815,7 +652,6 @@ export default {
       }
     },
 
-
     initJobsAndEducationsOfCandidate() {
       this.educationsOfCandidate =
         this.candidate.candidate_educations_jobs.filter(function (element) {
@@ -826,16 +662,6 @@ export default {
           return element.type === 2
         }
       )
-    },
-
-    confirmUpdate(item) {
-      this.selectedItemId = item.id;
-      this.residenceCardConfirm = item.residence_card_confirm
-    },
-
-    confirmUpdateStatus(item) {
-      this.selectedItemId = item.id;
-      this.status = item.status
     },
   },
 }

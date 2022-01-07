@@ -15,7 +15,7 @@
                         id="company-name"
                         ref="companyNameTextBox"
                         v-model.trim="user.company_name"
-                        class="form-control form-control-lg"
+                        class="form-control form-control-lg rounded-pill"
                         aria-describedby="emailHelp"
                         @input="$v.user.company_name.$touch()"
                         @blur="$v.user.company_name.$touch()"
@@ -44,7 +44,7 @@
                         ref="managerNameTextBox"
                         v-model.trim="user.manager_name"
                         type="text"
-                        class="form-control form-control-lg"
+                        class="form-control form-control-lg rounded-pill"
                         @input="$v.user.manager_name.$touch()"
                         @blur="$v.user.manager_name.$touch()"
                     />
@@ -72,7 +72,7 @@
                         ref="emailTextBox"
                         v-model.trim="user.email"
                         type="text"
-                        class="form-control form-control-lg"
+                        class="form-control form-control-lg rounded-pill"
                         @input="$v.user.email.$touch()"
                         @blur="$v.user.email.$touch()"
                     />
@@ -108,7 +108,7 @@
                         ref="phoneTextBox"
                         v-model.trim="user.phone"
                         type="text"
-                        class="form-control form-control-lg"
+                        class="form-control form-control-lg rounded-pill"
                         @input="$v.user.phone.$touch()"
                         @blur="$v.user.phone.$touch()"
                     />
@@ -157,7 +157,7 @@
                         ref="passwordTextBox"
                         v-model.trim="user.password"
                         :type="isHidePassword ? 'password' : 'text'"
-                        class="form-control form-control-lg"
+                        class="form-control form-control-lg input-password"
                         @input="$v.user.password.$touch()"
                         @blur="$v.user.password.$touch()"
                       />
@@ -208,7 +208,7 @@
                         ref="confirmPasswordTextBox"
                         v-model.trim="user.confirm_password"
                         :type="isHideConfirmPassword ? 'password' : 'text'"
-                        class="form-control form-control-lg"
+                        class="form-control form-control-lg input-password"
                         @input="$v.user.confirm_password.$touch()"
                         @blur="$v.user.confirm_password.$touch()"
                       />
@@ -255,7 +255,7 @@
                         id="career"
                         ref="careerSelectBox"
                         v-model="user.career"
-                        class="form-select form-select-lg"
+                        class="form-select form-select-lg rounded-pill"
                     >
                         <option
                             v-for="(career, index) in careers"
@@ -274,30 +274,54 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>住所 </label>
+              <br>
+                <div class="form-group my-2">
+                    <label id="title-address">住所 </label>
                 </div>
 
                 <div class="form-group">
-                    <label for="postal-code">郵便番号</label>
+                    <label for="postal-code-1">郵便番号</label>
+                  <div class="d-flex">
                     <input
-                        id="postal-code"
-                        ref="postalCodeTextBox"
-                        v-model.trim="user.postal_code"
-                        type="text"
-                        class="form-control form-control-lg"
-                        placeholder="xxx-xxxx"
-                        @input="$v.user.postal_code.$touch()"
-                        @blur="$v.user.postal_code.$touch()"
+                      id="postal-code-1"
+                      ref="firstPostalCodeTextBox"
+                      v-model.trim="user.postal_code_1"
+                      type="text"
+                      class="form-control form-control-lg rounded-pill w-25 pr-1"
+                      placeholder="xxx"
+                      @input="$v.user.postal_code_1.$touch()"
+                      @blur="$v.user.postal_code_1.$touch()"
+                      maxlength="3"
                     />
-                    <div v-if="$v.user.postal_code.$error">
-                        <div
-                            v-if="!$v.user.postal_code.postalCode"
-                            class="invalid-feedback error"
-                        >
-                            郵便番号の形式で入力してください
-                        </div>
+                    <p class="mx-3 mt-2">ー</p>
+                    <input
+                      id="postal-code-2"
+                      ref="secondPostalCodeTextBox"
+                      v-model.trim="user.postal_code_2"
+                      type="text"
+                      class="form-control form-control-lg rounded-pill w-50"
+                      placeholder="xxxx"
+                      @input="$v.user.postal_code_2.$touch()"
+                      @blur="$v.user.postal_code_2.$touch()"
+                      maxlength="4"
+                    />
+                  </div>
+                  <div v-if="$v.user.postal_code_1.$error">
+                    <div
+                      v-if="!$v.user.postal_code_1.numeric"
+                      class="invalid-feedback error"
+                    >
+                      郵便番号の形式で入力してください
                     </div>
+                  </div>
+                  <div v-if="$v.user.postal_code_2.$error">
+                    <div
+                      v-if="!$v.user.postal_code_2.numeric"
+                      class="invalid-feedback error"
+                    >
+                      郵便番号の形式で入力してください
+                    </div>
+                  </div>
                 </div>
 
                 <div class="form-group">
@@ -345,7 +369,7 @@
                         ref="districtTextBox"
                         v-model.trim="user.district"
                         type="text"
-                        class="form-control form-control-lg"
+                        class="form-control form-control-lg rounded-pill"
                         @input="$v.user.district.$touch()"
                         @blur="$v.user.district.$touch()"
                     />
@@ -372,7 +396,7 @@
                         ref="addressTextBox"
                         v-model.trim="user.address"
                         type="text"
-                        class="form-control form-control-lg"
+                        class="form-control form-control-lg rounded-pill"
                     />
                     <div v-if="$v.user.address.$error">
                         <div
@@ -422,8 +446,6 @@
                                 background-color: white;
                                 border-color: black;
                                 color: black;
-                                width: 50%;
-                                font-size: 16px;
                             "
                         >
                             キャンセル
@@ -460,14 +482,14 @@ import {
     minLength,
     maxLength,
     helpers,
+    numeric,
 } from 'vuelidate/lib/validators'
-import VSelect from 'vue-select'
 
 import theCareers from '~/constants/careers'
 import theProvinces from '~/constants/provinces'
 import provincesInRegisterPage from '~/constants/provincesInRegisterPage'
 
-const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/g)
+// const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/g)
 // const phone = helpers.regex(
 //     'phone',
 //     /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/
@@ -476,9 +498,6 @@ const numbers = helpers.regex('numbers', /^[0-9]*$/)
 
 export default {
     name: 'Register',
-    components: {
-      VSelect
-    },
 
     data() {
         return {
@@ -491,6 +510,8 @@ export default {
                 confirm_password: '',
                 career: '',
                 postal_code: '',
+                postal_code_1: '',
+                postal_code_2: '',
                 province_id: '',
                 district: '',
                 address: '',
@@ -506,6 +527,33 @@ export default {
             isHideConfirmPassword: true,
             isLoading: false
         }
+    },
+
+    watch: {
+        'user.postal_code_1': {
+          handler(newVal) {
+            if (this.user.postal_code_1.length === 3 && this.user.postal_code_2.length === 4) {
+            this.user.postal_code = this.user.postal_code_1 + this.user.postal_code_2
+            }
+          },
+          deep: true
+        },
+        'user.postal_code_2': {
+          handler(newVal) {
+            if (this.user.postal_code_2.length === 4 && this.user.postal_code_1.length === 3) {
+              this.user.postal_code = this.user.postal_code_1 + this.user.postal_code_2
+            }
+          },
+          deep:true
+        },
+        'user.postal_code': {
+          handler(newVal) {
+            if (this.user.postal_code > 0) {
+              this.getDetailAddress();
+            }
+          },
+          deep:true
+        },
     },
 
     head() {
@@ -544,8 +592,11 @@ export default {
             career: {
                 required,
             },
-            postal_code: {
-                postalCode,
+            postal_code_1: {
+                numeric,
+            },
+            postal_code_2: {
+                numeric,
             },
             province_id: {
                 required,
@@ -583,6 +634,8 @@ export default {
             confirm_password: '',
             career: '',
             postal_code: '',
+            postal_code_1: '',
+            postal_code_2: '',
             province_id: '',
             district: '',
             address: '',
@@ -662,9 +715,13 @@ export default {
               this.$nextTick(() => {
                 this.$refs.careerSelectBox.focus()
               })
-            } else if (this.$v.user.postal_code.$error) {
+            } else if (this.$v.user.postal_code_1.$error) {
               this.$nextTick(() => {
-                this.$refs.postalCodeTextBox.focus()
+                this.$refs.firstPostalCodeTextBox.focus()
+              })
+            } else if (this.$v.user.postal_code_2.$error) {
+              this.$nextTick(() => {
+                this.$refs.secondPostalCodeTextBox.focus()
               })
             } else if (this.$v.user.province_id.$error) {
               this.$nextTick(() => {
@@ -680,6 +737,22 @@ export default {
               })
             }
         },
+
+        async getDetailAddress() {
+          if (this.user.postal_code) {
+            await this.$axios.get('https://apis.postcode-jp.com/api/v5/postcodes/' + this.user.postal_code).then((res) => {
+              if(res.data.length > 0) {
+                this.provinces.forEach((item) => {
+                  if (item.label === res.data[0].pref) {
+                    this.user.province_id = item.value;
+                  }
+                });
+                this.user.district = res.data[0].city;
+                this.user.address = res.data[0].allAddress;
+              }
+            })
+          }
+        }
     },
 }
 </script>

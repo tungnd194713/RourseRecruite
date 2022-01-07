@@ -86,7 +86,6 @@ input:focus {
 
 .box-form-register .form-group input, select.form-select {
     border: 1px solid #88B1C7;
-    border-radius: 5%/50%;
 }
 
 .box-form-register p a {
@@ -136,6 +135,12 @@ input:focus {
     align-content: center;
 }
 
+@media only screen and (max-width: 340px) {
+  #btn_cancel {
+    padding: 9px 40px;
+  }
+}
+
 @media only screen and (max-width: 600px) {
     .box-form-register {
         padding: 12px 24px;
@@ -177,6 +182,10 @@ input:focus {
     .show-hide-password-icon {
       height: 16px !important;
     }
+
+    #btn_cancel {
+      padding: 7px 22.5px !important;
+    }
 }
 
 // show hide password
@@ -197,6 +206,26 @@ input:focus {
   }
 }
 
+#title-address {
+  font-size: 18px;
+}
+
+.input-password {
+  border-top-left-radius: 24px;
+  border-bottom-left-radius: 24px;
+}
+
+#password:focus {
+  border-right: 0;
+}
+
+#confirm-password:focus {
+  border-right: 0;
+}
+
+#btn_cancel {
+  padding: 9px 49px;
+}
 // loading overlay
 .loading {
   width: 100%;

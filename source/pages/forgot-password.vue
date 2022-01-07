@@ -2,7 +2,7 @@
   <div class="text-center form-body">
     <main class="p-2 p-lg-0 form-login">
       <form @submit.prevent="forgotPassword">
-        <a href="https://findjob-frontend.kiaidev.com/ja" target="_blank">
+        <a :href="home_url" target="_blank">
           <img class="mb-3 mb-lg-4" src="../assets/images/icon_logo.svg" alt="" height="59">
         </a>
         <div class="bg-white box-form-login">
@@ -17,9 +17,9 @@
           </div>
 
           <div class="form-group my-5">
-            <label for="email">メールアドレス</label>
+            <label for="email">メールアドレス<span>*</span></label>
             <div class="input-group has-validation">
-              <span class="input-group-text input-group-text-pre"><img src="../assets/images/icon_email.svg" alt=""></span>
+              <span class="input-group-text input-group-text-pre"><img class="d-flex justify-content-center" src="../assets/images/icon_email.svg" alt=""></span>
               <input id="email"
                      v-model="$v.email.$model"
                      class="form-control form-control-lg"
@@ -59,7 +59,8 @@
       return {
         email: '',
         message: '',
-        error: ''
+        error: '',
+        home_url: process.env.HOME_URL ?? 'https://findjob-frontend.kiaidev.com/ja'
       }
     },
 
@@ -111,6 +112,9 @@
         }
         if (message === 'We have emailed your password reset link!') {
           this.message = 'パスワード再設定用のURLが記載されたメールを送信しました。'
+        }
+        if (message === 'Too Many Attempts.') {
+          this.message = 'しばらくお待ちください'
         }
       }
     }

@@ -1,3 +1,7 @@
+main {
+  font-family: 'M PLUS 1p', sans-serif;
+}
+
 .w-20 {
   width: 20%;
 }
@@ -50,7 +54,6 @@ input::placeholder {
   font-size: 10px;
   background-color: #87B0C6;
   position: absolute;
-  top: 30px;
   margin-top: -18px;
   margin-left: -18px;
   border-top-right-radius: 15px;
@@ -58,6 +61,22 @@ input::placeholder {
 }
 
 .td-warning img {
+  height: 19px;
+}
+
+.td-warning-large {
+  padding: 1px 0px 1px 10px;
+  color: #ffffff;
+  font-size: 10px;
+  background-color: #87B0C6;
+  position: absolute;
+  margin-top: -18px;
+  margin-left: -18px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.td-warning-large img {
   height: 19px;
 }
 
@@ -175,6 +194,7 @@ input::placeholder {
 }
 
 .text-above-search a {
+  font-family: 'M PLUS 1p', sans-serif;
   color: #0071C1;
 }
 
@@ -270,7 +290,6 @@ tr.active td {
   font-weight: bold;
   font-size: 32px;
   color: #003159;
-  margin-bottom: 2rem;
 }
 
 .btn-close {
@@ -280,7 +299,12 @@ tr.active td {
 
 .td-warning {
   margin-top: -22px !important;
-  margin-left: -8px !important;
+  margin-left: -15px !important;
+}
+
+.td-warning-large {
+  margin-top: -22px !important;
+  margin-left: -10px !important;
 }
 
 .footer-social-icon {
@@ -330,6 +354,11 @@ tr.active td {
     margin-left: -8px !important;
   }
 
+  .td-warning-large {
+    margin-top: -26px !important;
+    margin-left: -8px !important;
+  }
+
   .update-modal .modal-dialog {
     width: 40% !important;
   }
@@ -347,8 +376,14 @@ tr.active td {
     padding: 1px 0px 1px 10px;
     font-size: 7px;
     margin-top: -38px !important;
+    margin-left: -13px !important;
+  }
+
+  .td-warning-large {
+    padding: 1px 0px 1px 10px;
+    font-size: 7px;
+    margin-top: -38px !important;
     margin-left: -8px !important;
-    top: 50px !important;
   }
   .part-above-search {
     font-family: 'M PLUS 1p', sans-serif;
@@ -374,8 +409,13 @@ tr.active td {
   .td-warning {
     padding: 1px 0px 1px 10px;
     font-size: 7px;
-    top: 50px !important;
   }
+
+  .td-warning-large {
+    padding: 1px 0px 1px 10px;
+    font-size: 7px;
+  }
+
   .page-header-title {
     font-size: 25px !important;
   }
@@ -399,7 +439,7 @@ tr.active td {
   }
   .check-title {
     font-size: 26px;
-    margin-bottom: 5px;
+    //margin-bottom: 5px;
   }
   .pop-check-input {
     margin: 0;
@@ -455,4 +495,12 @@ textarea {
 
 .col-text {
   min-width: 10rem !important;
+}
+
+.col-status {
+  min-width: 123px;
+}
+
+.col-card {
+  min-width: 56px;
 }
