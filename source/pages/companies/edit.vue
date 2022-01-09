@@ -50,7 +50,7 @@
                   {{ errors.company_name[0] }}
                 </div>
               </div>
-              <div class="form-group mb-2 mb-lg-3">
+              <!--<div class="form-group mb-2 mb-lg-3">
                 <label for="careers">業界・分野 <span>*</span></label>
                 <select
                   id="careers"
@@ -74,7 +74,7 @@
                     これは必須項目なので、必ず入力してください
                   </div>
                 </div>
-              </div>
+              </div>-->
               <div class="row">
                 <div class="form-group col-12 col-lg-6 mb-2 mb-lg-3">
                   <label for="phone">電話番号 <span>*</span></label>
@@ -808,9 +808,9 @@ export default {
         maxLength: maxLength(13),
         phone,
       },
-      career: {
-        required,
-      },
+      // career: {
+      //   required,
+      // },
       postal_code_1: {
         numeric,
       },
@@ -939,7 +939,7 @@ export default {
       }
       this.data.province = data.province_id
       this.data.district = data.district
-      this.data.career = data.career
+      // this.data.career = data.career
       this.uploadedIntroImage = data.images
       this.uploadedProfileImage = data.logo
     },
@@ -1051,7 +1051,7 @@ export default {
       } else {
         this.clearErrors()
         const dataCompany = new FormData()
-        dataCompany.append('career', this.data.career)
+        // dataCompany.append('career', this.data.career)
         dataCompany.append('address', this.data.address)
         dataCompany.append('company_name', this.data.company_name)
         dataCompany.append('manager_name', this.data.manager_name)

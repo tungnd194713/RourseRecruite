@@ -249,7 +249,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <!--<div class="form-group">
                     <label for="career">業界・分野 <span>*</span></label>
                     <select
                         id="career"
@@ -273,7 +273,7 @@
                             これは必須項目なので、必ず選択してください
                         </div>
                     </div>
-                </div>
+                </div>-->
               <br>
                 <div class="form-group my-2">
                     <label id="title-address">住所 </label>
@@ -589,9 +589,9 @@ export default {
                 required,
                 sameAsPassword: sameAs('password'),
             },
-            career: {
-                required,
-            },
+            // career: {
+            //     required,
+            // },
             postal_code_1: {
                 numeric,
             },
@@ -632,7 +632,7 @@ export default {
             phone: '',
             password: '',
             confirm_password: '',
-            career: '',
+            // career: '',
             postal_code: '',
             postal_code_1: '',
             postal_code_2: '',
@@ -711,11 +711,13 @@ export default {
               this.$nextTick(() => {
                 this.$refs.confirmPasswordTextBox.focus()
               })
-            } else if (this.$v.user.career.$error) {
-              this.$nextTick(() => {
-                this.$refs.careerSelectBox.focus()
-              })
-            } else if (this.$v.user.postal_code_1.$error) {
+            }
+            // else if (this.$v.user.career.$error) {
+            //   this.$nextTick(() => {
+            //     this.$refs.careerSelectBox.focus()
+            //   })
+            // }
+            else if (this.$v.user.postal_code_1.$error) {
               this.$nextTick(() => {
                 this.$refs.firstPostalCodeTextBox.focus()
               })

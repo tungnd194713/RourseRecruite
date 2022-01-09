@@ -150,7 +150,7 @@
                     <img
                       class="btn"
                       src="~/assets/images/ic_dup.svg"
-                      @click="$router.push(`/jobs/duplicate/${item.id}`)"
+                      @click="checkDuplicateJob(item.id)"
                     />
                     <span class="tooltiptext">複製</span>
                     <!--<img
@@ -380,6 +380,21 @@ export default {
         await this.$repositories.jobs.checkCreateJob().then((res) => {
           if (res.status === 200) {
             this.$router.push('/jobs/create')
+          } else {
+            this.$toast.error('求人プランを設定するために、管理者までご連絡ください')
+          }
+        })
+      } catch (e) {
+        this.message = ''
+        this.error = e.response.data.message
+      }
+    },
+
+    async checkDuplicateJob(jobId) {
+      try {
+        await this.$repositories.jobs.checkCreateJob().then((res) => {
+          if (res.status === 200) {
+            this.$router.push(`/jobs/duplicate/${jobId}`)
           } else {
             this.$toast.error('求人プランを設定するために、管理者までご連絡ください')
           }

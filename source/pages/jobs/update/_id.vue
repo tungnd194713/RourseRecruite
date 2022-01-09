@@ -30,17 +30,15 @@
                 </div>
               </div>
               <div class="form-group mb-3 mb-lg-4 row">
-                <label for="exampleInput1" class="col-sm-2 col-form-label"
-                >タイトル <span>*</span></label
-                >
+                <label for="exampleInput1" class="col-sm-2 col-form-label">タイトル <span>*</span></label>
                 <div class="col-sm-10 flex-column">
                   <div class="input-group input-group-icon">
-                              <span class="input-group-text input-group-text-pre">
-                                  <img
-                                    src="../../../assets/images/icon_newspaper.svg"
-                                    alt=""
-                                  />
-                              </span>
+                    <span class="input-group-text input-group-text-pre">
+                      <img
+                        src="../../../assets/images/icon_newspaper.svg"
+                        alt=""
+                      />
+                    </span>
                     <input
                       id="exampleInput1"
                       ref="titleTextBox"
@@ -67,23 +65,42 @@
                   </div>
                 </div>
               </div>
+
               <div class="form-group mb-3 mb-lg-4 row">
-                <label for="exampleInput2" class="col-sm-2 col-form-label"
-                >開始日 <span>*</span></label
-                >
+                <label for="careerSelect" class="col-sm-2 col-form-label">業界・分野 <span>*</span></label>
+                <div class="col-12 col-sm-4">
+                  <div class="input-group input-group-icon">
+                <span class="input-group-text input-group-text-pre">
+                    <img src="~/assets/images/icon_cube.svg" alt="">
+                </span>
+                    <select id="careerSelect" v-model="job.career" class="form-select rounded-end">
+                      <option
+                        v-for="(item, index) in careerList"
+                        :key="index"
+                        :value="index + 1"
+                      >
+                        {{ $t(item) }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group mb-3 mb-lg-4 row">
+                <label for="exampleInput2" class="col-sm-2 col-form-label">開始日 <span>*</span></label>
                 <div class="col-12 col-sm-4 flex-column">
                   <div
                     class="
-                                  input-group input-group-icon
-                                  custom-input-group
-                              "
+                      input-group input-group-icon
+                      custom-input-group
+                    "
                   >
-                              <span class="input-group-text input-group-text-pre">
-                                  <img
-                                    src="../../../assets/images/icon_calendar_2.svg"
-                                    alt=""
-                                  />
-                              </span>
+                    <span class="input-group-text input-group-text-pre">
+                      <img
+                        src="../../../assets/images/icon_calendar_2.svg"
+                        alt=""
+                      />
+                    </span>
                     <no-ssr>
                       <date-picker
                         id="exampleInput2"
@@ -197,9 +214,10 @@
                           class="form-select rounded-end"
                         >
                           <option value="">
-                                  <span v-for="(item, index) in job.status_stay" :key="index">
-                                    {{ $t(statusStayTextList[item]) }} -
-                                  </span>
+                            <span v-for="(item, index) in job.status_stay" :key="index">
+                              {{ $t(statusStayTextList[item]) }}
+                              {{ index === job.status_stay.length - 1 ? '' : '-' }}
+                            </span>
                           </option>
                         </select>
                       </div>
@@ -772,6 +790,7 @@ import {required, maxLength, requiredIf, helpers, minLength} from 'vuelidate/lib
 import vClickOutside from 'v-click-outside'
 import defaultProvinces from '~/constants/provinces'
 import theStatusStay from "~/constants/statusStay"
+import defaultCareers from '~/constants/careers'
 
 const imageRule = helpers.regex('image', /\.(jpeg|png|jpg|gif)$/)
 const maximumImageSize = 2000000
@@ -795,6 +814,7 @@ export default {
             openDateEndPicker: false,
             previewImageJobUrl: null,
             displaySalary: 'salary_range',
+            careerList: defaultCareers,
             statusStayTextList: theStatusStay,
             typePlanList:[
               {
@@ -838,11 +858,11 @@ export default {
             ],
             formRecruitmentList: [
               {
-                text: '1-フルタイム',
+                text: 'フルタイム',
                 value: 1
               },
               {
-                text: '2-アルバイト',
+                text: 'アルバイト',
                 value: 2
               },
             ],
@@ -884,6 +904,7 @@ export default {
           job: {
             image_job: null,
             title: '',
+            career: '',
             date_start: '',
             type_plan: '',
             display_month: '',

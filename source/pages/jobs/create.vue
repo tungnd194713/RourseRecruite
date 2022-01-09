@@ -52,6 +52,27 @@
               </div>
             </div>
           </div>
+
+          <div class="form-group mb-3 mb-lg-4 row">
+            <label for="careerSelect" class="col-sm-2 col-form-label">業界・分野 <span>*</span></label>
+            <div class="col-12 col-sm-4">
+              <div class="input-group input-group-icon">
+                <span class="input-group-text input-group-text-pre">
+                    <img src="~/assets/images/icon_cube.svg" alt="">
+                </span>
+                <select id="careerSelect" v-model="job.career" class="form-select rounded-end">
+                  <option
+                    v-for="(item, index) in careerList"
+                    :key="index"
+                    :value="index + 1"
+                  >
+                    {{ $t(item) }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
           <div class="form-group mb-3 mb-lg-4 row">
             <label for="date_start" class="col-sm-2 col-form-label">開始日 <span>*</span></label>
             <div class="col-12 col-sm-4 flex-column">
@@ -586,6 +607,7 @@
   } from 'vuelidate/lib/validators'
   import vClickOutside from 'v-click-outside'
   import defaultProvinces from '~/constants/provinces'
+  import defaultCareers from '~/constants/careers'
 
   const imageRule = helpers.regex('image', /\.(jpeg|png|jpg|gif)$/)
   // const imageSize = (value) => value <= 2000000
@@ -609,6 +631,7 @@
         openDateEndPicker: false,
         previewImageJobUrl: null,
         displaySalary: 'salary_range',
+        careerList: defaultCareers,
         hasVietnameseStaffLabelList: [
           'いない',
           'いる',
@@ -656,11 +679,11 @@
         ],
         formRecruitmentList: [
           {
-            text: '1-フルタイム',
+            text: 'フルタイム',
             value: 1
           },
           {
-            text: '2-アルバイト',
+            text: 'アルバイト',
             value: 2
           },
         ],
@@ -702,6 +725,7 @@
         job: {
           image_job: null,
           title: '',
+          career: 1,
           date_start: this.$moment().add(1, 'day').format('YYYY-MM-DD'),
           type_plan: '',
           display_month: '',
@@ -718,7 +742,7 @@
           break_time: '',
           holidays: '',
           welfare_regime: '',
-          has_vietnamese_staff: 1,
+          has_vietnamese_staff: '',
           overtime: ''
         }
       }
@@ -941,6 +965,7 @@
         this.job = Object.assign({}, {
           image_job: null,
           title: '',
+          career: 1,
           date_start: this.$moment().add(1, 'day').format('YYYY-MM-DD'),
           type_plan: '',
           display_month: '',
@@ -957,7 +982,7 @@
           break_time: '',
           holidays: '',
           welfare_regime: '',
-          has_vietnamese_staff: 1,
+          has_vietnamese_staff: '',
           overtime: ''
         })
         this.job.type_plan = this.typePlanList[0].value
