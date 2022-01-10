@@ -27,6 +27,7 @@
                 <label for="company_name">会社名 <span>*</span></label>
                 <input
                   id="company_name"
+                  ref="companyNameTextBox"
                   v-model.trim="$v.data.company_name.$model"
                   type="text"
                   :class="{
@@ -49,7 +50,7 @@
                   {{ errors.company_name[0] }}
                 </div>
               </div>
-              <div class="form-group mb-2 mb-lg-3">
+              <!--<div class="form-group mb-2 mb-lg-3">
                 <label for="careers">業界・分野 <span>*</span></label>
                 <select
                   id="careers"
@@ -73,12 +74,13 @@
                     これは必須項目なので、必ず入力してください
                   </div>
                 </div>
-              </div>
+              </div>-->
               <div class="row">
                 <div class="form-group col-12 col-lg-6 mb-2 mb-lg-3">
                   <label for="phone">電話番号 <span>*</span></label>
                   <input
                     id="phone"
+                    ref="phoneTextBox"
                     v-model.trim="$v.data.phone.$model"
                     type="tel"
                     :class="{
@@ -113,7 +115,7 @@
               <h5>住所</h5>
               <div class="row">
                 <div class="form-group col-12 col-lg-6 mb-2 mb-lg-3">
-                  <label for="postal-code-1">郵便番号 <span>*</span></label>
+                  <label for="postal-code-1">郵便番号</label>
                   <div class="d-flex postal-code">
                     <input
                       id="postal-code-1"
@@ -206,6 +208,7 @@
                   <label for="district">市区町村 <span>*</span></label>
                   <input
                     id="district"
+                    ref="districtTextBox"
                     v-model.trim="$v.data.district.$model"
                     :class="{
                       invalid:
@@ -227,6 +230,7 @@
                   <label for="address">番地 <span>*</span></label>
                   <input
                     id="address"
+                    ref="addressTextBox"
                     v-model.trim="$v.data.address.$model"
                     type="text"
                     :class="{
@@ -250,6 +254,7 @@
                 <label for="manager_name">担当者名 <span>*</span></label>
                 <input
                   id="manager_name"
+                  ref="managerNameTextBox"
                   v-model.trim="$v.data.manager_name.$model"
                   :class="{
                     invalid:
@@ -329,6 +334,7 @@
                   </span>
                   <input
                     id="link_website"
+                    ref="linkWebsiteTextBox"
                     v-model.trim="$v.data.link_website.$model"
                     type="text"
                     class="form-control"
@@ -584,6 +590,7 @@
                   </button>
                 </div>
                 <button
+                  type="button"
                   class="btn btn-upload-video border rounded-3"
                   @click="triggerVideoInput"
                 >
@@ -725,6 +732,7 @@ const phone = helpers.regex(
   'phone',
   /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{3})/
 )
+// const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/)
 const imageRule = helpers.regex('image', /\.(gif|jpe?g|png|PNG|GIF|JPE?G)$/)
 const videoRule = helpers.regex('video', /\.(mp4|wmv|avi|mov|flv)$/)
 const imageSize = (value) => value <= 2000000
@@ -800,9 +808,9 @@ export default {
         maxLength: maxLength(13),
         phone,
       },
-      career: {
-        required,
-      },
+      // career: {
+      //   required,
+      // },
       postal_code_1: {
         numeric,
       },
@@ -924,11 +932,14 @@ export default {
       this.data.address = data.address
       this.data.phone = data.phone
       this.data.email = data.email
-      this.data.postal_code_1 = data.postal_code.substring(0,3);
-      this.data.postal_code_2 = data.postal_code.substring(3,7);
+      this.data.postal_code = data.postal_code
+      if (this.data.postal_code) {
+        this.data.postal_code_1 = this.data.postal_code.slice(0, 3)
+        this.data.postal_code_2 = this.data.postal_code.slice(3)
+      }
       this.data.province = data.province_id
       this.data.district = data.district
-      this.data.career = data.career
+      // this.data.career = data.career
       this.uploadedIntroImage = data.images
       this.uploadedProfileImage = data.logo
     },
@@ -1040,7 +1051,7 @@ export default {
       } else {
         this.clearErrors()
         const dataCompany = new FormData()
-        dataCompany.append('career', this.data.career)
+        // dataCompany.append('career', this.data.career)
         dataCompany.append('address', this.data.address)
         dataCompany.append('company_name', this.data.company_name)
         dataCompany.append('manager_name', this.data.manager_name)
@@ -1099,6 +1110,34 @@ export default {
           } catch (e) {
             this.errors = e.response.data.errors
           }
+        } else if (this.$v.data.company_name.$error) {
+          this.$nextTick(() => {
+            this.$refs.companyNameTextBox.focus()
+          })
+        } else if (this.$v.data.phone.$error) {
+          this.$nextTick(() => {
+            this.$refs.phoneTextBox.focus()
+          })
+        } else if (this.$v.data.province.$error) {
+          this.$nextTick(() => {
+            document.getElementsByClassName('vs__search')[0].focus()
+          })
+        } else if (this.$v.data.district.$error) {
+          this.$nextTick(() => {
+            this.$refs.districtTextBox.focus()
+          })
+        } else if (this.$v.data.address.$error) {
+          this.$nextTick(() => {
+            this.$refs.addressTextBox.focus()
+          })
+        } else if (this.$v.data.manager_name.$error) {
+          this.$nextTick(() => {
+            this.$refs.managerNameTextBox.focus()
+          })
+        } else if (this.$v.data.link_website.$error) {
+          this.$nextTick(() => {
+            this.$refs.linkWebsiteTextBox.focus()
+          })
         }
       }
     },

@@ -32,7 +32,7 @@
                 <div class="d-block">
                   <span class="badge">{{ previewFormRecruitment() }}</span>
                   <span class="badge">{{
-                    $t(careerList[$store.getters['loggedInUser'].career - 1])
+                    $t(careerList[job.career - 1])
                   }}</span>
                 </div>
                 <div class="d-block">
@@ -584,6 +584,7 @@
         job: {
           image_job: '',
           title: '',
+          career: '',
           date_start: '',
           type_plan: '',
           display_month: '',

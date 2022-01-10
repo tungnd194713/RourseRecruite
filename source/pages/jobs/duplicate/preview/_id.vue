@@ -28,7 +28,7 @@
               <div class="row">
                 <div class="d-block">
                   <span class="badge">{{ previewFormRecruitment()}}</span>
-                  <span class="badge">{{ $t(careerList[$store.getters['loggedInUser'].career - 1])}}</span>
+                  <span class="badge">{{ $t(careerList[job.career - 1])}}</span>
                 </div>
                 <div class="d-block">
                   <span v-for="item in previewStatusStay()" :key="item.value" class="badge">{{ item.text}}</span>
@@ -216,11 +216,11 @@
         ],
         formRecruitmentList: [
           {
-            text: '1-フルタイム',
+            text: 'フルタイム',
             value: 1
           },
           {
-            text: '2-アルバイト',
+            text: 'アルバイト',
             value: 2
           },
         ],
@@ -261,6 +261,7 @@
         job: {
           image_job: null,
           title: '',
+          career: '',
           date_start: this.$moment().format('YYYY-MM-DD'),
           type_plan: '',
           display_month: '',
@@ -363,6 +364,7 @@
         formData.append('old_image_job_duplicate', this.oldImageJob)
 
         formData.append('title', this.job.title)
+        formData.append('career', this.job.career)
         formData.append('date_start', this.job.date_start)
         formData.append('type_plan', this.job.type_plan)
         formData.append('display_month', this.job.display_month)
