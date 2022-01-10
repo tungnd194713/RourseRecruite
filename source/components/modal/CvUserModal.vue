@@ -126,7 +126,6 @@
                     <td colspan="5" class="border-top-dot word-break-break-all">
                       〒 {{ candidate.postal_code }},
                       {{ $t(provincesList[candidate.province_id]) }},
-                      {{ candidate.district }},
                       {{ candidate.address}}
                     </td>
                   </tr>

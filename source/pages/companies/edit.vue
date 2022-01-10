@@ -847,16 +847,20 @@ export default {
   watch: {
     'data.postal_code_1': {
       handler(newVal) {
-        if (this.data.postal_code_1.length === 3 && this.data.postal_code_2.length === 4) {
-          this.data.postal_code = this.data.postal_code_1 + this.data.postal_code_2
+        if (this.data.postal_code_1 && this.data.postal_code_2) {
+          if (this.data.postal_code_1.length === 3 && this.data.postal_code_2.length === 4) {
+            this.data.postal_code = this.data.postal_code_1 + this.data.postal_code_2
+          }
         }
       },
       deep: true
     },
     'data.postal_code_2': {
       handler(newVal) {
-        if (this.data.postal_code_2.length === 4 && this.data.postal_code_1.length === 3) {
-          this.data.postal_code = this.data.postal_code_1 + this.data.postal_code_2
+        if (this.data.postal_code_1 && this.data.postal_code_2) {
+          if (this.data.postal_code_2.length === 4 && this.data.postal_code_1.length === 3) {
+            this.data.postal_code = this.data.postal_code_1 + this.data.postal_code_2
+          }
         }
       },
       deep:true
