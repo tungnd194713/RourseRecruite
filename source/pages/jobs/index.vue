@@ -97,12 +97,10 @@
               >
                 <td class="align-middle text-center">
                   <span
-                    v-if="(item.cv_read && !isWarningUnRead(item.cv_created_at_three_day))"
+                    v-if="item.cv_not_reciprocal > 0"
                     :class="(perPage * (currentPage - 1)) + (index + 1) < 10 ? 'td-warning' : 'td-warning-large'"
                   >
-                    未対応の履歴書{{ item.cv_read }}/{{
-                      item.total_cv_applied
-                    }}通
+                    未対応の履歴書{{ item.cv_not_reciprocal }}/{{ item.total_cv_applied }}通
                     <img class="" src="../../assets/images/icon_warning.svg" />
                   </span>
                   {{ (perPage * (currentPage - 1)) + (index + 1) }}

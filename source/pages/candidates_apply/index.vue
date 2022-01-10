@@ -90,7 +90,7 @@
             >
               <td class="align-middle py-3 text-center">
                 <span
-                  v-if="!(item.read || isWarningUnRead(item.created_at))"
+                  v-if="item.status === 1"
                   :class="(perPage * (currentPage - 1)) + (index + 1) < 10 ? 'td-warning' : 'td-warning-large'"
                 >
                   3日以上未対応!
@@ -574,12 +574,12 @@ export default {
       this.getListCV(this.currentPage)
     },
 
-    isWarningUnRead(date) {
-      const now = this.$moment().format('YYYY-MM-DD')
-      date = this.$moment(date)
-
-      return now < date.add(3, 'days').format('YYYY-MM-DD')
-    },
+    // isWarningUnRead(date) {
+    //   const now = this.$moment().format('YYYY-MM-DD')
+    //   date = this.$moment(date)
+    //
+    //   return now < date.add(3, 'days').format('YYYY-MM-DD')
+    // },
 
     popupUpdateStatus(data) {
       this.idRow = data.id
