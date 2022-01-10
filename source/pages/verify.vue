@@ -25,6 +25,7 @@
                      class="form-control form-control-lg"
                      aria-describedby="emailHelp"
                      maxlength="50"
+                     @keydown.enter.prevent="sendVerifyMail"
               >
             </div>
             <div v-if="$v.email.$error">
@@ -32,13 +33,13 @@
               <div v-if="!$v.email.email" class="error">メールアドレスの形式で入力してください</div>
             </div>
           </div>
-          <button
+          <NuxtLink
             id="btn_cancel"
             class="btn fw-bold my-3 my-lg-4 rounded-pill"
-            @click="$router.push('/login')"
+            to="/login"
           >
             キャンセル
-          </button>
+          </NuxtLink>
           <button type="submit" class="btn fw-bold">送信</button>
         </div>
       </form>

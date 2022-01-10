@@ -377,7 +377,6 @@
               class="form-select rounded-pill pop-check-select"
               aria-label="Status"
             >
-              <option value="0" disabled>未選択</option>
               <option value="1">未対応</option>
               <option value="2">折り返し待ち</option>
               <option value="3">面接待ち</option>

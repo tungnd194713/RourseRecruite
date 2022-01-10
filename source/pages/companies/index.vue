@@ -35,19 +35,13 @@
                   /></span>
                   <span>{{ manager_name }}</span>
                 </div>
-                <div class="d-block item">
-                  <span class="me-2"
-                    ><img src="../../assets/images/icon_globe.svg"
-                  /></span>
-                  <a :href="link_website">WebサイトのURL</a>
-                </div>
               </div>
               <div class="col-12 col-sm-6 col-lg-4">
                 <div class="d-block item">
                   <span class="me-2"
-                    ><img src="../../assets/images/icon_cube.svg"
+                  ><img src="../../assets/images/icon_globe.svg"
                   /></span>
-                  <span>{{ $t(career) }} </span>
+                  <a :href="link_website">WebサイトのURL</a>
                 </div>
               </div>
             </div>

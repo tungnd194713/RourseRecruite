@@ -18,7 +18,7 @@ input::placeholder {
 }
 
 .note {
-  word-break: break-word;
+  word-break: normal;
 }
 
 .error {
@@ -28,12 +28,6 @@ input::placeholder {
 
 #apply-btn:hover {
   background-color: #6e9ddf;
-}
-
-@media only screen and (max-width: 768px) {
-  .note {
-    word-break: normal;
-  }
 }
 
 @media only screen and (max-width: 600px) {
