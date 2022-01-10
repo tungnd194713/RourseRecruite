@@ -90,7 +90,7 @@
             >
               <td class="align-middle py-3 text-center">
                 <span
-                  v-if="!(item.read || isWarningUnRead(item.created_at))"
+                  v-if="item.status === 1"
                   :class="(perPage * (currentPage - 1)) + (index + 1) < 10 ? 'td-warning' : 'td-warning-large'"
                 >
                   3日以上未対応!
@@ -150,7 +150,7 @@
                 {{ item.note }}
               </td>
               <td class="align-middle py-3 col-status">
-                  {{ item.status ? statusCandidateApply[item.status] : statusCandidateApply[0] }}
+                  {{ item.status ? statusCandidateApply[item.status - 1] : statusCandidateApply[0] }}
               </td>
               <td class="align-middle py-3">
                 <a
@@ -197,7 +197,7 @@
       >
         <p>
           * 未読：白い背景、既読：浅い青色の背景<br />
-          * 3日以上未読の履歴書があったら、リマインダーが表示されます。
+          * ステータスが未対応の応募者があったら、リマインダーが表示される。
         </p>
       </Pagination>
     </div>
@@ -574,12 +574,12 @@ export default {
       this.getListCV(this.currentPage)
     },
 
-    isWarningUnRead(date) {
-      const now = this.$moment().format('YYYY-MM-DD')
-      date = this.$moment(date)
-
-      return now < date.add(3, 'days').format('YYYY-MM-DD')
-    },
+    // isWarningUnRead(date) {
+    //   const now = this.$moment().format('YYYY-MM-DD')
+    //   date = this.$moment(date)
+    //
+    //   return now < date.add(3, 'days').format('YYYY-MM-DD')
+    // },
 
     popupUpdateStatus(data) {
       this.idRow = data.id

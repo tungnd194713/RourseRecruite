@@ -95,7 +95,7 @@
           <div class="col-12 col-lg-6">
             <h2 class="title">住所</h2>
             <div class="mt-4">
-              〒 {{ postal_code }} {{ $t(province) }} {{ district }}
+              〒 {{ postal_code }} {{ $t(province) }}
               {{ address }}
             </div>
           </div>
@@ -171,7 +171,6 @@ export default {
       logo: '',
       video_link: '',
       images: [],
-      district: '',
       province: '',
       postal_code: '',
       theProvinces,
@@ -208,7 +207,6 @@ export default {
       this.description = data.description
       this.logo = data.logo
       this.address = data.address
-      this.district = data.district
       this.province = this.theProvinces[data.province_id]
       this.video_link = data.video_link
       this.images = data.images

@@ -3,7 +3,7 @@
     <div class="nav-content container">
       <div class="row box-title mb-1 mb-lg-2">
         <div class="col-6">
-          <h4 class="page-header-title">応募者一覧</h4>
+          <h4 class="page-header-title">求人一覧</h4>
         </div>
         <div class="col-6">
           <button
@@ -97,12 +97,10 @@
               >
                 <td class="align-middle text-center">
                   <span
-                    v-if="(item.cv_read && !isWarningUnRead(item.cv_created_at_three_day))"
+                    v-if="item.cv_not_reciprocal > 0"
                     :class="(perPage * (currentPage - 1)) + (index + 1) < 10 ? 'td-warning' : 'td-warning-large'"
                   >
-                    未対応の履歴書{{ item.cv_read }}/{{
-                      item.total_cv_applied
-                    }}通
+                    未対応の履歴書{{ item.cv_not_reciprocal }}/{{ item.total_cv_applied }}通
                     <img class="" src="../../assets/images/icon_warning.svg" />
                   </span>
                   {{ (perPage * (currentPage - 1)) + (index + 1) }}
@@ -211,7 +209,7 @@
           <p>
             * 太字は未読、細字は既読である。<br />
             * 白い背景は有効期間中の求人 、浅い青色の背景は有効期限切れになった求人である。<br />
-            * 3日以上未読の履歴書があったら、リマインダーが表示される。
+            * ステータスが未対応の応募者があったら、リマインダーが表示される。
           </p>
         </Pagination>
       </div>

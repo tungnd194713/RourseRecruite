@@ -363,33 +363,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="district">市区町村<span>*</span></label>
-                    <input
-                        id="district"
-                        ref="districtTextBox"
-                        v-model.trim="user.district"
-                        type="text"
-                        class="form-control form-control-lg rounded-pill"
-                        @input="$v.user.district.$touch()"
-                        @blur="$v.user.district.$touch()"
-                    />
-                    <div v-if="$v.user.district.$error">
-                        <div
-                            v-if="!$v.user.district.required"
-                            class="invalid-feedback error"
-                        >
-                            これは必須項目なので、必ず入力してください
-                        </div>
-                        <div
-                            v-if="!$v.user.district.maxLength"
-                            class="invalid-feedback error"
-                        >
-                            200文字以下で入力してください
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
                     <label for="address">番地<span>*</span></label>
                     <input
                         id="address"
@@ -513,7 +486,6 @@ export default {
                 postal_code_1: '',
                 postal_code_2: '',
                 province_id: '',
-                district: '',
                 address: '',
             },
             acceptTerms: false,
@@ -601,10 +573,6 @@ export default {
             province_id: {
                 required,
             },
-            district: {
-                required,
-                maxLength: maxLength(200),
-            },
             address: {
                 required,
                 maxLength: maxLength(200),
@@ -637,7 +605,6 @@ export default {
             postal_code_1: '',
             postal_code_2: '',
             province_id: '',
-            district: '',
             address: '',
           })
           this.acceptTerms =  false
@@ -729,10 +696,6 @@ export default {
               this.$nextTick(() => {
                 document.getElementsByClassName('vs__search')[0].focus()
               })
-            } else if (this.$v.user.district.$error) {
-              this.$nextTick(() => {
-                this.$refs.districtTextBox.focus()
-              })
             } else if (this.$v.user.address.$error) {
               this.$nextTick(() => {
                 this.$refs.addressTextBox.focus()
@@ -749,7 +712,6 @@ export default {
                     this.user.province_id = item.value;
                   }
                 });
-                this.user.district = res.data[0].city;
                 this.user.address = res.data[0].allAddress;
               }
             })
