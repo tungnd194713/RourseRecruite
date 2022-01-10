@@ -23,7 +23,15 @@
           <div class="mt-3 mb-3 mt-lg-4  mb-lg-4 line"></div>
           <div class="container pb-5 row">
             <div class="form-change">
-              <div class="logo form-group mb-2 mb-lg-3 text-center">
+              <div class="logo form-group mb-2 mb-lg-3 text-center d-flex align-items-center justify-content-center">
+                <!--<div
+                  v-if="previewProfileImageUrl"
+                  class="background-logo"
+                  :style="{
+                    backgroundImage: `url(${previewProfileImageUrl})`
+                  }"
+                >
+                </div>-->
                 <img v-if="previewProfileImageUrl" :src="previewProfileImageUrl"/>
                 <img v-else src="../../assets/images/avatar1.svg"/>
               </div>
@@ -309,10 +317,12 @@
 
     created() {
       this.initData()
+      // setInterval(this.initData, 5000)
     },
 
     methods: {
       initData() {
+        this.$auth.fetchUser()
         const currentProfileImage = this.$store.getters.loggedInUser.logo
         this.previewProfileImageUrl = currentProfileImage ? this.url_file + currentProfileImage : ''
       },
