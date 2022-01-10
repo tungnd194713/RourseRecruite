@@ -205,28 +205,6 @@
               </div>
               <div class="row">
                 <div class="form-group col-12 col-lg-6 mb-2 mb-lg-3">
-                  <label for="district">市区町村 <span>*</span></label>
-                  <input
-                    id="district"
-                    ref="districtTextBox"
-                    v-model.trim="$v.data.district.$model"
-                    :class="{
-                      invalid:
-                        $v.data.district.$invalid && $v.data.district.$dirty,
-                    }"
-                    type="text"
-                    class="form-control"
-                  />
-                  <div v-if="$v.data.district.$error">
-                    <div v-if="!$v.data.district.required" class="error">
-                      これは必須項目なので、必ず入力してください
-                    </div>
-                    <div v-if="!$v.data.district.maxLength" class="error">
-                      200文字以下で入力してください
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group col-12 col-lg-6 mb-2 mb-lg-3">
                   <label for="address">番地 <span>*</span></label>
                   <input
                     id="address"
@@ -763,7 +741,6 @@ export default {
         postal_code: '',
         postal_code_1: '',
         postal_code_2: '',
-        district: '',
         province: '',
         images: [],
         video: [],
@@ -816,10 +793,6 @@ export default {
       },
       postal_code_2: {
         numeric,
-      },
-      district: {
-        required,
-        maxLength: maxLength(200),
       },
       province: {
         required,
@@ -935,10 +908,9 @@ export default {
       this.data.postal_code = data.postal_code
       if (this.data.postal_code) {
         this.data.postal_code_1 = this.data.postal_code.slice(0, 3)
-        this.data.postal_code_2 = this.data.postal_code.slice(3)
+        this.data.postal_code_2 = this.data.postal_code.slice(4,8)
       }
       this.data.province = data.province_id
-      this.data.district = data.district
       // this.data.career = data.career
       this.uploadedIntroImage = data.images
       this.uploadedProfileImage = data.logo
@@ -1062,7 +1034,6 @@ export default {
         dataCompany.append('phone', this.data.phone)
         dataCompany.append('youtube', this.data.youtube)
         dataCompany.append('postal_code', this.data.postal_code)
-        dataCompany.append('district', this.data.district)
         dataCompany.append('province_id', this.data.province)
         dataCompany.append('email', this.data.email)
         for (let i = 0; i < this.data.removeIntroImage.length; i++) {
@@ -1122,10 +1093,6 @@ export default {
           this.$nextTick(() => {
             document.getElementsByClassName('vs__search')[0].focus()
           })
-        } else if (this.$v.data.district.$error) {
-          this.$nextTick(() => {
-            this.$refs.districtTextBox.focus()
-          })
         } else if (this.$v.data.address.$error) {
           this.$nextTick(() => {
             this.$refs.addressTextBox.focus()
@@ -1166,7 +1133,6 @@ export default {
               }
             });
 
-            this.data.district = res.data[0].city;
             this.data.address = res.data[0].allAddress;
           }
         })

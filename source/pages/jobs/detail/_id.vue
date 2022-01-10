@@ -244,7 +244,7 @@
               {{item.note}}
             </td>
             <td class="align-middle py-3 col-status">
-              {{ item.status ? statusCandidateApply[item.status] : statusCandidateApply[0] }}
+              {{ item.status ? statusCandidateApply[item.status - 1] : statusCandidateApply[0] }}
             </td>
             <td class="align-middle py-3">
               <a
@@ -286,7 +286,7 @@
       >
         <p>
           * 未読：白い背景、既読：浅い青色の背景<br />
-          * 3日以上未読の履歴書があったら、リマインダーが表示される。
+          * ステータスが未対応の応募者があったら、リマインダーが表示される。
         </p>
       </Pagination>
     </div>
