@@ -73,7 +73,7 @@
     },
 
     head() {
-      return {title: '求人'}
+      return {title: '求人 | 求人'}
     },
 
     watch: {
@@ -97,6 +97,8 @@
                 const data = this.$handleResponse(res);
                 this.message = data.message;
                 this.error = data.errorMsg;
+                this.getMessage(this.error);
+                this.getMessage(this.message);
               });
           } catch (e) {
             this.message = '';
