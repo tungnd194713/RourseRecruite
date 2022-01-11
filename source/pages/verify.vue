@@ -73,7 +73,7 @@
     },
 
     head() {
-      return {title: '求人 | 求人'}
+      return {title: '確認メール再送信 | 求人'}
     },
 
     watch: {
@@ -112,7 +112,7 @@
           this.error = 'しばらくお待ちください'
         }
         if (message === 'Too Many Attempts.') {
-          this.message = 'しばらくお待ちください'
+          this.error = 'しばらくお待ちください'
         }
       }
     }
