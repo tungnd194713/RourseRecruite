@@ -921,7 +921,7 @@ export default {
             break_time: '',
             holidays: '',
             welfare_regime: '',
-            has_vietnamese_staff: '',
+            has_vietnamese_staff: 0,
             overtime: ''
           },
         }
