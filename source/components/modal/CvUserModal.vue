@@ -389,8 +389,8 @@
             <img
               src="../../assets/images/icon_pdf_download.svg"
               alt=""
-              @click="exportPdf()"
               class="cursor-pointer"
+              @click="exportPdf()"
             >
             <button class="btn btn-outline-secondary ms-5" data-bs-dismiss="modal" aria-label="Close">クローズ</button>
           </div>
