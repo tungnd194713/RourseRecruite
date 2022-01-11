@@ -142,8 +142,8 @@
                       }"
                       class="form-control w-50"
                       placeholder="xxxx"
-                      @blur="$v.data.postal_code_2.$touch()"
                       maxlength="4"
+                      @blur="$v.data.postal_code_2.$touch()"
                     />
                   </div>
                   <div v-if="$v.data.postal_code_1.$error">
@@ -844,6 +844,14 @@ export default {
     },
   },
 
+    head() {
+        return {
+            title: '会社情報編集 | 求人',
+        }
+    },
+
+    computed: {},
+
   watch: {
     'data.postal_code_1': {
       handler(newVal) {
@@ -874,14 +882,6 @@ export default {
       deep:true
     },
   },
-
-  head() {
-    return {
-      title: '会社情報編集 | 求人',
-    }
-  },
-
-  computed: {},
 
   created() {
     this.careers = theCareers

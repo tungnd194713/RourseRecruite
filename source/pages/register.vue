@@ -289,9 +289,9 @@
                       type="text"
                       class="form-control form-control-lg rounded-pill w-25 pr-1"
                       placeholder="xxx"
+                      maxlength="3"
                       @input="$v.user.postal_code_1.$touch()"
                       @blur="$v.user.postal_code_1.$touch()"
-                      maxlength="3"
                     />
                     <p class="mx-3 mt-2">ー</p>
                     <input
@@ -301,9 +301,9 @@
                       type="text"
                       class="form-control form-control-lg rounded-pill w-50"
                       placeholder="xxxx"
+                      maxlength="4"
                       @input="$v.user.postal_code_2.$touch()"
                       @blur="$v.user.postal_code_2.$touch()"
-                      maxlength="4"
                     />
                   </div>
                   <div v-if="$v.user.postal_code_1.$error">
@@ -504,6 +504,10 @@ export default {
         }
     },
 
+    head() {
+        return { title: '会員登録 | 求人' }
+    },
+
     watch: {
         'user.postal_code_1': {
           handler(newVal) {
@@ -529,10 +533,6 @@ export default {
           },
           deep:true
         },
-    },
-
-    head() {
-        return { title: '会員登録 | 求人' }
     },
 
     validations: {
