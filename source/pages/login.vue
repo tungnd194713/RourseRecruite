@@ -24,7 +24,6 @@
             >
               <span>
                 <img
-                  class="mt-2"
                   src="../assets/images/icon_fb.svg"
                   alt="Facebookでログイン"
                 />
