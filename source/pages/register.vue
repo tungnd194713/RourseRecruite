@@ -398,7 +398,10 @@
                         @blur="$v.acceptTerms.$touch()"
                     />
                     <label class="form-check-label" for="flexCheckDefault">
-                        利用規約とプライバシーポリシーに同意します。
+                      <a class="text-decoration-underline term-use" @click="$route.push('term-use')">利用規約</a>
+                      と
+                      <a class="text-decoration-underline term-use" @click="$route.push('privacy-policy')">プライバシーポリシー</a>
+                      に同意します。
                     </label>
                     <div v-if="$v.acceptTerms.$error">
                         <div
