@@ -746,7 +746,7 @@
           break_time: '',
           holidays: '',
           welfare_regime: '',
-          has_vietnamese_staff: '',
+          has_vietnamese_staff: 0,
           overtime: ''
         }
       }
@@ -837,7 +837,7 @@
           required,
           maxLength: maxLength(500)
         },
-        has_vietnamese_staff: '',
+        has_vietnamese_staff: 0,
         overtime: {
           maxLength: maxLength(1000)
         }
@@ -986,7 +986,7 @@
           break_time: '',
           holidays: '',
           welfare_regime: '',
-          has_vietnamese_staff: '',
+          has_vietnamese_staff: 0,
           overtime: ''
         })
         this.job.type_plan = this.typePlanList[0].value
