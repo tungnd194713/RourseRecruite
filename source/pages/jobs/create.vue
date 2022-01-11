@@ -217,8 +217,8 @@
             </div>
           </div>
           <div class="form-group mb-3 mb-lg-4 row">
-            <label class="col-sm-2 col-form-label">ベトナム人在籍状況</label>
-            <div class="col-12 col-sm-10">
+            <label class="col-sm-2 col-form-label">ベトナム人在籍状況<span>*</span></label>
+            <div class="col-12 col-sm-10 d-flex row align-content-center">
               <div class="row">
                 <div class="col-12 col-sm-4 col-md-2">
                   <input
@@ -746,7 +746,7 @@
           break_time: '',
           holidays: '',
           welfare_regime: '',
-          has_vietnamese_staff: '',
+          has_vietnamese_staff: 0,
           overtime: ''
         }
       }
@@ -986,7 +986,7 @@
           break_time: '',
           holidays: '',
           welfare_regime: '',
-          has_vietnamese_staff: '',
+          has_vietnamese_staff: 0,
           overtime: ''
         })
         this.job.type_plan = this.typePlanList[0].value
