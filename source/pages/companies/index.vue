@@ -27,7 +27,7 @@
             <h2 id="name">
               <span>{{ company_name }}</span>
             </h2>
-            <div class="row">
+            <div class="row infor">
               <div class="col-12 col-sm-6 col-lg-4">
                 <div class="d-block item">
                   <span class="me-2"
