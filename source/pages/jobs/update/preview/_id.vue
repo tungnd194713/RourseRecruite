@@ -279,7 +279,7 @@
     },
 
     head() {
-      return { title: 'ジョブプレビュー'}
+      return { title: 'ジョブプレビュー | 求人'}
     },
 
     computed: {
