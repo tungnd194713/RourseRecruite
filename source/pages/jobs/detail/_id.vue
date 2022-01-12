@@ -102,7 +102,9 @@
           <hr class="my-0" />
           <div class="py-3">
             <div class="d-block mb-5">
-              <h5>仕事内容</h5>
+              <p class="salary-note m-0">・時給×実働+残業、休日出勤＝給与</p>
+              <p class="salary-note mb-5">・月給+残業代＝給与</p>
+              <h5><strong>仕事内容</strong></h5>
               <div class="ps-3 pre-line word-break-break-all">
                 {{ job.content_work }}
               </div>
@@ -111,37 +113,37 @@
               <table class="table table-bordered">
                 <tbody>
                   <tr>
-                    <td>採用人数</td>
+                    <td class="head-table">採用人数</td>
                     <td class="pre-line word-break-break-all">
                       {{ job.number_recruitments}}人
                     </td>
                   </tr>
                   <tr>
-                    <td>応募条件</td>
+                    <td class="head-table">応募条件</td>
                     <td class="pre-line word-break-break-all">
                       {{ job.conditions_apply}}
                     </td>
                   </tr>
                   <tr>
-                    <td>勤務地</td>
+                    <td class="head-table">勤務地</td>
                     <td class="pre-line word-break-break-all">
                       {{ job.address_work}}
                     </td>
                   </tr>
                   <tr>
-                    <td>勤務時間</td>
+                    <td class="head-table">勤務時間</td>
                     <td class="pre-line word-break-break-all">
                       {{ job.time_work}}
                     </td>
                   </tr>
                   <tr>
-                    <td>休日</td>
+                    <td class="head-table">休日</td>
                     <td class="pre-line word-break-break-all">
                       {{ job.holidays}}
                     </td>
                   </tr>
                   <tr>
-                    <td>休憩時間 </td>
+                    <td class="head-table">休憩時間 </td>
                     <td class="pre-line word-break-break-all">
                       {{ job.break_time}}
                     </td>
@@ -153,7 +155,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>ベトナム人在籍状況</td>
+                    <td class="head-table">ベトナム人在籍状況</td>
                     <td class="pre-line word-break-break-all">
                       {{ hasVietnameseStaffLabelList[parseInt(job.has_vietnamese_staff)] }}
                     </td>

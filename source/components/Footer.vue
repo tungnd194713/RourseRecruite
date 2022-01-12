@@ -55,8 +55,9 @@
                     allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
           </div>
           <div class="footer-icon-social">
-            <img class="fs-2 me-3" src="../assets/images/icon_facebook_footer.svg" alt="">
-            <img class="fs-2" src="../assets/images/icon_instagram_footer.svg" alt="">
+            <img class="fs-2 me-3 fb" src="../assets/images/icon_facebook_footer.svg" alt="">
+            <img class="fs-2 instagram" src="../assets/images/icon_instagram_footer.svg" alt="">
+            <img class="fs-2 ic-tiktok" src="../assets/images/icon_tiktok.svg" alt="">
           </div>
         </div>
       </div>
