@@ -113,7 +113,9 @@
                 if (!this.$v.$invalid) {
                     try {
                         await this.$repositories.accounts.sendVerificationMailFacebook({
-                            email: this.email
+                            name: this.name,
+                            email: this.email,
+                            facebook_id: this.facebook_id
                         })
                             .then((res) => {
                                 const data = this.$handleResponse(res);
