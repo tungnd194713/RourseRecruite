@@ -19,7 +19,7 @@
         <div class="mt-0 mt-lg-2 pt-0 pt-lg-3 pb-2">
           <div class="row">
             <div class="col-12 col-lg-6 pe-3 pe-xl-5">
-              <img class="img-fluid w-100" :src="previewImageJobUrl" alt="" />
+              <img class="img-fluid w-100 rounded-img" :src="previewImageJobUrl()" alt="" />
             </div>
             <div class="col-12 col-lg-6 mt-4 mt-lg-0">
               <h1 class="mb-3 mb-lg-4"> {{ job.title}}</h1>
@@ -472,6 +472,7 @@
   import theProvinces from "~/constants/provinces"
   import residenceCardConfirm from "~/constants/residenceCardConfirm";
   import statusCandidateApply from "~/constants/statusCandidateApply";
+  import careerImages from "~/constants/careerImages";
 
   export default {
     name: "JobDetail",
@@ -744,6 +745,7 @@
         selectedItemId: 0,
         residenceCardConfirm,
         statusCandidateApply,
+        careerImages,
       }
     },
 
@@ -760,10 +762,6 @@
     },
 
     computed: {
-      previewImageJobUrl() {
-        return this.job.image_job ? process.env.API_URL.replace('api', 'storage') + this.job.image_job : ''
-      },
-
       previewDateStart() {
         return this.$moment(this.job.date_start).format('YYYY/MM/DD')
       },
@@ -949,6 +947,9 @@
           return element.type === 2
         }
       )
+    },
+    previewImageJobUrl() {
+        return this.job.image_job ? process.env.API_URL.replace('api', 'storage') + this.job.image_job : require(`@/assets/images/draft` + careerImages[this.job.career - 1].image)
     },
   },
 }
