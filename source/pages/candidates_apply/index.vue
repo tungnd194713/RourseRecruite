@@ -93,7 +93,7 @@
                   v-if="item.status === 1"
                   :class="(perPage * (currentPage - 1)) + (index + 1) < 10 ? 'td-warning' : 'td-warning-large'"
                 >
-                  3日以上未対応!
+                  未対応！
                   <img class="" src="../../assets/images/icon_warning.svg" />
                 </span>
                 {{ ( perPage * (currentPage - 1)) + (index + 1) }}
