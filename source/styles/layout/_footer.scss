@@ -11,7 +11,11 @@ footer {
   padding-bottom: 50px;
 }
 
-.company-footer img {
+.fb {
+  height: 50px;
+}
+
+.instagram {
   height: 50px;
 }
 
@@ -67,6 +71,13 @@ footer {
     height: 25px;
   }
 
+  .fb {
+    height: 25px;
+  }
+  .instagram {
+    height: 25px;
+  }
+
   .company-footer h5 {
     font-size: 13px;
   }
@@ -79,4 +90,16 @@ footer {
     font-size: 11px;
     padding: 8px;
   }
+
+  .ic-tiktok {
+    height: 15px !important;
+    margin-bottom: -1px;
+    margin-left: 11px;
+  }
+}
+
+.ic-tiktok {
+  height: 30px;
+  margin-left: 10px;
+  margin-bottom: -2px;
 }
