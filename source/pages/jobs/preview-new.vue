@@ -5,7 +5,7 @@
         <div class="mt-0 mt-lg-2 pt-0 pt-lg-3 pb-2">
           <div class="row">
             <div class="col-12 col-xl-6 pe-3 pe-xl-5">
-              <img class="img-fluid w-100" :src="previewImageJobUrl" alt="">
+              <img class="img-fluid w-100 rounded-img" :src="previewImageJobUrl()" alt="">
             </div>
             <div class="col-12 col-xl-6 mt-4 mt-lg-0">
               <h1 class="mb-3 mb-lg-4"> {{ job.title}}</h1>
@@ -51,8 +51,10 @@
       </div>
       <hr class="my-0">
       <div class="detail-job-content py-3">
+        <p class="salary-note m-0 font-italic">・時給×実働+残業、休日出勤＝給与</p>
+        <p class="salary-note font-italic mb-5">・月給+残業代＝給与</p>
         <div class="d-block mb-3 mb-lg-5">
-          <h5>仕事内容</h5>
+          <h4><strong>仕事内容</strong></h4>
           <div class="ps-3 pre-line word-break-break-all">
             {{ job.content_work}}
           </div>
@@ -61,49 +63,49 @@
           <table class="table table-bordered">
             <tbody>
               <tr>
-                <td>採用人数</td>
+                <td class="head-table">採用人数</td>
                 <td class="pre-line word-break-break-all">
                   {{ job.number_recruitments}}人
                 </td>
               </tr>
               <tr>
-                <td>応募条件</td>
+                <td class="head-table">応募条件</td>
                 <td class="pre-line word-break-break-all">
                   {{ job.conditions_apply}}
                 </td>
               </tr>
               <tr>
-                <td>勤務地</td>
+                <td class="head-table">勤務地</td>
                 <td class="pre-line word-break-break-all">
                   {{ job.address_work}}
                 </td>
               </tr>
               <tr>
-                <td>勤務時間</td>
+                <td class="head-table">勤務時間</td>
                 <td class="pre-line word-break-break-all">
                   {{ job.time_work}}
                 </td>
               </tr>
               <tr>
-                <td>休日</td>
+                <td class="head-table">休日</td>
                 <td class="pre-line word-break-break-all">
                   {{ job.holidays}}
                 </td>
               </tr>
               <tr>
-                <td>休憩時間 </td>
+                <td class="head-table">休憩時間</td>
                 <td class="pre-line word-break-break-all">
                   {{ job.break_time}}
                 </td>
               </tr>
               <tr>
-                <td>福利厚生</td>
+                <td class="head-table">福利厚生</td>
                 <td class="pre-line word-break-break-all">
                   {{ job.welfare_regime}}
                 </td>
               </tr>
               <tr>
-                <td>ベトナム人在籍状況</td>
+                <td class="head-table">ベトナム人在籍状況</td>
                 <td class="pre-line word-break-break-all">
                   {{ hasVietnameseStaffLabelList[parseInt(job.has_vietnamese_staff)]}}
                 </td>
@@ -138,6 +140,7 @@
   import CompleteCreateJobModal from "~/components/CompleteCreateJobModal";
   import theCareers from '~/constants/careers'
   import theProvinces from "~/constants/provinces"
+  import careerImages from "~/constants/careerImages";
 
   export default {
     name: "PreviewNewJob",
@@ -262,7 +265,8 @@
           holidays: '',
           welfare_regime: '',
           has_vietnamese_staff: '',
-          overtime: ''
+          overtime: '',
+          careerImages,
         }
       }
     },
@@ -272,10 +276,6 @@
     },
 
     computed: {
-      previewImageJobUrl() {
-        return this.job.image_job ? URL.createObjectURL(this.job.image_job) : null
-      },
-
       previewDateStart() {
         return this.$moment(this.job.date_start).format('YYYY/MM/DD')
       },
@@ -368,7 +368,10 @@
           }
           this.isDisabledSaveBtn = false
         })
-      }
+      },
+      previewImageJobUrl() {
+        return this.job.image_job ? URL.createObjectURL(this.job.image_job) : require(`@/assets/images/draft` + careerImages[this.job.career - 1].image)
+      },
     }
   }
 </script>

@@ -912,7 +912,7 @@ export default {
       this.data.postal_code = data.postal_code
       if (this.data.postal_code) {
         this.data.postal_code_1 = this.data.postal_code.slice(0, 3)
-        this.data.postal_code_2 = this.data.postal_code.slice(4,8)
+        this.data.postal_code_2 = this.data.postal_code.slice(3,8)
       }
       this.data.province = data.province_id
       // this.data.career = data.career
