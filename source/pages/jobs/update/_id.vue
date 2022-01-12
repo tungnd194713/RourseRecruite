@@ -1028,7 +1028,7 @@ export default {
     },
 
     head() {
-        return { title: '仕事の訂正' }
+        return { title: '仕事の訂正 | 求人' }
     },
     //
     // watch: {

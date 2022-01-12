@@ -52,7 +52,7 @@
             class="form-select rounded-pill"
             aria-label="ステータス"
           >
-            <option selected>ステータス</option>
+            <option value="" selected>ステータス</option>
             <option value="1">表示</option>
             <option value="0">非表示</option>
           </select>
