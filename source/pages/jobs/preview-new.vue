@@ -5,7 +5,7 @@
         <div class="mt-0 mt-lg-2 pt-0 pt-lg-3 pb-2">
           <div class="row">
             <div class="col-12 col-xl-6 pe-3 pe-xl-5">
-              <img class="img-fluid w-100" :src="previewImageJobUrl" alt="">
+              <img class="img-fluid w-100 rounded-img" :src="previewImageJobUrl()" alt="">
             </div>
             <div class="col-12 col-xl-6 mt-4 mt-lg-0">
               <h1 class="mb-3 mb-lg-4"> {{ job.title}}</h1>
@@ -138,6 +138,7 @@
   import CompleteCreateJobModal from "~/components/CompleteCreateJobModal";
   import theCareers from '~/constants/careers'
   import theProvinces from "~/constants/provinces"
+  import careerImages from "~/constants/careerImages";
 
   export default {
     name: "PreviewNewJob",
@@ -262,7 +263,8 @@
           holidays: '',
           welfare_regime: '',
           has_vietnamese_staff: '',
-          overtime: ''
+          overtime: '',
+          careerImages,
         }
       }
     },
@@ -272,10 +274,6 @@
     },
 
     computed: {
-      previewImageJobUrl() {
-        return this.job.image_job ? URL.createObjectURL(this.job.image_job) : null
-      },
-
       previewDateStart() {
         return this.$moment(this.job.date_start).format('YYYY/MM/DD')
       },
@@ -368,7 +366,10 @@
           }
           this.isDisabledSaveBtn = false
         })
-      }
+      },
+      previewImageJobUrl() {
+        return this.job.image_job ? URL.createObjectURL(this.job.image_job) : require(`@/assets/images/draft` + careerImages[this.job.career - 1].image)
+      },
     }
   }
 </script>

@@ -6,15 +6,8 @@
           <div class="row">
             <div class="col-12 col-xl-6 pe-3 pe-xl-5">
               <img
-                v-if="job.image_job"
-                class="img-fluid w-100"
-                :src="previewImageJobUrl"
-                alt=""
-              >
-              <img
-                v-else-if="oldImageJob"
-                class="img-fluid w-100"
-                :src="url_file + oldImageJob"
+                class="img-fluid w-100 rounded-img"
+                :src="previewImageJobUrl()"
                 alt=""
               >
             </div>
@@ -152,6 +145,7 @@
   import CompleteUpdateJobModal from "~/components/CompleteUpdateJobModal";
   import theCareers from '~/constants/careers'
   import theProvinces from "~/constants/provinces"
+  import careerImages from "~/constants/careerImages";
 
   export default {
     name: "PreviewUpdateJob",
@@ -278,7 +272,8 @@
           holidays: '',
           welfare_regime: '',
           has_vietnamese_staff: '',
-          overtime: ''
+          overtime: '',
+          careerImages,
         }
       }
     },
@@ -288,10 +283,6 @@
     },
 
     computed: {
-      previewImageJobUrl() {
-        return this.job.image_job ? URL.createObjectURL(this.job.image_job) : null
-      },
-
       previewDateStart() {
         return this.$moment(this.job.date_start).format('YYYY/MM/DD')
       },
@@ -391,7 +382,10 @@
           }
           this.isDisabledSaveBtn = false
         })
-      }
+      },
+      previewImageJobUrl() {
+        return this.job.image_job ? URL.createObjectURL(this.job.image_job) : require(`@/assets/images/draft` + careerImages[this.job.career - 1].image)
+      },
     }
   }
 </script>
