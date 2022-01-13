@@ -695,6 +695,7 @@ import {
 } from 'vuelidate/lib/validators'
 import 'vue2-datepicker/index.css'
 import 'vue2-datepicker/locale/ja'
+import postalCode from 'jp-postalcode-lookup'
 import theCareers from '~/constants/careers'
 import theProvinces from '~/constants/provinces'
 import provincesInRegisterPage from '~/constants/provincesInRegisterPage'
@@ -1127,19 +1128,20 @@ export default {
       window.location.reload()
     },
 
-    async getDetailAddress() {
+    getDetailAddress() {
       if (this.data.postal_code) {
-        await this.$axios.get('https://apis.postcode-jp.com/api/v5/postcodes/' + this.data.postal_code).then((res) => {
-          if(res.data.length > 0) {
-            this.provinces.forEach((item) => {
-              if (item.label === res.data[0].pref) {
-                this.data.province = item.value;
+        const self = this;
+        postalCode.get(this.data.postal_code, function(address) {
+          if(address) {
+            self.provinces.forEach((item) => {
+              if (item.label === address.prefecture) {
+                self.data.province = item.value;
               }
             });
-
-            this.data.address = res.data[0].allAddress;
+            self.data.address = address.prefecture + address.city + address.area;
           }
-        })
+
+        });
       }
 
     }

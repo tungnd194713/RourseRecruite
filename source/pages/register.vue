@@ -461,6 +461,7 @@ import {
     numeric,
 } from 'vuelidate/lib/validators'
 
+import postalCode from 'jp-postalcode-lookup'
 import theCareers from '~/constants/careers'
 import theProvinces from '~/constants/provinces'
 import provincesInRegisterPage from '~/constants/provincesInRegisterPage'
@@ -706,18 +707,20 @@ export default {
             }
         },
 
-        async getDetailAddress() {
+      getDetailAddress() {
           if (this.user.postal_code) {
-            await this.$axios.get('https://apis.postcode-jp.com/api/v5/postcodes/' + this.user.postal_code).then((res) => {
-              if(res.data.length > 0) {
-                this.provinces.forEach((item) => {
-                  if (item.label === res.data[0].pref) {
-                    this.user.province_id = item.value;
+            const self = this;
+            postalCode.get(this.user.postal_code, function(address) {
+              if(address) {
+                self.provinces.forEach((item) => {
+                  if (item.label === address.prefecture) {
+                    self.user.province_id = item.value;
                   }
                 });
-                this.user.address = res.data[0].allAddress;
+                self.user.address = address.prefecture + address.city + address.area;
               }
-            })
+
+            });
           }
         }
     },
