@@ -98,6 +98,9 @@
                 this.error = data.errorMsg;
                 this.getMessage(this.error);
                 this.getMessage(this.message);
+                if (res.status === 200) {
+                  this.message = 'パスワード変更のメールが送信されました';
+                }
               });
           } catch (e) {
             this.message = '';
