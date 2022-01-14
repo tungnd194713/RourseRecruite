@@ -92,7 +92,7 @@
                 :key="item.id"
                 :class="{
                   'expired-job-active': checkExpiredJob(item.date_end),
-                  'font-weight-bold': (item.read)
+                  'font-weight-bold': (item.cv_read)
                 }"
               >
                 <td class="align-middle text-center">
