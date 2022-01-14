@@ -374,7 +374,7 @@
                 </div>
               </div>
 
-              <div class="form-group mb-3 mb-lg-4 row">
+              <div class="form-group mb-3 mb-lg-3 row">
                 <label class="col-sm-2 col-form-label"></label>
                 <!--<div
                     v-if="displaySalary === 'salary_max'"
@@ -429,6 +429,7 @@
                     <div v-if="!$v.job.salary_min.isLowerThanSalaryMax" class="error-text">最多の月給以下で入力してください</div>
                   </div>
                 </div>
+
                 <div
                   v-if="displaySalary === 'salary_range'"
                   class="col-12 col-sm-1 range-salary-character text-center pt-1"
@@ -461,6 +462,17 @@
                     <div v-if="!$v.job.salary_max.maxLength" class="error-text">10数字以下で入力してください</div>
                     <div v-if="!$v.job.salary_max.isGreaterThanSalaryMin" class="error-text">最低の月給以上で入力してください</div>
                   </div>
+                </div>
+              </div>
+
+              <div class="form-group mb-3 mb-lg-4 text-note">
+                <div class="row">
+                  <label class="col-sm-2 col-form-label"></label>
+                  <p class="col-4 col-sm-3 m-0">・時給×実働+残業、休日出勤＝給与</p>
+                </div>
+                <div class="row">
+                  <label class="col-sm-2 col-form-label"></label>
+                  <p class="col-4 col-sm-3">・月給+残業代＝給与</p>
                 </div>
               </div>
 
@@ -921,7 +933,7 @@ export default {
             break_time: '',
             holidays: '',
             welfare_regime: '',
-            has_vietnamese_staff: '',
+            has_vietnamese_staff: 0,
             overtime: ''
           },
         }
@@ -1021,7 +1033,7 @@ export default {
     },
 
     head() {
-        return { title: '仕事の訂正' }
+        return { title: '仕事の訂正 | 求人' }
     },
     //
     // watch: {
@@ -1129,7 +1141,7 @@ export default {
 
             this.provinceList = defaultProvinces
           } catch (e) {
-            console.log(e.message)
+//            console.log(e.message)
           }
         },
 

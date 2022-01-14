@@ -64,7 +64,7 @@ export default {
   name: 'PrivacyPolicy',
   layout: 'auth',
   head() {
-    return { title: 'プライバシーポリシー' }
+    return { title: 'プライバシーポリシー | 求人' }
   },
 }
 </script>

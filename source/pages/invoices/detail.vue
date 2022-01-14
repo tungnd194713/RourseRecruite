@@ -150,7 +150,7 @@
       }
     },
     head () {
-      return {title: '求人のプラン'}
+      return {title: '求人のプラン | 求人'}
     },
 
     computed: {

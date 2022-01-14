@@ -142,8 +142,8 @@
                       }"
                       class="form-control w-50"
                       placeholder="xxxx"
-                      @blur="$v.data.postal_code_2.$touch()"
                       maxlength="4"
+                      @blur="$v.data.postal_code_2.$touch()"
                     />
                   </div>
                   <div v-if="$v.data.postal_code_1.$error">
@@ -204,28 +204,6 @@
                 </div>
               </div>
               <div class="row">
-                <div class="form-group col-12 col-lg-6 mb-2 mb-lg-3">
-                  <label for="district">市区町村 <span>*</span></label>
-                  <input
-                    id="district"
-                    ref="districtTextBox"
-                    v-model.trim="$v.data.district.$model"
-                    :class="{
-                      invalid:
-                        $v.data.district.$invalid && $v.data.district.$dirty,
-                    }"
-                    type="text"
-                    class="form-control"
-                  />
-                  <div v-if="$v.data.district.$error">
-                    <div v-if="!$v.data.district.required" class="error">
-                      これは必須項目なので、必ず入力してください
-                    </div>
-                    <div v-if="!$v.data.district.maxLength" class="error">
-                      200文字以下で入力してください
-                    </div>
-                  </div>
-                </div>
                 <div class="form-group col-12 col-lg-6 mb-2 mb-lg-3">
                   <label for="address">番地 <span>*</span></label>
                   <input
@@ -718,6 +696,7 @@ import {
 } from 'vuelidate/lib/validators'
 import 'vue2-datepicker/index.css'
 import 'vue2-datepicker/locale/ja'
+import postalCode from 'jp-postalcode-lookup'
 import theCareers from '~/constants/careers'
 import theProvinces from '~/constants/provinces'
 import provincesInRegisterPage from '~/constants/provincesInRegisterPage'
@@ -764,7 +743,6 @@ export default {
         postal_code: '',
         postal_code_1: '',
         postal_code_2: '',
-        district: '',
         province: '',
         images: [],
         video: [],
@@ -818,10 +796,6 @@ export default {
       postal_code_2: {
         numeric,
       },
-      district: {
-        required,
-        maxLength: maxLength(200),
-      },
       province: {
         required,
       },
@@ -872,19 +846,31 @@ export default {
     },
   },
 
+    head() {
+        return {
+            title: '会社情報編集 | 求人',
+        }
+    },
+
+    computed: {},
+
   watch: {
     'data.postal_code_1': {
       handler(newVal) {
-        if (this.data.postal_code_1.length === 3 && this.data.postal_code_2.length === 4) {
-          this.data.postal_code = this.data.postal_code_1 + this.data.postal_code_2
+        if (this.data.postal_code_1 && this.data.postal_code_2) {
+          if (this.data.postal_code_1.length === 3 && this.data.postal_code_2.length === 4) {
+            this.data.postal_code = this.data.postal_code_1 + this.data.postal_code_2
+          }
         }
       },
       deep: true
     },
     'data.postal_code_2': {
       handler(newVal) {
-        if (this.data.postal_code_2.length === 4 && this.data.postal_code_1.length === 3) {
-          this.data.postal_code = this.data.postal_code_1 + this.data.postal_code_2
+        if (this.data.postal_code_1 && this.data.postal_code_2) {
+          if (this.data.postal_code_2.length === 4 && this.data.postal_code_1.length === 3) {
+            this.data.postal_code = this.data.postal_code_1 + this.data.postal_code_2
+          }
         }
       },
       deep:true
@@ -898,14 +884,6 @@ export default {
       deep:true
     },
   },
-
-  head() {
-    return {
-      title: '会社情報編集 | 求人',
-    }
-  },
-
-  computed: {},
 
   created() {
     this.careers = theCareers
@@ -936,10 +914,9 @@ export default {
       this.data.postal_code = data.postal_code
       if (this.data.postal_code) {
         this.data.postal_code_1 = this.data.postal_code.slice(0, 3)
-        this.data.postal_code_2 = this.data.postal_code.slice(3)
+        this.data.postal_code_2 = this.data.postal_code.slice(3,8)
       }
       this.data.province = data.province_id
-      this.data.district = data.district
       // this.data.career = data.career
       this.uploadedIntroImage = data.images
       this.uploadedProfileImage = data.logo
@@ -1063,7 +1040,6 @@ export default {
         dataCompany.append('phone', this.data.phone)
         dataCompany.append('youtube', this.data.youtube)
         dataCompany.append('postal_code', this.data.postal_code)
-        dataCompany.append('district', this.data.district)
         dataCompany.append('province_id', this.data.province)
         dataCompany.append('email', this.data.email)
         for (let i = 0; i < this.data.removeIntroImage.length; i++) {
@@ -1124,10 +1100,6 @@ export default {
           this.$nextTick(() => {
             document.getElementsByClassName('vs__search')[0].focus()
           })
-        } else if (this.$v.data.district.$error) {
-          this.$nextTick(() => {
-            this.$refs.districtTextBox.focus()
-          })
         } else if (this.$v.data.address.$error) {
           this.$nextTick(() => {
             this.$refs.addressTextBox.focus()
@@ -1160,20 +1132,20 @@ export default {
       this.$router.push('/companies')
     },
 
-    async getDetailAddress() {
+    getDetailAddress() {
       if (this.data.postal_code) {
-        await this.$axios.get('https://apis.postcode-jp.com/api/v5/postcodes/' + this.data.postal_code).then((res) => {
-          if(res.data.length > 0) {
-            this.provinces.forEach((item) => {
-              if (item.label === res.data[0].pref) {
-                this.data.province = item.value;
+        const self = this;
+        postalCode.get(this.data.postal_code, function(address) {
+          if(address) {
+            self.provinces.forEach((item) => {
+              if (item.label === address.prefecture) {
+                self.data.province = item.value;
               }
             });
-
-            this.data.district = res.data[0].city;
-            this.data.address = res.data[0].allAddress;
+            self.data.address = address.prefecture + address.city + address.area;
           }
-        })
+
+        });
       }
 
     }

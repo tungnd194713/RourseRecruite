@@ -126,7 +126,6 @@
                     <td colspan="5" class="border-top-dot word-break-break-all">
                       〒 {{ candidate.postal_code }},
                       {{ $t(provincesList[candidate.province_id]) }},
-                      {{ candidate.district }},
                       {{ candidate.address}}
                     </td>
                   </tr>
@@ -390,8 +389,8 @@
             <img
               src="../../assets/images/icon_pdf_download.svg"
               alt=""
-              @click="exportPdf()"
               class="cursor-pointer"
+              @click="exportPdf()"
             >
             <button class="btn btn-outline-secondary ms-5" data-bs-dismiss="modal" aria-label="Close">クローズ</button>
           </div>

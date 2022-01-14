@@ -289,9 +289,9 @@
                       type="text"
                       class="form-control form-control-lg rounded-pill w-25 pr-1"
                       placeholder="xxx"
+                      maxlength="3"
                       @input="$v.user.postal_code_1.$touch()"
                       @blur="$v.user.postal_code_1.$touch()"
-                      maxlength="3"
                     />
                     <p class="mx-3 mt-2">ー</p>
                     <input
@@ -301,9 +301,9 @@
                       type="text"
                       class="form-control form-control-lg rounded-pill w-50"
                       placeholder="xxxx"
+                      maxlength="4"
                       @input="$v.user.postal_code_2.$touch()"
                       @blur="$v.user.postal_code_2.$touch()"
-                      maxlength="4"
                     />
                   </div>
                   <div v-if="$v.user.postal_code_1.$error">
@@ -363,33 +363,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="district">市区町村<span>*</span></label>
-                    <input
-                        id="district"
-                        ref="districtTextBox"
-                        v-model.trim="user.district"
-                        type="text"
-                        class="form-control form-control-lg rounded-pill"
-                        @input="$v.user.district.$touch()"
-                        @blur="$v.user.district.$touch()"
-                    />
-                    <div v-if="$v.user.district.$error">
-                        <div
-                            v-if="!$v.user.district.required"
-                            class="invalid-feedback error"
-                        >
-                            これは必須項目なので、必ず入力してください
-                        </div>
-                        <div
-                            v-if="!$v.user.district.maxLength"
-                            class="invalid-feedback error"
-                        >
-                            200文字以下で入力してください
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
                     <label for="address">番地<span>*</span></label>
                     <input
                         id="address"
@@ -425,7 +398,10 @@
                         @blur="$v.acceptTerms.$touch()"
                     />
                     <label class="form-check-label" for="flexCheckDefault">
-                        利用規約とプライバシーポリシーに同意します。
+                      <a class="text-decoration-underline term-use" @click="$route.push('term-use')">利用規約</a>
+                      と
+                      <a class="text-decoration-underline term-use" @click="$route.push('privacy-policy')">プライバシーポリシー</a>
+                      に同意します。
                     </label>
                     <div v-if="$v.acceptTerms.$error">
                         <div
@@ -485,6 +461,7 @@ import {
     numeric,
 } from 'vuelidate/lib/validators'
 
+import postalCode from 'jp-postalcode-lookup'
 import theCareers from '~/constants/careers'
 import theProvinces from '~/constants/provinces'
 import provincesInRegisterPage from '~/constants/provincesInRegisterPage'
@@ -513,7 +490,6 @@ export default {
                 postal_code_1: '',
                 postal_code_2: '',
                 province_id: '',
-                district: '',
                 address: '',
             },
             acceptTerms: false,
@@ -527,6 +503,10 @@ export default {
             isHideConfirmPassword: true,
             isLoading: false
         }
+    },
+
+    head() {
+        return { title: '会員登録 | 求人' }
     },
 
     watch: {
@@ -554,10 +534,6 @@ export default {
           },
           deep:true
         },
-    },
-
-    head() {
-        return { title: '会員登録 | 求人' }
     },
 
     validations: {
@@ -601,10 +577,6 @@ export default {
             province_id: {
                 required,
             },
-            district: {
-                required,
-                maxLength: maxLength(200),
-            },
             address: {
                 required,
                 maxLength: maxLength(200),
@@ -637,7 +609,6 @@ export default {
             postal_code_1: '',
             postal_code_2: '',
             province_id: '',
-            district: '',
             address: '',
           })
           this.acceptTerms =  false
@@ -729,10 +700,6 @@ export default {
               this.$nextTick(() => {
                 document.getElementsByClassName('vs__search')[0].focus()
               })
-            } else if (this.$v.user.district.$error) {
-              this.$nextTick(() => {
-                this.$refs.districtTextBox.focus()
-              })
             } else if (this.$v.user.address.$error) {
               this.$nextTick(() => {
                 this.$refs.addressTextBox.focus()
@@ -740,19 +707,20 @@ export default {
             }
         },
 
-        async getDetailAddress() {
+      getDetailAddress() {
           if (this.user.postal_code) {
-            await this.$axios.get('https://apis.postcode-jp.com/api/v5/postcodes/' + this.user.postal_code).then((res) => {
-              if(res.data.length > 0) {
-                this.provinces.forEach((item) => {
-                  if (item.label === res.data[0].pref) {
-                    this.user.province_id = item.value;
+            const self = this;
+            postalCode.get(this.user.postal_code, function(address) {
+              if(address) {
+                self.provinces.forEach((item) => {
+                  if (item.label === address.prefecture) {
+                    self.user.province_id = item.value;
                   }
                 });
-                this.user.district = res.data[0].city;
-                this.user.address = res.data[0].allAddress;
+                self.user.address = address.prefecture + address.city + address.area;
               }
-            })
+
+            });
           }
         }
     },

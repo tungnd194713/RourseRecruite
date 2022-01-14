@@ -69,7 +69,7 @@
         @customPage="pageChangeHandle"
       >
         <p>
-          * Payjpでの決済可能な金額は50円〜9,999,999円までです。<br />
+          * クレジットカードでの決済可能な金額は50円〜9,999,999円までです。<br />
         </p>
       </Pagination>
     </div>

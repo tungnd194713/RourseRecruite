@@ -90,10 +90,10 @@
             >
               <td class="align-middle py-3 text-center">
                 <span
-                  v-if="!(item.read || isWarningUnRead(item.created_at))"
+                  v-if="item.status === 1"
                   :class="(perPage * (currentPage - 1)) + (index + 1) < 10 ? 'td-warning' : 'td-warning-large'"
                 >
-                  3日以上未対応!
+                  未対応！
                   <img class="" src="../../assets/images/icon_warning.svg" />
                 </span>
                 {{ ( perPage * (currentPage - 1)) + (index + 1) }}
@@ -150,7 +150,7 @@
                 {{ item.note }}
               </td>
               <td class="align-middle py-3 col-status">
-                  {{ item.status ? statusCandidateApply[item.status] : statusCandidateApply[0] }}
+                  {{ item.status ? statusCandidateApply[item.status - 1] : statusCandidateApply[0] }}
               </td>
               <td class="align-middle py-3">
                 <a
@@ -197,7 +197,7 @@
       >
         <p>
           * 未読：白い背景、既読：浅い青色の背景<br />
-          * 3日以上未読の履歴書があったら、リマインダーが表示されます。
+          * ステータスが未対応の応募者があったら、リマインダーが表示される。
         </p>
       </Pagination>
     </div>
@@ -290,8 +290,7 @@
               class="form-select rounded-pill pop-check-select"
               aria-label="Status"
             >
-              <option value="0" selected>未選択</option>
-              <option value="1">未対応</option>
+              <option value="1" selected>未対応</option>
               <option value="2">折り返し待ち</option>
               <option value="3">面接待ち</option>
               <option value="4">採用</option>
@@ -457,7 +456,6 @@ export default {
         translate_jp: '',
         postal_code: '',
         province_id: '',
-        district: '',
         status: '',
         created_at: '',
         updated_at: '',
@@ -494,7 +492,6 @@ export default {
         translate_jp: '',
         postal_code: '',
         province_id: '',
-        district: '',
         status: '',
         created_at: '',
         updated_at: '',
@@ -574,12 +571,12 @@ export default {
       this.getListCV(this.currentPage)
     },
 
-    isWarningUnRead(date) {
-      const now = this.$moment().format('YYYY-MM-DD')
-      date = this.$moment(date)
-
-      return now < date.add(3, 'days').format('YYYY-MM-DD')
-    },
+    // isWarningUnRead(date) {
+    //   const now = this.$moment().format('YYYY-MM-DD')
+    //   date = this.$moment(date)
+    //
+    //   return now < date.add(3, 'days').format('YYYY-MM-DD')
+    // },
 
     popupUpdateStatus(data) {
       this.idRow = data.id

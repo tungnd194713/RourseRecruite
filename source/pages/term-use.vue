@@ -93,7 +93,7 @@ export default {
   name: 'TermUse',
   layout: 'auth',
   head() {
-    return { title: '利用規約' }
+    return { title: '利用規約 | 求人' }
   },
 }
 </script>

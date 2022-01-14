@@ -98,7 +98,7 @@ export default {
         }
     },
     head() {
-        return { title: 'よくある質問' }
+        return { title: 'よくある質問 | 求人' }
     },
     method: {
 

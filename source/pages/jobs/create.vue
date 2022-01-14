@@ -217,8 +217,8 @@
             </div>
           </div>
           <div class="form-group mb-3 mb-lg-4 row">
-            <label class="col-sm-2 col-form-label">ベトナム人在籍状況</label>
-            <div class="col-12 col-sm-10">
+            <label class="col-sm-2 col-form-label">ベトナム人在籍状況<span>*</span></label>
+            <div class="col-12 col-sm-10 d-flex row align-content-center">
               <div class="row">
                 <div class="col-12 col-sm-4 col-md-2">
                   <input
@@ -280,7 +280,7 @@
             </div>
           </div>
 
-          <div class="form-group mb-3 mb-lg-4 row">
+          <div class="form-group mb-3 mb-lg-3 row">
             <label class="col-sm-2 col-form-label"></label>
             <!--<div v-if="displaySalary === 'salary_max'" class="col-12 col-sm-4">
               <div class="input-group input-group-icon">
@@ -350,7 +350,17 @@
                 <div v-if="!$v.job.salary_max.isGreaterThanSalaryMin" class="error-text">最低の月給以上で入力してください</div>
               </div>
             </div>
+          </div>
 
+          <div class="form-group mb-3 mb-lg-4 text-note">
+            <div class="row">
+              <label class="col-sm-2 col-form-label"></label>
+              <p class="col-10 col-sm-10 mb-0">・時給×実働+残業、休日出勤＝給与</p>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label label-salary-note"></label>
+              <p class="col-10 col-sm-10">・月給+残業代＝給与</p>
+            </div>
           </div>
 
           <div class="form-group mb-3 mb-lg-4 row">
@@ -742,7 +752,7 @@
           break_time: '',
           holidays: '',
           welfare_regime: '',
-          has_vietnamese_staff: '',
+          has_vietnamese_staff: 0,
           overtime: ''
         }
       }
@@ -982,7 +992,7 @@
           break_time: '',
           holidays: '',
           welfare_regime: '',
-          has_vietnamese_staff: '',
+          has_vietnamese_staff: 0,
           overtime: ''
         })
         this.job.type_plan = this.typePlanList[0].value

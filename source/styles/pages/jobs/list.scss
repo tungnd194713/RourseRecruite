@@ -4,7 +4,7 @@
 
 .main-content {
   background: #ededed;
-  font-family: 'M PLUS 1p';
+  font-family: "M PLUS 1p" !important;
 }
 
 .nav-content {
@@ -47,6 +47,10 @@
   color: #88B1C7;
   border: 1px solid #88B1C7;
   background-color: #F5F7F7;
+}
+
+.box-search .mx-datepicker {
+  width: 100%;
 }
 
 input::placeholder {

@@ -19,7 +19,7 @@
         <div class="mt-0 mt-lg-2 pt-0 pt-lg-3 pb-2">
           <div class="row">
             <div class="col-12 col-lg-6 pe-3 pe-xl-5">
-              <img class="img-fluid w-100" :src="previewImageJobUrl" alt="" />
+              <img class="img-fluid w-100 rounded-img" :src="previewImageJobUrl()" alt="" />
             </div>
             <div class="col-12 col-lg-6 mt-4 mt-lg-0">
               <h1 class="mb-3 mb-lg-4"> {{ job.title}}</h1>
@@ -102,7 +102,9 @@
           <hr class="my-0" />
           <div class="py-3">
             <div class="d-block mb-5">
-              <h5>仕事内容</h5>
+              <p class="salary-note m-0">・時給×実働+残業、休日出勤＝給与</p>
+              <p class="salary-note mb-5">・月給+残業代＝給与</p>
+              <h5><strong>仕事内容</strong></h5>
               <div class="ps-3 pre-line word-break-break-all">
                 {{ job.content_work }}
               </div>
@@ -111,37 +113,37 @@
               <table class="table table-bordered">
                 <tbody>
                   <tr>
-                    <td>採用人数</td>
+                    <td class="head-table">採用人数</td>
                     <td class="pre-line word-break-break-all">
                       {{ job.number_recruitments}}人
                     </td>
                   </tr>
                   <tr>
-                    <td>応募条件</td>
+                    <td class="head-table">応募条件</td>
                     <td class="pre-line word-break-break-all">
                       {{ job.conditions_apply}}
                     </td>
                   </tr>
                   <tr>
-                    <td>勤務地</td>
+                    <td class="head-table">勤務地</td>
                     <td class="pre-line word-break-break-all">
                       {{ job.address_work}}
                     </td>
                   </tr>
                   <tr>
-                    <td>勤務時間</td>
+                    <td class="head-table">勤務時間</td>
                     <td class="pre-line word-break-break-all">
                       {{ job.time_work}}
                     </td>
                   </tr>
                   <tr>
-                    <td>休日</td>
+                    <td class="head-table">休日</td>
                     <td class="pre-line word-break-break-all">
                       {{ job.holidays}}
                     </td>
                   </tr>
                   <tr>
-                    <td>休憩時間 </td>
+                    <td class="head-table">休憩時間 </td>
                     <td class="pre-line word-break-break-all">
                       {{ job.break_time}}
                     </td>
@@ -153,7 +155,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>ベトナム人在籍状況</td>
+                    <td class="head-table">ベトナム人在籍状況</td>
                     <td class="pre-line word-break-break-all">
                       {{ hasVietnameseStaffLabelList[parseInt(job.has_vietnamese_staff)] }}
                     </td>
@@ -207,10 +209,10 @@
           <tbody>
           <tr v-for="(item, index) in items" :key="item.id" :class="item.read === 1 ? 'active' : ''">
             <td class="align-middle py-3 text-center">
-                          <span v-if="!(item.read || isWarningUnRead(item.created_at))"
+                          <span v-if="item.status === 1"
                                 :class="(perPage * (currentPage - 1)) + (index + 1) < 10 ? 'td-warning' : 'td-warning-large'"
                           >
-                            3日以上未対応
+                            未対応！
                             <img class="" src="../../../assets/images/icon_warning.svg"/>
                           </span>
               {{ (perPage * (currentPage - 1)) + (index + 1) }}
@@ -244,7 +246,7 @@
               {{item.note}}
             </td>
             <td class="align-middle py-3 col-status">
-              {{ item.status ? statusCandidateApply[item.status] : statusCandidateApply[0] }}
+              {{ item.status ? statusCandidateApply[item.status - 1] : statusCandidateApply[0] }}
             </td>
             <td class="align-middle py-3">
               <a
@@ -286,7 +288,7 @@
       >
         <p>
           * 未読：白い背景、既読：浅い青色の背景<br />
-          * 3日以上未読の履歴書があったら、リマインダーが表示される。
+          * ステータスが未対応の応募者があったら、リマインダーが表示される。
         </p>
       </Pagination>
     </div>
@@ -377,7 +379,6 @@
               class="form-select rounded-pill pop-check-select"
               aria-label="Status"
             >
-              <option value="0" disabled>未選択</option>
               <option value="1">未対応</option>
               <option value="2">折り返し待ち</option>
               <option value="3">面接待ち</option>
@@ -473,6 +474,7 @@
   import theProvinces from "~/constants/provinces"
   import residenceCardConfirm from "~/constants/residenceCardConfirm";
   import statusCandidateApply from "~/constants/statusCandidateApply";
+  import careerImages from "~/constants/careerImages";
 
   export default {
     name: "JobDetail",
@@ -697,7 +699,6 @@
           translate_jp : '',
           postal_code : '',
           province_id : '',
-          district : '',
           status : '',
           created_at : '',
           updated_at : '',
@@ -734,7 +735,6 @@
           translate_jp : '',
           postal_code : '',
           province_id : '',
-          district : '',
           status : '',
           created_at : '',
           updated_at : '',
@@ -747,6 +747,7 @@
         selectedItemId: 0,
         residenceCardConfirm,
         statusCandidateApply,
+        careerImages,
       }
     },
 
@@ -763,10 +764,6 @@
     },
 
     computed: {
-      previewImageJobUrl() {
-        return this.job.image_job ? process.env.API_URL.replace('api', 'storage') + this.job.image_job : ''
-      },
-
       previewDateStart() {
         return this.$moment(this.job.date_start).format('YYYY/MM/DD')
       },
@@ -952,6 +949,9 @@
           return element.type === 2
         }
       )
+    },
+    previewImageJobUrl() {
+        return this.job.image_job ? process.env.API_URL.replace('api', 'storage') + this.job.image_job : require(`@/assets/images/draft` + careerImages[this.job.career - 1].image)
     },
   },
 }

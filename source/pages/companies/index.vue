@@ -27,7 +27,7 @@
             <h2 id="name">
               <span>{{ company_name }}</span>
             </h2>
-            <div class="row">
+            <div class="row infor">
               <div class="col-12 col-sm-6 col-lg-4">
                 <div class="d-block item">
                   <span class="me-2"
@@ -35,19 +35,13 @@
                   /></span>
                   <span>{{ manager_name }}</span>
                 </div>
+              </div>
+              <div v-if="link_website" class="col-12 col-sm-6 col-lg-4">
                 <div class="d-block item">
                   <span class="me-2"
-                    ><img src="../../assets/images/icon_globe.svg"
+                  ><img src="../../assets/images/icon_globe.svg"
                   /></span>
                   <a :href="link_website">WebサイトのURL</a>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6 col-lg-4">
-                <div class="d-block item">
-                  <span class="me-2"
-                    ><img src="../../assets/images/icon_cube.svg"
-                  /></span>
-                  <span>{{ $t(career) }} </span>
                 </div>
               </div>
             </div>
@@ -95,7 +89,7 @@
           <div class="col-12 col-lg-6">
             <h2 class="title">住所</h2>
             <div class="mt-4">
-              〒 {{ postal_code }} {{ $t(province) }} {{ district }}
+              〒 {{ postal_code }} {{ $t(province) }}
               {{ address }}
             </div>
           </div>
@@ -171,7 +165,6 @@ export default {
       logo: '',
       video_link: '',
       images: [],
-      district: '',
       province: '',
       postal_code: '',
       theProvinces,
@@ -208,7 +201,6 @@ export default {
       this.description = data.description
       this.logo = data.logo
       this.address = data.address
-      this.district = data.district
       this.province = this.theProvinces[data.province_id]
       this.video_link = data.video_link
       this.images = data.images

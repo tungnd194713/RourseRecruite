@@ -15,5 +15,9 @@ export default ($axios) => ({
 
   sendVerification(payload) {
     return $axios.post(`${resource}/email/verify/resend`, payload)
-  }
+  },
+
+    sendVerificationMailFacebook(payload) {
+        return $axios.post(`${resource}/email/verify/facebook`, payload)
+    }
 })
