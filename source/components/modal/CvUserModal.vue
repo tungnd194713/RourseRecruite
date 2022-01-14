@@ -74,7 +74,7 @@
                   </tr>
                   <tr>
                     <td class="text-center">{{ $t('cv_user.birthday')}}</td>
-                    <td v-if="language === lang_vi" colspan="2">
+                    <td v-if="language === lang_vi" colspan="3">
                       <div>
                         Ngày
                         <span class="mx-2 mx-md-3">
@@ -85,7 +85,7 @@
                         (Tròn <span class="mx-2 mx-md-3">{{ Math.abs($moment(candidate.birthday).diff($moment(), 'years'))}}</span>tuổi)
                       </div>
                     </td>
-                    <td v-if="language === lang_ja" colspan="2">
+                    <td v-if="language === lang_ja" colspan="3">
                       <div>
                         {{ $moment(candidate.birthday).format('YYYY')}}年
                         <span class="mx-2 mx-md-3">
@@ -101,11 +101,11 @@
                       <div v-if="language === lang_vi" class="text-center">{{ defaultLangAndText.defaultNationalityListVi[candidate.nationality - 1]}}</div>
                       <div v-if="language === lang_ja" class="text-center">{{ defaultLangAndText.defaultNationalityListJa[candidate.nationality - 1]}}</div>
                     </td>
-                    <td>
+                    <!--<td>
                       <div class="text-start">{{ $t('cv_user.language')}}</div>
                       <div v-if="language === lang_vi" class="text-center">{{ defaultLangAndText.defaultLanguageListVi[candidate.language - 1]}}</div>
                       <div v-if="language === lang_ja" class="text-center">{{ defaultLangAndText.defaultLanguageListJa[candidate.language - 1]}}</div>
-                    </td>
+                    </td>-->
                   </tr>
                   <tr>
                     <td colspan="2">

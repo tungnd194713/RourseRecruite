@@ -663,6 +663,7 @@
             "
           >
             <button
+              ref="closeConfirmCancelModal"
               type="button"
               class="btn btn-secondary-custom rounded-pill w-20 mt-4 mb-4"
               data-bs-dismiss="modal"
@@ -1079,6 +1080,7 @@ export default {
                   this.errors = data.errors
                 }
                 if (res.status === 200) {
+                  this.$auth.fetchUser()
                   this.$toast.success('会社情報の更新に成功しました。')
                   setTimeout(this.$router.push('/companies'), 2000)
                 }
@@ -1124,8 +1126,10 @@ export default {
     removeVideo() {
       this.uploadedVideo = ''
     },
+
     resetFormToStart() {
-      window.location.reload()
+      this.$refs.closeConfirmCancelModal.click()
+      this.$router.push('/companies')
     },
 
     getDetailAddress() {
