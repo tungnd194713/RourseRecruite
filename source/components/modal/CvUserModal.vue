@@ -31,6 +31,32 @@
           v-if="cvType === defaultCvInSite"
           class="modal-body"
         >
+          <div
+            v-if="message"
+            class="content"
+          >
+            <div class="row">
+              <div class="col-12 list-user">
+                <table class="table">
+                  <tbody>
+                  <tr>
+                    <td colspan="5" class="border-0">
+                      <div class="d-flex align-items-end">
+                        <h2 class="fw-bold flex-grow-1 title-cv-user">応募者からのメッセージ</h2>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-start border-0 white-space-pre-line word-break-break-all">
+                      {{ message }}
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
           <div class="content">
             <div class="row">
               <div class="col-12 list-user">
@@ -62,7 +88,16 @@
                       <div v-if="language === lang_ja" class="text-center">{{ defaultLangAndText.defaultGenderListJa[candidate.gender]}}</div>
                     </td>
                     <td rowspan="4" class="card-photo">
-                      <img :src="url_file + candidate.profile_image" alt="">
+                      <img
+                        v-if="candidate.profile_image"
+                        :src="url_file + candidate.profile_image"
+                        alt=""
+                      >
+                      <img
+                        v-else
+                        src="~/assets/images/avatar-user.svg"
+                        alt=""
+                      >
                     </td>
                   </tr>
                   <tr>
@@ -400,6 +435,32 @@
           v-if="cvType === defaultCvUpload"
           class="modal-body"
         >
+          <div
+            v-if="message"
+            class="content"
+          >
+            <div class="row">
+              <div class="col-12 list-user">
+                <table class="table">
+                  <tbody>
+                  <tr>
+                    <td colspan="5" class="border-0">
+                      <div class="d-flex align-items-end">
+                        <h2 class="fw-bold flex-grow-1 title-cv-user">応募者からのメッセージ</h2>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-start border-0 white-space-pre-line word-break-break-all">
+                      {{ message }}
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
           <div class="content">
             <object
               type="application/pdf"
@@ -466,6 +527,10 @@
       },
       cvType: {
         type: Number,
+        required: true
+      },
+      message: {
+        type: String,
         required: true
       }
     },

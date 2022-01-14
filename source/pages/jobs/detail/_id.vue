@@ -451,6 +451,7 @@
       :jobs-of-candidate="jobsOfCandidate"
       :id-row="idRow"
       :cv-type="cvType"
+      :message="message"
       @changeLanguageEvent="changeLanguage($event)"
     />
 
@@ -488,6 +489,7 @@
 
     data() {
       return {
+        message: '',
         cvType: 1,
         loadingListCv: '',
         loadingJobDetail: '',
@@ -929,6 +931,7 @@
         this.defaultCandidate = Object.assign({}, candidateApply.candidate)
         this.candidate = Object.assign({}, this.defaultCandidate)
         this.cvType = candidateApply.cv_type
+        this.message = candidateApply.message ? candidateApply.message : ''
         this.initJobsAndEducationsOfCandidate()
         if (candidateApply.read === 0) {
           await this.$repositories.candidatesApply.updateStatus(this.idRow, { read: 1}).then(res => {
@@ -951,7 +954,7 @@
       )
     },
     previewImageJobUrl() {
-        return this.job.image_job ? process.env.API_URL.replace('api', 'storage') + this.job.image_job : require(`@/assets/images/draft` + careerImages[this.job.career - 1].image)
+        return this.job.image_job ? this.url_file + this.job.image_job : require(`@/assets/images/draft` + careerImages[this.job.career - 1].image)
     },
   },
 }

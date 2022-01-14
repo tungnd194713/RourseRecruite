@@ -213,11 +213,12 @@
               <div v-if="$v.job.number_recruitments.$error">
                 <div v-if="!$v.job.number_recruitments.required" class="error-text">これは必須項目なので、必ず入力してください</div>
                 <div v-else-if="!$v.job.number_recruitments.isNumber" class="error-text">整数を入力してください</div>
+                <div v-else-if="!$v.job.number_recruitments.maxLength" class="error-text">10数字以下で入力してください</div>
               </div>
             </div>
           </div>
           <div class="form-group mb-3 mb-lg-4 row">
-            <label class="col-sm-2 col-form-label">ベトナム人在籍状況<span>*</span></label>
+            <label class="col-sm-2 col-form-label">ベトナム人在籍状況 <span>*</span></label>
             <div class="col-12 col-sm-10 d-flex row align-content-center">
               <div class="row">
                 <div class="col-12 col-sm-4 col-md-2">
@@ -752,7 +753,7 @@
           break_time: '',
           holidays: '',
           welfare_regime: '',
-          has_vietnamese_staff: 0,
+          has_vietnamese_staff: 1,
           overtime: ''
         }
       }
@@ -790,7 +791,8 @@
             // eslint-disable-next-line prefer-regex-literals
             const numberRegExp = new RegExp("^\\d+$")
             return numberRegExp.test(value)
-          }
+          },
+          maxLength: maxLength(10)
         },
         salary_max: {
           required,
@@ -992,7 +994,7 @@
           break_time: '',
           holidays: '',
           welfare_regime: '',
-          has_vietnamese_staff: 0,
+          has_vietnamese_staff: 1,
           overtime: ''
         })
         this.job.type_plan = this.typePlanList[0].value
@@ -1005,9 +1007,10 @@
       },
 
       resetForm() {
-        this.resetData()
+        // this.resetData()
         this.$store.dispatch('job/setJob', {})
         this.$refs.closeConfirmCancelModal.click()
+        this.$router.push('/jobs')
       },
 
       keyPressForNumberInput(evt) {

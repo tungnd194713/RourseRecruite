@@ -330,6 +330,7 @@
       :jobs-of-candidate="jobsOfCandidate"
       :id-row="idRow"
       :cv-type="cvType"
+      :message="message"
       @changeLanguageEvent="changeLanguage($event)"
     />
 
@@ -361,6 +362,7 @@ export default {
 
   data() {
     return {
+      message: '',
       cvType: 1,
       url_file: process.env.URL_FILE,
       items: [],
@@ -639,6 +641,7 @@ export default {
       this.defaultCandidate = Object.assign({}, candidateApply.candidate)
       this.candidate = Object.assign({}, this.defaultCandidate)
       this.cvType = candidateApply.cv_type
+      this.message = candidateApply.message ? candidateApply.message : ''
       this.initJobsAndEducationsOfCandidate()
       if (candidateApply.read === 0) {
         await this.$repositories.candidatesApply.updateStatus(this.idRow, { read: 1}).then(res => {
