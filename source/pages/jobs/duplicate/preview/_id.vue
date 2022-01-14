@@ -6,8 +6,21 @@
           <div class="row">
             <div class="col-12 col-xl-6 pe-3 pe-xl-5">
               <img
-                class="img-fluid w-100 rounded-img"
-                :src="previewImageJobUrl()"
+                v-if="job.image_job"
+                class="img-fluid w-100"
+                :src="previewImageJobUrl"
+                alt=""
+              >
+              <img
+                v-else-if="oldImageJob"
+                class="img-fluid w-100"
+                :src="url_file + oldImageJob"
+                alt=""
+              >
+              <img
+                v-else
+                class="img-fluid w-100"
+                :src="require(`@/assets/images/draft${careerImages[job.career - 1].image}`)"
                 alt=""
               >
             </div>
@@ -24,7 +37,13 @@
                   <span class="badge">{{ $t(careerList[job.career - 1])}}</span>
                 </div>
                 <div class="d-block">
-                  <span v-for="item in previewStatusStay()" :key="item.value" class="badge">{{ item.text}}</span>
+                  <span
+                    v-for="(item, index) in job.status_stay"
+                    :key="index"
+                    class="badge"
+                  >
+                    {{ $t(theStatusStay[item]) }}
+                  </span>
                   <img
                     width="22"
                     height="22"
@@ -146,7 +165,8 @@
   import CompleteUpdateJobModal from "~/components/CompleteUpdateJobModal";
   import theCareers from '~/constants/careers'
   import theProvinces from "~/constants/provinces"
-  import careerImages from "~/constants/careerImages";
+  import careerImages from "~/constants/careerImages"
+  import theStatusStay from "~/constants/statusStay"
 
   export default {
     name: "PreviewUpdateJob",
@@ -162,6 +182,8 @@
         url_file: process.env.URL_FILE,
         oldImageJob: '',
         careerList: theCareers,
+        theStatusStay,
+        careerImages,
         provincesList: theProvinces,
         hasVietnameseStaffLabelList: [
           'いない',
@@ -274,7 +296,6 @@
           welfare_regime: '',
           has_vietnamese_staff: '',
           overtime: '',
-          careerImages,
         }
       }
     },
@@ -284,6 +305,10 @@
     },
 
     computed: {
+      previewImageJobUrl() {
+        return this.job.image_job ? URL.createObjectURL(this.job.image_job) : null
+      },
+
       previewDateStart() {
         return this.$moment(this.job.date_start).format('YYYY/MM/DD')
       },
@@ -390,9 +415,7 @@
           this.isDisabledSaveBtn = false
         })
       },
-      previewImageJobUrl() {
-        return this.job.image_job ? URL.createObjectURL(this.job.image_job) : require(`@/assets/images/draft` + careerImages[this.job.career - 1].image)
-      },
+
     }
   }
 </script>

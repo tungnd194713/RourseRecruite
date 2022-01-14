@@ -20,7 +20,13 @@
                   <span class="badge">{{ $t(careerList[job.career - 1])}}</span>
                 </div>
                 <div class="d-block">
-                  <span v-for="item in previewStatusStay()" :key="item.value" class="badge">{{ item.text}}</span>
+                  <span
+                    v-for="(item, index) in job.status_stay"
+                    :key="index"
+                    class="badge"
+                  >
+                    {{ $t(theStatusStay[item]) }}
+                  </span>
                   <img
                     width="22"
                     height="22"
@@ -140,7 +146,8 @@
   import CompleteCreateJobModal from "~/components/CompleteCreateJobModal";
   import theCareers from '~/constants/careers'
   import theProvinces from "~/constants/provinces"
-  import careerImages from "~/constants/careerImages";
+  import careerImages from "~/constants/careerImages"
+  import theStatusStay from "~/constants/statusStay"
 
   export default {
     name: "PreviewNewJob",
@@ -154,6 +161,7 @@
       return {
         isDisabledSaveBtn: false,
         careerList: theCareers,
+        theStatusStay,
         provincesList: theProvinces,
         hasVietnameseStaffLabelList: [
           'いない',

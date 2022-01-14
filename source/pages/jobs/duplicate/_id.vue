@@ -289,12 +289,18 @@
                     >
                       整数を入力してください
                     </div>
+                    <div
+                      v-else-if="!$v.job.number_recruitments.maxLength"
+                      class="error-text"
+                    >
+                      10数字以下で入力してください
+                    </div>
                   </div>
                 </div>
               </div>
 
               <div class="form-group mb-3 mb-lg-4 row">
-                <label for="example14" class="col-sm-2 col-form-label">ベトナム人在籍状況</label>
+                <label for="example14" class="col-sm-2 col-form-label">ベトナム人在籍状況 <span>*</span></label>
                 <div class="col-12 col-sm-10">
                   <div class="row">
                     <div class="col-12 col-sm-4 col-md-2">
@@ -976,7 +982,8 @@ export default {
             // eslint-disable-next-line prefer-regex-literals
             const numberRegExp = new RegExp("^\\d+$")
             return numberRegExp.test(value)
-          }
+          },
+          maxLength: maxLength(10)
         },
         salary_max: {
           required,
@@ -1264,8 +1271,9 @@ export default {
       },
 
       resetFormToStart() {
-        this.showJob();
+        // this.showJob();
         this.$refs.closeConfirmCancelModal.click()
+        this.$router.push('/jobs')
       }
     },
 }
