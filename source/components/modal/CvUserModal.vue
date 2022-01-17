@@ -4,7 +4,6 @@
     <div class="modal-dialog modal-xl position-relative">
       <div class="modal-content">
         <div
-          v-if="cvType === defaultCvInSite"
           class="container-btn-language"
         >
           <button
@@ -42,7 +41,7 @@
                   <tr>
                     <td colspan="5" class="border-0">
                       <div class="d-flex align-items-end">
-                        <h2 class="fw-bold flex-grow-1 title-cv-user">応募者からのメッセージ</h2>
+                        <h2 class="fw-bold flex-grow-1 title-cv-user">{{ $t('cv_user.message_from_candidate') }}</h2>
                       </div>
                     </td>
                   </tr>
@@ -88,11 +87,24 @@
                       <div v-if="language === lang_ja" class="text-center">{{ defaultLangAndText.defaultGenderListJa[candidate.gender]}}</div>
                     </td>
                     <td rowspan="4" class="card-photo">
-                      <img
+                      <div
+                        v-if="candidate.profile_image"
+                        style="
+                          width: 170px;
+                          height: 210px;
+                          background-repeat: no-repeat;
+                          background-position: center;
+                          background-size: cover;
+                        "
+                        :style="{
+                          backgroundImage: `url(${url_file + candidate.profile_image})`
+                        }"
+                      ></div>
+                      <!--<img
                         v-if="candidate.profile_image"
                         :src="url_file + candidate.profile_image"
                         alt=""
-                      >
+                      >-->
                       <img
                         v-else
                         src="~/assets/images/avatar-user.svg"
@@ -361,7 +373,7 @@
                 <table class="table border-2">
                   <tbody>
                   <tr>
-                    <td>{{ $t('cv_user.reason_apply')}}</td>
+                    <td class="label-reason-apply">{{ $t('cv_user.reason_apply')}}</td>
                   </tr>
                   <tr>
                     <td class="py-4 white-space-pre-line word-break-break-all">
@@ -369,7 +381,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>{{ $t('cv_user.strength')}}</td>
+                    <td class="label-reason-apply">{{ $t('cv_user.strength')}}</td>
                   </tr>
                   <tr>
                     <td class="py-4 white-space-pre-line word-break-break-all">
@@ -446,7 +458,7 @@
                   <tr>
                     <td colspan="5" class="border-0">
                       <div class="d-flex align-items-end">
-                        <h2 class="fw-bold flex-grow-1 title-cv-user">応募者からのメッセージ</h2>
+                        <h2 class="fw-bold flex-grow-1 title-cv-user">{{ $t('cv_user.message_from_candidate') }}</h2>
                       </div>
                     </td>
                   </tr>
@@ -567,6 +579,7 @@
             const file = new Blob([res.data], {type: 'application/pdf'})
             // const fileURL = URL.createObjectURL(file)
             // window.open(fileURL, '_blank')
+
             const link = document.createElement("a")
             link.href = URL.createObjectURL(file)
             link.download = 'cv-' + this.candidate.name + '.pdf'

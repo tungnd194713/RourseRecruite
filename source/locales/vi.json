@@ -69,6 +69,7 @@
       "province_47": "Okinawa"
     },
   "cv_user": {
+    "message_from_candidate": "Lời nhắn từ ứng viên",
     "title": "Sơ yếu lý lịch",
     "furigana": "Furigana",
     "gender": "Giới tính",
