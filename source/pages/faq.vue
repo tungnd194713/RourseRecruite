@@ -20,7 +20,7 @@
                                     aria-expanded="false"
                                     :aria-controls="data.class"
                                     :class="{shown: data.isShown}"
-                                    @click="shownClass(data)">
+                                    @click="data.isShown = !data.isShown">
                         <div class="row">
                             <div
                                 class="col-10 button-title fw-bold"
@@ -109,10 +109,7 @@ export default {
         return { title: 'よくある質問 | 求人' }
     },
     method: {
-        shownClass(data) {
-            data.isShown = !data.isShown
-//        console.log(data.isShown)
-        }
+
     },
 }
 </script>

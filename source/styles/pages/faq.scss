@@ -67,6 +67,10 @@ button:hover {
   width: 18px;
 }
 
+.rotated {
+  transform: rotate(45deg);
+}
+
 @media screen and (max-width: 991px) {
   button, .card-body {
     width: 80%;
