@@ -1,7 +1,7 @@
 
 <template>
   <div class="container tab-content mb-5">
-    <div class="container tab-content">
+    <!--<div class="container tab-content">-->
       <div class="row">
         <h3 class="title-page">決済履歴</h3>
       </div>
@@ -72,7 +72,7 @@
           * クレジットカードでの決済可能な金額は50円〜9,999,999円までです。<br />
         </p>
       </Pagination>
-    </div>
+    <!--</div>-->
     <!-- Modal -->
     <div id="checkoutPayjpModal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">

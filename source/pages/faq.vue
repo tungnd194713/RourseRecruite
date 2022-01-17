@@ -18,7 +18,9 @@
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
                                     :data-bs-target="'#' + data.class"
                                     aria-expanded="false"
-                                    :aria-controls="data.class">
+                                    :aria-controls="data.class"
+                                    :class="{shown: data.isShown}"
+                                    @click="shownClass(data)">
                         <div class="row">
                             <div
                                 class="col-10 button-title fw-bold"
@@ -33,6 +35,7 @@
                                 <img
                                     src="../assets/images/ic_plus.svg"
                                     alt=""
+                                    :class="{ rotated: data.isShown }"
                                 />
                             </div>
                         </div>
@@ -63,6 +66,7 @@ export default {
                     value: 1,
                     title: '1. FAQ about Company review?',
                     class: 'about-company',
+                    isShown: false,
                     content:
                         'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et ac',
                 },
@@ -70,6 +74,7 @@ export default {
                     value: 2,
                     title: '2. FAQ about CV Review?',
                     class: 'about-cv',
+                    isShown: false,
                     content:
                         'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et ac',
                 },
@@ -77,6 +82,7 @@ export default {
                     value: 3,
                     title: '3. FAQ about AI Match for candidate?',
                     class: 'about-ai-match',
+                    isShown: false,
                     content:
                         'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et ac',
                 },
@@ -84,6 +90,7 @@ export default {
                     value: 4,
                     title: '4. FAQ about Viet Nam Best IT Companies?',
                     class: 'about-vietnam-companies',
+                    isShown: false,
                     content:
                         'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et ac',
                 },
@@ -91,6 +98,7 @@ export default {
                     value: 5,
                     title: '5. Tư cách lưu trú là gì?',
                     class: 'about-visa',
+                    isShown: false,
                     content:
                         'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et ac',
                 },
@@ -101,7 +109,10 @@ export default {
         return { title: 'よくある質問 | 求人' }
     },
     method: {
-
+        shownClass(data) {
+            data.isShown = !data.isShown
+//        console.log(data.isShown)
+        }
     },
 }
 </script>
