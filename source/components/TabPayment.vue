@@ -1,10 +1,10 @@
 <template>
   <main class="container mt-3 mt-lg-4 px-0 payment-tab">
     <ul class="nav nav-tabs">
-      <li v-for="tab in tabs" :key="tab.key" class="nav-item nav-item-payment">
+      <li v-for="(tab, index) in tabs" :key="tab.key" class="nav-item nav-item-payment">
         <a
           class="nav-link nav-link-payment big-nav nav-one cursor-pointer"
-          :class="$nuxt.$route.path === tab.path ? 'active' : ''"
+          :class="{ 'active': $nuxt.$route.path === tab.path, 'radius-left': index === 0, 'radius-right': index === 2}"
           @click="$router.push(tab.path)"
         >{{tab.name}}</a
         >
