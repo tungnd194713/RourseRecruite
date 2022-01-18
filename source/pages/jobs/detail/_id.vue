@@ -217,7 +217,7 @@
                           </span>
               {{ (perPage * (currentPage - 1)) + (index + 1) }}
             </td>
-            <td class="align-middle py-3">
+            <td class="align-middle py-4">
               <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop" @click="popupCvUser(item)">
                 {{ item.candidate.user.name }}
               </a>

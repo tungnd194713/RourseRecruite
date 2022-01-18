@@ -831,7 +831,7 @@ export default {
         return {
             previewJobDuplicateRoute: `/jobs/duplicate/preview/${this.$route.params.id}`,
             url_file: process.env.URL_FILE,
-            oldImageJob: null,
+            oldImageJob: '',
             showStatusStayList: false,
             openDateEndPicker: false,
             previewImageJobUrl: null,
@@ -924,7 +924,7 @@ export default {
             ],
           provinceList: [],
           job: {
-            image_job: null,
+            image_job: '',
             title: '',
             career: '',
             date_start: '',
@@ -1141,7 +1141,7 @@ export default {
                 this.job.status_stay = response.data.job.status_stay.split(",")
                 this.job.image_job = null
                 this.previewImageJobUrl = null
-                this.oldImageJob = response.data.job.image_job
+                this.oldImageJob = response.data.job.image_job ? response.data.job.image_job : ''
                 this.job.salary_min = parseFloat(response.data.job.salary_min.toString())
                 this.job.salary_max = parseFloat(response.data.job.salary_max.toString())
                 if (this.job.overtime === 'null') this.job.overtime = ''
@@ -1179,7 +1179,7 @@ export default {
           this.$v.job.image_job.$touch()
           if (this.$v.job.image_job.$invalid) {
             this.previewImageJobUrl = null
-            this.oldImageJob = null
+            this.oldImageJob = ''
           } else {
             this.previewImageJobUrl = URL.createObjectURL(this.job.image_job)
           }

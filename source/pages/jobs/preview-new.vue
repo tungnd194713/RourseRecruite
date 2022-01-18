@@ -4,8 +4,13 @@
       <div class="detail-job-content">
         <div class="mt-0 mt-lg-2 pt-0 pt-lg-3 pb-2">
           <div class="row">
-            <div class="col-12 col-xl-6 pe-3 pe-xl-5">
-              <img class="img-fluid w-100 rounded-img" :src="previewImageJobUrl()" alt="">
+            <div
+              class="col-12 col-xl-6 pe-3 pe-xl-5 preview-image-job rounded-img"
+              :style="{
+                backgroundImage: `url(${previewImageJobUrl()})`
+              }"
+            >
+              <!--<img class="img-fluid w-100 rounded-img" :src="previewImageJobUrl()" alt="">-->
             </div>
             <div class="col-12 col-xl-6 mt-4 mt-lg-0">
               <h1 class="mb-3 mb-lg-4"> {{ job.title}}</h1>
