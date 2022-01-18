@@ -4,8 +4,13 @@
       <div class="detail-job-content">
         <div class="mt-0 mt-lg-2 pt-0 pt-lg-3 pb-2">
           <div class="row">
-            <div class="col-12 col-xl-6 pe-3 pe-xl-5">
-              <img
+            <div
+              class="col-12 col-xl-6 pe-3 pe-xl-5 preview-image-job rounded-img"
+              :style="{
+                backgroundImage: `url(${previewImageJobUrl()})`
+              }"
+            >
+              <!--<img
                 v-if="job.image_job"
                 class="img-fluid w-100"
                 :src="previewImageJobUrl"
@@ -22,7 +27,7 @@
                 class="img-fluid w-100"
                 :src="require(`@/assets/images/draft${careerImages[job.career - 1].image}`)"
                 alt=""
-              >
+              >-->
             </div>
             <div class="col-12 col-xl-6 mt-4 mt-lg-0">
               <h1 class="mb-3 mb-lg-4"> {{ job.title}}</h1>
@@ -305,10 +310,6 @@
     },
 
     computed: {
-      previewImageJobUrl() {
-        return this.job.image_job ? URL.createObjectURL(this.job.image_job) : null
-      },
-
       previewDateStart() {
         return this.$moment(this.job.date_start).format('YYYY/MM/DD')
       },
@@ -377,7 +378,9 @@
         if (this.job.image_job) {
           formData.append('image_job', this.job.image_job)
         }
-        formData.append('old_image_job_duplicate', this.oldImageJob)
+        if (this.oldImageJob) {
+          formData.append('old_image_job_duplicate', this.oldImageJob)
+        }
 
         formData.append('title', this.job.title)
         formData.append('career', this.job.career)
@@ -414,6 +417,18 @@
           }
           this.isDisabledSaveBtn = false
         })
+      },
+
+      previewImageJobUrl() {
+        if (this.job.image_job) {
+          return URL.createObjectURL(this.job.image_job)
+        } else if (this.oldImageJob) {
+          return this.url_file + this.oldImageJob
+        } else if (this.job.career) {
+          return require(`@/assets/images/draft` + careerImages[this.job.career - 1].image)
+        } else {
+          this.$router.push(`/jobs/duplicate/${this.$route.params.id}`)
+        }
       },
 
     }

@@ -171,6 +171,10 @@
   .footer {
     margin: 20px 0 30px;
   }
+
+  .preview-image-job {
+    height: 500px !important;
+  }
 }
 
 @media only screen and (max-width: 991.98px) {
@@ -185,6 +189,10 @@
   }
   #btn-apply {
     font-size: 16px;
+  }
+
+  .preview-image-job {
+    height: 400px !important;
   }
 }
 
@@ -201,6 +209,10 @@
   .detail-job-content {
     padding: 20px;
   }
+
+  .preview-image-job {
+    height: 250px !important;
+  }
 }
 
 .pre-line {
@@ -213,6 +225,13 @@
 
 .rounded-img {
   border-radius: 15px;
+}
+
+.preview-image-job {
+  height: 300px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
 .salary-note {
