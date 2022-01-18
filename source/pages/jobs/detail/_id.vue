@@ -490,6 +490,8 @@
     data() {
       return {
         message: '',
+        message_vi: '',
+        message_ja: '',
         cvType: 1,
         loadingListCv: '',
         loadingJobDetail: '',
@@ -908,6 +910,7 @@
         this.language = newLanguage
         this.$i18n.locale = this.language
         if (this.language === this.lang_ja) {
+          this.message = this.message_ja
           await this.$repositories.candidatesApply
             .translateCvCandidate(this.idRow)
             .then((res) => {
@@ -918,29 +921,32 @@
             })
         }
         if (this.language === this.lang_vi) {
+          this.message = this.message_vi
           this.candidate = Object.assign({}, this.defaultCandidate)
           this.initJobsAndEducationsOfCandidate()
         }
       }
     },
 
-      async popupCvUser(candidateApply) {
-        this.language = this.lang_vi
-        this.$i18n.locale = this.language
-        this.idRow = candidateApply.id
-        this.defaultCandidate = Object.assign({}, candidateApply.candidate)
-        this.candidate = Object.assign({}, this.defaultCandidate)
-        this.cvType = candidateApply.cv_type
-        this.message = candidateApply.message ? candidateApply.message : ''
-        this.initJobsAndEducationsOfCandidate()
-        if (candidateApply.read === 0) {
-          await this.$repositories.candidatesApply.updateStatus(this.idRow, { read: 1}).then(res => {
-            if (res.status === 200) {
-              this.getListCV(this.currentPage);
-            }
-          })
-        }
-      },
+    async popupCvUser(candidateApply) {
+      this.language = this.lang_vi
+      this.$i18n.locale = this.language
+      this.idRow = candidateApply.id
+      this.defaultCandidate = Object.assign({}, candidateApply.candidate)
+      this.candidate = Object.assign({}, this.defaultCandidate)
+      this.cvType = candidateApply.cv_type
+      this.message_vi = candidateApply.message ? candidateApply.message : ''
+      this.message_ja = candidateApply.message_jp ? candidateApply.message_jp : ''
+      this.initJobsAndEducationsOfCandidate()
+      this.changeLanguage(this.lang_ja)
+      if (candidateApply.read === 0) {
+        await this.$repositories.candidatesApply.updateStatus(this.idRow, { read: 1}).then(res => {
+          if (res.status === 200) {
+            this.getListCV(this.currentPage);
+          }
+        })
+      }
+    },
 
     initJobsAndEducationsOfCandidate() {
       this.educationsOfCandidate =

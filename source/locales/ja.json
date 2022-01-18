@@ -69,6 +69,7 @@
       "province_47": "沖縄県"
     },
   "cv_user": {
+    "message_from_candidate": "応募者からのメッセージ",
     "title": "履歴書",
     "furigana": "ふりがな",
     "gender": "性別",
