@@ -57,7 +57,7 @@
              :class="$nuxt.$route.path === router.path ? 'active' : ''"
              @click="$nuxt.$router.push({ path: router.path });"
           >
-            <img class="" :src="require(`@/assets/images` + router.srcImage)"/>
+            <img class="sub-align" :src="require(`@/assets/images` + router.srcImage)"/>
             {{router.name}}
           </a>
         </nav>

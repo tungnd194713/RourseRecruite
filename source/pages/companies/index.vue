@@ -88,7 +88,7 @@
         <div class="row">
           <div class="col-12 col-lg-6">
             <h2 class="title">住所</h2>
-            <div class="mt-4">
+            <div class="mt-4 fw-bold">
               〒 {{ postal_code }} {{ $t(province) }}
               {{ address }}
             </div>

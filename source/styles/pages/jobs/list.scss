@@ -19,7 +19,6 @@
 }
 
 .btn-add-job img {
-  margin-bottom: 3px;
   margin-right: 3px;
 }
 
@@ -62,6 +61,7 @@ input::placeholder {
   font-size: 15px;
   color: #ffffff;
   background-color: #87B0C6;
+  height: 36px;
   float: right;
 }
 
@@ -441,4 +441,10 @@ table tbody td{
   color: #003159 !important;
   font-weight: bold !important;
   font-size: 28px !important;
+}
+.fix-height {
+  height: 36px;
+}
+.mx-input {
+  height: 100% !important;
 }

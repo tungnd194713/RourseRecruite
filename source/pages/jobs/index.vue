@@ -19,15 +19,16 @@
       </div>
 
       <form class="row box-search mt-2 px-3 pt-3 pb-2 rounded-pill">
-        <div class="col-12 col-lg-4 mb-2 form-group">
+        <div class="row col-12 col-xl-10 col-lg-10 flex-grow-1">
+<div class="col-12 col-lg-4 mb-2 form-group">
           <input
             v-model="condition.title"
             type="text"
-            class="form-control rounded-pill"
+            class="form-control rounded-pill fix-height"
             placeholder="タイトル"
           />
         </div>
-        <div class="col-12 col-lg-3 mb-2 form-group">
+        <div class="col-12 col-lg-4 mb-2 form-group">
 <!--          <input-->
 <!--            v-model="condition.date_start"-->
 <!--            type="text"-->
@@ -40,16 +41,16 @@
             :clearable="false"
             format="YYYY-MM-DD"
             value-type="YYYY/MM/DD"
-            class="date-picker"
+            class="date-picker fix-height"
             placeholder="開始日"
           >
             <i slot="icon-calendar"></i>
           </date-picker>
         </div>
-        <div class="col-12 col-lg-3 mb-2 form-group">
+        <div class="col-12 col-lg-4 mb-2 form-group">
           <select
             v-model="condition.status"
-            class="form-select rounded-pill"
+            class="form-select rounded-pill fix-height"
             aria-label="ステータス"
           >
             <option value="" selected>ステータス</option>
@@ -57,7 +58,8 @@
             <option value="0">非表示</option>
           </select>
         </div>
-        <div class="col-12 col-lg-2">
+        </div>
+        <div class="col-12 col-xl-2 col-lg-2">
           <button
             type="button"
             class="btn btn-sm rounded-pill btn-search-job"

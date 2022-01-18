@@ -10,6 +10,7 @@
 .nav-link-payment.big-nav.active {
   border-color: #FFFFFF #FFFFFF #EBF2F2 #FFFFFF !important;
   background-color: #FFFFFF !important;
+  font-weight: bold;
 }
 
 .payment-tab {
@@ -26,4 +27,10 @@
 
 .nav-item-payment {
   width: calc( 100%/3);
+}
+.radius-left {
+  border-radius: 15px 0 0 0 !important;
+}
+.radius-right {
+  border-radius: 0 15px 0 0 !important;
 }

@@ -13,12 +13,12 @@
                 </picture> -->
             <div class="text-center" style="margin-left: 16px; margin-right: 16px; margin-bottom: 15px">
                 <table class="table table-borderless">
-                    <tr>
+                    <tr style="width: 100%">
                         <th colspan="2"></th>
-                        <th scope="col" class="package">プランA</th>
-                        <th scope="col" class="package">プランB</th>
-                        <th scope="col" class="package">プランC</th>
-                        <th scope="col" class="package">標準プラン</th>
+                        <th scope="col" class="package" style="width: 12%">プランA</th>
+                        <th scope="col" class="package" style="width: 12%">プランB</th>
+                        <th scope="col" class="package" style="width: 12%">プランC</th>
+                        <th scope="col" class="package" style="width: 12%">標準プラン</th>
                     </tr>
 
                     <tr>
