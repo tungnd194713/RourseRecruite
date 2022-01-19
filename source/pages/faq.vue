@@ -21,7 +21,7 @@
                                 aria-expanded="false"
                                 :aria-controls="data.class"
                                 :class="{shown: data.isShown}"
-                                @click="data.isShown = !data.isShown">
+                                @click.prevent="data.isShown = !data.isShown">
                             <div class="row">
                                 <div
                                         class="col-10 button-title fw-bold"
@@ -44,7 +44,7 @@
                     </p>
                     <div :id="data.class" class="collapse">
                         <div class="card card-body text-start">
-                            {{ data.content }}
+                            <div v-for="(content, index) in data.content" :key="index">{{ content }}</div>
                         </div>
                     </div>
                 </div>
@@ -63,41 +63,82 @@
         data() {
             return {
                 icon_click: '',
+                processing: false,
                 datas: [
                     {
                         value: 1,
-                        title: '1. FAQ about Company review?',
+                        title: '1.『Shuuナビ』を使うのに、お金が掛かりますか？',
                         class: 'about-company',
                         isShown: false,
-                        content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et ac',
+                        content: [
+                          '一切お金はかかりません。無料でお仕事を探すことが出来ます。'
+                        ],
                     },
                     {
                         value: 2,
-                        title: '2. FAQ about CV Review?',
+                        title: '2. 技能実習から在留資格を、特定技能に変えられますか？',
                         class: 'about-cv',
                         isShown: false,
-                        content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et ac',
+                        content: [
+                          '技能実習2号もしくは3号を修了していれば特定技能に変更できます。',
+                          '一時的に特定活動4か月を申請許可後、特定技能への変更というルートもございます。'
+                        ]
                     },
                     {
                         value: 3,
-                        title: '3. FAQ about AI Match for candidate?',
+                        title: '3. 技能実習と違う分野でお仕事がしたいです。技能試験を受けないといけないですか？',
                         class: 'about-ai-match',
                         isShown: false,
-                        content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et ac',
+                        content: [
+                          '特定活動(1年)にて許可後に就業できます。ただし、その1年以内に働く職種の特定技能の試験に合格する必要があります。合格後、特定技能に変更できます。',
+                          '特定技能の試験に合格していればすぐに特定技能へ変更できます。'
+                        ]
                     },
                     {
                         value: 4,
-                        title: '4. FAQ about Viet Nam Best IT Companies?',
+                        title: '4. 特定技能の在留資格で働いています。別の会社で働くことが出来ますか？',
                         class: 'about-vietnam-companies',
                         isShown: false,
-                        content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et ac',
+                        content: [
+                          '特定技能では転職する場合、特定技能変更申請が必要です。許可後に就業できます。'
+                        ]
                     },
                     {
                         value: 5,
-                        title: '5. Tư cách lưu trú là gì?',
+                        title: '5. 技術・人文・国際業務の在留資格を取得しておりますが、どんなお仕事ができますか？',
                         class: 'about-visa',
                         isShown: false,
-                        content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et ac',
+                        content: [
+                          'プログラマー、通訳、機械オペレータなどの仕事ができます。'
+                        ]
+                    },
+                    {
+                        value: 6,
+                        title: '6. 求人要件に在留資格の内容が記載されていますが、私が取得している在留資格と一致しないといけないですか？',
+                        class: 'about-what',
+                        isShown: false,
+                        content: [
+                          '一致しない場合、在留資格変更申請をする必要があります。'
+                        ]
+                    },
+                    {
+                        value: 7,
+                        title: '7. 応募先から連絡が無いのですが、どうしたらいいですか？',
+                        class: 'about-which',
+                        isShown: false,
+                        content: [
+                          '恐れ入りますが弊社では企業の選考状況は把握することができませんので、応募者様ご自身で応募先に連絡するようお願いいたします。'
+                        ]
+                    },
+                    {
+                        value: 8,
+                        title: '8. 求人情報の応募キャンセルはできますか？',
+                        class: 'about-none',
+                        isShown: false,
+                        content: [
+                          '応募頂いた内容のキャンセルは弊社で対応することができません。',
+                          '応募を取り消される場合は、直接応募先に連絡をお願いいたします。'
+                        ]
                     },
                 ],
             }
@@ -105,7 +146,9 @@
         head() {
             return {title: 'よくある質問 | 求人'}
         },
-        method: {},
+        methods: {
+
+        },
     }
 </script>
 
