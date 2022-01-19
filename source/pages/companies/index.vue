@@ -148,6 +148,33 @@ export default {
           nextEl: '.swiper-button-next',
           prevEl: '.swiper-button-prev',
         },
+        loop: true,
+        breakpoints: {
+          375: {
+            slidesPerView: 1,
+            spaceBetween: 30,
+          },
+          640: {
+            slidesPerView: 2,
+            spaceBetween: 30,
+          },
+          768: {
+            slidesPerView: 3,
+            spaceBetween: 30,
+          },
+          995: {
+            slidesPerView: 4,
+            spaceBetween: 30,
+          },
+          1325: {
+            slidesPerView: 5,
+            spaceBetween: 30,
+          },
+          1400: {
+            slidesPerView: 6,
+            spaceBetween: 30,
+          },
+        }
       },
       url_api_file: process.env.URL_FILE,
       address: '',
