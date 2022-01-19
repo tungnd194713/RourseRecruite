@@ -146,9 +146,7 @@
         head() {
             return {title: 'よくある質問 | 求人'}
         },
-        methods: {
-
-        },
+        methods: {},
     }
 </script>
 

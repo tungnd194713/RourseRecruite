@@ -18,7 +18,7 @@
             </li>
           </ul>
         </div>
-        <div class="col-12 col-lg-7">
+        <div class="col-12 col-lg-9">
           <div class="box-form-info pb-5">
             <h3 class="container">会社情報</h3>
             <div class="mt-3 mb-3 mt-lg-4 mb-lg-4 line"></div>
