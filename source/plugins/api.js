@@ -30,7 +30,7 @@ export default function ({ $axios, app, redirect, store}, inject) {
     if (!navigator.onLine || !error) {
       app.$toast.error('NO INTERNET')
     } else if (code === 400) {
-      app.$toast.error(error.message)
+      // app.$toast.error(error.message)
     } else if (code === 401) {
       app.$auth.logout();
       return redirect('/')
