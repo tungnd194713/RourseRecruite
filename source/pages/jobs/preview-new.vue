@@ -371,7 +371,7 @@
             'Content-Type': 'multipart/form-data',
           },
         }).then(res => {
-          if (res.status === 201) {
+          if (res.status === 200) {
             this.$refs.showCompleteCreateJobModal.click()
             this.$store.dispatch('job/setJob', {})
             this.$store.dispatch('job/setPrevRoute', '')

@@ -623,7 +623,7 @@
   const imageRule = helpers.regex('image', /\.(jpeg|png|jpg|gif)$/)
   // const imageSize = (value) => value <= 2000000
   const maximumImageSize = 2000000
-  const JOBS_PLAN_A_LIMIT = 12
+  // const JOBS_PLAN_A_LIMIT = 12
 
   export default {
     name: "CreateJob",
@@ -1022,21 +1022,21 @@
       previewJob() {
         this.$v.job.$touch()
         if (!this.$v.job.$invalid) {
-          if (parseInt(this.job.type_plan) === 1) {
-            this.$repositories.jobs.countJobsPlanA({ date_start: this.job.date_start }).then(res => {
-              if (res.status === 200) {
-                if (res.data < JOBS_PLAN_A_LIMIT) {
-                  this.$store.dispatch('job/setJob', this.job)
-                  this.$router.push('/jobs/preview-new')
-                } else {
-                  this.$toast.error('プランAの求人件数は上限に達しましたので、他のプランを選択してください')
-                }
-              }
-            })
-          } else {
-            this.$store.dispatch('job/setJob', this.job)
-            this.$router.push('/jobs/preview-new')
-          }
+          // if (parseInt(this.job.type_plan) === 1) {
+          //   this.$repositories.jobs.countJobsPlanA({ date_start: this.job.date_start }).then(res => {
+          //     if (res.status === 200) {
+          //       if (res.data < JOBS_PLAN_A_LIMIT) {
+          //         this.$store.dispatch('job/setJob', this.job)
+          //         this.$router.push('/jobs/preview-new')
+          //       } else {
+          //         this.$toast.error('プランAの求人件数は上限に達しましたので、他のプランを選択してください')
+          //       }
+          //     }
+          //   })
+          // } else {
+					this.$store.dispatch('job/setJob', this.job)
+					this.$router.push('/jobs/preview-new')
+          // }
         } else if (this.$v.job.title.$error) {
           this.$nextTick(() => {
             this.$refs.titleTextBox.focus()

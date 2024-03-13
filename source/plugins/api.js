@@ -37,7 +37,8 @@ export default function ({ $axios, app, redirect, store}, inject) {
     } else if (code === 403) {
       app.$toast.error(error.message)
     } else if (code === 404) {
-      redirect('/404')
+      // redirect('/404')
+      app.$toast.error('Internal Server Error')
     } else if (code === 500) {
       app.$toast.error('Internal Server Error')
     }

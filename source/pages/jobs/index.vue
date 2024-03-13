@@ -122,7 +122,7 @@
                   {{ item.form_recruitment == 1 ? 'フルタイム' : 'アルバイト' }}
                 </td>
                 <td class="align-middle min-width-100px">{{ theTypePlan[item.type_plan] }}</td>
-                <td class="align-middle min-width-80px">{{ item.total_cv_applied }}</td>
+                <td class="align-middle min-width-80px">{{ item.candidate_applied.length }}</td>
                 <td class="align-middle">
                   <div class="btn-group btn-toggle rounded-pill btn-switch">
                     <button
@@ -375,19 +375,20 @@ export default {
       this.isHover = !this.isHover
     },
 
-    async checkCreateJob() {
-      try {
-        await this.$repositories.jobs.checkCreateJob().then((res) => {
-          if (res.status === 200) {
-            this.$router.push('/jobs/create')
-          } else {
-            this.$toast.error('求人プランを設定するために、管理者までご連絡ください')
-          }
-        })
-      } catch (e) {
-        this.message = ''
-        this.error = e.response.data.message
-      }
+    checkCreateJob() {
+      // try {
+      //   await this.$repositories.jobs.checkCreateJob().then((res) => {
+      //     if (res.status === 200) {
+      //       this.$router.push('/jobs/create')
+      //     } else {
+      //       this.$toast.error('求人プランを設定するために、管理者までご連絡ください')
+      //     }
+      //   })
+      // } catch (e) {
+      //   this.message = ''
+      //   this.error = e.response.data.message
+      // }
+			this.$router.push('/jobs/create')
     },
 
     async checkDuplicateJob(jobId) {

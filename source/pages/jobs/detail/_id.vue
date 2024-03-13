@@ -960,7 +960,7 @@
       )
     },
     previewImageJobUrl() {
-        return this.job.image_job ? this.url_file + this.job.image_job : require(`@/assets/images/draft` + careerImages[this.job.career - 1].image)
+        return this.job.image_job ? this.url_file + this.job.image_job : require(`@/assets/images/draft` + careerImages[this.job.career - 1]?.image)
     },
   },
 }
