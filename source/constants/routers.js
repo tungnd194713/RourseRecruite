@@ -8,13 +8,13 @@ export default [
   {
     tab: 'job',
     srcImage: '/icon_job.svg',
-    name: '求人一覧',
+    name: 'Danh sách tuyển dụng',
     path: '/jobs',
   },
   {
     tab: 'candidate',
     srcImage: '/icon_gr_users.svg',
-    name: '応募者一覧',
+    name: 'Danh sách ứng viên',
     path: '/candidates_apply',
   },
   {

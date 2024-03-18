@@ -19,7 +19,7 @@
 <!--            <li class="nav-item mb-1"><a href="#" class="nav-link p-0 ">お問い合わせ</a></li>-->
             <li class="nav-item mb-1">
               <NuxtLink class="nav-link p-0 " to="/jobs">
-                求人一覧
+                Danh sách tuyển dụng
               </NuxtLink>
             </li>
             <li class="nav-item mb-1">

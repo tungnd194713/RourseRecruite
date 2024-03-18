@@ -93,7 +93,7 @@
       <div v-if="totalItems === 0 && spinner" class="outer-spinner">
         <div class="loader"></div>
       </div>
-      <h4 v-if="totalItems === 0  && !spinner" class="text-center w-100 p-3 m-0 bg-white border border-1">検索結果がありません</h4>
+      <h4 v-if="totalItems === 0  && !spinner" class="text-center w-100 p-3 m-0 bg-white border border-1">Không có kết quả</h4>
     </div>
     <Pagination
       :current-page="currentPage"

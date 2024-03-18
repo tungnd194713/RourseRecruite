@@ -3,7 +3,7 @@
     <div class="nav-content container">
       <div class="row box-title mb-1 mb-lg-2">
         <div class="col-6">
-          <h4 class="page-header-title">求人一覧</h4>
+          <h4 class="page-header-title">Danh sách tuyển dụng</h4>
         </div>
         <div class="col-6">
           <button
@@ -13,7 +13,7 @@
             @click="checkCreateJob"
           >
             <img class="" src="../../assets/images/icon_plus.svg" />
-            新規求人登録
+            Tuyển dụng mới
           </button>
         </div>
       </div>
@@ -42,7 +42,7 @@
             format="YYYY-MM-DD"
             value-type="YYYY/MM/DD"
             class="date-picker fix-height"
-            placeholder="開始日"
+            placeholder="Ngày bắt đầu"
           >
             <i slot="icon-calendar"></i>
           </date-picker>
@@ -53,9 +53,9 @@
             class="form-select rounded-pill fix-height"
             aria-label="ステータス"
           >
-            <option value="" selected>ステータス</option>
-            <option value="1">表示</option>
-            <option value="0">非表示</option>
+            <option value="" selected>Trạng thái</option>
+            <option value="1">Hiện</option>
+            <option value="0">Ẩn</option>
           </select>
         </div>
         </div>
@@ -66,7 +66,7 @@
             @click="search"
           >
             <img src="../../assets/images/icon_search.svg" alt="" />
-            <span class="px-4">検索</span>
+            <span class="px-4">Tìm kiếm</span>
           </button>
         </div>
       </form>
@@ -102,7 +102,7 @@
                     v-if="item.cv_not_reciprocal > 0"
                     :class="(perPage * (currentPage - 1)) + (index + 1) < 10 ? 'td-warning' : 'td-warning-large'"
                   >
-                    未対応の履歴書{{ item.cv_not_reciprocal }}/{{ item.total_cv_applied }}通
+                    Không hỗ trợ {{ item.cv_not_reciprocal }}/{{ item.total_cv_applied }}CV
                     <img class="" src="../../assets/images/icon_warning.svg" />
                   </span>
                   {{ (perPage * (currentPage - 1)) + (index + 1) }}
@@ -119,9 +119,8 @@
                 <td class="align-middle min-width-100px">{{ item.date_start }}</td>
                 <td class="align-middle min-width-100px">{{ item.date_end }}</td>
                 <td class="align-middle min-width-100px">
-                  {{ item.form_recruitment == 1 ? 'フルタイム' : 'アルバイト' }}
+                  {{ $t(careerList[item.career - 1]) }}
                 </td>
-                <td class="align-middle min-width-100px">{{ theTypePlan[item.type_plan] }}</td>
                 <td class="align-middle min-width-80px">{{ item.candidate_applied.length }}</td>
                 <td class="align-middle">
                   <div class="btn-group btn-toggle rounded-pill btn-switch">
@@ -132,7 +131,7 @@
                       "
                       @click="changeStatus(item.id, item.status, item.date_end)"
                     >
-                      表示
+                      Hiện
                     </button>
                     <button
                       :class="
@@ -141,7 +140,7 @@
                       "
                       @click="changeStatus(item.id, item.status, item.date_end)"
                     >
-                      非表示
+                      Ẩn
                     </button>
                   </div>
                 </td>
@@ -152,7 +151,7 @@
                       src="~/assets/images/ic_dup.svg"
                       @click="checkDuplicateJob(item.id)"
                     />
-                    <span class="tooltiptext">複製</span>
+                    <span class="tooltiptext">Sao chép</span>
                     <!--<img
                       v-else
                       class="btn"
@@ -196,7 +195,7 @@
             v-if="totalItems === 0 && !spinner"
             class="text-center w-100 p-3 m-0 bg-white border-bottom border-1"
           >
-            検索結果がありません
+            Không có kết quả
           </h4>
         </div>
         <Pagination
@@ -209,9 +208,8 @@
           @customPage="pageChangeHandle"
         >
           <p>
-            * 太字は未読、細字は既読である。<br />
-            * 白い背景は有効期間中の求人 、浅い青色の背景は有効期限切れになった求人である。<br />
-            * ステータスが未対応の応募者があったら、リマインダーが表示される。
+            - Văn bản đậm biểu thị văn bản chưa đọc và văn bản mỏng biểu thị văn bản đã đọc.<br />
+            - Nền trắng là công việc còn hiệu lực, nền xanh nhạt là công việc đã hết hạn.
           </p>
         </Pagination>
       </div>
@@ -240,7 +238,7 @@
                 <img src="../../assets/images/ic_delete image.svg" alt="" />
               </h3>
               <h3 class="text-center modal-body-text">
-                本求人を削除してもよろしいですか?
+                Xác nhận xóa tuyển dụng?
               </h3>
             </div>
             <div
@@ -257,14 +255,14 @@
                 class="btn btn-secondary-custom rounded-pill w-20 mt-4 mb-4"
                 data-bs-dismiss="modal"
               >
-                キャンセル
+                Hủy bỏ
               </button>
               <button
                 type="button"
                 class="btn btn-custom btn-danger rounded-pill w-20"
                 @click="deleteItem"
               >
-                削除
+                Xác nhận
               </button>
             </div>
           </div>
@@ -280,7 +278,7 @@ import DatePicker from 'vue2-datepicker'
 import 'vue2-datepicker/index.css'
 import 'vue2-datepicker/locale/ja'
 import Pagination from '../../components/Pagination'
-import theTypePlan from '~/constants/typePlan'
+import defaultCareers from '~/constants/careers'
 
 export default {
   name: 'ListJob',
@@ -292,6 +290,7 @@ export default {
 
   data() {
     return {
+			careerList: [],
       items: [],
       fields: [
         {
@@ -304,27 +303,23 @@ export default {
         },
         {
           key: 'date_start',
-          label: '開始日',
+          label: 'Ngày bắt đầu',
         },
         {
           key: 'date_end',
-          label: '終了日',
+          label: 'Ngày kết thúc',
         },
         {
-          key: 'form_recruitment',
-          label: '雇用形態',
-        },
-        {
-          key: 'type_plan',
-          label: 'プラン',
+          key: 'career',
+          label: 'Lĩnh vực',
         },
         {
           key: 'number_apply',
-          label: '応募者数',
+          label: 'Đã ứng tuyển',
         },
         {
           key: 'actions',
-          label: 'ステータス',
+          label: 'Trạng thái',
           tdClass: 'action',
         },
       ],
@@ -333,7 +328,6 @@ export default {
       isHover: false,
       deleteInactive: '../../assets/images/icon_trash.svg',
       deleteActive: '../../assets/images/icon_trash_active.svg',
-      theTypePlan,
       currentPage: 1,
       perPage: 20,
       totalItems: 0,
@@ -348,7 +342,7 @@ export default {
   },
 
   head() {
-    return { title: '求人一覧 | 求人' }
+    return { title: 'Danh sách tuyển dụng | 求人' }
   },
 
   computed: {
@@ -363,6 +357,7 @@ export default {
   },
 
   created() {
+		this.careerList = defaultCareers
     this.getListJob(this.currentPage)
   },
 
@@ -391,19 +386,8 @@ export default {
       // }
     },
 
-    async checkDuplicateJob(jobId) {
-      try {
-        await this.$repositories.jobs.checkCreateJob().then((res) => {
-          if (res.status === 200) {
-            this.$router.push(`/jobs/duplicate/${jobId}`)
-          } else {
-            this.$toast.error('求人プランを設定するために、管理者までご連絡ください')
-          }
-        })
-      } catch (e) {
-        this.message = ''
-        this.error = e.response.data.message
-      }
+    checkDuplicateJob(jobId) {
+			this.$router.push(`/jobs/duplicate/${jobId}`)
     },
 
     async getListJob(currentPage) {
@@ -467,12 +451,12 @@ export default {
         .then((res) => {
           if (res.status === 200) {
             document.getElementById('closeConfirmDeleteModal').click()
-            this.$toast.success('求人の削除に成功しました')
+            this.$toast.success('Xóa tuyển dụng thành công!')
             this.getListJob(this.currentPage)
           }
           if (res.response && res.response.status === 406) {
             document.getElementById('closeConfirmDeleteModal').click()
-            this.$toast.error('応募者がいるので、求人を削除できません')
+            this.$toast.error('Vẫn còn đơn ứng tuyển nên không thể xóa')
             this.getListJob(this.currentPage)
           }
         })
@@ -482,7 +466,7 @@ export default {
           const now = this.$moment().unix()
           const end = this.$moment(dateEnd).unix()
           if (parseInt(end) < parseInt(now)) {
-              this.$toast.error('有効期限切れになった求人ですので、ステータスを変えることはできません')
+              this.$toast.error('Vì tuyển dụng đã hết hạn nên không thể thay đổi trạng thái.')
           } else {
               return await this.$repositories.jobs
                   .changeStatus(itemId, {
@@ -493,9 +477,9 @@ export default {
                           this.getListJob(this.currentPage)
 
                           if (oldStatus === 1) {
-                              this.$toast.success('求人が非表示されました')
+                              this.$toast.success('Tuyển dụng đã bị ẩn!')
                           } else if (oldStatus === 0) {
-                              this.$toast.success('求人が表示されました')
+                              this.$toast.success('Tuyển dụng đã được hiển thị!')
                           }
                       }
                   })

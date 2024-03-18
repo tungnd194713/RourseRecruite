@@ -1,7 +1,7 @@
 <template>
   <main class="container my-3 my-lg-4">
     <div class="create_job pb-4 pb-lg-5">
-      <h4 class="pt-2 pb-4 pt-lg-3 pb-lg-5 text-center">求人登録フォーム</h4>
+      <h4 class="pt-2 pb-4 pt-lg-3 pb-lg-5 text-center">Form tuyển dụng mới</h4>
       <form @submit.prevent="previewJob()">
         <div class="mx-3 mx-lg-5">
           <div class="form-group mb-4 mb-lg-5">
@@ -20,13 +20,12 @@
               >
               <img v-if="previewImageJobUrl" class="preview-image" :src="previewImageJobUrl" alt="">
               <img v-else src="../../assets/images/icon_upload_file.svg" alt="">
-              <p class="m-0">画像ファイルをドラグドロップ <span>、或いは選択してください</span></p>
+              <p class="m-0">Kéo thả hoặc click để tải ảnh lên</p>
             </div>
 
             <div v-if="$v.job.image_job.$error" class="text-center error-text">
-              <div v-if="!$v.job.image_job.name.imageRule">画像はpng / jpg / jpeg / gifの形式でアプロードしてください</div>
-              <!--            <div v-if="!$v.job.image_job.size.imageSize">2MB以下の写真をアップロードしてください</div>-->
-              <div v-if="!$v.job.image_job.size">2MB以下の写真をアップロードしてください</div>
+              <div v-if="!$v.job.image_job.name.imageRule">Vui lòng tải lên hình ảnh ở định dạng png/jpg/jpeg/gif</div>
+              <div v-if="!$v.job.image_job.size">Vui lòng tải lên ảnh có dung lượng dưới 2 MB</div>
             </div>
           </div>
           <div class="form-group mb-3 mb-lg-4 row">
@@ -47,8 +46,8 @@
                 >
               </div>
               <div v-if="$v.job.title.$error">
-                <div v-if="!$v.job.title.required" class="error-text">これは必須項目なので、必ず入力してください</div>
-                <div v-if="!$v.job.title.maxLength" class="error-text">100文字以下で入力してください</div>
+                <div v-if="!$v.job.title.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
+                <div v-if="!$v.job.title.maxLength" class="error-text">Vui lòng nhập dưới 100 ký tự</div>
               </div>
             </div>
           </div>
@@ -96,20 +95,7 @@
                 </no-ssr>
               </div>
               <div v-if="$v.job.date_start.$error">
-                <div v-if="!$v.job.date_start.required" class="error-text">これは必須項目なので、必ず入力してください</div>
-              </div>
-            </div>
-          </div>
-          <div class="form-group mb-3 mb-lg-4 row">
-            <label for="typePlanSelect" class="col-sm-2 col-form-label">プラン <span>*</span></label>
-            <div class="col-12 col-sm-4">
-              <div class="input-group input-group-icon">
-                <span class="input-group-text input-group-text-pre">
-                    <img src="../../assets/images/icon_job_type_plan.svg" alt="">
-                </span>
-                <select id="typePlanSelect" v-model="job.type_plan" class="form-select rounded-end">
-                  <option v-for="item in typePlanList" :key="item.value" :value="item.value">{{ item.text }}</option>
-                </select>
+                <div v-if="!$v.job.date_start.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
               </div>
             </div>
           </div>
@@ -123,71 +109,6 @@
                 <select id="displayMonthSelect" v-model="job.display_month" class="form-select rounded-end">
                   <option v-for="item in displayMonthList" :key="item.value" :value="item.value">{{ item.text }}</option>
                 </select>
-              </div>
-            </div>
-          </div>
-          <div class="form-group mb-3 mb-lg-4 row">
-            <label for="exampleInput4" class="col-sm-2 col-form-label">雇用形態 <span>*</span></label>
-            <div class="col-12 col-sm-4">
-              <div class="input-group input-group-icon">
-                <span class="input-group-text input-group-text-pre">
-                    <img src="../../assets/images/icon_user_search.svg" alt="">
-                </span>
-                <select id="exampleInput4" v-model="job.form_recruitment" class="form-select rounded-end">
-                  <option v-for="item in formRecruitmentList" :key="item.value" :value="item.value">{{ item.text }}</option>
-                </select>
-                <div class="invalid-feedback">
-                  Please choose a 雇用形態.
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="form-group mb-3 mb-lg-4 row">
-            <label for="inputGroupSelect01" class="col-sm-2 col-form-label">在留資格 <span>*</span></label>
-            <div class="col-12 col-sm-4">
-              <div class="input-group input-group-icon flex-column">
-                <div class="input-group input-group-icon flex-nowrap">
-                  <span class="input-group-text input-group-text-pre">
-                    <img src="../../assets/images/icon_stay.svg" alt="">
-                  </span>
-                  <div
-                    ref="statusStayDropdownRef"
-                    class="status-stay-dropdown"
-                    @click="showStatusStayDropdown"
-                    @focusout="focusOutStatusStayListDropdown"
-                  >
-                    <div class="over-select"></div>
-                    <select
-                      ref="previewStatusStaySelectBox"
-                      class="form-select rounded-end"
-                    >
-                      <option value="">{{ previewStatusStay()}}</option>
-                    </select>
-                  </div>
-                </div>
-                <div
-                  v-if="showStatusStayList"
-                  v-click-outside="showStatusStayDropdown"
-                  class="multi-select-status-stay"
-                >
-                  <ul>
-                    <li v-for="item in statusStayList" :key="item.value">
-                      <label :for="'statusStay' +item.value">
-                        <input
-                          :id="'statusStay' +item.value"
-                          v-model="job.status_stay"
-                          type="checkbox"
-                          :value="item.value"
-                          @click.stop="$v.job.status_stay.$touch()"
-                        >
-                        {{ item.text }}
-                      </label>
-                    </li>
-                  </ul>
-                </div>
-                <div v-if="$v.job.status_stay.$error">
-                  <div v-if="!$v.job.status_stay.isNotEmpty" class="error-text">これは必須項目なので、必ず入力してください</div>
-                </div>
               </div>
             </div>
           </div>
@@ -211,52 +132,9 @@
                 >
               </div>
               <div v-if="$v.job.number_recruitments.$error">
-                <div v-if="!$v.job.number_recruitments.required" class="error-text">これは必須項目なので、必ず入力してください</div>
-                <div v-else-if="!$v.job.number_recruitments.isNumber" class="error-text">整数を入力してください</div>
-                <div v-else-if="!$v.job.number_recruitments.maxLength" class="error-text">10数字以下で入力してください</div>
-              </div>
-            </div>
-          </div>
-          <div class="form-group mb-3 mb-lg-4 row">
-            <label class="col-sm-2 col-form-label">ベトナム人在籍状況 <span>*</span></label>
-            <div class="col-12 col-sm-10 d-flex row align-content-center">
-              <div class="row">
-                <div class="col-12 col-sm-4 col-md-2">
-                  <input
-                    id="hasVietnameseStaffStatus_1"
-                    v-model="job.has_vietnamese_staff"
-                    class="form-check-input"
-                    type="radio"
-                    value="1"
-                  >
-                  <label class="form-check-label" for="hasVietnameseStaffStatus_1">
-                    いる
-                  </label>
-                </div>
-                <div class="col-12 col-sm-4 col-md-2">
-                  <input
-                    id="hasVietnameseStaffStatus_0"
-                    v-model="job.has_vietnamese_staff"
-                    class="form-check-input"
-                    type="radio"
-                    value="0"
-                  >
-                  <label class="form-check-label" for="hasVietnameseStaffStatus_0">
-                    いない
-                  </label>
-                </div>
-                <div class="col-12 col-sm-4 col-md-2">
-                  <input
-                    id="hasVietnameseStaffStatus_2"
-                    v-model="job.has_vietnamese_staff"
-                    class="form-check-input"
-                    type="radio"
-                    value="2"
-                  >
-                  <label class="form-check-label" for="hasVietnameseStaffStatus_2">
-                    採用予定
-                  </label>
-                </div>
+                <div v-if="!$v.job.number_recruitments.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
+                <div v-else-if="!$v.job.number_recruitments.isNumber" class="error-text">Vui lòng nhập một số nguyên</div>
+                <div v-else-if="!$v.job.number_recruitments.maxLength" class="error-text">Vui lòng nhập dưới 10 ký tự</div>
               </div>
             </div>
           </div>
@@ -278,9 +156,9 @@
                 >
               </div>
               <div v-if="$v.job.salary_min.$error">
-                <div v-if="!$v.job.salary_min.required" class="error-text">これは必須項目なので、必ず入力してください</div>
-                <div v-if="!$v.job.salary_min.maxLength" class="error-text">10数字以下で入力してください</div>
-                <div v-if="!$v.job.salary_min.isLowerThanSalaryMax" class="error-text">最多のLương以下で入力してください</div>
+                <div v-if="!$v.job.salary_min.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
+                <div v-if="!$v.job.salary_min.maxLength" class="error-text">Vui lòng nhập dưới 10 ký tự</div>
+                <div v-if="!$v.job.salary_min.isLowerThanSalaryMax" class="error-text">Vui lòng nhập nhỏ hơn lương tối đa</div>
               </div>
             </div>
             <div
@@ -305,9 +183,9 @@
                 >
               </div>
               <div v-if="$v.job.salary_max.$error">
-                <div v-if="!$v.job.salary_max.required" class="error-text">これは必須項目なので、必ず入力してください</div>
-                <div v-if="!$v.job.salary_max.maxLength" class="error-text">10数字以下で入力してください</div>
-                <div v-if="!$v.job.salary_max.isGreaterThanSalaryMin" class="error-text">最低のLương以上で入力してください</div>
+                <div v-if="!$v.job.salary_max.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
+                <div v-if="!$v.job.salary_max.maxLength" class="error-text">Vui lòng nhập dưới 10 ký tự</div>
+                <div v-if="!$v.job.salary_max.isGreaterThanSalaryMin" class="error-text">Vui lòng nhập lớn hơn lương tối thiểu</div>
               </div>
             </div>
           </div>
@@ -329,8 +207,8 @@
                 >
               </div>
               <div v-if="$v.job.salary_max.$error">
-                <div v-if="!$v.job.salary_max.required" class="error-text">これは必須項目なので、必ず入力してください</div>
-                <div v-if="!$v.job.salary_max.maxLength" class="error-text">10数字以下で入力してください</div>
+                <div v-if="!$v.job.salary_max.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
+                <div v-if="!$v.job.salary_max.maxLength" class="error-text">Vui lòng nhập dưới 10 ký tự</div>
               </div>
             </div>-->
 
@@ -340,7 +218,10 @@
           <div class="form-group mb-3 mb-lg-4 row">
             <label for="example7" class="col-sm-2 col-form-label">Mô tả công việc <span>*</span></label>
             <div class="col-12 col-sm-10">
-              <textarea
+							<client-only>
+								<VueEditor v-model="job.content_work"/>
+							</client-only>
+              <!-- <textarea
                 id="example7"
                 ref="contentWorkTextBox"
                 v-model="job.content_work"
@@ -352,7 +233,7 @@
               />
               <div class="row">
                 <div v-if="$v.job.content_work.$error" class="col-6 align-items-start">
-                  <div v-if="!$v.job.content_work.required" class="error-text">これは必須項目なので、必ず入力してください</div>
+                  <div v-if="!$v.job.content_work.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
                   <div v-if="!$v.job.content_work.maxLength" class="error-text">200文字以下で入力してください</div>
                   <div v-if="!$v.job.content_work.minLength" class="error-text">30文字以上で入力してください</div>
                 </div>
@@ -370,7 +251,7 @@
                   </div>
                   <div v-else class="error-text text-black">残り0文字</div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
 
@@ -629,7 +510,10 @@
           <div class="form-group mb-3 mb-lg-4 row">
             <label for="example8" class="col-sm-2 col-form-label">Yêu cầu khác <span>*</span></label>
             <div class="col-12 col-sm-10">
-              <textarea
+							<client-only>
+								<VueEditor v-model="job.conditions_apply"/>
+							</client-only>
+              <!-- <textarea
                 id="example8"
                 ref="conditionsApplyTextBox"
                 v-model="job.conditions_apply"
@@ -640,9 +524,55 @@
                 @blur="$v.job.conditions_apply.$touch()"
               />
               <div v-if="$v.job.conditions_apply.$error">
-                <div v-if="!$v.job.conditions_apply.required" class="error-text">これは必須項目なので、必ず入力してください</div>
-                <div v-if="!$v.job.conditions_apply.maxLength" class="error-text">1000文字以下で入力してください</div>
-              </div>
+                <div v-if="!$v.job.conditions_apply.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
+                <div v-if="!$v.job.conditions_apply.maxLength" class="error-text">Vui lòng nhập dưới 1000 ký tự</div>
+              </div> -->
+            </div>
+          </div>
+
+					<div class="form-group mb-3 mb-lg-4 row">
+            <label for="example10" class="col-sm-2 col-form-label">Thời gian làm việc <span>*</span></label>
+            <div class="col-12 col-sm-10">
+							<client-only>
+								<VueEditor v-model="job.time_work"/>
+							</client-only>
+              <!-- <textarea
+                id="example10"
+                ref="timeWorkTextBox"
+                v-model="job.time_work"
+                type="text"
+                class="form-control rounded-end"
+                rows="3"
+                @input="$v.job.time_work.$touch()"
+                @blur="$v.job.time_work.$touch()"
+              />
+              <div v-if="$v.job.time_work.$error">
+                <div v-if="!$v.job.time_work.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
+                <div v-if="!$v.job.time_work.maxLength" class="error-text">Vui lòng nhập dưới 200 ký tự</div>
+              </div> -->
+            </div>
+          </div>
+
+					<div class="form-group mb-3 mb-lg-4 row">
+            <label for="example13" class="col-sm-2 col-form-label">Phúc lợi <span>*</span></label>
+            <div class="col-12 col-sm-10">
+							<client-only>
+								<VueEditor v-model="job.welfare_regime"/>
+							</client-only>
+              <!-- <textarea
+                id="example13"
+                ref="welfareRegimeTextBox"
+                v-model="job.welfare_regime"
+                type="text"
+                class="form-control rounded-end"
+                rows="3"
+                @input="$v.job.welfare_regime.$touch()"
+                @blur="$v.job.welfare_regime.$touch()"
+              />
+              <div v-if="$v.job.welfare_regime.$error">
+                <div v-if="!$v.job.welfare_regime.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
+                <div v-if="!$v.job.welfare_regime.maxLength" class="error-text">Vui lòng nhập dưới 500 ký tự</div>
+              </div> -->
             </div>
           </div>
 
@@ -684,91 +614,14 @@
                 @blur="$v.job.address_work.$touch()"
               />
               <div v-if="$v.job.address_work.$error">
-                <div v-if="!$v.job.address_work.required" class="error-text">これは必須項目なので、必ず入力してください</div>
-                <div v-if="!$v.job.address_work.maxLength" class="error-text">200文字以下で入力してください</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group mb-3 mb-lg-4 row">
-            <label for="example10" class="col-sm-2 col-form-label">勤務時間 <span>*</span></label>
-            <div class="col-12 col-sm-10">
-              <textarea
-                id="example10"
-                ref="timeWorkTextBox"
-                v-model="job.time_work"
-                type="text"
-                class="form-control rounded-end"
-                rows="3"
-                @input="$v.job.time_work.$touch()"
-                @blur="$v.job.time_work.$touch()"
-              />
-              <div v-if="$v.job.time_work.$error">
-                <div v-if="!$v.job.time_work.required" class="error-text">これは必須項目なので、必ず入力してください</div>
-                <div v-if="!$v.job.time_work.maxLength" class="error-text">200文字以下で入力してください</div>
-              </div>
-            </div>
-          </div>
-          <div class="form-group mb-3 mb-lg-4 row">
-            <label for="example11" class="col-sm-2 col-form-label">休憩時間 <span>*</span></label>
-            <div class="col-12 col-sm-10">
-              <textarea
-                id="example11"
-                ref="breakTimeTextBox"
-                v-model="job.break_time"
-                type="text"
-                class="form-control rounded-end"
-                rows="3"
-                @input="$v.job.break_time.$touch()"
-                @blur="$v.job.break_time.$touch()"
-              />
-              <div v-if="$v.job.break_time.$error">
-                <div v-if="!$v.job.break_time.required" class="error-text">これは必須項目なので、必ず入力してください</div>
-                <div v-if="!$v.job.break_time.maxLength" class="error-text">200文字以下で入力してください</div>
-              </div>
-            </div>
-          </div>
-          <div class="form-group mb-3 mb-lg-4 row">
-            <label for="example12" class="col-sm-2 col-form-label">休日 <span>*</span></label>
-            <div class="col-12 col-sm-10">
-              <textarea
-                id="example12"
-                ref="holidaysTextBox"
-                v-model="job.holidays"
-                type="text"
-                class="form-control rounded-end"
-                rows="3"
-                @input="$v.job.holidays.$touch()"
-                @blur="$v.job.holidays.$touch()"
-              />
-              <div v-if="$v.job.holidays.$error">
-                <div v-if="!$v.job.holidays.required" class="error-text">これは必須項目なので、必ず入力してください</div>
-                <div v-if="!$v.job.holidays.maxLength" class="error-text">200文字以下で入力してください</div>
-              </div>
-            </div>
-          </div>
-          <div class="form-group mb-3 mb-lg-4 row">
-            <label for="example13" class="col-sm-2 col-form-label">福利厚生 <span>*</span></label>
-            <div class="col-12 col-sm-10">
-              <textarea
-                id="example13"
-                ref="welfareRegimeTextBox"
-                v-model="job.welfare_regime"
-                type="text"
-                class="form-control rounded-end"
-                rows="3"
-                @input="$v.job.welfare_regime.$touch()"
-                @blur="$v.job.welfare_regime.$touch()"
-              />
-              <div v-if="$v.job.welfare_regime.$error">
-                <div v-if="!$v.job.welfare_regime.required" class="error-text">これは必須項目なので、必ず入力してください</div>
-                <div v-if="!$v.job.welfare_regime.maxLength" class="error-text">500文字以下で入力してください</div>
+                <div v-if="!$v.job.address_work.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
+                <div v-if="!$v.job.address_work.maxLength" class="error-text">Vui lòng nhập dưới 200 ký tự</div>
               </div>
             </div>
           </div>
 
           <!--<div class="form-group mb-3 mb-lg-4 row">
-            <label for="example15" class="col-sm-2 col-form-label">残業見込み、休日出勤見込み</label>
+            <label for="example15" class="col-sm-2 col-form-label">Làm thêm giờ</label>
             <div class="col-12 col-sm-10">
               <textarea
                 id="example15"
@@ -778,7 +631,7 @@
                 rows="3"
               />
               <div v-if="$v.job.overtime.$error">
-                <div v-if="!$v.job.overtime.maxLength" class="error-text">1000文字以下で入力してください</div>
+                <div v-if="!$v.job.overtime.maxLength" class="error-text">Vui lòng nhập dưới 1000 ký tự</div>
               </div>
             </div>
           </div>-->
@@ -790,14 +643,14 @@
               data-bs-toggle="modal"
               data-bs-target="#confirmCancelModal"
             >
-              <span class="px-4">キャンセル</span>
+              <span class="px-4">Cancel</span>
             </button>
             <button
               id="btn_job"
               type="submit"
               class="btn btn-lg border rounded-pill btn-edit-create_job"
             >
-              <span class="px-4">プリビュー</span>
+              <span class="px-4">Preview</span>
             </button>
           </div>
         </div>
@@ -819,11 +672,11 @@
             >
           </div>
           <div class="modal-body">
-            <h3 class="text-center modal-body-text">本求人を削除してもよろしいですか</h3>
+            <h3 class="text-center modal-body-text">Xác nhận xóa tuyển dụng?</h3>
           </div>
           <div class="modal-footer align-items-center d-flex justify-content-center flex-row">
-            <button type="button" class="btn btn-secondary-custom rounded-pill w-20 mt-4 mb-4" data-bs-dismiss="modal">いいえ</button>
-            <button type="button" class="btn btn-danger rounded-pill w-20" @click="resetForm">はい</button>
+            <button type="button" class="btn btn-secondary-custom rounded-pill w-20 mt-4 mb-4" data-bs-dismiss="modal">Hủy bỏ</button>
+            <button type="button" class="btn btn-danger rounded-pill w-20" @click="resetForm">Xác nhận</button>
           </div>
         </div>
       </div>
@@ -835,7 +688,7 @@
   import 'bootstrap/dist/css/bootstrap.css'
   import {validationMixin} from 'vuelidate'
   import {
-    minLength,
+    // minLength,
     maxLength,
     required,
     requiredIf,
@@ -856,23 +709,16 @@
     directives: {
       clickOutside: vClickOutside.directive
     },
-
     mixins: [validationMixin],
     layout: 'auth',
 
     data() {
       return {
         previewNewRoute: '/jobs/preview-new',
-        showStatusStayList: false,
         openDateEndPicker: false,
         previewImageJobUrl: null,
         displaySalary: 'salary_range',
         careerList: defaultCareers,
-        hasVietnameseStaffLabelList: [
-          'いない',
-          'いる',
-          '採用予定',
-        ],
         typePlanList:[
           {
             text: 'プランA',
@@ -893,69 +739,25 @@
         ],
         displayMonthList: [
           {
-            text: '1ヶ月',
+            text: '1 tháng',
             value: 1
           },
           {
-            text: '2ヶ月',
+            text: '2 tháng',
             value: 2
           },
           {
-            text: '3ヶ月',
+            text: '3 tháng',
             value: 3
           },
           {
-            text: '4ヶ月',
+            text: '4 tháng',
             value: 4
           },
           {
-            text: '5ヶ月',
+            text: '5 tháng',
             value: 5
           },
-        ],
-        formRecruitmentList: [
-          {
-            text: 'フルタイム',
-            value: 1
-          },
-          {
-            text: 'アルバイト',
-            value: 2
-          },
-        ],
-        statusStayList: [
-          {
-            text: '特定技能',
-            value: 1
-          },
-          {
-            text: '技能実習',
-            value: 2
-          },
-          {
-            text: '特定活動',
-            value: 3
-          },
-          {
-            text: '留学生',
-            value: 4
-          },
-          {
-            text: '技術・人文知識・国際業務',
-            value: 5
-          },
-          {
-            text: '定住',
-            value: 6
-          },
-          {
-            text: '永住',
-            value: 7
-          },
-          {
-            text: '家族滞在',
-            value: 8
-          }
         ],
         provinceList: [],
         job: {
@@ -965,8 +767,6 @@
           date_start: this.$moment().add(1, 'day').format('YYYY-MM-DD'),
           type_plan: '',
           display_month: '',
-          form_recruitment: '',
-          status_stay: [],
           number_recruitments: '',
           salary_max: '',
           salary_min: '',
@@ -975,10 +775,7 @@
           province_id: 1,
           address_work: '',
           time_work: '',
-          break_time: '',
-          holidays: '',
           welfare_regime: '',
-          has_vietnamese_staff: 1,
           overtime: '',
         },
         skillModel: [],
@@ -1041,12 +838,6 @@
         date_start: {
           required
         },
-        form_recruitment: {},
-        status_stay: {
-          isNotEmpty(val) {
-            return this.job.status_stay.length !== 0
-          }
-        },
         number_recruitments: {
           required,
           isNumber(value) {
@@ -1080,42 +871,24 @@
         },
         content_work: {
           required,
-          maxLength: maxLength(200),
-          minLength: minLength(30)
         },
         conditions_apply: {
           required,
-          maxLength: maxLength(1000)
         },
         address_work: {
           required,
-          maxLength: maxLength(200)
         },
         time_work: {
           required,
-          maxLength: maxLength(200)
-        },
-        break_time: {
-          required,
-          maxLength: maxLength(200)
-        },
-        holidays: {
-          required,
-          maxLength: maxLength(200)
         },
         welfare_regime: {
           required,
-          maxLength: maxLength(500)
         },
-        has_vietnamese_staff: '',
-        overtime: {
-          maxLength: maxLength(1000)
-        }
       }
     },
 
     head() {
-      return { title: '新規求人登録 | 求人'}
+      return { title: 'Tạo tuyển dụng mới'}
     },
 
     computed: {
@@ -1253,36 +1026,6 @@
         this.$v.job.salary_max.$touch()
       },
 
-      showStatusStayDropdown(event) {
-        this.showStatusStayList = !this.showStatusStayList
-      },
-
-      filterPreviewStatusStay(element) {
-        for (let i = 0; i < this.job.status_stay.length; i++) {
-          if (element.value === this.job.status_stay[i]) {
-            return true
-          }
-        }
-        return false
-      },
-
-      previewStatusStay() {
-        const statusStaySelected = this.statusStayList.filter(this.filterPreviewStatusStay)
-        let result = ''
-        statusStaySelected.forEach(function (item, index) {
-          if (index === statusStaySelected.length - 1) {
-            result += item.text
-          } else {
-            result += item.text + ' - '
-          }
-        })
-        return result
-      },
-
-      focusOutStatusStayListDropdown() {
-        this.$refs.statusStayDropdownRef.click()
-      },
-
       onClickBoxUploadFile() {
         this.$refs.imageJob.click()
       },
@@ -1328,8 +1071,6 @@
           date_start: this.$moment().add(1, 'day').format('YYYY-MM-DD'),
           type_plan: '',
           display_month: '',
-          form_recruitment: '',
-          status_stay: [],
           number_recruitments: '',
           salary_max: '',
           salary_min: '',
@@ -1338,16 +1079,11 @@
           province_id: 1,
           address_work: '',
           time_work: '',
-          break_time: '',
-          holidays: '',
           welfare_regime: '',
-          has_vietnamese_staff: 1,
           overtime: ''
         })
         this.job.type_plan = this.typePlanList[0].value
         this.job.display_month = this.displayMonthList[0].value
-        this.job.form_recruitment = this.formRecruitmentList[0].value
-        this.job.status_stay.push(this.statusStayList[0].value)
         this.previewImageJobUrl = null
         this.displaySalary = 'salary_range'
         this.$v.$reset()
@@ -1381,57 +1117,49 @@
           //     }
           //   })
           // } else {
+					this.job.beginnerSkills = this.beginnerSkills
+					this.job.intermediateSkills = this.intermediateSkills
+					this.job.advancedSkills = this.advancedSkills
+					this.job.certificates = this.certificates
+					this.job.collegeMajors = this.collegeMajors
 					this.$store.dispatch('job/setJob', this.job)
 					this.$router.push('/jobs/preview-new')
           // }
         } else if (this.$v.job.title.$error) {
           this.$nextTick(() => {
-            this.$refs.titleTextBox.focus()
-          })
-        } else if (this.$v.job.status_stay.$error) {
-          this.$nextTick(() => {
-            this.$refs.previewStatusStaySelectBox.focus()
-            this.showStatusStayList = true
+            this.$refs.titleTextBox?.focus()
           })
         } else if (this.$v.job.number_recruitments.$error) {
           this.$nextTick(() => {
-            this.$refs.numberRecruitmentsTextBox.focus()
+            this.$refs.numberRecruitmentsTextBox?.focus()
           })
         } else if (this.$v.job.salary_min.$error) {
           this.$nextTick(() => {
-            this.$refs.salaryMinTextBox.focus()
+            this.$refs.salaryMinTextBox?.focus()
           })
         } else if (this.$v.job.salary_max.$error) {
           this.$nextTick(() => {
-            this.$refs.salaryMaxTextBox.focus()
+            this.$refs.salaryMaxTextBox?.focus()
           })
         } else if (this.$v.job.content_work.$error) {
           this.$nextTick(() => {
-            this.$refs.contentWorkTextBox.focus()
+            this.$refs.contentWorkTextBox?.focus()
           })
         } else if (this.$v.job.conditions_apply.$error) {
           this.$nextTick(() => {
-            this.$refs.conditionsApplyTextBox.focus()
+            this.$refs.conditionsApplyTextBox?.focus()
           })
         } else if (this.$v.job.address_work.$error) {
           this.$nextTick(() => {
-            this.$refs.addressWorkTextBox.focus()
+            this.$refs.addressWorkTextBox?.focus()
           })
         } else if (this.$v.job.time_work.$error) {
           this.$nextTick(() => {
-            this.$refs.timeWorkTextBox.focus()
-          })
-        } else if (this.$v.job.break_time.$error) {
-          this.$nextTick(() => {
-            this.$refs.breakTimeTextBox.focus()
-          })
-        } else if (this.$v.job.holidays.$error) {
-          this.$nextTick(() => {
-            this.$refs.holidaysTextBox.focus()
+            this.$refs.timeWorkTextBox?.focus()
           })
         } else if (this.$v.job.welfare_regime.$error) {
           this.$nextTick(() => {
-            this.$refs.welfareRegimeTextBox.focus()
+            this.$refs.welfareRegimeTextBox?.focus()
           })
         }
       }

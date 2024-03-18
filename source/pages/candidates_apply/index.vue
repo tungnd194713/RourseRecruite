@@ -2,12 +2,7 @@
   <main class="container my-3 my-lg-4">
     <div class="row box-title mb-1 mb-lg-2">
       <div class="col-md-6 col-6">
-        <h4 class="page-header-title">応募者一覧</h4>
-      </div>
-      <div class="col-md-6 col-6 part-above-search">
-        <h6 class="mt-3 text-above-search text-right">
-          <a class="text-decoration-none" href="https://lapse-immi.moj.go.jp/ZEC/appl/e0/ZEC2/pages/FZECST021.aspx" target="_blank">在留資格はこのリンクから確認できます</a>
-        </h6>
+        <h4 class="page-header-title">Danh sách ứng viên</h4>
       </div>
     </div>
 
@@ -17,7 +12,7 @@
           v-model="condition.key_word"
           type="text"
           class="form-control rounded-pill"
-          placeholder="タイトル"
+          placeholder="Vị trí"
         />
       </div>
       <div class="col-12 col-lg-3 mb-2">
@@ -28,13 +23,24 @@
           format="YYYY-MM-DD"
           value-type="YYYY/MM/DD"
           class="date-picker"
-          placeholder="応募日"
+          placeholder="Ngày ứng tuyển"
         >
           <i slot="icon-calendar"></i>
         </date-picker>
       </div>
-      <div class="col-12 col-lg-2 mb-2">
+			<div class="col-12 col-lg-2 mb-2">
         <select
+                v-model="condition.read"
+                class="form-select rounded-pill"
+                aria-label="Trạng thái"
+        >
+          <option value="" selected>Tất cả</option>
+          <option value="0">Chưa đọc</option>
+          <option value="1">Đã đọc</option>
+        </select>
+      </div>
+      <div class="col-12 col-lg-2 mb-2">
+        <!-- <select
           v-model="condition.status_stay"
           class="form-select rounded-pill"
           aria-label="ステータス"
@@ -46,18 +52,7 @@
           <option value="3">採用</option>
           <option value="4">不採用（連絡取れず）</option>
           <option value="5">不採用</option>
-        </select>
-      </div>
-      <div class="col-12 col-lg-2 mb-2">
-        <select
-                v-model="condition.read"
-                class="form-select rounded-pill"
-                aria-label="ステータス"
-        >
-          <option value="" selected>すべて</option>
-          <option value="0">未読</option>
-          <option value="1">既読</option>
-        </select>
+        </select> -->
       </div>
       <div class="col-12 col-lg-2">
         <button
@@ -66,7 +61,7 @@
           @click="search()"
         >
           <img src="../../assets/images/icon_search.svg" alt="" />
-          <span class="px-4">検索</span>
+          <span class="px-4">Tìm kiếm</span>
         </button>
       </div>
     </div>
@@ -119,33 +114,6 @@
                 >
                 <template v-else>アルバイト</template>
               </td>
-              <td class="align-middle py-3">
-                <a
-                  href="#"
-                  data-bs-toggle="modal"
-                  data-bs-target="#popUpId"
-                  @click="
-                    popupImageCard(
-                      item.candidate.residence_card_front,
-                      item.candidate.residence_card_backside
-                    )
-                  "
-                >
-                  <img
-                    v-if="item.read === 0"
-                    class=""
-                    src="../../assets/images/icon_postcard_active.svg"
-                  />
-                  <img
-                    v-else
-                    class=""
-                    src="../../assets/images/icon_postcard_inactive.svg"
-                  />
-                </a>
-              </td>
-              <td class="align-middle py-3 col-card">
-                {{ item.status ? residenceCardConfirm[item.residence_card_confirm] : residenceCardConfirm[0] }}
-              </td>
               <td class="align-middle py-3 col-2 note">
                 {{ item.note }}
               </td>
@@ -161,7 +129,6 @@
                     popupUpdateStatus({
                       id: item.id,
                       name: item.candidate.user.name,
-                      residence_card_confirm: item.residence_card_confirm,
                       status: item.status,
                       note: item.note,
                     })
@@ -183,7 +150,7 @@
           v-if="totalItems === 0 && !spinner"
           class="text-center w-100 p-3 m-0 bg-white border-bottom border-1"
         >
-          検索結果がありません
+          Không có kết quả
         </h4>
       </div>
       <Pagination
@@ -196,8 +163,7 @@
         @customPage="pageChangeHandle"
       >
         <p>
-          * 未読：白い背景、既読：浅い青色の背景<br />
-          * ステータスが未対応の応募者があったら、リマインダーが表示される。
+          - Chưa đọc: nền trắng, đã đọc: nền xanh nhạt
         </p>
       </Pagination>
     </div>
@@ -211,34 +177,6 @@
       aria-labelledby="popUpIdLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <a data-bs-dismiss="modal" class="btn-close" aria-label="Close">
-              <img src="../../assets/images/icon_modal_close.svg" alt="" />
-            </a>
-          </div>
-          <div class="d-flex justify-content-center align-items-center">
-            <h5 id="popUpIdLabel" class="modal-title">在留カード</h5>
-          </div>
-          <div class="modal-body d-flex justify-content-around">
-            <a
-              class="residence-card-image"
-              :style="{
-                backgroundImage: `url(${url_file}${image.residence_card_front})`
-              }"
-            >
-            </a>
-            <a
-              class="residence-card-image"
-              :style="{
-                backgroundImage: `url(${url_file}${image.residence_card_backside})`
-              }"
-            >
-            </a>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div
@@ -272,17 +210,6 @@
           </h5>
           <div class="modal-body pop-check-input">
             <label for="confirmation">在留資格確認</label>
-            <select
-              id="confirmation"
-              v-model="dataUpdateStatus.residence_card_confirm"
-              class="form-select rounded-pill pop-check-select"
-              aria-label="Confirmation"
-            >
-              <!--<option selected></option>-->
-              <option value="0" selected>未選択</option>
-              <option value="1">承認</option>
-              <option value="2">非承認</option>
-            </select>
             <label for="status">ステータス</label>
             <select
               id="status"
@@ -347,7 +274,6 @@ import 'vue2-datepicker/locale/ja'
 import Pagination from '../../components/Pagination'
 import CvUserModal from '~/components/modal/CvUserModal'
 import defaultInCvUser from '~/constants/defaultInCvUser'
-import residenceCardConfirm from '~/constants/residenceCardConfirm'
 import statusCandidateApply from '~/constants/statusCandidateApply'
 
 export default {
@@ -375,35 +301,23 @@ export default {
         },
         {
           key: 'candidate_name',
-          label: '氏名',
+          label: 'Tên ứng viên',
         },
         {
           key: 'job_title',
-          label: '求人タイトル',
+          label: 'Vị trí',
         },
         {
           key: 'apply_date',
-          label: '応募日',
-        },
-        {
-          key: 'employment_form',
-          label: '雇用形態',
-        },
-        {
-          key: 'residence_card',
-          label: '在留カード',
-        },
-        {
-          key: 'status_stay',
-          label: '在留資格確認',
+          label: 'Ngày ứng tuyển',
         },
         {
           key: 'note',
-          label: '備考',
+          label: 'Nhận xét',
         },
         {
           key: 'status',
-          label: 'ステータス',
+          label: 'Trạng thái',
         },
       ],
       spinner: '',
@@ -419,13 +333,8 @@ export default {
       },
       idRow: -1,
       dataUpdateStatus: {
-        residence_card_confirm: 0,
         status: 0,
         note: '',
-      },
-      image: {
-        residence_card_front: '',
-        residence_card_backside: '',
       },
       lang_ja: defaultInCvUser.lang_ja,
       lang_vi: defaultInCvUser.lang_vi,
@@ -449,8 +358,6 @@ export default {
         health: '',
         visa_type: '',
         visa_date: '',
-        residence_card_front: '',
-        residence_card_backside: '',
         strength: '',
         stay_experience_date: '',
         stay_experience_purpose: '',
@@ -485,8 +392,6 @@ export default {
         health: '',
         visa_type: '',
         visa_date: '',
-        residence_card_front: '',
-        residence_card_backside: '',
         strength: '',
         stay_experience_date: '',
         stay_experience_purpose: '',
@@ -506,7 +411,6 @@ export default {
       educationsOfCandidate: [],
       jobsOfCandidate: [],
       selectedItemId: 0,
-      residenceCardConfirm,
       statusCandidateApply,
       name: '',
     }
@@ -521,7 +425,7 @@ export default {
   },
 
   head() {
-    return { title: '応募者一覧 | 求人' }
+    return { title: 'Danh sách ứng viên | 求人' }
   },
 
   computed: {
@@ -585,7 +489,6 @@ export default {
     popupUpdateStatus(data) {
       this.idRow = data.id
       this.name = data.name
-      this.dataUpdateStatus.residence_card_confirm = data.residence_card_confirm
       this.dataUpdateStatus.status = data.status
       this.dataUpdateStatus.note = data.note
     },
@@ -608,11 +511,6 @@ export default {
           })
         this.$refs.closeCheckModal.click()
       }
-    },
-
-    popupImageCard(residenceCardFront, residenceCardBackside) {
-      this.image.residence_card_front = residenceCardFront
-      this.image.residence_card_backside = residenceCardBackside
     },
 
     async changeLanguage(newLanguage) {

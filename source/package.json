@@ -30,11 +30,13 @@
     "nuxt-sass-resources-loader": "^2.0.5",
     "swiper": "^7.3.3",
     "v-click-outside": "^3.1.2",
+    "v-runtime-template": "^1.10.0",
     "vee-validate": "^3.4.13",
     "vue": "^2.6.14",
     "vue-awesome-swiper": "^4.1.1",
     "vue-select": "^3.16.0",
     "vue2-datepicker": "^3.10.4",
+    "vue2-editor": "^2.10.3",
     "vuelidate": "^0.7.6"
   },
   "devDependencies": {

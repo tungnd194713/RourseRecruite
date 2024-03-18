@@ -16,30 +16,7 @@
               <h1 class="mb-3 mb-lg-4"> {{ job.title}}</h1>
               <div class="row mb-4">
                 <div class="col-12">
-                  <button id="btn-apply" class="btn btn-secondary w-100 h4">応募する</button>
-                </div>
-              </div>
-              <div class="row">
-                <div class="d-block">
-                  <span class="badge">{{ previewFormRecruitment()}}</span>
-                  <span class="badge">{{ $t(careerList[job.career - 1])}}</span>
-                </div>
-                <div class="d-block">
-                  <span
-                    v-for="(item, index) in job.status_stay"
-                    :key="index"
-                    class="badge"
-                  >
-                    {{ $t(theStatusStay[item]) }}
-                  </span>
-                  <img
-                    width="22"
-                    height="22"
-                    src="../../assets/images/icon_question.svg"
-                    alt=""
-                    data-bs-toggle="modal"
-                    data-bs-target="#statusStayInfoModal"
-                  >
+                  <button id="btn-apply" class="btn btn-secondary w-100 h4">Ứng tuyển</button>
                 </div>
               </div>
               <div class="row mt-2">
@@ -49,7 +26,7 @@
                 </div>
                 <div class="d-block mb-2">
                   <span class="mr-2"><img width="20" height="20" src="../../assets/images/icon_address.svg"></span>
-                  <span> {{ $t(provincesList[job.province_id]) }} - 日本</span>
+                  <span> {{ $t(provincesList[job.province_id]) }} </span>
                 </div>
                 <div class="d-block">
                   <span class="mr-2"><img width="20" height="20" src="../../assets/images/icon_clock.svg"></span>
@@ -62,63 +39,43 @@
       </div>
       <hr class="my-0">
       <div class="detail-job-content py-3">
-        <p class="salary-note m-0 font-italic">・時給×実働+残業、休日出勤＝給与</p>
-        <p class="salary-note font-italic mb-5">・月給+残業代＝給与</p>
         <div class="d-block mb-3 mb-lg-5">
-          <h4><strong>仕事内容</strong></h4>
+          <h4><strong>Nội dung công việc</strong></h4>
           <div class="ps-3 pre-line word-break-break-all">
-            {{ job.content_work}}
+						<v-runtime-template :template="`<div>${job.content_work}</div>`"></v-runtime-template>
           </div>
         </div>
         <div class="d-block">
           <table class="table table-bordered">
             <tbody>
               <tr>
-                <td class="head-table">採用人数</td>
+                <td class="head-table">Số lượng tuyện dụng</td>
                 <td class="pre-line word-break-break-all">
-                  {{ job.number_recruitments}}人
+                  {{ job.number_recruitments}} người
                 </td>
               </tr>
               <tr>
-                <td class="head-table">応募条件</td>
+                <td class="head-table">Điều kiện ứng tuyển</td>
                 <td class="pre-line word-break-break-all">
-                  {{ job.conditions_apply}}
+									<v-runtime-template :template="`<div>${job.conditions_apply}</div>`"></v-runtime-template>
                 </td>
               </tr>
               <tr>
-                <td class="head-table">勤務地</td>
+                <td class="head-table">Thời gian làm việc</td>
+                <td class="pre-line word-break-break-all">
+									<v-runtime-template :template="`<div>${job.time_work}</div>`"></v-runtime-template>
+                </td>
+              </tr>
+              <tr>
+                <td class="head-table">Phúc lợi</td>
+                <td class="pre-line word-break-break-all">
+									<v-runtime-template :template="`<div>${job.welfare_regime}</div>`"></v-runtime-template>
+                </td>
+              </tr>
+							<tr>
+                <td class="head-table">Địa chỉ</td>
                 <td class="pre-line word-break-break-all">
                   {{ job.address_work}}
-                </td>
-              </tr>
-              <tr>
-                <td class="head-table">勤務時間</td>
-                <td class="pre-line word-break-break-all">
-                  {{ job.time_work}}
-                </td>
-              </tr>
-              <tr>
-                <td class="head-table">休日</td>
-                <td class="pre-line word-break-break-all">
-                  {{ job.holidays}}
-                </td>
-              </tr>
-              <tr>
-                <td class="head-table">休憩時間</td>
-                <td class="pre-line word-break-break-all">
-                  {{ job.break_time}}
-                </td>
-              </tr>
-              <tr>
-                <td class="head-table">福利厚生</td>
-                <td class="pre-line word-break-break-all">
-                  {{ job.welfare_regime}}
-                </td>
-              </tr>
-              <tr>
-                <td class="head-table">ベトナム人在籍状況</td>
-                <td class="pre-line word-break-break-all">
-                  {{ hasVietnameseStaffLabelList[parseInt(job.has_vietnamese_staff)]}}
                 </td>
               </tr>
               <!--<tr>
@@ -129,8 +86,8 @@
           </table>
         </div>
         <div class="d-flex justify-content-end footer">
-          <button id="btn_back" class="btn" @click="backToCreateJobPage">戻る</button>
-          <button id="btn_completion" class="btn" :disabled="isDisabledSaveBtn" @click="completeCreateJob">完了</button>
+          <button id="btn_back" class="btn" @click="backToCreateJobPage">Quay lại</button>
+          <button id="btn_completion" class="btn" :disabled="isDisabledSaveBtn" @click="completeCreateJob">Hoàn tất</button>
           <button
             ref="showCompleteCreateJobModal"
             data-bs-toggle="modal"
@@ -147,6 +104,7 @@
 </template>
 
 <script>
+	import VRuntimeTemplate from "v-runtime-template";
   import StatusStayInfoModal from "~/components/StatusStayInfoModal";
   import CompleteCreateJobModal from "~/components/CompleteCreateJobModal";
   import theCareers from '~/constants/careers'
@@ -158,7 +116,8 @@
     name: "PreviewNewJob",
     components: {
       CompleteCreateJobModal,
-      StatusStayInfoModal
+      StatusStayInfoModal,
+			VRuntimeTemplate
     },
     layout: 'preview-new',
 
@@ -168,94 +127,27 @@
         careerList: theCareers,
         theStatusStay,
         provincesList: theProvinces,
-        hasVietnameseStaffLabelList: [
-          'いない',
-          'いる',
-          '採用予定',
-        ],
-        typePlanList:[
-          {
-            text: 'A',
-            value: 1
-          },
-          {
-            text: 'B',
-            value: 2
-          },
-          {
-            text: 'C',
-            value: 3
-          },
-          {
-            text: 'Standard plan',
-            value: 4
-          },
-        ],
         displayMonthList: [
           {
-            text: '1 month',
+            text: '1 tháng',
             value: 1
           },
           {
-            text: '2 months',
+            text: '2 tháng',
             value: 2
           },
           {
-            text: '3 months',
+            text: '3 tháng',
             value: 3
           },
           {
-            text: '4 months',
+            text: '4 tháng',
             value: 4
           },
           {
-            text: '5 months',
+            text: '5 tháng',
             value: 5
           },
-        ],
-        formRecruitmentList: [
-          {
-            text: 'フルタイム',
-            value: 1
-          },
-          {
-            text: 'アルバイト',
-            value: 2
-          },
-        ],
-        statusStayList: [
-          {
-            text: '特定技能',
-            value: 1
-          },
-          {
-            text: '技能実習',
-            value: 2
-          },
-          {
-            text: '特定活動',
-            value: 3
-          },
-          {
-            text: '留学生',
-            value: 4
-          },
-          {
-            text: '技術・人文知識・国際業務',
-            value: 5
-          },
-          {
-            text: '定住',
-            value: 6
-          },
-          {
-            text: '永住',
-            value: 7
-          },
-          {
-            text: '家族滞在',
-            value: 8
-          }
         ],
         job: {
           image_job: null,
@@ -280,12 +172,17 @@
           has_vietnamese_staff: '',
           overtime: '',
           careerImages,
+					beginnerSkills: [],
+					intermediateSkills: [],
+					advancedSkills: [],
+					certificates: [],
+					collegeMajors: [],
         }
       }
     },
 
     head() {
-      return { title: '新規求人プレビュー | 求人'}
+      return { title: 'Preview tuyển dụng'}
     },
 
     computed: {
@@ -308,14 +205,6 @@
     methods: {
       isJobStored() {
         return !(Object.keys(this.job).length === 0 && this.job.constructor === Object)
-      },
-
-      filterPreviewFormRecruitment(element) {
-        return element.value === this.job.form_recruitment
-      },
-
-      previewFormRecruitment() {
-        return this.isJobStored() ? this.formRecruitmentList.filter(this.filterPreviewFormRecruitment)[0].text : null
       },
 
       filterPreviewStatusStay(element) {
@@ -351,7 +240,6 @@
         formData.append('type_plan', this.job.type_plan)
         formData.append('display_month', this.job.display_month)
         formData.append('form_recruitment', this.job.form_recruitment)
-        formData.append('status_stay', this.job.status_stay.toString())
         formData.append('number_recruitments', this.job.number_recruitments)
         formData.append('salary_max', this.job.salary_max)
         formData.append('salary_min', this.job.salary_min)
@@ -360,11 +248,13 @@
         formData.append('province_id', this.job.province_id)
         formData.append('address_work', this.job.address_work)
         formData.append('time_work', this.job.time_work)
-        formData.append('break_time', this.job.break_time)
-        formData.append('holidays', this.job.holidays)
         formData.append('welfare_regime', this.job.welfare_regime)
-        formData.append('has_vietnamese_staff', this.job.has_vietnamese_staff)
-        formData.append('overtime', this.job.overtime)
+        // formData.append('overtime', this.job.overtime)
+        formData.append('beginnerSkills', JSON.stringify(this.job.beginnerSkills))
+        formData.append('intermediateSkills', JSON.stringify(this.job.intermediateSkills))
+        formData.append('advancedSkills', JSON.stringify(this.job.advancedSkills))
+        formData.append('certificates', JSON.stringify(this.job.certificates))
+        formData.append('collegeMajors', JSON.stringify(this.job.collegeMajors))
         this.isDisabledSaveBtn = true
         return await this.$repositories.jobs.createJob(formData, {
           header: {
@@ -383,7 +273,8 @@
         })
       },
       previewImageJobUrl() {
-        return this.job.image_job ? URL.createObjectURL(this.job.image_job) : require(`@/assets/images/draft` + careerImages[this.job.career - 1].image)
+        // return this.job.image_job ? URL.createObjectURL(this.job.image_job) : require(`@/assets/images/draft` + careerImages[this.job.career - 1].image)
+        return this.job.image_job ? URL.createObjectURL(this.job.image_job) : ''
       },
     }
   }
@@ -391,4 +282,14 @@
 
 <style lang="scss" scoped>
   @import '../../styles/pages/jobs/preview.scss';
+</style>
+<style lang="scss">
+.detail-job-content {
+	li {
+		height: 21px;
+	}
+	p {
+		margin: 0;
+	}
+}
 </style>

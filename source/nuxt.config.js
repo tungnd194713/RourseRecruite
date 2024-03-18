@@ -60,6 +60,7 @@ export default {
     '@nuxtjs/auth',
     '@nuxtjs/moment',
     '@nuxtjs/toast',
+		"vue2-editor/nuxt",
   ],
 
   toast: {
@@ -153,6 +154,13 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    standalone: true
+    standalone: true,
+		extend(config, { isDev, isClient }) {
+      config.resolve.alias.vue = "vue/dist/vue.common";
+      // Sets webpack's mode to development if `isDev` is true.
+      if (isDev) {
+        config.mode = 'development'
+      }
+    }
   },
 }

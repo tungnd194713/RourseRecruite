@@ -56,7 +56,7 @@
           v-if="totalItems === 0"
           class="text-center w-100 p-3 m-0 bg-white border-bottom border-1"
         >
-          検索結果がありません
+          Không có kết quả
         </h4>
       </div>
       <Pagination

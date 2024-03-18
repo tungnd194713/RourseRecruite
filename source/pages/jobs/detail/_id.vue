@@ -189,7 +189,7 @@
 
     <div class="container mt-3 mt-lg-4 list-user">
       <div class="d-flex align-items-end title mb-1">
-        <h2 class="flex-grow-1">応募者一覧</h2>
+        <h2 class="flex-grow-1">Danh sách ứng viên</h2>
         <span>
           <span class="me-0 me-lg-2">
             <a class="text-decoration-none" href="https://lapse-immi.moj.go.jp/ZEC/appl/e0/ZEC2/pages/FZECST021.aspx" target="_blank">在留資格はこのリンクから確認できます</a>
@@ -287,8 +287,7 @@
         @customPage="pageChangeHandle"
       >
         <p>
-          * 未読：白い背景、既読：浅い青色の背景<br />
-          * ステータスが未対応の応募者があったら、リマインダーが表示される。
+          - Chưa đọc: nền trắng, đã đọc: nền xanh nhạt
         </p>
       </Pagination>
     </div>
@@ -960,7 +959,8 @@
       )
     },
     previewImageJobUrl() {
-        return this.job.image_job ? this.url_file + this.job.image_job : require(`@/assets/images/draft` + careerImages[this.job.career - 1]?.image)
+        // return this.job.image_job ? this.url_file + this.job.image_job : require(`@/assets/images/draft` + careerImages[this.job.career - 1]?.image)
+        return this.job.image_job ? this.url_file + this.job.image_job : ''
     },
   },
 }
