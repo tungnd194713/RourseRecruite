@@ -30,7 +30,7 @@
             </div>
           </div>
           <div class="form-group mb-3 mb-lg-4 row">
-            <label for="exampleInput1" class="col-sm-2 col-form-label">タイトル <span>*</span></label>
+            <label for="exampleInput1" class="col-sm-2 col-form-label">Vị trí công việc <span>*</span></label>
             <div class="col-sm-10 flex-column">
               <div class="input-group input-group-icon">
                 <span class="input-group-text input-group-text-pre">
@@ -54,7 +54,7 @@
           </div>
 
           <div class="form-group mb-3 mb-lg-4 row">
-            <label for="careerSelect" class="col-sm-2 col-form-label">業界・分野 <span>*</span></label>
+            <label for="careerSelect" class="col-sm-2 col-form-label">Lĩnh vực <span>*</span></label>
             <div class="col-12 col-sm-4">
               <div class="input-group input-group-icon">
                 <span class="input-group-text input-group-text-pre">
@@ -74,7 +74,7 @@
           </div>
 
           <div class="form-group mb-3 mb-lg-4 row">
-            <label for="date_start" class="col-sm-2 col-form-label">開始日 <span>*</span></label>
+            <label for="date_start" class="col-sm-2 col-form-label">Ngày bắt đầu <span>*</span></label>
             <div class="col-12 col-sm-4 flex-column">
               <div class="input-group input-group-icon custom-input-group">
                 <span class="input-group-text input-group-text-pre">
@@ -114,7 +114,7 @@
             </div>
           </div>
           <div class="form-group mb-3 mb-lg-4 row">
-            <label for="displayMonthSelect" class="col-sm-2 col-form-label">仕事の掲載期間（月単位)<span>*</span></label>
+            <label for="displayMonthSelect" class="col-sm-2 col-form-label">Thời gian đăng tuyển (Tháng)<span>*</span></label>
             <div class="col-12 col-sm-4">
               <div class="input-group input-group-icon">
                 <span class="input-group-text input-group-text-pre">
@@ -192,7 +192,7 @@
             </div>
           </div>
           <div class="form-group mb-3 mb-lg-4 row">
-            <label for="exampleInput5" class="col-sm-2 col-form-label">採用人数 <span>*</span></label>
+            <label for="exampleInput5" class="col-sm-2 col-form-label">Số người thuê dự kiến <span>*</span></label>
             <div class="col-12 col-sm-4">
               <div class="input-group input-group-icon">
                 <span class="input-group-text input-group-text-pre">
@@ -261,48 +261,7 @@
             </div>
           </div>
           <div class="form-group mb-1 row">
-            <label class="col-sm-2 col-form-label">月給 <span>*</span></label>
-            <div class="col-12 col-sm-10">
-              <!--<div class="form-check">
-                &lt;!&ndash;<div class="float-start">
-                  <input id="gridCheck1" v-model="displaySalary" class="form-check-input" type="radio" value="salary_max">
-                  <label class="form-check-label" for="gridCheck1">
-                    上限額
-                  </label>
-                </div>&ndash;&gt;
-                <div class="float-start">
-                  <input id="gridCheck2" v-model="displaySalary" class="form-check-input" type="radio" value="salary_range">
-                  <label class="form-check-label" for="gridCheck2">
-                    ○○から○○まで
-                  </label>
-                </div>
-              </div>-->
-              〇〇円から〇〇円
-            </div>
-          </div>
-
-          <div class="form-group mb-3 mb-lg-3 row">
-            <label class="col-sm-2 col-form-label"></label>
-            <!--<div v-if="displaySalary === 'salary_max'" class="col-12 col-sm-4">
-              <div class="input-group input-group-icon">
-                <span class="input-group-text input-group-text-pre">
-                    <img src="../../assets/images/icon_money_jp.svg" alt="">
-                </span>
-                <input
-                  v-model="job.salary_max"
-                  type="text"
-                  class="form-control rounded-end"
-                  @input="$v.job.salary_max.$touch()"
-                  @blur="$v.job.salary_max.$touch()"
-                  @keypress="keyPressForNumberInput"
-                >
-              </div>
-              <div v-if="$v.job.salary_max.$error">
-                <div v-if="!$v.job.salary_max.required" class="error-text">これは必須項目なので、必ず入力してください</div>
-                <div v-if="!$v.job.salary_max.maxLength" class="error-text">10数字以下で入力してください</div>
-              </div>
-            </div>-->
-
+            <label class="col-sm-2 col-form-label">Khoảng lương <span>*</span></label>
             <div v-if="displaySalary === 'salary_range'" class="col-12 col-sm-4">
               <div class="input-group input-group-icon">
                 <span class="input-group-text input-group-text-pre">
@@ -321,7 +280,7 @@
               <div v-if="$v.job.salary_min.$error">
                 <div v-if="!$v.job.salary_min.required" class="error-text">これは必須項目なので、必ず入力してください</div>
                 <div v-if="!$v.job.salary_min.maxLength" class="error-text">10数字以下で入力してください</div>
-                <div v-if="!$v.job.salary_min.isLowerThanSalaryMax" class="error-text">最多の月給以下で入力してください</div>
+                <div v-if="!$v.job.salary_min.isLowerThanSalaryMax" class="error-text">最多のLương以下で入力してください</div>
               </div>
             </div>
             <div
@@ -348,24 +307,38 @@
               <div v-if="$v.job.salary_max.$error">
                 <div v-if="!$v.job.salary_max.required" class="error-text">これは必須項目なので、必ず入力してください</div>
                 <div v-if="!$v.job.salary_max.maxLength" class="error-text">10数字以下で入力してください</div>
-                <div v-if="!$v.job.salary_max.isGreaterThanSalaryMin" class="error-text">最低の月給以上で入力してください</div>
+                <div v-if="!$v.job.salary_max.isGreaterThanSalaryMin" class="error-text">最低のLương以上で入力してください</div>
               </div>
             </div>
           </div>
 
-          <div class="form-group mb-3 mb-lg-4 text-note">
-            <div class="row">
-              <label class="col-sm-2 col-form-label"></label>
-              <p class="col-10 col-sm-10 mb-0">・時給×実働+残業、休日出勤＝給与</p>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label label-salary-note"></label>
-              <p class="col-10 col-sm-10">・月給+残業代＝給与</p>
-            </div>
+          <div class="form-group mb-3 mb-lg-3 row">
+            <label class="col-sm-2 col-form-label"></label>
+            <!--<div v-if="displaySalary === 'salary_max'" class="col-12 col-sm-4">
+              <div class="input-group input-group-icon">
+                <span class="input-group-text input-group-text-pre">
+                    <img src="../../assets/images/icon_money_jp.svg" alt="">
+                </span>
+                <input
+                  v-model="job.salary_max"
+                  type="text"
+                  class="form-control rounded-end"
+                  @input="$v.job.salary_max.$touch()"
+                  @blur="$v.job.salary_max.$touch()"
+                  @keypress="keyPressForNumberInput"
+                >
+              </div>
+              <div v-if="$v.job.salary_max.$error">
+                <div v-if="!$v.job.salary_max.required" class="error-text">これは必須項目なので、必ず入力してください</div>
+                <div v-if="!$v.job.salary_max.maxLength" class="error-text">10数字以下で入力してください</div>
+              </div>
+            </div>-->
+
+
           </div>
 
           <div class="form-group mb-3 mb-lg-4 row">
-            <label for="example7" class="col-sm-2 col-form-label">仕事内容 <span>*</span></label>
+            <label for="example7" class="col-sm-2 col-form-label">Mô tả công việc <span>*</span></label>
             <div class="col-12 col-sm-10">
               <textarea
                 id="example7"
@@ -402,7 +375,259 @@
           </div>
 
           <div class="form-group mb-3 mb-lg-4 row">
-            <label for="example8" class="col-sm-2 col-form-label">応募条件 <span>*</span></label>
+            <label for="example8" class="col-sm-2 col-form-label">Yêu cầu công việc <span>*</span></label>
+            <div class="col-12 col-sm-10">(Chọn nhiều lựa chọn ở 1 ô để thể hiện tính tương đương)</div>
+          </div>
+
+          <div class="form-group mb-3 mb-lg-4 row">
+            <label for="example8" class="col-sm-2 col-form-label"></label>
+            <div class="col-12 col-sm-10">
+              <div class="row">
+                <div class="col-2">
+                  Kĩ năng
+                </div>
+                <div class="col-9">
+                  <div class="row mb-2">
+                    <div class="col-5">
+                      <v-select
+                        v-model="skillModel"
+                        :options="skillArr"
+                        :reduce="(item) => item"
+                        label="name"
+                        placeholder="Chọn kỹ năng"
+                        multiple
+                      >
+                        <template #no-options="{ searching }">
+                          <template v-if="searching">
+                            Không có dữ liệu
+                          </template>
+                        </template>
+                      </v-select>
+                    </div>
+                    <div class="col-4">
+                      <v-select
+                        v-model="levelModel"
+                        :options="levelArr"
+                        :reduce="(item) => item.value"
+                        label="label"
+                        placeholder="Chọn mức độ thành thạo"
+                      >
+                        <template #no-options="{ searching }">
+                          <template v-if="searching">
+                            Không có dữ liệu
+                          </template>
+                        </template>
+                      </v-select>
+                    </div>
+                    <div class="col-3">
+                      <button
+                        type="button"
+                        class="btn btn-lg border ms-2 ms-lg-3 py-1"
+                        @click="addSkills"
+                      >
+                        Thêm
+                      </button>
+                    </div>
+                  </div>
+                  <div class="row mb-2">
+                    <div>
+                      <div class="fw-bold">
+                        Hiểu biết sơ
+                      </div>
+                      <div class="tag-container px-3">
+                        <div v-if="!beginnerSkills.length" class="">Chưa thêm kỹ năng</div>
+                        <div v-else>
+                          <ul>
+                            <li v-for="(item, index) in beginnerSkills" :key="index">
+                              <div>
+                                <span v-for="(iitem, iindex) in item" :key="iindex">
+                                  {{ iitem.name }}
+                                  <span v-if="iindex !== item.length - 1">hoặc</span>
+                                </span>
+                                <span class="error-text" style="cursor: pointer" @click="deleteBeginnerSkillItem(item)">Xóa</span>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="fw-bold">
+                        Hiểu biết trung bình
+                      </div>
+                      <div class="tag-container px-3">
+                        <div v-if="!intermediateSkills.length" class="">Chưa thêm kỹ năng</div>
+                        <div v-else>
+                          <ul>
+                            <li v-for="(item, index) in intermediateSkills" :key="index">
+                              <div>
+                                <span v-for="(iitem, iindex) in item" :key="iindex">
+                                  {{ iitem.name }}
+                                  <span v-if="iindex !== item.length - 1">hoặc</span>
+                                </span>
+                                <span class="error-text" style="cursor: pointer" @click="deleteIntermediateSkillItem(item)">Xóa</span>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="fw-bold">
+                        Thành thạo
+                      </div>
+                      <div class="tag-container px-3">
+                        <div v-if="!advancedSkills.length" class="">Chưa thêm kỹ năng</div>
+                        <div v-else>
+                          <ul>
+                            <li v-for="(item, index) in advancedSkills" :key="index">
+                              <div>
+                                <span v-for="(iitem, iindex) in item" :key="iindex">
+                                  {{ iitem.name }}
+                                  <span v-if="iindex !== item.length - 1">hoặc</span>
+                                </span>
+                                <span class="error-text" style="cursor: pointer" @click="deleteAdvancedSkillItem(item)">Xóa</span>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-2">
+                  Chứng chỉ
+                </div>
+                <div class="col-9">
+                  <div class="row mb-2">
+                    <div class="col-5">
+                      <v-select
+                        v-model="certificateModel"
+                        :options="certificateArr"
+                        :reduce="(item) => item"
+                        label="name"
+                        placeholder="Chọn chứng chỉ"
+                        multiple
+                      >
+                        <template #no-options="{ searching }">
+                          <template v-if="searching">
+                            Không có dữ liệu
+                          </template>
+                        </template>
+                      </v-select>
+                    </div>
+                    <div class="col-3">
+                      <button
+                        type="button"
+                        class="btn btn-lg border ms-2 ms-lg-3 py-1"
+                        @click="addCertificates"
+                      >
+                        Thêm
+                      </button>
+                    </div>
+                  </div>
+                  <div class="mb-2 px-3">
+                    <div v-if="!certificates.length" class="">Chưa thêm chứng chỉ</div>
+                    <div v-else>
+                      <ul>
+                        <li v-for="(item, index) in certificates" :key="index">
+                          <div>
+                            <span v-for="(iitem, iindex) in item" :key="iindex">
+                              {{ iitem.name }}
+                              <span v-if="iindex !== item.length - 1" class="fw-bold">hoặc</span>
+                            </span>
+                            <span class="error-text" style="cursor: pointer" @click="deleteCertificateItem(item)">Xóa</span>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-2">
+                  Bằng đại học
+                </div>
+                <div class="col-9">
+                  <div class="row mb-2">
+                    <div class="col-5">
+                      <v-select
+                        v-model="majorModel"
+                        :options="majorArr"
+                        :reduce="(item) => item"
+                        label="name"
+                        placeholder="Chọn chuyên ngành"
+                        multiple
+                      >
+                        <template #no-options="{ searching }">
+                          <template v-if="searching">
+                            Không có dữ liệu
+                          </template>
+                        </template>
+                      </v-select>
+                    </div>
+                    <div class="col-4">
+                      <v-select
+                        v-model="collegeModel"
+                        :options="collegeArr"
+                        :reduce="(item) => item"
+                        label="name"
+                        placeholder="Chọn đại học (Không bắt buộc)"
+                        multiple
+                      >
+                        <template #no-options="{ searching }">
+                          <template v-if="searching">
+                            Không có dữ liệu
+                          </template>
+                        </template>
+                      </v-select>
+                    </div>
+                    <div class="col-3">
+                      <button
+                        type="button"
+                        class="btn btn-lg border ms-2 ms-lg-3 py-1"
+                        @click="addMajors"
+                      >
+                        Thêm
+                      </button>
+                    </div>
+                  </div>
+                  <div class="mb-2 px-3">
+                    <div v-if="!collegeMajors.length" class="">Chưa thêm bằng đại học</div>
+                    <div v-else>
+                      <ul>
+                        <li v-for="(item, index) in collegeMajors" :key="index">
+                          <div>
+                            Tốt nghiệp
+                            <span v-if="item.colleges.length === 0">
+                              đại học
+                            </span>
+                            <span v-else>
+                              <span v-for="(college, cindex) in item.colleges" :key="cindex">
+                                {{ college.name }}
+                                <span v-if="cindex !== item.colleges.length - 1" class="fw-bold">hoặc</span>
+                              </span>
+                            </span>
+                            <span>chuyên ngành</span>
+                            <span v-for="(iitem, iindex) in item.majors" :key="iindex">
+                              {{ iitem.name }}
+                              <span v-if="iindex !== item.majors.length - 1" class="fw-bold">hoặc</span>
+                            </span>
+                            <span class="error-text" style="cursor: pointer" @click="deleteMajorItem(item)">Xóa</span>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group mb-3 mb-lg-4 row">
+            <label for="example8" class="col-sm-2 col-form-label">Yêu cầu khác <span>*</span></label>
             <div class="col-12 col-sm-10">
               <textarea
                 id="example8"
@@ -422,7 +647,7 @@
           </div>
 
           <div class="form-group mb-3 mb-lg-4 row">
-            <label for="province" class="col-sm-2 col-form-label">都道府県 <span>*</span></label>
+            <label for="province" class="col-sm-2 col-form-label">Trụ sở làm việc (Tỉnh) <span>*</span></label>
             <div class="col-12 col-sm-4">
               <div class="input-group input-group-icon">
                 <span class="input-group-text input-group-text-pre">
@@ -446,7 +671,7 @@
           </div>
 
           <div class="form-group mb-3 mb-lg-4 row">
-            <label for="example9" class="col-sm-2 col-form-label">市区町村番地 <span>*</span></label>
+            <label for="example9" class="col-sm-2 col-form-label">Địa chỉ cụ thể <span>*</span></label>
             <div class="col-12 col-sm-10">
               <input
                 id="example9"
@@ -754,8 +979,45 @@
           holidays: '',
           welfare_regime: '',
           has_vietnamese_staff: 1,
-          overtime: ''
-        }
+          overtime: '',
+        },
+        skillModel: [],
+        skillArr: [
+          {
+            name: 'abc',
+            id: 1
+          },
+          {
+            name: 'xyz',
+            id: 2
+          }
+        ],
+        levelModel: [],
+        levelArr: [
+          {
+            label: 'Có hiểu biết sơ',
+            value: 'Beginner'
+          },
+          {
+            label: 'Hiểu biết trung bình',
+            value: 'Intermediate'
+          },
+          {
+            label: 'Thành thạo',
+            value: 'Advanced'
+          }
+        ],
+        certificateModel: [],
+        certificateArr: [],
+        majorModel: [],
+        majorArr: [],
+        collegeModel: [],
+        collegeArr: [],
+        beginnerSkills: [],
+        intermediateSkills: [],
+        advancedSkills: [],
+        certificates: [],
+        collegeMajors: [],
       }
     },
 
@@ -888,10 +1150,95 @@
         }
         this.$store.dispatch('job/setPrevRoute', '')
       }
-
+      this.getRequirementOptions()
     },
 
     methods: {
+      addSkills() {
+        if (this.skillModel.length === 0) {
+          this.$toast.error('Hãy chọn kỹ năng.');
+        } else {
+          if (!this.levelModel || this.levelModel.length === 0) {
+            this.$toast.error('Hãy chọn mức độ thành thục.');
+            return
+          }
+          if (this.levelModel === 'Beginner') {
+            this.beginnerSkills.push(this.skillModel)
+          }
+          if (this.levelModel === 'Intermediate') {
+            this.intermediateSkills.push(this.skillModel)
+          }
+          if (this.levelModel === 'Advanced') {
+            this.advancedSkills.push(this.skillModel)
+          }
+          this.skillArr = this.skillArr.filter(x => !this.skillModel.includes(x));
+          this.skillModel = []
+          this.levelModel = []
+        }
+      },
+      addCertificates() {
+        if (this.certificateModel.length === 0) {
+          this.$toast.error('Hãy chọn chứng chỉ.');
+        } else {
+          this.certificates.push(this.certificateModel)
+          this.certificateArr = this.certificateArr.filter(x => !this.certificateModel.includes(x));
+          this.certificateModel = []
+        }
+      },
+      addMajors() {
+        if (this.majorModel.length === 0) {
+          this.$toast.error('Hãy chọn chuyên ngành đại học.')
+        } else {
+          this.collegeMajors.push({
+            colleges: this.collegeModel,
+            majors: this.majorModel
+          })
+          this.majorArr = this.majorArr.filter(x => !this.majorModel.includes(x));
+          this.collegeArr = this.collegeArr.filter(x => !this.collegeMajors.includes(x));
+          this.majorModel = []
+          this.collegeModel = []
+        }
+      },
+      deleteBeginnerSkillItem(item) {
+        const index = this.beginnerSkills.indexOf(item);
+        if (index > -1) {
+          this.beginnerSkills.splice(index, 1);
+        }
+      },
+      deleteIntermediateSkillItem(item) {
+        const index = this.intermediateSkills.indexOf(item);
+        if (index > -1) {
+          this.intermediateSkills.splice(index, 1);
+        }
+      },
+      deleteAdvancedSkillItem(item) {
+        const index = this.advancedSkills.indexOf(item);
+        if (index > -1) {
+          this.advancedSkills.splice(index, 1);
+        }
+      },
+      deleteCertificateItem(item) {
+        const index = this.certificates.indexOf(item);
+        if (index > -1) {
+          this.certificates.splice(index, 1);
+        }
+      },
+      deleteMajorItem(item) {
+        const index = this.collegeMajors.indexOf(item);
+        if (index > -1) {
+          this.collegeMajors.splice(index, 1);
+        }
+      },
+      async getRequirementOptions() {
+        const data = await this.$repositories.jobs.getRequirementOptions()
+        if (data.status === 200) {
+          const options = data.data
+          this.skillArr = options.skills
+          this.certificateArr = options.certificates
+          this.majorArr = options.majors
+          this.collegeArr = options.colleges
+        }
+      },
       onInputOrBlurSalaryMin() {
         if (this.job.salary_max) {
           this.$v.job.salary_max.$reset()

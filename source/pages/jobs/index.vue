@@ -25,7 +25,7 @@
             v-model="condition.title"
             type="text"
             class="form-control rounded-pill fix-height"
-            placeholder="タイトル"
+            placeholder="Vị trí công việc"
           />
         </div>
         <div class="col-12 col-lg-4 mb-2 form-group">
@@ -300,7 +300,7 @@ export default {
         },
         {
           key: 'title',
-          label: 'タイトル',
+          label: 'Vị trí công việc',
         },
         {
           key: 'date_start',
@@ -375,19 +375,20 @@ export default {
       this.isHover = !this.isHover
     },
 
-    async checkCreateJob() {
-      try {
-        await this.$repositories.jobs.checkCreateJob().then((res) => {
-          if (res.status === 200) {
-            this.$router.push('/jobs/create')
-          } else {
-            this.$toast.error('求人プランを設定するために、管理者までご連絡ください')
-          }
-        })
-      } catch (e) {
-        this.message = ''
-        this.error = e.response.data.message
-      }
+    checkCreateJob() {
+      this.$router.push('/jobs/create')
+      // try {
+      //   await this.$repositories.jobs.checkCreateJob().then((res) => {
+      //     if (res.status === 200) {
+      //       this.$router.push('/jobs/create')
+      //     } else {
+      //       this.$toast.error('求人プランを設定するために、管理者までご連絡ください')
+      //     }
+      //   })
+      // } catch (e) {
+      //   this.message = ''
+      //   this.error = e.response.data.message
+      // }
     },
 
     async checkDuplicateJob(jobId) {
