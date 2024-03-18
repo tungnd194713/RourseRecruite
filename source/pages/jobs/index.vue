@@ -25,7 +25,7 @@
             v-model="condition.title"
             type="text"
             class="form-control rounded-pill fix-height"
-            placeholder="タイトル"
+            placeholder="Vị trí công việc"
           />
         </div>
         <div class="col-12 col-lg-4 mb-2 form-group">
@@ -300,7 +300,7 @@ export default {
         },
         {
           key: 'title',
-          label: 'タイトル',
+          label: 'Vị trí công việc',
         },
         {
           key: 'date_start',
@@ -376,6 +376,7 @@ export default {
     },
 
     checkCreateJob() {
+      this.$router.push('/jobs/create')
       // try {
       //   await this.$repositories.jobs.checkCreateJob().then((res) => {
       //     if (res.status === 200) {
@@ -388,7 +389,6 @@ export default {
       //   this.message = ''
       //   this.error = e.response.data.message
       // }
-			this.$router.push('/jobs/create')
     },
 
     async checkDuplicateJob(jobId) {

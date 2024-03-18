@@ -31,5 +31,9 @@ export default ($axios) => ({
 
   countJobsPlanA(data) {
     return $axios.post(`${resource}/count-jobs-plan-a`, data)
-  }
+  },
+
+  getRequirementOptions() {
+    return $axios.get(`/companies/requirement-options`)
+  },
 })
