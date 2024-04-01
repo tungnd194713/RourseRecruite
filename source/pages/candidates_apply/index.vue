@@ -453,7 +453,7 @@ export default {
       this.spinner = false
 
       this.items = data.data
-      this.totalItems = data.total
+      this.totalItems = data.total ? data.total : 0;
       this.currentPage = data.current_page
       this.perPage = data.per_page
       this.pageCount =

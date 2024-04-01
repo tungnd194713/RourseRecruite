@@ -6,7 +6,7 @@ export default ($axios) => ({
   },
 
   deleteJob(id) {
-    return $axios.post(`${resource}/delete/${id}`)
+    return $axios.delete(`${resource}/${id}`)
   },
 
   changeStatus(id, data) {

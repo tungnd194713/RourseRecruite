@@ -19,7 +19,7 @@
           <h3 class="text-center">
             <img src="../assets/images/ic_done.svg" alt="">
           </h3>
-          <h3 class="text-center modal-body-text">新規求人登録が完了しました</h3>
+          <h3 class="text-center modal-body-text">Khởi tạo thành công!</h3>
         </div>
         <div class="modal-footer align-items-center d-flex justify-content-center flex-row">
 
