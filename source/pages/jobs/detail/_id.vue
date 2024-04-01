@@ -35,31 +35,15 @@
                     $t(careerList[job.career - 1])
                   }}</span>
                 </div>
-                <div class="d-block">
-                  <span
-                    v-for="(item, index) in job.status_stay"
-                    :key="index"
-                    class="badge"
-                    >{{ $t(statusStays[item]) }}</span
-                  >
-                  <img
-                    width="22"
-                    height="22"
-                    src="../../../assets/images/icon_question.svg"
-                    alt=""
-                    data-bs-toggle="modal"
-                    data-bs-target="#statusStayInfoModal"
-                  />
-                </div>
               </div>
               <div class="row mt-2">
+								<div class="d-flex mb-2">
+                  <span class="me-2">Chấp nhận đào tạo: </span>
+                  <span v-if="job.accept_education"><b>Đào tạo trong {{ job.max_education_month }} tháng <span v-if="job.scholarship > 0">với học bổng {{ job.scholarship }}%</span></b></span>
+                </div>
                 <div class="d-flex mb-2">
                   <span class="me-2">
-                    <img
-                      width="20"
-                      height="20"
-                      src="../../../assets/images/icon_money_outline.svg"
-                    />
+                    Lương:
                   </span>
                   <span
                     ><b
@@ -74,23 +58,15 @@
                 </div>
                 <div class="d-flex mb-2">
                   <span class="me-2">
-                    <img
-                      width="20"
-                      height="20"
-                      src="../../../assets/images/icon_address.svg"
-                    />
+                    Trụ sở:
                   </span>
-                  <span class="flex-grow-1"> {{ $t(provincesList[job.province_id]) }} - 日本</span>
+                  <span class="flex-grow-1"> <b>{{ $t(provincesList[job.province_id]) }}</b></span>
                 </div>
                 <div class="d-flex">
                   <span class="me-2">
-                    <img
-                      width="20"
-                      height="20"
-                      src="../../../assets/images/icon_clock.svg"
-                    />
+                    Thời gian đăng tuyển:
                   </span>
-                  <span>{{ previewDateStart }} - {{ previewDateEnd }}</span>
+                  <span><b>{{ previewDateStart }} - {{ previewDateEnd }}</b></span>
                 </div>
               </div>
             </div>
@@ -102,69 +78,49 @@
           <hr class="my-0" />
           <div class="py-3">
             <div class="d-block mb-5">
-              <p class="salary-note m-0">・時給×実働+残業、休日出勤＝給与</p>
-              <p class="salary-note mb-5">・月給+残業代＝給与</p>
-              <h5><strong>仕事内容</strong></h5>
-              <div class="ps-3 pre-line word-break-break-all">
-                {{ job.content_work }}
+              <h5 class="mb-4"><strong>Nội dung công việc</strong></h5>
+              <div class="ps-3 word-break-break-all">
+								<v-runtime-template :template="`<div>${job.content_work}</div>`"></v-runtime-template>
               </div>
             </div>
             <div class="d-block">
               <table class="table table-bordered">
                 <tbody>
-                  <tr>
-                    <td class="head-table">採用人数</td>
-                    <td class="pre-line word-break-break-all">
-                      {{ job.number_recruitments}}人
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="head-table">応募条件</td>
-                    <td class="pre-line word-break-break-all">
-                      {{ job.conditions_apply}}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="head-table">勤務地</td>
-                    <td class="pre-line word-break-break-all">
-                      {{ job.address_work}}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="head-table">勤務時間</td>
-                    <td class="pre-line word-break-break-all">
-                      {{ job.time_work}}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="head-table">休日</td>
-                    <td class="pre-line word-break-break-all">
-                      {{ job.holidays}}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="head-table">休憩時間 </td>
-                    <td class="pre-line word-break-break-all">
-                      {{ job.break_time}}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>福利厚生</td>
-                    <td class="pre-line word-break-break-all">
-                      {{ job.welfare_regime}}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="head-table">ベトナム人在籍状況</td>
-                    <td class="pre-line word-break-break-all">
-                      {{ hasVietnameseStaffLabelList[parseInt(job.has_vietnamese_staff)] }}
-                    </td>
-                  </tr>
-                  <!--<tr>
-                    <td>残業見込み、休日出勤見込み</td>
-                    <td class="pre-line">{{ job.overtime === 'null' ? '' : job.overtime }}</td>
-                  </tr>-->
-                </tbody>
+									<tr>
+										<td class="head-table">Số lượng tuyện dụng</td>
+										<td class="pre-line word-break-break-all">
+											{{ job.number_recruitments}} người
+										</td>
+									</tr>
+									<tr>
+										<td class="head-table">Điều kiện ứng tuyển</td>
+										<td class="word-break-break-all">
+											<v-runtime-template :template="`<div>${job.conditions_apply}</div>`"></v-runtime-template>
+										</td>
+									</tr>
+									<tr>
+										<td class="head-table">Thời gian làm việc</td>
+										<td class="word-break-break-all">
+											<v-runtime-template :template="`<div>${job.time_work}</div>`"></v-runtime-template>
+										</td>
+									</tr>
+									<tr>
+										<td class="head-table">Phúc lợi</td>
+										<td class="word-break-break-all">
+											<v-runtime-template :template="`<div>${job.welfare_regime}</div>`"></v-runtime-template>
+										</td>
+									</tr>
+									<tr>
+										<td class="head-table">Địa chỉ</td>
+										<td class="pre-line word-break-break-all">
+											{{ job.address_work}}
+										</td>
+									</tr>
+									<!--<tr>
+										<td>残業見込み、休日出勤見込み</td>
+										<td class="pre-line">{{ job.overtime}}</td>
+									</tr>-->
+								</tbody>
               </table>
             </div>
           </div>
@@ -460,6 +416,7 @@
 </template>
 
 <script>
+	import VRuntimeTemplate from "v-runtime-template";
   import 'bootstrap/dist/css/bootstrap.css'
   import { validationMixin } from 'vuelidate'
   import {
@@ -481,7 +438,8 @@
     components: {
       Pagination,
       CvUserModal,
-      StatusStayInfoModal
+      StatusStayInfoModal,
+			VRuntimeTemplate
     },
     mixins: [validationMixin],
     layout: 'auth',
@@ -814,11 +772,12 @@
     },
 
       onClickEditJob() {
-        if (this.$moment() < this.$moment(this.job.date_start)) {
-          this.$router.push('/jobs/update/' + this.$route.params.id)
-        } else {
-          this.$toast.error('この求人を編集できません')
-        }
+				this.$router.push('/jobs/update/' + this.$route.params.id)
+        // if (this.$moment() < this.$moment(this.job.date_start)) {
+        //   this.$router.push('/jobs/update/' + this.$route.params.id)
+        // } else {
+        //   this.$toast.error('この求人を編集できません')
+        // }
       },
 
       async getJobFromApi() {
@@ -970,4 +929,9 @@
 @import '../../../styles/pages/jobs/detail_job.scss';
 @import '../../../styles/pages/jobs/cv_user.scss';
 @import '../../../styles/pages/candidates_apply/list.scss';
+</style>
+<style>
+p {
+	margin-bottom: 0 !important;
+}
 </style>

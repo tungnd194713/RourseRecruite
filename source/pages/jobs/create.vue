@@ -138,6 +138,73 @@
               </div>
             </div>
           </div>
+					<div class="form-group mb-3 mb-lg-4 row">
+            <label for="exampleInput5" class="col-sm-2 col-form-label">Chấp nhận đào tạo</label>
+            <div class="col-12 col-sm-4">
+              <div class="input-group input-group-icon">
+								<div class="form-check form-switch">
+	                <input id="flexSwitchCheckChecked" v-model="job.accept_education" class="form-check-input" type="checkbox" role="switch" @change="resetEducation">
+								</div>
+              </div>
+            </div>
+          </div>
+					<div v-if="job.accept_education" class="form-group mb-3 mb-lg-4 row">
+            <label for="exampleInput5" class="col-2 col-form-label"></label>
+            <div class="col-10">
+              <div class="row mb-3">
+								<div class="col-3">
+									Thời gian đào tạo tối đa (tháng)
+								</div>
+								<div class="col-4">
+									<div class="input-group input-group-icon">
+										<span class="input-group-text input-group-text-pre">
+												<img src="../../assets/images/icon_job_display_month.svg" alt="">
+										</span>
+										<input
+											id="exampleInput5"
+											ref="numberRecruitmentsTextBox"
+											v-model="job.max_education_month"
+											type="number"
+											class="form-control rounded-end"
+											min="1"
+											@input="$v.job.max_education_month.$touch()"
+                  		@blur="$v.job.max_education_month.$touch()"
+											@keypress="keyPressForNumberInput"
+										>
+									</div>
+									<div v-if="$v.job.max_education_month.$error">
+										<div v-if="!$v.job.max_education_month.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									Học bổng (%)
+								</div>
+								<div class="col-4">
+									<div class="input-group input-group-icon">
+										<span class="input-group-text input-group-text-pre">
+												<img src="../../assets/images/icon_money_jp.svg" alt="">
+										</span>
+										<input
+											id="exampleInput5"
+											ref="numberRecruitmentsTextBox"
+											v-model="job.scholarship"
+											type="number"
+											class="form-control rounded-end"
+                  		min="1"
+											@input="$v.job.scholarship.$touch()"
+                  		@blur="$v.job.scholarship.$touch()"
+											@keypress="keyPressForNumberInput"
+										>
+									</div>
+									<div v-if="$v.job.scholarship.$error">
+										<div v-if="!$v.job.scholarship.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
+									</div>
+								</div>
+							</div>
+            </div>
+          </div>
           <div class="form-group mb-1 row">
             <label class="col-sm-2 col-form-label">Khoảng lương <span>*</span></label>
             <div v-if="displaySalary === 'salary_range'" class="col-12 col-sm-4">
@@ -777,6 +844,9 @@
           time_work: '',
           welfare_regime: '',
           overtime: '',
+					accept_education: false,
+					max_education_month: 0,
+					scholarship: 0,
         },
         skillModel: [],
         skillArr: [
@@ -884,6 +954,17 @@
         welfare_regime: {
           required,
         },
+				accept_education: {},
+				max_education_month: {
+					required: requiredIf(function() {
+						return this.job.accept_education;
+					})
+				},
+				scholarship: {
+					required: requiredIf(function() {
+						return this.job.accept_education;
+					})
+				}
       }
     },
 
@@ -927,6 +1008,10 @@
     },
 
     methods: {
+			resetEducation() {
+				this.job.max_education_month = 0
+				this.job.scholarship = 0
+			},
       addSkills() {
         if (this.skillModel.length === 0) {
           this.$toast.error('Hãy chọn kỹ năng.');
@@ -1103,8 +1188,8 @@
       },
 
       previewJob() {
-        this.$v.job.$touch()
-        if (!this.$v.job.$invalid) {
+        // this.$v.job.$touch()
+        // if (!this.$v.job.$invalid) {
           // if (parseInt(this.job.type_plan) === 1) {
           //   this.$repositories.jobs.countJobsPlanA({ date_start: this.job.date_start }).then(res => {
           //     if (res.status === 200) {
@@ -1125,43 +1210,44 @@
 					this.$store.dispatch('job/setJob', this.job)
 					this.$router.push('/jobs/preview-new')
           // }
-        } else if (this.$v.job.title.$error) {
-          this.$nextTick(() => {
-            this.$refs.titleTextBox?.focus()
-          })
-        } else if (this.$v.job.number_recruitments.$error) {
-          this.$nextTick(() => {
-            this.$refs.numberRecruitmentsTextBox?.focus()
-          })
-        } else if (this.$v.job.salary_min.$error) {
-          this.$nextTick(() => {
-            this.$refs.salaryMinTextBox?.focus()
-          })
-        } else if (this.$v.job.salary_max.$error) {
-          this.$nextTick(() => {
-            this.$refs.salaryMaxTextBox?.focus()
-          })
-        } else if (this.$v.job.content_work.$error) {
-          this.$nextTick(() => {
-            this.$refs.contentWorkTextBox?.focus()
-          })
-        } else if (this.$v.job.conditions_apply.$error) {
-          this.$nextTick(() => {
-            this.$refs.conditionsApplyTextBox?.focus()
-          })
-        } else if (this.$v.job.address_work.$error) {
-          this.$nextTick(() => {
-            this.$refs.addressWorkTextBox?.focus()
-          })
-        } else if (this.$v.job.time_work.$error) {
-          this.$nextTick(() => {
-            this.$refs.timeWorkTextBox?.focus()
-          })
-        } else if (this.$v.job.welfare_regime.$error) {
-          this.$nextTick(() => {
-            this.$refs.welfareRegimeTextBox?.focus()
-          })
-        }
+        // } 
+				// else if (this.$v.job.title.$error) {
+        //   this.$nextTick(() => {
+        //     this.$refs.titleTextBox?.focus()
+        //   })
+        // } else if (this.$v.job.number_recruitments.$error) {
+        //   this.$nextTick(() => {
+        //     this.$refs.numberRecruitmentsTextBox?.focus()
+        //   })
+        // } else if (this.$v.job.salary_min.$error) {
+        //   this.$nextTick(() => {
+        //     this.$refs.salaryMinTextBox?.focus()
+        //   })
+        // } else if (this.$v.job.salary_max.$error) {
+        //   this.$nextTick(() => {
+        //     this.$refs.salaryMaxTextBox?.focus()
+        //   })
+        // } else if (this.$v.job.content_work.$error) {
+        //   this.$nextTick(() => {
+        //     this.$refs.contentWorkTextBox?.focus()
+        //   })
+        // } else if (this.$v.job.conditions_apply.$error) {
+        //   this.$nextTick(() => {
+        //     this.$refs.conditionsApplyTextBox?.focus()
+        //   })
+        // } else if (this.$v.job.address_work.$error) {
+        //   this.$nextTick(() => {
+        //     this.$refs.addressWorkTextBox?.focus()
+        //   })
+        // } else if (this.$v.job.time_work.$error) {
+        //   this.$nextTick(() => {
+        //     this.$refs.timeWorkTextBox?.focus()
+        //   })
+        // } else if (this.$v.job.welfare_regime.$error) {
+        //   this.$nextTick(() => {
+        //     this.$refs.welfareRegimeTextBox?.focus()
+        //   })
+        // }
       }
     }
   }

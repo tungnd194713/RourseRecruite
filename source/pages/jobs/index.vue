@@ -119,7 +119,7 @@
                 <td class="align-middle min-width-100px">{{ item.date_start }}</td>
                 <td class="align-middle min-width-100px">{{ item.date_end }}</td>
                 <td class="align-middle min-width-100px">
-                  {{ $t(careerList[item.career - 1]) }}
+                  {{ item.max_education_month ? item.max_education_month + ' tháng' : 'Không' }}
                 </td>
                 <td class="align-middle min-width-80px">{{ item.candidate_applied.length }}</td>
                 <td class="align-middle">
@@ -310,8 +310,8 @@ export default {
           label: 'Ngày kết thúc',
         },
         {
-          key: 'career',
-          label: 'Lĩnh vực',
+          key: 'max_education_time',
+          label: 'Thời gian đào tạo',
         },
         {
           key: 'number_apply',

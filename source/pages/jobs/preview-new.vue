@@ -20,17 +20,21 @@
                 </div>
               </div>
               <div class="row mt-2">
+								<div class="d-block mb-2">
+                  <span class="mr-2">Chấp nhận đào tạo: </span>
+                  <span v-if="job.accept_education"><b>Đào tạo trong {{ job.max_education_month }} tháng <span v-if="job.scholarship > 0">với học bổng {{ job.scholarship }}%</span></b></span>
+                </div>
                 <div class="d-block mb-2">
-                  <span class="mr-2"><img width="20" height="20" src="../../assets/images/icon_money_outline.svg"></span>
+                  <span class="mr-2">Lương: </span>
                   <span><b>{{ job.salary_min ? Intl.NumberFormat().format(job.salary_min) + ' - ' : 'Upto '}}{{ Intl.NumberFormat().format(job.salary_max)}}</b></span>
                 </div>
                 <div class="d-block mb-2">
-                  <span class="mr-2"><img width="20" height="20" src="../../assets/images/icon_address.svg"></span>
-                  <span> {{ $t(provincesList[job.province_id]) }} </span>
+                  <span class="mr-2">Trụ sở làm việc: </span>
+                  <span> <b>{{ $t(provincesList[job.province_id]) }}</b> </span>
                 </div>
                 <div class="d-block">
-                  <span class="mr-2"><img width="20" height="20" src="../../assets/images/icon_clock.svg"></span>
-                  <span>{{ previewDateStart}} - {{ previewDateEnd}}</span>
+                  <span class="mr-2">Thời gian đăng tuyển: </span>
+                  <span><b>{{ previewDateStart}} - {{ previewDateEnd}}</b></span>
                 </div>
               </div>
             </div>
@@ -249,6 +253,9 @@
         formData.append('address_work', this.job.address_work)
         formData.append('time_work', this.job.time_work)
         formData.append('welfare_regime', this.job.welfare_regime)
+        formData.append('accept_education', this.job.accept_education)
+        formData.append('max_education_month', this.job.max_education_month)
+        formData.append('scholarship', this.job.scholarship)
         // formData.append('overtime', this.job.overtime)
         formData.append('beginnerSkills', JSON.stringify(this.job.beginnerSkills))
         formData.append('intermediateSkills', JSON.stringify(this.job.intermediateSkills))
