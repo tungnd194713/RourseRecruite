@@ -32,7 +32,8 @@
               <div class="row mt-2">
 								<div class="d-block mb-2">
                   <span class="mr-2">Chấp nhận đào tạo: </span>
-                  <span v-if="job.accept_education"><b>Đào tạo trong {{ job.max_education_month }} tháng <span v-if="job.scholarship > 0">với học bổng {{ job.scholarship }}%</span></b></span>
+                  <span v-if="job.accept_education"><b>Có thể đào tạo trong {{ job.max_education_month }} tháng <span v-if="job.scholarship > 0">với học bổng {{ job.scholarship }}%</span></b></span>
+                  <span v-else>Không</span>
                 </div>
                 <div class="d-block mb-2">
                   <span class="mr-2">Lương: </span>

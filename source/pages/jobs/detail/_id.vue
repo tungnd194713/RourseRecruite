@@ -41,7 +41,8 @@
               <div class="row mt-2">
 								<div class="d-flex mb-2">
                   <span class="me-2">Chấp nhận đào tạo: </span>
-                  <span v-if="job.accept_education"><b>Đào tạo trong {{ job.max_education_month }} tháng <span v-if="job.scholarship > 0">với học bổng {{ job.scholarship }}%</span></b></span>
+                  <span v-if="job.accept_education"><b>Có thể đào tạo trong {{ job.max_education_month }} tháng <span v-if="job.scholarship > 0">với học bổng {{ job.scholarship }}%</span></b></span>
+                  <span v-else>Không</span>
                 </div>
                 <div class="d-flex mb-2">
                   <span class="me-2">
@@ -90,13 +91,13 @@
                 <tbody>
                   <tr>
                     <td class="head-table">Số người ứng tuyển</td>
-                    <td class="pre-line word-break-break-all">
+                    <td>
                       {{ job.number_recruitments}} người
                     </td>
                   </tr>
                   <tr>
                     <td class="head-table">Yêu cầu kỹ thuật</td>
-                    <td class="word-break-break-all requirements">
+                    <td class="requirements">
                       <ul v-if="majorColleges.length">
                         <li v-for="(major, index) in majorColleges" :key="index">
                           Tốt nghiệp đại học
@@ -154,25 +155,25 @@
                   </tr>
                   <tr>
                     <td class="head-table">Điều kiện khác</td>
-                    <td class="pre-line word-break-break-all">
+                    <td>
                       <v-runtime-template :template="`<div>${job.conditions_apply}</div>`"></v-runtime-template>
                     </td>
                   </tr>
                   <tr>
                     <td class="head-table">Địa chỉ</td>
-                    <td class="pre-line word-break-break-all">
+                    <td>
                       {{ job.address_work}}
                     </td>
                   </tr>
                   <tr>
                     <td class="head-table">Thời gian làm việc</td>
-                    <td class="pre-line word-break-break-all">
+                    <td>
                       <v-runtime-template :template="`<div>${job.time_work}</div>`"></v-runtime-template>
                     </td>
                   </tr>
                   <tr>
                     <td>Phúc lợi</td>
-                    <td class="pre-line word-break-break-all">
+                    <td>
                       <v-runtime-template :template="`<div>${job.welfare_regime}</div>`"></v-runtime-template>
                     </td>
                   </tr>
@@ -923,9 +924,6 @@ p {
 
 <style lang="scss">
 .detail-job-content {
-	li {
-		height: 21px;
-	}
 	p {
 		margin: 0;
 	}

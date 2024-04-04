@@ -382,10 +382,10 @@
                   }"
                 >
                   <div
-                    v-if="job.content_work.length < 200"
+                    v-if="job.content_work.length < 1000"
                     class="error-text text-black"
                   >
-                    Còn lại {{ 200 - job.content_work.length }} ký tự
+                    Còn lại {{ 1000 - job.content_work.length }} ký tự
                   </div>
                   <div v-else class="error-text text-black">Còn lại 0 ký tự</div>
                 </div>
@@ -1015,7 +1015,6 @@
         },
         content_work: {
           minLength: minLength(30),
-          maxLength: maxLength(200),
           required,
         },
         conditions_apply: {
@@ -1291,7 +1290,7 @@
 					this.$store.dispatch('job/setJob', this.job)
 					this.$router.push('/jobs/preview-new')
           // }
-        // } 
+        // }
 				// else if (this.$v.job.title.$error) {
         //   this.$nextTick(() => {
         //     this.$refs.titleTextBox?.focus()
