@@ -576,35 +576,27 @@
           },
           {
             key: 'candidate_name',
-            label: '氏名'
+            label: 'Họ tên'
           },
           {
             key: 'job_title',
-            label: '求人タイトル'
+            label: 'Vị trí'
           },
           {
             key: 'apply_date',
-            label: '応募日'
+            label: 'Ngày ứng tuyển'
           },
           {
-            key: 'employment_form',
-            label: '雇用形態'
+            key: 'matching_point',
+            label: 'Độ phù hợp'
           },
           {
-            key: 'residence_card',
-            label: '在留カード'
-          },
-          {
-            key: 'status_stay',
-            label: '在留資格確認'
-          },
-          {
-            key: 'note',
-            label: '備考'
+            key: 'education_register',
+            label: 'Đăng kí đào tạo'
           },
           {
             key: 'status',
-            label: 'ステータス'
+            label: 'Tình trạng'
           }
         ],
         currentPage: 1,

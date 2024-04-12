@@ -19,5 +19,9 @@ export default ($axios) => ({
 
     translateCvCandidate(candidateApplyId) {
         return $axios.get(`${resource}/translate/${candidateApplyId}`)
-    }
+    },
+
+		getUserCv(userId) {
+			return $axios.get(`${resource}/${userId}`)
+		}
 })
