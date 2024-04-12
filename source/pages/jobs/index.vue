@@ -116,7 +116,7 @@
                     >{{ item.title }}</a
                   >
                 </td>
-                <td class="align-middle min-width-100px">{{ item.date_start }}</td>
+                <td class="align-middle min-width-100px">{{ formatDate(item.date_start) }}</td>
                 <td class="align-middle min-width-100px">{{ item.date_end }}</td>
                 <td class="align-middle min-width-100px">
                   {{ item.max_education_month ? item.max_education_month + ' tháng' : 'Không' }}
@@ -368,6 +368,12 @@ export default {
     },
     mouseLeave() {
       this.isHover = !this.isHover
+    },
+
+    formatDate(date) {
+      if (date) {
+        return date.split('T')[0];
+      }
     },
 
     checkCreateJob() {

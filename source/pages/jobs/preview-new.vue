@@ -14,6 +14,16 @@
             </div>
             <div class="col-12 col-xl-6 mt-4 mt-lg-0">
               <h1 class="mb-3 mb-lg-4"> {{ job.title}}</h1>
+              <div class="row">
+                <div class="d-block">
+                  <span
+                    v-for="(item, index) in previewSkills"
+                    :key="index"
+                    class="badge"
+                    >{{ item }}</span
+                  >
+                </div>
+              </div>
               <div class="row mb-4">
                 <div class="col-12">
                   <button id="btn-apply" class="btn btn-secondary w-100 h4">Ứng tuyển</button>
@@ -56,6 +66,64 @@
                 <td class="head-table">Số lượng tuyện dụng</td>
                 <td class="pre-line word-break-break-all">
                   {{ job.number_recruitments}} người
+                </td>
+              </tr>
+              <tr>
+                <td class="head-table">Yêu cầu kỹ thuật</td>
+                <td class="word-break-break-all requirements">
+                  <ul v-if="job.collegeMajors.length">
+                    <li v-for="(major, index) in job.collegeMajors" :key="index">
+                      Tốt nghiệp đại học
+                      <span v-if="major.colleges.length">
+                        <span v-for="(college, cindex) in major.colleges" :key="cindex">
+                          {{ college.name }}
+                          <span v-if="cindex !== major.colleges.length - 1" class="fw-bold">hoặc</span>
+                        </span>
+                      </span>
+                        chuyên ngành
+                      <span v-for="(iitem, iindex) in major.majors" :key="iindex">
+                        {{ iitem.name }}
+                        <span v-if="iindex !== major.majors.length - 1">hoặc</span>
+                      </span>
+                    </li>
+                  </ul>
+                  <ul v-if="job.beginnerSkills.length">
+                    <li v-for="(skill, index) in job.beginnerSkills" :key="index">
+                      Đã có kinh nghiệm
+                      <span v-for="(iitem, iindex) in skill" :key="iindex">
+                        {{ iitem.name }}
+                        <span v-if="iindex !== skill.length - 1">hoặc</span>
+                      </span>
+                    </li>
+                  </ul>
+                  <ul v-if="job.intermediateSkills.length">
+                    <li v-for="(skill, index) in job.intermediateSkills" :key="index">
+                      Hiểu rõ về
+                      <span v-for="(iitem, iindex) in skill" :key="iindex">
+                        {{ iitem.name }}
+                        <span v-if="iindex !== skill.length - 1">hoặc</span>
+                      </span>
+                    </li>
+                  </ul>
+                  <ul v-if="job.advancedSkills.length">
+                    <li v-for="(skill, index) in job.advancedSkills" :key="index">
+                      Thành thạo
+                      <span v-for="(iitem, iindex) in skill" :key="iindex">
+                        {{ iitem.name }}
+                        <span v-if="iindex !== skill.length - 1">hoặc</span>
+                      </span>
+                    </li>
+                  </ul>
+                  <ul v-if="job.certificates.length">
+                    <li v-for="(certificate, index) in job.certificates" :key="index">
+                      Đạt được chứng chỉ
+                      <span v-for="(iitem, iindex) in certificate" :key="iindex">
+                        {{ iitem.name }}
+                        <span v-if="iindex !== certificate.length - 1">hoặc</span>
+                      </span>
+                        hoặc tương đương
+                    </li>
+                  </ul>
                 </td>
               </tr>
               <tr>
@@ -181,7 +249,8 @@
 					advancedSkills: [],
 					certificates: [],
 					collegeMajors: [],
-        }
+        },
+        previewSkills: [],
       }
     },
 
@@ -204,6 +273,7 @@
       if (Object.keys(this.job).length === 0 && this.job.constructor === Object) {
         this.$router.push('/jobs/create')
       }
+      this.previewSkills = this.job.beginnerSkills?.concat(this.job.intermediateSkills, this.job.advancedSkills).flat().map(item => item.name).slice(0, 3);
     },
 
     methods: {

@@ -2,7 +2,7 @@ export default [
   {
     tab: 'profile',
     srcImage: '/icon_building.svg',
-    name: 'プロフィール',
+    name: 'Profile',
     path: '/companies',
   },
   {
@@ -17,10 +17,10 @@ export default [
     name: 'Danh sách ứng viên',
     path: '/candidates_apply',
   },
-  {
-    tab: 'invoice',
-    srcImage: '/icon_order.svg',
-    name: '決済',
-    path: '/companies/packages',
-  }
+  // {
+  //   tab: 'invoice',
+  //   srcImage: '/icon_order.svg',
+  //   name: '決済',
+  //   path: '/companies/packages',
+  // }
 ]

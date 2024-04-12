@@ -19,7 +19,7 @@
         <div class="mt-0 mt-lg-2 pt-0 pt-lg-3 pb-2">
           <div class="row">
             <div class="col-12 col-lg-6 pe-3 pe-xl-5">
-              <img class="img-fluid w-100 rounded-img" :src="previewImageJobUrl()" alt="" />
+              <img class="img-fluid w-100 rounded-img" :src="job.job_image" alt="" />
             </div>
             <div class="col-12 col-lg-6 mt-4 mt-lg-0">
               <h1 class="mb-3 mb-lg-4"> {{ job.title}}</h1>
@@ -30,10 +30,12 @@
 <!--              </div>-->
               <div class="row">
                 <div class="d-block">
-                  <span class="badge">{{ previewFormRecruitment() }}</span>
-                  <span class="badge">{{
-                    $t(careerList[job.career - 1])
-                  }}</span>
+                  <span
+                    v-for="(item, index) in previewSkills"
+                    :key="index"
+                    class="badge"
+                    >{{ item }}</span
+                  >
                 </div>
               </div>
               <div class="row mt-2">
@@ -86,41 +88,99 @@
             <div class="d-block">
               <table class="table table-bordered">
                 <tbody>
-									<tr>
-										<td class="head-table">Số lượng tuyện dụng</td>
-										<td class="pre-line word-break-break-all">
-											{{ job.number_recruitments}} người
-										</td>
-									</tr>
-									<tr>
-										<td class="head-table">Điều kiện ứng tuyển</td>
-										<td class="word-break-break-all">
-											<v-runtime-template :template="`<div>${job.conditions_apply}</div>`"></v-runtime-template>
-										</td>
-									</tr>
-									<tr>
-										<td class="head-table">Thời gian làm việc</td>
-										<td class="word-break-break-all">
-											<v-runtime-template :template="`<div>${job.time_work}</div>`"></v-runtime-template>
-										</td>
-									</tr>
-									<tr>
-										<td class="head-table">Phúc lợi</td>
-										<td class="word-break-break-all">
-											<v-runtime-template :template="`<div>${job.welfare_regime}</div>`"></v-runtime-template>
-										</td>
-									</tr>
-									<tr>
-										<td class="head-table">Địa chỉ</td>
-										<td class="pre-line word-break-break-all">
-											{{ job.address_work}}
-										</td>
-									</tr>
-									<!--<tr>
-										<td>残業見込み、休日出勤見込み</td>
-										<td class="pre-line">{{ job.overtime}}</td>
-									</tr>-->
-								</tbody>
+                  <tr>
+                    <td class="head-table">Số người ứng tuyển</td>
+                    <td class="pre-line word-break-break-all">
+                      {{ job.number_recruitments}} người
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="head-table">Yêu cầu kỹ thuật</td>
+                    <td class="word-break-break-all requirements">
+                      <ul v-if="majorColleges.length">
+                        <li v-for="(major, index) in majorColleges" :key="index">
+                          Tốt nghiệp đại học
+                          <span v-if="major.colleges.length">
+                            <span v-for="(college, cindex) in major.colleges" :key="cindex">
+                              {{ college.name }}
+                              <span v-if="cindex !== major.colleges.length - 1" class="fw-bold">hoặc</span>
+                            </span>
+                          </span>
+                           chuyên ngành
+                          <span v-for="(iitem, iindex) in major.majors" :key="iindex">
+                            {{ iitem.name }}
+                            <span v-if="iindex !== major.majors.length - 1">hoặc</span>
+                          </span>
+                        </li>
+                      </ul>
+                      <ul v-if="beginnerSkills.length">
+                        <li v-for="(skill, index) in beginnerSkills" :key="index">
+                          Đã có kinh nghiệm
+                          <span v-for="(iitem, iindex) in skill" :key="iindex">
+                            {{ iitem.name }}
+                            <span v-if="iindex !== skill.length - 1">hoặc</span>
+                          </span>
+                        </li>
+                      </ul>
+                      <ul v-if="intermediateSkills.length">
+                        <li v-for="(skill, index) in intermediateSkills" :key="index">
+                          Hiểu rõ về
+                          <span v-for="(iitem, iindex) in skill" :key="iindex">
+                            {{ iitem.name }}
+                            <span v-if="iindex !== skill.length - 1">hoặc</span>
+                          </span>
+                        </li>
+                      </ul>
+                      <ul v-if="advancedSkills.length">
+                        <li v-for="(skill, index) in advancedSkills" :key="index">
+                          Thành thạo
+                          <span v-for="(iitem, iindex) in skill" :key="iindex">
+                            {{ iitem.name }}
+                            <span v-if="iindex !== skill.length - 1">hoặc</span>
+                          </span>
+                        </li>
+                      </ul>
+                      <ul v-if="certificates.length">
+                        <li v-for="(certificate, index) in certificates" :key="index">
+                          Đạt được chứng chỉ
+                          <span v-for="(iitem, iindex) in certificate" :key="iindex">
+                            {{ iitem.name }}
+                            <span v-if="iindex !== certificate.length - 1">hoặc</span>
+                          </span>
+                           hoặc tương đương
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="head-table">Điều kiện khác</td>
+                    <td class="pre-line word-break-break-all">
+                      <v-runtime-template :template="`<div>${job.conditions_apply}</div>`"></v-runtime-template>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="head-table">Địa chỉ</td>
+                    <td class="pre-line word-break-break-all">
+                      {{ job.address_work}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="head-table">Thời gian làm việc</td>
+                    <td class="pre-line word-break-break-all">
+                      <v-runtime-template :template="`<div>${job.time_work}</div>`"></v-runtime-template>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Phúc lợi</td>
+                    <td class="pre-line word-break-break-all">
+                      <v-runtime-template :template="`<div>${job.welfare_regime}</div>`"></v-runtime-template>
+                    </td>
+                  </tr>
+                  <!--<tr>
+                    <td>残業見込み、休日出勤見込み</td>
+                    <td class="pre-line">{{ job.overtime === 'null' ? '' : job.overtime }}</td>
+                  </tr>-->
+                </tbody>
               </table>
             </div>
           </div>
@@ -146,11 +206,6 @@
     <div class="container mt-3 mt-lg-4 list-user">
       <div class="d-flex align-items-end title mb-1">
         <h2 class="flex-grow-1">Danh sách ứng viên</h2>
-        <span>
-          <span class="me-0 me-lg-2">
-            <a class="text-decoration-none" href="https://lapse-immi.moj.go.jp/ZEC/appl/e0/ZEC2/pages/FZECST021.aspx" target="_blank">在留資格はこのリンクから確認できます</a>
-          </span>
-        </span>
       </div>
       <div class="row table-responsive box-table">
         <table class="table table-list-cv">
@@ -230,7 +285,7 @@
           v-if="totalItems === 0 && !loadingListCv"
           class="text-center w-100 p-3 m-0 bg-white border-bottom border-1"
         >
-          データなし
+          Không có dữ liệu
         </h4>
       </div>
       <Pagination
@@ -393,7 +448,7 @@
               class="success-icon"
               src="../../../assets/images/icon_success.svg"
             />
-            <h1 class="confirm-text">新規求人登録が完了しました。</h1>
+            <h1 class="confirm-text">Khởi tạo thành công!</h1>
           </div>
         </div>
       </div>
@@ -438,8 +493,8 @@
     components: {
       Pagination,
       CvUserModal,
-      StatusStayInfoModal,
-			VRuntimeTemplate
+			VRuntimeTemplate,
+      StatusStayInfoModal
     },
     mixins: [validationMixin],
     layout: 'auth',
@@ -479,69 +534,25 @@
         ],
         displayMonthList: [
           {
-            text: '1 month',
+            text: '1 tháng',
             value: 1
           },
           {
-            text: '2 months',
+            text: '2 tháng',
             value: 2
           },
           {
-            text: '3 months',
+            text: '3 tháng',
             value: 3
           },
           {
-            text: '4 months',
+            text: '4 tháng',
             value: 4
           },
           {
-            text: '5 months',
+            text: '5 tháng',
             value: 5
           },
-        ],
-        formRecruitmentList: [
-          {
-            text: 'フルタイム',
-            value: 1
-          },
-          {
-            text: '2-アルバイト',
-            value: 2
-          },
-        ],
-        statusStayList: [
-          {
-            text: '特定技能',
-            value: 1
-          },
-          {
-            text: '技能実習',
-            value: 2
-          },
-          {
-            text: '特定活動',
-            value: 3
-          },
-          {
-            text: '留学生',
-            value: 4
-          },
-          {
-            text: '技術・人文知識・国際業務',
-            value: 5
-          },
-          {
-            text: '定住',
-            value: 6
-          },
-          {
-            text: '永住',
-            value: 7
-          },
-          {
-            text: '家族滞在',
-            value: 8
-          }
         ],
         careerList: [],
         job: {
@@ -576,7 +587,7 @@
           },
           {
             key: 'candidate_name',
-            label: 'Họ tên'
+            label: 'Tên ứng viên'
           },
           {
             key: 'job_title',
@@ -693,7 +704,8 @@
           updated_at : '',
           candidate_educations_jobs : [],
           candidate_foreign_languages : [],
-          candidate_certificates : []
+          candidate_certificates : [],
+          job_image: '',
         },
         educationsOfCandidate: [],
         jobsOfCandidate: [],
@@ -701,6 +713,12 @@
         residenceCardConfirm,
         statusCandidateApply,
         careerImages,
+        beginnerSkills: [],
+        intermediateSkills: [],
+        advancedSkills: [],
+        certificates: [],
+        majorColleges: [],
+        previewSkills: [],
       }
     },
 
@@ -736,33 +754,10 @@
   created() {
     this.careerList = defaultCareers
     this.getJobFromApi()
-    this.getListCV(this.currentPage)
+    // this.getListCV(this.currentPage)
   },
 
   methods: {
-    filterPreviewFormRecruitment(element) {
-      return element.value === this.job.form_recruitment
-    },
-
-    previewFormRecruitment() {
-      return this.job.form_recruitment
-        ? this.formRecruitmentList.filter(this.filterPreviewFormRecruitment)[0].text
-        : null
-    },
-
-    filterPreviewStatusStay(element) {
-      for (let i = 0; i < this.job.status_stay.length; i++) {
-        if (element.value === this.job.status_stay[i]) {
-          return true
-        }
-      }
-      return false
-    },
-
-    previewStatusStay() {
-      return this.statusStayList.filter(this.filterPreviewStatusStay)
-    },
-
       onClickEditJob() {
 				this.$router.push('/jobs/update/' + this.$route.params.id)
         // if (this.$moment() < this.$moment(this.job.date_start)) {
@@ -777,7 +772,13 @@
         const {data} = await this.$repositories.jobs.getJob(this.$route.params.id)
         if (data.job) {
           this.job = Object.assign({}, data.job)
-          this.job.status_stay = data.job.status_stay.split(',')
+          this.job.job_image = this.job.image_job ? this.url_file + this.job.image_job : require(`@/assets/images/draft` + careerImages[this.job.career - 1]?.image)
+          this.beginnerSkills = [...data.beginnerSkills]
+          this.intermediateSkills = [...data.intermediateSkills]
+          this.advancedSkills = [...data.advancedSkills]
+          this.certificates = [...data.certificates]
+          this.majorColleges = [...data.majorColleges]
+          this.previewSkills = data.previewSkills.flat().map((item) => item.name).slice(0, 3);
         } else {
           this.$router.push('/jobs')
         }
@@ -909,10 +910,6 @@
         }
       )
     },
-    previewImageJobUrl() {
-        // return this.job.image_job ? this.url_file + this.job.image_job : require(`@/assets/images/draft` + careerImages[this.job.career - 1]?.image)
-        return this.job.image_job ? this.url_file + this.job.image_job : ''
-    },
   },
 }
 </script>
@@ -925,5 +922,21 @@
 <style>
 p {
 	margin-bottom: 0 !important;
+}
+</style>
+
+<style lang="scss">
+.detail-job-content {
+	li {
+		height: 21px;
+	}
+	p {
+		margin: 0;
+	}
+}
+.requirements {
+  ul {
+    margin-bottom: 0 !important;
+  }
 }
 </style>
