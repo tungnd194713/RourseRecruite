@@ -599,12 +599,16 @@
             label: 'Ngày ứng tuyển'
           },
           {
-            key: 'note',
-            label: 'Nhận xét'
+            key: 'matching_point',
+            label: 'Độ phù hợp'
+          },
+          {
+            key: 'education_register',
+            label: 'Đăng kí đào tạo'
           },
           {
             key: 'status',
-            label: 'Trạng thái'
+            label: 'Tình trạng'
           }
         ],
         currentPage: 1,
