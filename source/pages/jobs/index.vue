@@ -121,7 +121,8 @@
                 <td class="align-middle min-width-100px">
                   {{ item.max_education_month ? item.max_education_month + ' tháng' : 'Không' }}
                 </td>
-                <td class="align-middle min-width-80px">{{ item.candidate_applied.length }}</td>
+                <td class="align-middle min-width-80px">{{ item.candidate_applies.length }}</td>
+                <td class="align-middle min-width-80px">{{ item.education_status ? jobEducationStatus[item.education_status - 1] : 'Không đăng kí' }}</td>
                 <td class="align-middle">
                   <div class="btn-group btn-toggle rounded-pill btn-switch">
                     <button
@@ -279,6 +280,7 @@ import 'vue2-datepicker/index.css'
 import 'vue2-datepicker/locale/ja'
 import Pagination from '../../components/Pagination'
 import defaultCareers from '~/constants/careers'
+import jobEducationStatus from '~/constants/jobEducationStatus'
 
 export default {
   name: 'ListJob',
@@ -318,6 +320,10 @@ export default {
           label: 'Đã ứng tuyển',
         },
         {
+          key: 'education_status',
+          label: 'Chương trình đào tạo',
+        },
+        {
           key: 'actions',
           label: 'Trạng thái',
           tdClass: 'action',
@@ -338,6 +344,7 @@ export default {
         status: '',
       },
       selectedItemId: 0,
+      jobEducationStatus,
     }
   },
 

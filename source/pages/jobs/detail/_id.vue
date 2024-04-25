@@ -44,6 +44,10 @@
                   <span v-if="job.accept_education"><b>Có thể đào tạo trong {{ job.max_education_month }} tháng <span v-if="job.scholarship > 0">với học bổng {{ job.scholarship }}%</span></b></span>
                   <span v-else>Không</span>
                 </div>
+                <div v-if="job.accept_education" class="d-flex mb-2">
+                  <span class="me-2">Chương trình đào tạo: </span>
+                  <span ><b>{{ job.education_status ? jobEducationStatus[job.education_status - 1] : 'Đang xử lí' }}</b></span>
+                </div>
                 <div class="d-flex mb-2">
                   <span class="me-2">
                     Lương:
@@ -78,113 +82,120 @@
       </div>
       <div id="moreContent" class="collapse">
         <div class="detail-job-content py-0">
-          <hr class="my-0" />
-          <div class="py-3">
-            <div class="d-block mb-5">
-              <h5 class="mb-4"><strong>Nội dung công việc</strong></h5>
-              <div class="ps-3 word-break-break-all">
-								<v-runtime-template :template="`<div>${job.content_work}</div>`"></v-runtime-template>
+          <el-tabs v-model="jobTab" stretch>
+            <el-tab-pane label="Nội dung công việc" name="first">
+              <div class="py-3">
+                <div class="d-block mb-5">
+                  <h5 class="mb-4"><strong>Nội dung công việc</strong></h5>
+                  <div class="ps-3 word-break-break-all">
+                    <v-runtime-template :template="`<div>${job.content_work}</div>`"></v-runtime-template>
+                  </div>
+                </div>
+                <div class="d-block">
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td class="head-table">Số người ứng tuyển</td>
+                        <td>
+                          {{ job.number_recruitments}} người
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="head-table">Yêu cầu kỹ thuật</td>
+                        <td class="requirements">
+                          <ul v-if="majorColleges.length">
+                            <li v-for="(major, index) in majorColleges" :key="index">
+                              Tốt nghiệp đại học
+                              <span v-if="major.colleges.length">
+                                <span v-for="(college, cindex) in major.colleges" :key="cindex">
+                                  {{ college.name }}
+                                  <span v-if="cindex !== major.colleges.length - 1" class="fw-bold">hoặc</span>
+                                </span>
+                              </span>
+                              chuyên ngành
+                              <span v-for="(iitem, iindex) in major.majors" :key="iindex">
+                                {{ iitem.name }}
+                                <span v-if="iindex !== major.majors.length - 1">hoặc</span>
+                              </span>
+                            </li>
+                          </ul>
+                          <ul v-if="beginnerSkills.length">
+                            <li v-for="(skill, index) in beginnerSkills" :key="index">
+                              Đã có kinh nghiệm
+                              <span v-for="(iitem, iindex) in skill" :key="iindex">
+                                {{ iitem.name }}
+                                <span v-if="iindex !== skill.length - 1">hoặc</span>
+                              </span>
+                            </li>
+                          </ul>
+                          <ul v-if="intermediateSkills.length">
+                            <li v-for="(skill, index) in intermediateSkills" :key="index">
+                              Hiểu rõ về
+                              <span v-for="(iitem, iindex) in skill" :key="iindex">
+                                {{ iitem.name }}
+                                <span v-if="iindex !== skill.length - 1">hoặc</span>
+                              </span>
+                            </li>
+                          </ul>
+                          <ul v-if="advancedSkills.length">
+                            <li v-for="(skill, index) in advancedSkills" :key="index">
+                              Thành thạo
+                              <span v-for="(iitem, iindex) in skill" :key="iindex">
+                                {{ iitem.name }}
+                                <span v-if="iindex !== skill.length - 1">hoặc</span>
+                              </span>
+                            </li>
+                          </ul>
+                          <ul v-if="certificates.length">
+                            <li v-for="(certificate, index) in certificates" :key="index">
+                              Đạt được chứng chỉ
+                              <span v-for="(iitem, iindex) in certificate" :key="iindex">
+                                {{ iitem.name }}
+                                <span v-if="iindex !== certificate.length - 1">hoặc</span>
+                              </span>
+                              hoặc tương đương
+                            </li>
+                          </ul>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="head-table">Điều kiện khác</td>
+                        <td>
+                          <v-runtime-template :template="`<div>${job.conditions_apply}</div>`"></v-runtime-template>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="head-table">Địa chỉ</td>
+                        <td>
+                          {{ job.address_work}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="head-table">Thời gian làm việc</td>
+                        <td>
+                          <v-runtime-template :template="`<div>${job.time_work}</div>`"></v-runtime-template>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Phúc lợi</td>
+                        <td>
+                          <v-runtime-template :template="`<div>${job.welfare_regime}</div>`"></v-runtime-template>
+                        </td>
+                      </tr>
+                      <!--<tr>
+                        <td>残業見込み、休日出勤見込み</td>
+                        <td class="pre-line">{{ job.overtime === 'null' ? '' : job.overtime }}</td>
+                      </tr>-->
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
-            <div class="d-block">
-              <table class="table table-bordered">
-                <tbody>
-                  <tr>
-                    <td class="head-table">Số người ứng tuyển</td>
-                    <td>
-                      {{ job.number_recruitments}} người
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="head-table">Yêu cầu kỹ thuật</td>
-                    <td class="requirements">
-                      <ul v-if="majorColleges.length">
-                        <li v-for="(major, index) in majorColleges" :key="index">
-                          Tốt nghiệp đại học
-                          <span v-if="major.colleges.length">
-                            <span v-for="(college, cindex) in major.colleges" :key="cindex">
-                              {{ college.name }}
-                              <span v-if="cindex !== major.colleges.length - 1" class="fw-bold">hoặc</span>
-                            </span>
-                          </span>
-                           chuyên ngành
-                          <span v-for="(iitem, iindex) in major.majors" :key="iindex">
-                            {{ iitem.name }}
-                            <span v-if="iindex !== major.majors.length - 1">hoặc</span>
-                          </span>
-                        </li>
-                      </ul>
-                      <ul v-if="beginnerSkills.length">
-                        <li v-for="(skill, index) in beginnerSkills" :key="index">
-                          Đã có kinh nghiệm
-                          <span v-for="(iitem, iindex) in skill" :key="iindex">
-                            {{ iitem.name }}
-                            <span v-if="iindex !== skill.length - 1">hoặc</span>
-                          </span>
-                        </li>
-                      </ul>
-                      <ul v-if="intermediateSkills.length">
-                        <li v-for="(skill, index) in intermediateSkills" :key="index">
-                          Hiểu rõ về
-                          <span v-for="(iitem, iindex) in skill" :key="iindex">
-                            {{ iitem.name }}
-                            <span v-if="iindex !== skill.length - 1">hoặc</span>
-                          </span>
-                        </li>
-                      </ul>
-                      <ul v-if="advancedSkills.length">
-                        <li v-for="(skill, index) in advancedSkills" :key="index">
-                          Thành thạo
-                          <span v-for="(iitem, iindex) in skill" :key="iindex">
-                            {{ iitem.name }}
-                            <span v-if="iindex !== skill.length - 1">hoặc</span>
-                          </span>
-                        </li>
-                      </ul>
-                      <ul v-if="certificates.length">
-                        <li v-for="(certificate, index) in certificates" :key="index">
-                          Đạt được chứng chỉ
-                          <span v-for="(iitem, iindex) in certificate" :key="iindex">
-                            {{ iitem.name }}
-                            <span v-if="iindex !== certificate.length - 1">hoặc</span>
-                          </span>
-                           hoặc tương đương
-                        </li>
-                      </ul>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="head-table">Điều kiện khác</td>
-                    <td>
-                      <v-runtime-template :template="`<div>${job.conditions_apply}</div>`"></v-runtime-template>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="head-table">Địa chỉ</td>
-                    <td>
-                      {{ job.address_work}}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="head-table">Thời gian làm việc</td>
-                    <td>
-                      <v-runtime-template :template="`<div>${job.time_work}</div>`"></v-runtime-template>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Phúc lợi</td>
-                    <td>
-                      <v-runtime-template :template="`<div>${job.welfare_regime}</div>`"></v-runtime-template>
-                    </td>
-                  </tr>
-                  <!--<tr>
-                    <td>残業見込み、休日出勤見込み</td>
-                    <td class="pre-line">{{ job.overtime === 'null' ? '' : job.overtime }}</td>
-                  </tr>-->
-                </tbody>
-              </table>
-            </div>
-          </div>
+            </el-tab-pane>
+            <el-tab-pane :disabled="job.education_status === 1" :label="`Lộ trình dự kiến (${job.education_status ? jobEducationStatus[job.education_status - 1] : 'Đang xử lí'})`" name="second">
+              Lộ trình!
+            </el-tab-pane>
+          </el-tabs>
+
         </div>
       </div>
       <hr class="my-0" />
@@ -221,44 +232,29 @@
           <tbody>
           <tr v-for="(item, index) in items" :key="item.id" :class="item.read === 1 ? 'active' : ''">
             <td class="align-middle py-3 text-center">
-                          <span v-if="item.status === 1"
+                          <!-- <span v-if="item.status === 1"
                                 :class="(perPage * (currentPage - 1)) + (index + 1) < 10 ? 'td-warning' : 'td-warning-large'"
                           >
                             未対応！
                             <img class="" src="../../../assets/images/icon_warning.svg"/>
-                          </span>
+                          </span> -->
               {{ (perPage * (currentPage - 1)) + (index + 1) }}
             </td>
             <td class="align-middle py-4">
-              <a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop" @click="popupCvUser(item)">
-                {{ item.candidate.user.name }}
-              </a>
+              <div href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop" @click="popupCvUser(item)">
+                {{ item.user.name }}
+              </div>
             </td>
-            <td class="align-middle py-3">{{item.jobs.title}}</td>
+            <td class="align-middle py-3">{{item.job.title}}</td>
             <td class="align-middle py-3">{{$moment(item.created_at).format('YYYY-MM-DD')}}</td>
             <td class="align-middle py-3 col-status">
-              {{item.candidate.form_recruitment}}
-              <template v-if="item.candidate.form_recruitment == 1">フルタイム</template>
-              <template v-else>アルバイト</template>
+              {{item.matching_point}}
             </td>
             <td class="align-middle py-3">
-              <a href="#" data-bs-toggle="modal" data-bs-target="#popUpId"
-                 @click="popupImageCard(
-                                   item.candidate.residence_card_front,
-                                   item.candidate.residence_card_backside
-                                   )">
-                <img v-if="item.read === 0" class="" src="../../../assets/images/icon_postcard_active.svg"/>
-                <img v-else class="" src="../../../assets/images/icon_postcard_inactive.svg"/>
-              </a>
+              {{ item.education_applied ? 'Có' : 'Không' }}
             </td>
             <td class="align-middle py-3 col-card">
-              {{ item.status ? residenceCardConfirm[item.residence_card_confirm] : residenceCardConfirm[0] }}
-            </td>
-            <td class="align-middle py-3 w-20">
-              {{item.note}}
-            </td>
-            <td class="align-middle py-3 col-status">
-              {{ item.status ? statusCandidateApply[item.status - 1] : statusCandidateApply[0] }}
+              {{ jobStatus[item.status - 1] }}
             </td>
             <td class="align-middle py-3">
               <a
@@ -270,7 +266,7 @@
                                     residence_card_confirm: item.residence_card_confirm,
                                     status: item.status,
                                     note: item.note,
-                                    user_name: item.candidate.user.name
+                                    user_name: item.user.name
                                     })"
               >
                 <img class="edit-icon" src="../../../assets/images/icon_edit.svg"/>
@@ -455,17 +451,6 @@
       </div>
     </div>
 
-    <CvUserModal
-      :candidate="candidate"
-      :language="language"
-      :educations-of-candidate="educationsOfCandidate"
-      :jobs-of-candidate="jobsOfCandidate"
-      :id-row="idRow"
-      :cv-type="cvType"
-      :message="message"
-      @changeLanguageEvent="changeLanguage($event)"
-    />
-
     <StatusStayInfoModal />
 
   </main>
@@ -479,7 +464,6 @@
     maxLength
   } from 'vuelidate/lib/validators'
   import Pagination from "~/components/Pagination"
-  import CvUserModal from "~/components/modal/CvUserModal";
   import StatusStayInfoModal from "~/components/StatusStayInfoModal"
   import defaultCareers from '~/constants/careers'
   import defaultInCvUser from "~/constants/defaultInCvUser"
@@ -488,12 +472,13 @@
   import residenceCardConfirm from "~/constants/residenceCardConfirm";
   import statusCandidateApply from "~/constants/statusCandidateApply";
   import careerImages from "~/constants/careerImages";
+  import jobStatus from "~/constants/jobStatus";
+  import jobEducationStatus from '~/constants/jobEducationStatus'
 
   export default {
     name: "JobDetail",
     components: {
       Pagination,
-      CvUserModal,
 			VRuntimeTemplate,
       StatusStayInfoModal
     },
@@ -502,6 +487,9 @@
 
     data() {
       return {
+        jobTab: 'first',
+        jobEducationStatus,
+        jobStatus,
         message: '',
         message_vi: '',
         message_ja: '',
@@ -755,7 +743,7 @@
   created() {
     this.careerList = defaultCareers
     this.getJobFromApi()
-    // this.getListCV(this.currentPage)
+    this.getListCV(this.currentPage)
   },
 
   methods: {
@@ -795,12 +783,11 @@
         const {data} = await this.$repositories.candidatesApply.getListCvApplyToAJob(params)
         this.loadingListCv = false
 
-        this.items = data.data
-        this.totalItems = data.total
-        this.currentPage = data.current_page
-        this.perPage = data.per_page
-        this.pageCount =
-          this.totalItems > 0 ? parseInt(data.total / data.per_page, 10) + 1 : 1
+        this.items = data.results
+        this.totalItems = data.totalResults
+        this.currentPage = data.page
+        this.perPage = data.limit
+        this.pageCount = data.totalPages
     },
 
     pageChangeHandle(value) {
@@ -880,32 +867,33 @@
       }
     },
 
-    async popupCvUser(candidateApply) {
-      this.language = this.lang_vi
-      this.$i18n.locale = this.language
-      this.idRow = candidateApply.id
-      this.defaultCandidate = Object.assign({}, candidateApply.candidate)
-      this.candidate = Object.assign({}, this.defaultCandidate)
-      this.cvType = candidateApply.cv_type
-      this.message_vi = candidateApply.message ? candidateApply.message : ''
-      this.message_ja = candidateApply.message_jp ? candidateApply.message_jp : ''
-      this.initJobsAndEducationsOfCandidate()
-      this.changeLanguage(this.lang_ja)
-      if (candidateApply.read === 0) {
-        await this.$repositories.candidatesApply.updateStatus(this.idRow, { read: 1}).then(res => {
-          if (res.status === 200) {
-            this.getListCV(this.currentPage);
-          }
-        })
-      }
+    popupCvUser(candidateApply) {
+      // this.language = this.lang_vi
+      // this.$i18n.locale = this.language
+      // this.idRow = candidateApply.id
+      // this.defaultCandidate = Object.assign({}, candidateApply.candidate)
+      // this.candidate = Object.assign({}, this.defaultCandidate)
+      // this.cvType = candidateApply.cv_type
+      // this.message_vi = candidateApply.message ? candidateApply.message : ''
+      // this.message_ja = candidateApply.message_jp ? candidateApply.message_jp : ''
+      // this.initJobsAndEducationsOfCandidate()
+      // this.changeLanguage(this.lang_ja)
+      // if (candidateApply.read === 0) {
+      //   await this.$repositories.candidatesApply.updateStatus(this.idRow, { read: 1}).then(res => {
+      //     if (res.status === 200) {
+      //       this.getListCV(this.currentPage);
+      //     }
+      //   })
+      // }
+      this.$router.push('/candidates_apply/' + candidateApply.id + '/cv')
     },
 
     initJobsAndEducationsOfCandidate() {
       this.educationsOfCandidate =
-        this.candidate.candidate_educations_jobs.filter(function (element) {
+        this.candidate_educations_jobs.filter(function (element) {
           return element.type === 1
         })
-      this.jobsOfCandidate = this.candidate.candidate_educations_jobs.filter(
+      this.jobsOfCandidate = this.candidate_educations_jobs.filter(
         function (element) {
           return element.type === 2
         }

@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-parsing-error -->
 <template>
   <main class="container my-3 my-lg-4">
 		<div class="row box-title mb-1 mb-lg-2">
@@ -9,8 +10,8 @@
 			<div class="left-bar">
 				<div class="action-bar">
 					<div class="progress-section mb-4">
-						<div class="progress-bar">
-							<div class="progress mx-auto" data-value='80'>
+						<div class="">
+							<div class="progress mx-auto" :data-value='candidate.matching_point'>
 								<span class="progress-left">
 															<span class="progress-bar border-primary"></span>
 								</span>
@@ -18,37 +19,40 @@
 															<span class="progress-bar border-primary"></span>
 								</span>
 								<div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-									<div class="h2 font-weight-bold">80<sup class="small">%</sup></div>
+									<div class="h2 font-weight-bold">{{ candidate.matching_point }}<sup class="small">%</sup></div>
 								</div>
 							</div>
 						</div>
 						<div class="text-center">
-							Đánh giá: Phù hợp
+							Đánh giá: {{ candidate.matching_point < 75 ? 'Cần đào tạo' : 'Phù hợp' }}
 						</div>
 					</div>
 					<div class="info-section">
 						<div class="d-flex justify-content-between fs-5">
 							<div>Ngày ứng tuyển:</div>
-							<div class="fw-bold">17-03-2023</div>
+							<div class="fw-bold">{{$moment(candidate.createdAt).format('YYYY-MM-DD')}}</div>
 						</div>
 						<div class="d-flex justify-content-between fs-5">
 							<div>Hình thức:</div>
-							<div class="fw-bold">Đăng kí đào tạo</div>
+							<div class="fw-bold">{{ candidate.education_applied ? 'Đăng kí đào tạo' : 'Ứng tuyển trực tiếp' }}</div>
 						</div>
-						<div class="d-flex justify-content-between fs-5">
+						<div v-if="candidate.education_applied" class="d-flex justify-content-between fs-5">
 							<div>Thời gian dự kiến:</div>
 							<div class="fw-bold">2 tháng</div>
 						</div>
-						<div class="d-flex justify-content-between mb-4 fs-5">
+						<div v-if="candidate.education_applied" class="d-flex justify-content-between mb-4 fs-5">
 							<div>Học bổng:</div>
-							<div class="fw-bold">50%</div>
+							<div class="fw-bold"> {{candidate.jobEducation.scholarship}} %</div>
 						</div>
 						<div class="d-flex justify-content-between">
-							<button class="btn btn-secondary">
+							<button v-if="candidate.status == 1" class="btn btn-secondary">
 								Từ chối
 							</button>
-							<button class="btn btn-primary">
-								Duyệt đào tạo
+							<button v-if="candidate.education_applied" class="btn btn-primary" :class="{ 'btn-secondary': candidate.status == 3 }" @click="acceptEducation()">
+								{{ candidate.status == 3 ? 'Đã duyệt đào tạo' : 'Duyệt đào tạo' }}
+							</button>
+              <button v-else class="btn btn-primary" :class="{ 'btn-secondary': candidate.status == 2 }" @click="acceptInterview()">
+								{{ candidate.status == 2 ? 'Đã duyệt phỏng vấn' : 'Duyệt phỏng vấn' }}
 							</button>
 						</div>
 					</div>
@@ -64,29 +68,29 @@
 					></div>
 					<div class="user-contact ims-4">
 						<div class="user-position">
-							<div class="user-name text-white normal-text ifs-24 fw-700 lh-14 text-break">Đức Tùng Nguyễn</div>
-							<div class="subtitle ifs-16 fw-300 text-uppercase lh-15 text-dark-grey">Add your title</div>
+							<div class="user-name text-white normal-text ifs-24 fw-700 lh-14 text-break">{{ candidate.user.name }}</div>
+							<div class="subtitle ifs-16 fw-300 text-uppercase lh-15 text-dark-grey">Chức danh</div>
 						</div>
 						<div class="user-info d-pdf-flex">
 							<div class="left-items">
 								<div class="item">
-									<div class="d-flex align-items-center">
+									<div class="d-flex align-items-start">
 										<img class="cv-icon icon-sm" src="https://itviec.com/assets/cv_templates/icons/phone-8ec46b9e46b6e6ea3bf01fa198bbb8dbcbfb86b33a2c2766e7ccfa4b1c694d5c.svg" />
-										<p class="name text-dark-grey">Add your phone number</p>
+										<p class="name text-break">{{ candidate.user.phone_number }}</p>
 									</div>
 								</div>
 								<div class="item">
 									<div class="d-flex align-items-start">
 										<img class="cv-icon icon-sm imt-1" src="https://itviec.com/assets/cv_templates/icons/mail-f5038b679849f3bc3747122a3108a84d59cd05ad6c23f3b5e60e816cf45d9f0a.svg" />
-										<p class="name text-break">tobakonek1@gmail.com</p>
+										<p class="name text-break">{{ candidate.user.email }}</p>
 									</div>
 								</div>
 							</div>
 							<div class="right-items">
 								<div class="item">
-									<div class="d-flex align-items-center">
+									<div class="d-flex align-items-start">
 										<img class="cv-icon icon-sm" src="https://itviec.com/assets/cv_templates/icons/birthday-31b2f78f09966779fa4b2c97f58e40bf544fc7fe8dbcd65fa5a685d33b58825e.svg" />
-										<p class="name text-dark-grey">Add your date of birth</p>
+										<p class="name text-break">{{ candidate.user.birthday }}</p>
 									</div>
 								</div>
 								<div class="item">
@@ -103,17 +107,18 @@
 					<div class="cv-cards">
 						<div class="cv-card d-pdf-flex">
 							<div class="title ifs-16 normal-text fw-700 lh-15 text-it-black">
-								Education
+								Học vấn
 							</div>
+
 							<div class="content ifs-12 normal-text fw-400 lh-18 text-it-black">
-								<div class="education-item ipb-0">
+								<div v-for="(education, index) in candidate.educations" :key="index" class="education-item ipb-0">
 									<span class="text-it-black ifs-14 normal-text fw-700 lh-15 text-break">
-										Hust
+										{{ education.college.name }}
 									</span>
 									<div class="d-pdf-flex">
-										<p class="education-date">09/2019 - NOW</p>
+										<p class="education-date">{{ formattedDate(education.start_at) }} - {{ education.end_at ? formattedDate(education.end_at) : 'Hiện tại' }}</p>
 										<div class="vertical-line"></div>
-										<p class="fw-500 text-break">Information Specialist</p>
+										<p class="fw-500 text-break">{{ education.major.name }}</p>
 									</div>
 									<span class="lh-15 fw-400 text-break"></span>
 								</div>
@@ -121,53 +126,36 @@
 						</div>
 						<div class="cv-card d-pdf-flex">
 							<div class="title ifs-16 normal-text fw-700 lh-15 text-it-black">
-								Skill
+								Kỹ năng
 							</div>
 							<div class="content ifs-12 normal-text fw-400 lh-18 text-it-black">
-								<div class="skill-item d-pdf-flex">
+								<div v-if="candidate.advancedSkills && candidate.advancedSkills.length" class="skill-item d-pdf-flex">
+									<div class="normal-text ifs-14 fw-700 lh-15 text-it-black title">
+										Advanced
+									</div>
+									<div class="skill-list">
+										<span v-for="(skill, index) in candidate.advancedSkills" :key="index" class="skill-name text-break">
+											{{ skill }}
+										</span>
+									</div>
+								</div>
+								<div v-if="candidate.intermediateSkills && candidate.intermediateSkills.length" class="skill-item d-pdf-flex">
 									<div class="normal-text ifs-14 fw-700 lh-15 text-it-black title">
 										Intermediate
 									</div>
 									<div class="skill-list">
-										<span class="skill-name text-break">
-											JavaScript
-										</span>
-										<span class="skill-name text-break">
-											HTML5
-										</span>
-										<span class="skill-name text-break">
-											Laravel
-										</span>
-										<span class="skill-name text-break">
-											PHP
-										</span>
-										<span class="skill-name text-break">
-											Japanese
-										</span>
-										<span class="skill-name text-break">
-											MySQL
-										</span>
-										<span class="skill-name text-break">
-											CSS
+										<span v-for="(skill, index) in candidate.intermediateSkills" :key="index" class="skill-name text-break">
+											{{ skill }}
 										</span>
 									</div>
 								</div>
-								<div class="skill-item d-pdf-flex">
+                <div v-if="candidate.beginnerSkills && candidate.beginnerSkills.length" class="skill-item d-pdf-flex">
 									<div class="normal-text ifs-14 fw-700 lh-15 text-it-black title">
 										Beginner
 									</div>
 									<div class="skill-list">
-										<span class="skill-name text-break">
-											Nest.js
-										</span>
-										<span class="skill-name text-break">
-											MongoDB
-										</span>
-										<span class="skill-name text-break">
-											Flutter
-										</span>
-										<span class="skill-name text-break">
-											Dart
+										<span v-for="(skill, index) in candidate.beginnerSkills" :key="index" class="skill-name text-break">
+											{{ skill }}
 										</span>
 									</div>
 								</div>
@@ -175,30 +163,17 @@
 						</div>
 						<div class="cv-card d-pdf-flex">
 							<div class="title ifs-16 normal-text fw-700 lh-15 text-it-black">
-								Work Experience
+								Kinh nghiệm làm việc
 							</div>
 							<div class="content ifs-12 normal-text fw-400 lh-18 text-it-black">
-								<div class="experience-item pb-4">
+								<div v-for="(working, index) in candidate.working_experiences" :key="index" class="experience-item pb-4">
 									<div class="experience-date text-it-black ifs-12 normal-text fw-600 lh-15 text-uppercase">
-										01/2023 - NOW
+										{{ formattedDate(working.start_at) }} - {{ working.end_at ? formattedDate(working.end_at) : 'Hiện tại' }}
 									</div>
 									<div class="text-it-black ifs-14 normal-text fw-700 lh-15 d-pdf-flex imt-1">
-										<p class="normal-text ifs-14 fw-700 lh-15 text-uppercase text-break">Full Stack Developer</p>
-										<div class="vertical-line"></div>
-										<p class="normal-text ifs-14 fw-700 lh-15 fw-400 text-break">DIMAGE SHARE VIETNAM CO.,LTD</p>
-									</div>
-									<div class="text-it-black normal-text ifs-12 fw-400 lh-18 text-break">
-										<div class="trix-content"></div>
-									</div>
-								</div>
-								<div class="experience-item ipb-0">
-									<div class="experience-date text-it-black ifs-12 normal-text fw-600 lh-15 text-uppercase">
-										05/2021 - 11/2022
-									</div>
-									<div class="text-it-black ifs-14 normal-text fw-700 lh-15 d-pdf-flex imt-1">
-										<p class="normal-text ifs-14 fw-700 lh-15 text-uppercase text-break">Full Stack Web Developer</p>
-										<div class="vertical-line"></div>
-										<p class="normal-text ifs-14 fw-700 lh-15 fw-400 text-break">Kiaisoft Việt Nam</p>
+										<!-- <p class="normal-text ifs-14 fw-700 lh-15 text-uppercase text-break">Full Stack Developer</p>
+										<div class="vertical-line"></div> -->
+										<p class="normal-text ifs-14 fw-700 lh-15 fw-400 text-break">{{ working.name }}</p>
 									</div>
 									<div class="text-it-black normal-text ifs-12 fw-400 lh-18 text-break">
 										<div class="trix-content"></div>
@@ -271,7 +246,10 @@ export default {
       language: '',
       idCandidate: -1,
       defaultCandidate: {},
-      candidate: {},
+      candidate: {
+        jobEducation: {},
+        user: {},
+      },
       educationsOfCandidate: [],
       jobsOfCandidate: [],
       selectedItemId: 0,
@@ -312,10 +290,31 @@ export default {
 																								 .map((item) => item.skill.name);
 			this.candidate.advancedSkills = data.skills.filter((item) => item.level === 'Advanced')
 																								 .map((item) => item.skill.name);
+		  this.drawProgressBar()
 		},
 
+    async acceptEducation() {
+      if (this.candidate.status === 1) {
+        const { data } = await this.$repositories.candidatesApply.acceptEducation(this.$route.params.candidateId);
+        if (data) {
+          this.$toast.success('Đã đồng ý đào tạo')
+          location.reload()
+        }
+      }
+    },
+
+    async acceptInterview() {
+      if (this.candidate.status === 1) {
+        const { data } = await this.$repositories.candidatesApply.acceptInterview(this.$route.params.candidateId);
+        if (data) {
+          this.$toast.success('Đã duyệt phỏng vấn')
+          location.reload()
+        }
+      }
+    },
+
 		drawProgressBar() {
-			const value = 50;
+			const value = this.candidate.matching_point;
 			const left = this.$el.querySelector('.progress-left .progress-bar');
 			const right = this.$el.querySelector('.progress-right .progress-bar');
 
@@ -345,6 +344,14 @@ export default {
           this.currentPage = value
       }
       this.getListCV(this.currentPage)
+    },
+
+    formattedDate(dateString) {
+      const date = new Date(dateString);
+      const year = date.getFullYear().toString().slice(2); // Get last two digits of the year
+      const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Ensure two digits for month
+
+      return `${year}/${month}`;
     },
 
     search() {

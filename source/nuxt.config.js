@@ -24,7 +24,8 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    '~/styles/style.scss'
+    '~/styles/style.scss',
+    'element-ui/lib/theme-chalk/index.css',
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -37,6 +38,7 @@ export default {
     {src: '~/plugins/vuelidate'},
     { src: '~/plugins/datepicker.js', ssr: false },
     { src: "@/plugins/vClickOutside", ssr: false },
+    '@/plugins/element-ui',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

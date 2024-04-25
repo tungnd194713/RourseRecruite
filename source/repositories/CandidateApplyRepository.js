@@ -23,5 +23,13 @@ export default ($axios) => ({
 
 		getUserCv(userId) {
 			return $axios.get(`${resource}/${userId}`)
-		}
+		},
+
+    acceptEducation(candidateApplyId) {
+      return $axios.post(`${resource}/accept-education/${candidateApplyId}`)
+    },
+
+    acceptInterview(candidateApplyId) {
+      return $axios.post(`${resource}/accept-interview/${candidateApplyId}`)
+    }
 })
