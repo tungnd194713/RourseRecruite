@@ -23,8 +23,11 @@
 								</div>
 							</div>
 						</div>
-						<div class="text-center">
+						<div class="text-center mt-2">
 							Đánh giá: {{ candidate.matching_point < 75 ? 'Cần đào tạo' : 'Phù hợp' }}
+						</div>
+            <div class="text-center" style="cursor: pointer; color: #0d6efd; text-decoration: underline" @click="getCVMatchingPoint()">
+              Xem chi tiết
 						</div>
 					</div>
 					<div class="info-section">
@@ -48,11 +51,20 @@
 							<button v-if="candidate.status == 1" class="btn btn-secondary">
 								Từ chối
 							</button>
-							<button v-if="candidate.education_applied" class="btn btn-primary" :class="{ 'btn-secondary': candidate.status == 3 }" @click="acceptEducation()">
-								{{ candidate.status == 3 ? 'Đã duyệt đào tạo' : 'Duyệt đào tạo' }}
-							</button>
+              <div v-if="candidate.education_applied">
+                <button v-if="candidate.status === 4" class="btn btn-success" @click="$router.push('/candidates_apply/' + candidate.id + '/education-progress')">
+                  Đang đào tạo
+                </button>
+                <button v-else class="btn btn-primary" :class="{ 'btn-secondary': candidate.status == 3 }" @click="acceptEducation()">
+                  {{ candidate.status == 3 ? 'Đã duyệt đào tạo' : 'Duyệt đào tạo' }}
+                </button>
+              </div>
+
               <button v-else class="btn btn-primary" :class="{ 'btn-secondary': candidate.status == 2 }" @click="acceptInterview()">
 								{{ candidate.status == 2 ? 'Đã duyệt phỏng vấn' : 'Duyệt phỏng vấn' }}
+							</button>
+              <button v-if="candidate.status === 4" class="btn btn-primary" @click="$router.push('/candidates_apply/' + candidate.id + '/education-progress')">
+								Xem tiến độ >>
 							</button>
 						</div>
 					</div>
@@ -185,7 +197,85 @@
 				</div>
 			</div>
 		</div>
-
+    <el-dialog :visible.sync="previewDialog" title="Đánh giá độ phù hợp">
+      <el-table :data="matchingPointData" style="width: 100%">
+        <el-table-column prop="jobRequirement" label="Yêu cầu" :min-width="40">
+          <template v-if="scope.row" slot-scope="scope">
+            <span v-if="scope.row.jobRequirement.type === 'Certificate'">
+              Đạt chứng chỉ
+              <span v-for="(iitem, iindex) in scope.row.jobRequirement.requirements" :key="iindex">
+                {{ iitem.name }}
+              <span v-if="iindex !== scope.row.jobRequirement.requirements.length - 1">hoặc</span>
+              </span>
+                hoặc tương đương
+            </span>
+            <span v-else-if="scope.row.jobRequirement.type === 'Major'">
+              Tốt nghiệp đại học
+              <!-- <span v-if="scope.row.jobRequirement.requirements.length">
+                <span v-for="(college, cindex) in scope.row.jobRequirement.requirements" :key="cindex">
+                  {{ college.name }}
+                  <span v-if="cindex !== scope.row.jobRequirement.requirements.length - 1" class="fw-bold">hoặc</span>
+                </span>
+              </span> -->
+                chuyên ngành
+              <span v-for="(iitem, iindex) in scope.row.jobRequirement.requirements" :key="iindex">
+                {{ iitem.name }}
+                <span v-if="iindex !== scope.row.jobRequirement.requirements.length - 1">hoặc</span>
+              </span>
+            </span>
+            <span v-else>
+              <span v-if="scope.row.jobRequirement.level === 'Beginner'">
+                Đã có kinh nghiệm
+              </span>
+              <span v-if="scope.row.jobRequirement.level === 'Intermediate'">
+                Hiểu rõ về
+              </span>
+              <span v-if="scope.row.jobRequirement.level === 'Advanced'">
+                Thành thạo
+              </span>
+              <span v-for="(iitem, iindex) in scope.row.jobRequirement.requirements" :key="iindex">
+                {{ iitem.name }}
+                <span v-if="iindex !== scope.row.jobRequirement.requirements.length - 1">hoặc</span>
+              </span>
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="userProfile" label="Profile của bạn" :min-width="40">
+          <template v-if="scope.row" slot-scope="scope">
+            <div v-if="scope.row.userProfile.length">
+              <div v-for="(profile, index) in scope.row.userProfile" :key="index">
+                <span v-if="profile.type === 'Certificate'">
+                  Đạt chứng chỉ {{ scope.row.userProfile.certificate.name }}
+                </span>
+                <span v-if="profile.type === 'Major'">
+                  Tốt nghiệp đại học chuyên ngành {{ profile.name }}
+                </span>
+                <span v-else>
+                  <span v-if="profile.level === 'Beginner'">
+                    Đã có kinh nghiệm
+                  </span>
+                  <span v-if="profile.level === 'Intermediate'">
+                    Hiểu rõ về
+                  </span>
+                  <span v-if="profile.level === 'Advanced'">
+                    Thành thạo
+                  </span>
+                  <span>{{ profile.name }}</span>
+                </span>
+              </div>
+            </div>
+            <div v-else>
+              Không
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="matchingPoint" label="Điểm đánh giá" :min-width="20">
+          <template v-if="scope.row" slot-scope="scope">
+            {{ Math.round(scope.row.matchingPoint / jobPoint * 100) }}
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </main>
 </template>
 
@@ -201,6 +291,7 @@ export default {
       cvType: 1,
       url_file: process.env.URL_FILE,
       items: [],
+      previewDialog: false,
       fields: [
         {
           key: 'id',
@@ -254,6 +345,8 @@ export default {
       jobsOfCandidate: [],
       selectedItemId: 0,
       name: '',
+      matchingPointData: [],
+      jobPoint: 0,
     }
   },
 
@@ -393,26 +486,14 @@ export default {
       }
     },
 
-    async changeLanguage(newLanguage) {
-      if (newLanguage !== this.language) {
-        this.language = newLanguage
-        this.$i18n.locale = this.language
-        if (this.language === this.lang_ja) {
-          this.message = this.message_ja
-          await this.$repositories.candidatesApply
-            .translateCvCandidate(this.idRow)
-            .then((res) => {
-              if (res.status === 200) {
-                this.candidate = Object.assign({}, res.data)
-                this.initJobsAndEducationsOfCandidate()
-              }
-            })
-        }
-        if (this.language === this.lang_vi) {
-          this.message = this.message_vi
-          this.candidate = Object.assign({}, this.defaultCandidate)
-          this.initJobsAndEducationsOfCandidate()
-        }
+    async getCVMatchingPoint() {
+      if (this.matchingPointData && this.matchingPointData.length) {
+        this.previewDialog = true;
+      } else {
+        const { data } = await this.$repositories.candidatesApply.getCVMatchingPoint(this.$route.params.candidateId);
+        this.matchingPointData = data?.job_matching_data
+        this.jobPoint = data?.job_point
+        this.previewDialog = true;
       }
     },
 
@@ -426,7 +507,6 @@ export default {
       this.message_vi = candidateApply.message ? candidateApply.message : ''
       this.message_ja = candidateApply.message_jp ? candidateApply.message_jp : ''
       this.initJobsAndEducationsOfCandidate()
-      this.changeLanguage(this.lang_ja)
       if (candidateApply.read === 0) {
         await this.$repositories.candidatesApply.updateStatus(this.idRow, { read: 1}).then(res => {
           if (res.status === 200) {

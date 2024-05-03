@@ -21,6 +21,10 @@ export default ($axios) => ({
     return $axios.get(`${resource}/${id}`)
   },
 
+  toggleJobEducation(id) {
+    return $axios.get(`${resource}/${id}/education-toggle`)
+  },
+
   updateJob(id, data) {
     return $axios.post(`${resource}/update/${id}`, data)
   },

@@ -192,7 +192,81 @@
               </div>
             </el-tab-pane>
             <el-tab-pane :disabled="job.education_status === 1" :label="`Lộ trình dự kiến (${job.education_status ? jobEducationStatus[job.education_status - 1] : 'Đang xử lí'})`" name="second">
-              Lộ trình!
+              <div class="learning-route">
+                <div class="container text-center faq-con">
+                  <div
+                    v-for="data in datas"
+                    :key="data.value"
+                    class="row m-4 question-button"
+                  >
+                    <div class="p-con">
+                      <p>
+                        <button class="btn btn-primary btn-module" type="button" data-bs-toggle="collapse"
+                          :data-bs-target="'#' + data.class"
+                          aria-expanded="false"
+                          :aria-controls="data.class"
+                          :class="{'shown': data.isShown, 'font-vi': $i18n.locale === 'vi', 'font-ja': $i18n.locale === 'ja'}"
+                          @click="shownClass(data)">
+                          <div class="row">
+                              <div
+                                      class="col-10 button-title fw-bold"
+                                      style="text-align: start; padding-left: 30px"
+                              >
+                                  {{ data.title }}
+                              </div>
+                              <div
+                                      class="col-2 mid"
+                                      style="text-align: end; padding-right: 30px"
+                              >
+                                  <img
+                                          src="../../../assets/images/icon_arrow_down.svg"
+                                          alt=""
+                                          :class="{ rotated: data.isShown }"
+                                  />
+                              </div>
+                          </div>
+                        </button>
+                      </p>
+                      <div :id="data.class" class="collapse">
+                        <div class="card card-body text-start">
+                          <ul class="course-module">
+                            <li v-for="(content, index) in data.modules" :key="index" class="d-flex justify-content-between" @click="previewModule(content)">
+                              <span>{{ content.name }}</span>
+                              <span>
+
+                              </span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="
+                    align-items-center
+                    d-flex
+                    justify-content-end
+                    flex-row
+                  "
+                >
+                  <button
+                    type="button"
+                    class="btn btn-secondary rounded-pill w-20 mt-4 mb-4 mx-4 more-btn"
+                    data-bs-toggle="modal"
+                    data-bs-target="#popUpChange"
+                  >
+                    Yêu cầu thay đổi
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-custom btn-primary rounded-pill w-20 more-btn"
+                    @click="confirmOpenEducation = true"
+                  >
+                    Mở đào tạo
+                  </button>
+                </div>
+              </div>
             </el-tab-pane>
           </el-tabs>
 
@@ -253,7 +327,7 @@
             <td class="align-middle py-3">
               {{ item.education_applied ? 'Có' : 'Không' }}
             </td>
-            <td class="align-middle py-3 col-card">
+            <td class="align-middle py-3 col-card" style="cursor: pointer" @click="redirectCandidate(item)">
               {{ jobStatus[item.status - 1] }}
             </td>
             <td class="align-middle py-3">
@@ -417,6 +491,46 @@
     </div>
 
     <div
+      id="popUpChange"
+      class="modal fade"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="popUpChangeLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content success-content">
+          <div class="modal-header">
+            <a data-bs-dismiss="modal" class="btn-close" aria-label="Close">
+              <img src="../../../assets/images/icon_modal_close.svg" alt="" />
+            </a>
+          </div>
+          <div class="d-flex justify-content-center align-items-center">
+            <h5 id="popUpChangeLabel" class="modal-title check-title">
+              Yêu cầu thay đổi nội dung lộ trình học
+            </h5>
+          </div>
+          <div class="modal-body pop-check-input">
+            <!-- <label for="remarks"></label> -->
+            <textarea
+              id="remarks"
+              class="form-control"
+            />
+            <div class="submit-btn">
+              <button
+                id="apply-btn"
+                class="btn btn-primary mt-4 rounded-pill"
+              >
+                Gửi yêu cầu
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
       id="popUpSuccess"
       class="modal fade"
       data-bs-backdrop="static"
@@ -450,9 +564,42 @@
         </div>
       </div>
     </div>
-
-    <StatusStayInfoModal />
-
+    <el-dialog :visible.sync="confirmOpenEducation" title="Mở đào tạo">
+      <div>
+        <div>
+          <h3 class="text-center modal-body-text">
+            Xác nhận mở đào tạo?
+          </h3>
+        </div>
+        <div
+          class="
+            align-items-center
+            d-flex
+            justify-content-center
+            flex-row
+          "
+        >
+          <button
+            type="button"
+            class="btn btn-secondary rounded-pill w-20 mt-4 mb-4"
+            data-bs-dismiss="modal"
+          >
+            Hủy bỏ
+          </button>
+          <div style="width: 20px"></div>
+          <button
+            type="button"
+            class="btn btn-primary rounded-pill w-20"
+            @click="toggleEducation()"
+          >
+            Xác nhận
+          </button>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog :visible.sync="previewDialog" :title="moduleName">
+      <PreviewModule :source="videoSource" />
+    </el-dialog>
   </main>
 </template>
 
@@ -464,7 +611,7 @@
     maxLength
   } from 'vuelidate/lib/validators'
   import Pagination from "~/components/Pagination"
-  import StatusStayInfoModal from "~/components/StatusStayInfoModal"
+  import PreviewModule from "~/components/PreviewModule"
   import defaultCareers from '~/constants/careers'
   import defaultInCvUser from "~/constants/defaultInCvUser"
   import theStatusStay from "~/constants/statusStay"
@@ -480,7 +627,7 @@
     components: {
       Pagination,
 			VRuntimeTemplate,
-      StatusStayInfoModal
+      PreviewModule,
     },
     mixins: [validationMixin],
     layout: 'auth',
@@ -496,8 +643,13 @@
         cvType: 1,
         loadingListCv: '',
         loadingJobDetail: '',
+        datas: [],
+        videoSource: '',
+        moduleName: '',
+        previewDialog: false,
         statusStays: theStatusStay,
         provincesList: theProvinces,
+        confirmOpenEducation: false,
         hasVietnameseStaffLabelList: [
           'いない',
           'いる',
@@ -756,6 +908,12 @@
         // }
       },
 
+      previewModule(module) {
+        this.videoSource = module.video;
+        this.moduleName = module.name
+        this.previewDialog = true;
+      },
+
       async getJobFromApi() {
         this.loadingJobDetail = true
         const {data} = await this.$repositories.jobs.getJob(this.$route.params.id)
@@ -768,10 +926,25 @@
           this.certificates = [...data.certificates]
           this.majorColleges = [...data.majorColleges]
           this.previewSkills = data.previewSkills.flat().map((item) => item.name).slice(0, 3);
+          this.datas = this.job.registeredCourses.map((item, index) => {
+            return {
+              ...item,
+              isShown: false,
+              class: 'about-' + index,
+            }
+          })
         } else {
           this.$router.push('/jobs')
         }
         this.loadingJobDetail = false
+      },
+
+      async toggleEducation() {
+        const { data } = await this.$repositories.jobs.toggleJobEducation(this.$route.params.id)
+        if (data) {
+          this.$toast.success('Đã mở đào tạo')
+          location.reload()
+        }
       },
 
       async getListCV(currentPage) {
@@ -888,6 +1061,12 @@
       this.$router.push('/candidates_apply/' + candidateApply.id + '/cv')
     },
 
+    redirectCandidate(item) {
+      if (item.status === 4) {
+        this.$router.push('/candidates_apply/' + item.id + '/education-progress')
+      }
+    },
+
     initJobsAndEducationsOfCandidate() {
       this.educationsOfCandidate =
         this.candidate_educations_jobs.filter(function (element) {
@@ -899,14 +1078,102 @@
         }
       )
     },
+    shownClass(data) {
+      data.isShown = !data.isShown
+    }
   },
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 @import '../../../styles/pages/jobs/detail_job.scss';
 @import '../../../styles/pages/jobs/cv_user.scss';
 @import '../../../styles/pages/candidates_apply/list.scss';
+#popUpChange {
+  .pop-check-input {
+    margin: 0 2rem;
+    font-size: 14px;
+  }
+  .modal-content {
+    height: 300px;
+  }
+}
+.learning-route {
+  .course-module {
+    list-style-type: none;
+    padding-left: 0;
+    li {
+      padding: 16px;
+      cursor: pointer;
+    }
+    li:hover {
+      background: #bababa;
+    }
+  }
+  p {
+    margin-bottom: 0;
+  }
+  .btn-module {
+      background-color: white !important;
+      color: #00756A !important;
+      font-size: 20px !important;
+      border-color: #B2B2B2 !important;
+      width: 100%;
+      border: none !important;
+      border-top: 2px solid rgba(0, 0, 0, 0.125) !important;
+  }
+
+  .more-btn {
+    width: unset;
+  }
+
+  .card-body {
+      background-color: #F1F1F1;
+      padding: 0 !important;
+      color: #606060;
+      font-size: 16px;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      border: none !important
+  }
+
+  button:hover {
+    box-shadow: none !important;
+  }
+
+  .about-visa {
+      padding-bottom: 50px;
+  }
+
+  .row {
+    margin: 0 !important;
+  }
+  .mid {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .mid img {
+    width: 18px;
+    transition: 0.2s;
+  }
+
+  .rotated {
+    transform: rotate(-90deg);
+  }
+
+  .p-con {
+    margin: 0 auto;
+    margin-top: 1.5rem;
+    border: 2px solid rgba(0, 0, 0, 0.125);
+    padding: 0 !important;
+    border-top: none;
+    background-color: #F1F1F1;
+  }
+  .shown {
+    border-bottom: 2px solid rgba(0, 0, 0, 0.125) !important;
+  }
+}
 </style>
 <style>
 p {

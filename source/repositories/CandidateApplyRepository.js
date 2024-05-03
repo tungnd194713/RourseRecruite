@@ -31,5 +31,13 @@ export default ($axios) => ({
 
     acceptInterview(candidateApplyId) {
       return $axios.post(`${resource}/accept-interview/${candidateApplyId}`)
-    }
+    },
+
+    getCandidateEducationProgress(candidateApplyId) {
+      return $axios.get(`${resource}/education-progress/${candidateApplyId}`)
+    },
+
+    getCVMatchingPoint(candidateApplyId) {
+      return $axios.get(`${resource}/matching-point/${candidateApplyId}`)
+    },
 })
