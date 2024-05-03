@@ -84,13 +84,13 @@
               :class="item.read === 1 ? 'active' : ''"
             >
               <td class="align-middle py-3 text-center">
-                <span
+                <!-- <span
                   v-if="item.status === 1"
                   :class="(perPage * (currentPage - 1)) + (index + 1) < 10 ? 'td-warning' : 'td-warning-large'"
                 >
                   未対応！
                   <img class="" src="../../assets/images/icon_warning.svg" />
-                </span>
+                </span> -->
                 {{ ( perPage * (currentPage - 1)) + (index + 1) }}
               </td>
               <td class="align-middle py-4">
@@ -100,25 +100,18 @@
                   data-bs-target="#staticBackdrop"
                   @click="popupCvUser(item)"
                 >
-                  {{ item.candidate.user.name }}
+                  {{ item.user.name }}
                 </a>
               </td>
-              <td class="align-middle py-3 col-text">{{ item.jobs.title }}</td>
+              <td class="align-middle py-3 col-text">{{ item.job.title }}</td>
               <td class="align-middle py-3">
                 {{ $moment(item.created_at).format('YYYY-MM-DD') }}
               </td>
-              <td class="align-middle py-3 col-status">
-                {{ item.candidate.form_recruitment }}
-                <template v-if="item.candidate.form_recruitment == 1"
-                  >フルタイム</template
-                >
-                <template v-else>アルバイト</template>
-              </td>
               <td class="align-middle py-3 col-2 note">
-                {{ item.note }}
+                {{item.matching_point}}
               </td>
               <td class="align-middle py-3 col-status">
-                  {{ item.status ? statusCandidateApply[item.status - 1] : statusCandidateApply[0] }}
+                  {{ item.status ? jobStatus[item.status - 1] : jobStatus[0] }}
               </td>
               <td class="align-middle py-3">
                 <a
@@ -128,7 +121,7 @@
                   @click="
                     popupUpdateStatus({
                       id: item.id,
-                      name: item.candidate.user.name,
+                      name: item.user.name,
                       status: item.status,
                       note: item.note,
                     })
@@ -274,7 +267,7 @@ import 'vue2-datepicker/locale/ja'
 import Pagination from '../../components/Pagination'
 import CvUserModal from '~/components/modal/CvUserModal'
 import defaultInCvUser from '~/constants/defaultInCvUser'
-import statusCandidateApply from '~/constants/statusCandidateApply'
+import jobStatus from '~/constants/jobStatus'
 
 export default {
   name: 'CandidateApply',
@@ -312,8 +305,8 @@ export default {
           label: 'Ngày ứng tuyển',
         },
         {
-          key: 'note',
-          label: 'Nhận xét',
+          key: 'matching_point',
+          label: 'Độ phù hợp',
         },
         {
           key: 'status',
@@ -411,7 +404,7 @@ export default {
       educationsOfCandidate: [],
       jobsOfCandidate: [],
       selectedItemId: 0,
-      statusCandidateApply,
+      jobStatus,
       name: '',
     }
   },
@@ -452,12 +445,11 @@ export default {
       )
       this.spinner = false
 
-      this.items = data.data
-      this.totalItems = data.total ? data.total : 0;
-      this.currentPage = data.current_page
-      this.perPage = data.per_page
-      this.pageCount =
-        this.totalItems > 0 ? parseInt((data.total - 1) / data.per_page, 10) + 1 : 1
+      this.items = data.results
+      this.totalItems = data.totalResults
+      this.currentPage = data.page
+      this.perPage = data.limit
+      this.pageCount = data.totalPages
     },
 
     pageChangeHandle(value) {
