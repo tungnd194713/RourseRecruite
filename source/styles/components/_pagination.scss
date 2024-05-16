@@ -1,0 +1,43 @@
+.box-pagination {
+  padding-inline: 0;
+  padding-top: 1rem;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  background-color: #ffffff;
+}
+
+.box-pagination p {
+  font-family: 'M PLUS 1p', sans-serif;
+  font-size: 12px;
+  color: #87B0C6;
+}
+
+.page-link:focus {
+  box-shadow: none;
+  background-color: #CBCBCB;
+  color: #ffffff;
+}
+
+.page-link:hover {
+  box-shadow: none;
+  background-color: #CBCBCB;
+  color: #ffffff;
+}
+
+.box-pagination li .previous, .next {
+  border: none;
+}
+
+.box-pagination li a.active {
+  color: #ffffff;
+  background-color: #005586;
+}
+
+.box-pagination li a {
+  color: #ffffff;
+  background-color: #CBCBCB;
+}
+
+.box-pagination .page-link {
+  padding: 0.275rem .75rem;
+}

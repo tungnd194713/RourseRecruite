@@ -1,0 +1,562 @@
+.card-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #FFFFFF;
+  background: #87B0C6;
+  height: 40px;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.title-page {
+  font-size: 32px;
+  margin: 20px 20px 30px 20px;
+  color:#003156;
+  text-align: center;
+  font-weight: bold;
+}
+
+.tab-content {
+  background-color: #FFFFFF;
+  border-radius: 0 0 15px 15px;
+  padding: 2% 5%;
+}
+
+.nav-link.big-nav {
+  border-color: #F0F2F2 !important;
+  background-color: #F0F2F2 !important;
+  color: #B3B3B3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-link.big-nav.active {
+  border-color: #FFFFFF #FFFFFF #EBF2F2 #FFFFFF !important;
+  background-color: #FFFFFF !important;
+}
+
+main.container {
+  border-radius: 20px;
+}
+
+.card-text {
+  font-size: 12px
+}
+
+.card {
+  background-color: #F5F7F7;
+  border-radius: 20px;
+  height: 180px;
+}
+
+.card-content-two {
+  height: auto;
+  background-color: #FFFFFF;
+}
+
+.info-pill {
+  border: 1px solid #88B1C7;
+  width: 320px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+}
+
+.payment-explain {
+  font-size: 16px;
+}
+
+.nav-tabs .nav-one {
+  border-top-left-radius: 15px;
+}
+
+.nav-tabs .nav-two {
+  border-top-right-radius: 15px;
+}
+
+.footer-social-icon {
+  margin-right: 1rem;
+}
+
+.box-table th, td {
+  font-weight: bold !important;
+}
+
+.box-table th:first-child , td:first-child {
+  padding-left: 18px;
+}
+
+.box-table td {
+  background-color: #EBF2F2;
+}
+
+
+.td-warning {
+  padding: 1px 0px 1px 10px;
+  color: #ffffff;
+  font-size: 10px;
+  background-color: #87B0C6;
+  position: absolute;
+  margin-top: -18px;
+  margin-left: -18px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.td-warning img {
+  height: 19px;
+}
+
+.box-table {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  background-color: #ffffff;
+}
+
+.box-table table {
+  font-size: 14px;
+}
+
+.box-table table thead tr {
+  background-color: #C5E8EF;
+  color: #003156;
+}
+
+.box-table table tr.active {
+  background-color: #F4F6F6;
+}
+
+.box-table table thead tr th {
+  font-weight: normal;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.box-table table tbody tr td {
+  color: #333333;
+}
+
+.box-table table tbody tr td a{
+  color: #333333!important;
+}
+
+.table > :not(:first-child) {
+  border-top: none;
+}
+
+.box-pagination {
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  background-color: #ffffff;
+}
+
+.box-pagination p {
+  font-size: 12px;
+  color: #87B0C6;
+}
+
+.page-link:focus {
+  box-shadow: none;
+  background-color: #CBCBCB;
+  color: #ffffff;
+}
+
+.page-link:hover {
+  box-shadow: none;
+  background-color: #CBCBCB;
+  color: #ffffff;
+}
+
+.box-pagination li .previous, .next {
+  border: none;
+}
+
+.box-pagination li a.active {
+  color: #ffffff;
+  background-color: #005586;
+}
+
+.box-pagination li a {
+  color: #ffffff;
+  background-color: #CBCBCB;
+}
+
+.box-pagination .page-link {
+  padding: 0.275rem .75rem;
+}
+
+.actions {
+  margin-right:0 !important;
+  width: 8rem;
+  text-align: center;
+  border: 1px solid #2f83b9;
+  border-radius: 3rem;
+}
+
+.btn-payment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-inside {
+  cursor: pointer;
+}
+
+table tbody td{
+  padding: 1rem
+}
+
+@media only screen and (max-width: 1024px) {
+  .company-menu a {
+      padding-right: 3rem !important;
+      padding-left: 3rem !important;
+  }
+
+  .td-warning {
+      margin-top: -18px;
+      margin-left: -10px;
+  }
+}
+
+@media only screen and (max-width: 991px) {
+  .company-menu a {
+      font-size: 13px;
+      padding-right: 2rem !important;
+      padding-left: 2rem !important;
+  }
+
+  .box-search {
+      border-radius: 2rem !important;
+  }
+
+  .td-warning img {
+      height: 16px;
+  }
+
+  .td-warning {
+      padding: 1px 0px 1px 10px;
+      font-size: 9px;
+      margin-top: -26px;
+      margin-left: -8px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .company-header {
+      background-color: #003156;
+      padding: 8px;
+  }
+
+  .company-header img {
+      height: 28px;
+  }
+
+  .company-header a {
+      font-size: 11px;
+  }
+
+  .company-header .dropdown-link-acc ul {
+      padding: 0px;
+      min-width: 150px;
+  }
+
+  .company-menu a {
+      font-size: 11px;
+      padding-right: 0.7rem !important;
+      padding-left: 0.7rem !important;
+  }
+
+  .company-menu a img {
+      height: 12px;
+      margin-right: 1px;
+  }
+
+  /*
+  * Main
+  */
+  .box-title h4 {
+      font-size: 20px;
+  }
+
+  .td-warning img {
+      height: 15px;
+  }
+
+  .td-warning {
+      padding: 1px 0px 1px 10px;
+      font-size: 7px;
+      margin-top: -71px;
+      margin-left: -8px;
+  }
+
+  .box-pagination p {
+      font-size: 10px;
+  }
+
+  /*
+   * Footer
+   */
+  .company-footer .container {
+      padding-top: 25px;
+      padding-bottom: 35px;
+  }
+
+  .company-footer img {
+      height: 25px;
+  }
+
+  .company-footer h5 {
+      font-size: 13px;
+  }
+
+  .company-footer ul li a {
+      font-size: 11px;
+  }
+
+  .footer-copyright {
+      font-size: 11px;
+      padding: 8px;
+  }
+
+  table tbody td{
+    padding: 1rem 1.5rem !important
+  }
+}
+
+
+@media only screen and (max-width: 991px) {
+  .title-page {
+      font-size: 25px;
+      font-weight: bold;
+  }
+  .card-title {
+      height: 40px;
+      font-size: 18px;
+  }
+  .payment-explain {
+      font-size: 12px;
+  }
+  .info-pill {
+      font-size: 12px;
+      width: 200px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .title-page {
+      font-size: 20px;
+      font-weight: bold;
+  }
+  .card-title {
+      height: 30px;
+      font-size: 16px;
+  }
+  .payment-explain {
+      font-size: 10px;
+  }
+  .info-pill {
+      font-size: 10px;
+      width: 150px;
+  }
+}
+
+#payjp_supportedBrands {
+  margin: 10px 0 30px;
+}
+
+#payjp_supportedBrands ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.img-supported-brands {
+  list-style-type: none;
+}
+
+.img-supported-brands img {
+  max-width: 100%;
+  height: auto;
+  display: inline-block;
+}
+
+.tab-content {
+  padding: 0 5%;
+  min-height: 29rem;
+}
+
+.mod--form .form_control {
+  border-top: 1px solid #eee;
+  font-size: 12px;
+  font-family: sans-serif;
+}
+
+#account_card .mod--form .form_control .inner {
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 20px 0;
+  position: relative;
+  max-height: 4rem;
+}
+
+#account_card .mod--form .form_control label {
+  font-size: 14px;
+  font-weight: 700;
+  width: 86px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+#account_card .mod--form .form_control input.payjp_simple-input-text,
+#account_card .mod--form .form_control .payjp_simple-input-separator {
+  font-size: 16px;
+  background: transparent;
+}
+
+#account_card .mod--form .form_control input {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
+  box-shadow: none;
+  width: 100%;
+  font-size: 14px !important;
+}
+
+#payjp_cardExpiresMonth,
+#payjp_cardExpiresYear {
+  width: 1.8em !important;
+  disabled: false !important;
+  z-index: 0;
+}
+
+#account_card .mod--form .form_control input #payjp_cardExpiresMonth {
+  margin-right: 0.8em;
+}
+
+#account_card .mod--form .form_control input#payjp_cardExpiresSeparator {
+  margin-left: -2.3em;
+}
+
+#account_card .mod--form .form_control--half .inner:first-child {
+  position: relative;
+  width: 50%;
+}
+
+#payjp_partition-border {
+  margin: 20px 10px;
+  height: 20px;
+  border-right: 1px solid #eee;
+  top: 50%;
+}
+
+#account_card .mod--form .form_control--half .inner {
+  width: 40%;
+}
+
+@media screen and (min-width: 769px) {
+  #account_card .mod--form .form_control--half .inner .help_tip_button {
+    z-index: 1;
+  }
+}
+
+#account_card .mod--form .form_control--half .inner .help_tip {
+  position: absolute;
+  right: -40px;
+  top: -230px;
+}
+
+#account_card .mod--form .form_control--half .inner .help_tip_button:before {
+  content: '?';
+  font-weight: 200;
+  color: #999;
+}
+
+#account_card .mod--form .form_control--half:after {
+  content: " ";
+  display: block;
+  clear: both;
+}
+
+#account_card .mod--form .form_control--half .inner .help_tip_button {
+  position: absolute;
+  top: 22px;
+  right: 0;
+  text-align: center;
+  background: #fff;
+  border: 1px solid #999;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  font-size: 10px;
+  line-height: 15px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.payjp_border {
+  left: 0;
+  bottom: 0;
+  height: 0;
+  border-top-width: 0;
+  color: #ececec;
+  position: absolute;
+  width: 100%;
+  margin-bottom: -1px;
+}
+
+.payjp_hiddenborder {
+  left: 0;
+  border-style: none none solid;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  height: 0;
+  border-color: #198fcc;
+  -webkit-transform: scaleX(0);
+  -moz-transform: scaleX(0);
+  -ms-transform: scaleX(0);
+  -o-transform: scaleX(0);
+  transform: scaleX(0);
+  -webkit-transition: all 450ms cubic-bezier(.23,1,.32,1) 0ms;
+  -o-transition: all 450ms cubic-bezier(.23,1,.32,1) 0ms;
+  -moz-transition: all 450ms cubic-bezier(.23,1,.32,1) 0ms;
+  transition: all 450ms cubic-bezier(.23,1,.32,1) 0ms;
+  margin-bottom: -1px;
+}
+
+#account_card .mod--form {
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+  background: #fff;
+}
+
+#account_card .btn {
+  color: #fff;
+  background: #0088f4;
+  border-radius: 4px;
+  width: 100%;
+  height: 50px;
+  padding: 0;
+  line-height: 50px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.link-invoice {
+  cursor: pointer;
+}
+
+* {
+  font-family: 'M PLUS 1p', sans-serif !important;
+}

@@ -1,0 +1,251 @@
+#flexSwitchCheckChecked {
+	width: 50px;
+	height: 25px;
+}
+
+.create_job {
+  background-color: #ffffff;
+  border-radius: 25px;
+}
+
+.create_job h4 {
+  font-size: 32px;
+  color: #003159;
+}
+
+.create_job .box-upload-file {
+  border: 1px dashed #7DB1C9;
+}
+
+.create_job .box-upload-file p {
+  font-size: 14px;
+  color: #999999;
+}
+
+.create_job .box-upload-file p span {
+  color: #0071BC;
+}
+
+.create_job .form-group label {
+  font-size: 14px;
+}
+
+.create_job .form-group label span {
+  color: red;
+}
+
+.create_job .form-group input, select.form-select {
+  border: 1px solid #7DB1C9;
+  //color: #7DB1C9;
+}
+
+.create_job .form-group .input-group span.input-group-text-pre {
+  position: relative;
+  display: inline-block;
+  line-height: normal;
+  border: 1px solid #7DB1C9;
+  background-color: #ffffff;
+}
+
+.create_job .form-group .input-group span.input-group-text-pre::after {
+  content: "";
+  display: block;
+  top: 7px;
+  bottom: 6px;
+  position: absolute;
+  right: 0;
+  border-right: 1px solid #CCCCCC;
+}
+
+.create_job .input-group-icon input, select.form-select {
+  border-left: 0px solid #7DB1C9;
+  border-top: 1px solid #7DB1C9;
+  border-bottom: 1px solid #7DB1C9;
+  border-right: 1px solid #7DB1C9;
+}
+
+.create_job .form-group textarea {
+  border: 1px solid #7DB1C9;
+}
+
+.create_job .btn-cancel-create_job {
+  padding: 7px 15px;
+}
+
+.create_job .btn-edit-create_job {
+  padding: 7px 39px;
+}
+
+.create_job .btn-edit-create_job {
+  background-color: #0071BC;
+  color: #fff;
+  font-size: 16px;
+}
+
+.create_job .btn-edit-create_job:hover {
+  background-color: #6e9ddf;
+}
+
+.create_job .btn-cancel-create_job {
+  color: #B2B2B2;
+  font-size: 16px;
+}
+
+.create_job .btn-cancel-create_job:hover {
+  background-color: darkgrey;
+  color: #ffffff;
+}
+
+.create_job .checkbox_two {
+  margin-left: 125px;
+}
+
+.preview-image {
+  height: 200px;
+  margin-bottom: 10px;
+}
+
+@media only screen and (max-width: 800px) {
+  .create_job h4 {
+    font-size: 25px;
+  }
+
+  .create_job .form-group label {
+    font-size: 13px;
+  }
+
+  .create_job .btn {
+    font-size: 14px;
+  }
+
+  .create_job .btn-cancel-create_job {
+    padding: 6px 5px;
+  }
+
+  .create_job .btn-edit-create_job {
+    padding: 6px 26px;
+  }
+
+  .create_job .checkbox_two {
+    margin-left: 80px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .create_job h4 {
+    font-size: 20px;
+  }
+
+  .create_job .form-group label {
+    font-size: 12px;
+  }
+
+  .create_job .btn {
+    font-size: 12px;
+  }
+
+  .create_job .btn-cancel-profile {
+    padding: 6px 5px;
+  }
+
+  .create_job .btn-edit-profile {
+    padding: 6px 26px;
+  }
+
+  .create_job .checkbox_two {
+    margin-left: 100px;
+  }
+}
+
+.error-text {
+  color: red;
+  font-size: 12px;
+}
+
+.invalid {
+  border-color: red !important;
+}
+
+.box-modal {
+  border-radius: 15px;
+}
+
+.close-modal {
+  height: 30px;
+}
+
+.modal-header {
+  justify-content: end;
+}
+
+.modal-body > h3 > img {
+  height: 200px;
+}
+
+.btn-secondary-custom {
+  color: #fff;
+  background-color: #c9c9c9;
+  border-color: #c9c9c9;
+}
+
+.modal-body-text {
+  color: #076dad;
+}
+
+.modal-footer {
+  border-top: none !important;
+}
+
+.custom-input-group {
+  flex-wrap: unset !important;
+}
+
+.status-stay-dropdown {
+  position: relative;
+  width: inherit;
+  .over-select {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}
+
+.multi-select-status-stay {
+  position: relative;
+  width: 100%;
+  ul {
+    border: 1px solid grey;
+    list-style: none;
+    max-height: 150px;
+    overflow: auto;
+    padding: 8px 8px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 9999;
+    background-color: white;
+    width: 100%;
+    li {
+      padding: 2px;
+
+      label {
+        width: 100%;
+      }
+    }
+    li:hover {
+      background-color: dodgerblue;
+      color: white;
+    }
+  }
+}
+
+.range-salary-character {
+  width: fit-content;
+}
+
+.text-note {
+  font-size: 8px !important;
+  color: #7DB1C9;
+}

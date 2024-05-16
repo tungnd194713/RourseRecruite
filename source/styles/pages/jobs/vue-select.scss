@@ -1,0 +1,107 @@
+.box-form-register {
+  .vs__dropdown-toggle {
+    border: 1px solid #88B1C7;
+    border-radius: 5%/50%;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    font-size: 1.25rem;
+
+    .vs__selected-options {
+      .vs__selected {
+        margin: 0 !important;
+        font-size: 1.25rem;
+      }
+
+      .vs__search {
+        margin: 0 !important;
+        font-size: 1.25rem;
+        z-index: 0;
+      }
+    }
+
+    .vs__actions {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      //background-position: right 0.75rem center;
+      background-size: 16px 12px;
+      min-width: 8%;
+      background-position: right;
+      margin-right: 0.75rem;
+
+      .vs__clear {
+        display: none;
+      }
+
+      .vs__open-indicator {
+        display: none;
+      }
+    }
+  }
+
+  .vs__dropdown-menu {
+    border: 1px solid black;
+    border-radius: 0;
+    font-size: 1.25rem;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .box-form-register {
+    .vs__dropdown-toggle {
+      border-radius: 8%/50% !important;
+
+      .vs__actions {
+        //min-width: 15% !important;
+      }
+    }
+  }
+}
+
+.box-form-info {
+  .vs__dropdown-toggle {
+    border: 1px solid #88B1C7;
+    //border-radius: 5%/50%;
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+    //padding-left: 1rem;
+    //padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+    font-size: 1rem;
+
+    .vs__selected-options {
+      .vs__selected {
+        margin: 0 !important;
+        font-size: 1rem;
+      }
+
+      .vs__search {
+        margin: 0 !important;
+        font-size: 1rem;
+      }
+    }
+
+    .vs__actions {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      //background-position: right 0.75rem center;
+      background-size: 16px 12px;
+      min-width: 8%;
+      background-position: right;
+      margin-right: 0.75rem;
+
+      .vs__clear {
+        display: none;
+      }
+
+      .vs__open-indicator {
+        display: none;
+      }
+    }
+  }
+
+  .vs__dropdown-menu {
+    border: 1px solid black;
+    border-radius: 0;
+    font-size: 1rem;
+  }
+}

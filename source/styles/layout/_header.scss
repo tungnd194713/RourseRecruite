@@ -1,0 +1,130 @@
+body {
+  font-family: 'M PLUS 1p' !important;
+  background-color: #E8F1F1!important;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+#back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 15px;
+  z-index: 9999;
+  width: 55px;
+  height: 55px;
+  text-align: center;
+  line-height: 54px;
+  background: #CFC6C1;
+  color: #000000;
+  cursor: pointer;
+  border: 0;
+  border-radius: 55px;
+  text-decoration: none;
+  transition: opacity 0.2s ease-out;
+  opacity: 0;
+}
+
+#back-to-top.show {
+  opacity: 1;
+}
+
+.btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.form-control:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.form-select:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.company-header {
+  background-color: #003156;
+  padding: 12px;
+}
+
+.company-header img {
+  height: 32px;
+}
+
+.company-header .dropdown-link-acc {
+  margin-right: 10px;
+}
+
+.company-header .dropdown-link-acc ul {
+  padding: 0px;
+  min-width: 200px;
+}
+
+.company-header .dropdown-link-acc ul li a.dropdown-item {
+  padding: 0.8rem 1rem;
+  font-size: 12px;
+  filter: invert(63%) sepia(0%) saturate(14%) hue-rotate(250deg) brightness(140%) contrast(93%);
+}
+
+.company-header .dropdown-link-acc ul li a.dropdown-item:hover {
+  background-color: #000;
+  filter: invert(70%) sepia(62%) saturate(294%) hue-rotate(163deg) brightness(95%) contrast(85%);
+}
+
+.company-header .dropdown-link-acc img {
+  margin-top: -5px;
+  margin-right: 10px;
+  height: 16px;
+}
+
+.company-header a {
+  font-size: 14px;
+  color: #75B0CC;
+}
+
+.company-header a:hover {
+  color: #82B0CA;
+}
+
+.company-menu {
+  background-color: #82B0CA;
+}
+
+.company-menu a {
+  font-size: 14px;
+  padding-right: 5rem !important;
+  padding-left: 5rem !important;
+}
+
+.company-menu a img {
+  margin-top: -5px;
+  margin-right: 5px;
+}
+
+.company-menu .border-end {
+  border-right: 1px solid #ebf2f23d !important;
+}
+
+.company-menu a.active {
+  /*font-weight: bold;*/
+  /*color: #003156;*/
+  filter: invert(16%) sepia(22%) saturate(4628%) hue-rotate(183deg) brightness(32%) contrast(105%);
+
+}
+
+.company-menu a:hover {
+  /*font-weight: bold;*/
+  /*color: #003156;*/
+  filter: invert(16%) sepia(22%) saturate(4628%) hue-rotate(183deg) brightness(32%) contrast(105%);
+
+}
+.sub-align {
+  vertical-align: sub;
+}

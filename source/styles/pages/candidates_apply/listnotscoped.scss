@@ -1,0 +1,62 @@
+input::placeholder {
+  color: #88B1C7 !important;
+  opacity: 1; /* Firefox */
+}
+
+.box-search .mx-input {
+  font-size: 12px;
+  height: 36px;
+  color: #88B1C7;
+  border: 1px solid #88B1C7;
+  background-color: #F5F7F7;
+  border-radius: 50rem !important;
+}
+
+.edit-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.note {
+  word-break: normal;
+}
+
+.error {
+  color: red;
+  padding-left: 10px;
+}
+
+#apply-btn:hover {
+  background-color: #6e9ddf;
+}
+
+@media only screen and (max-width: 600px) {
+  .box-search {
+    border-radius: 1rem !important;
+  }
+
+  .box-table table {
+    font-size: 12px;
+  }
+
+  .box-pagination p {
+    font-size: 10px;
+  }
+
+  .td-warning {
+    margin-top: -16px !important;
+    margin-left: -12px !important;
+  }
+
+  .td-warning-large {
+    margin-top: -16px !important;
+    margin-left: -8px !important;
+  }
+}
+
+
+@media only screen and (max-width: 540px) {
+  .modal-candidate {
+    width: 95%;
+  }
+}

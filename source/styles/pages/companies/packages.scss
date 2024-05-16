@@ -1,0 +1,251 @@
+* {
+  font-family: 'M PLUS 1p', sans-serif !important;
+}
+
+.card-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FFFFFF;
+    background: #87B0C6;
+    height: 40px;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.title-page {
+    font-size: 32px;
+    margin: 20px 20px 30px 20px;
+    color:#003156;
+    text-align: center;
+    font-weight: bold;
+}
+
+.tab-content {
+    font-family: 'M PLUS 1p', sans-serif;
+    background-color: #FFFFFF;
+    padding-bottom: 40px;
+    border-radius: 0 0 15px 15px;
+    margin-bottom: 3rem;
+    font-size: 18px;
+}
+
+.nav-link.big-nav {
+    border-color: #F0F2F2 !important;
+    background-color: #F0F2F2 !important;
+    color: #B3B3B3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-link.big-nav.active {
+    border-color: #FFFFFF #FFFFFF #EBF2F2 #FFFFFF !important;
+    background-color: #FFFFFF !important;
+}
+
+main.container {
+    border-radius: 20px;
+}
+
+.card-text {
+    font-size: 12px
+}
+
+.card {
+    background-color: #F5F7F7;
+    border-radius: 20px;
+    height: 180px;
+}
+
+.card-content-two {
+    height: auto;
+    background-color: #FFFFFF;
+}
+
+.info-pill {
+    border: 1px solid #88B1C7;
+    width: 320px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+}
+
+.payment-explain {
+    font-size: 16px;
+}
+
+.nav-tabs .nav-one {
+    border-top-left-radius: 15px;
+}
+
+.nav-tabs .nav-two {
+    border-top-right-radius: 15px;
+}
+
+.footer-social-icon {
+    margin-right: 1rem;
+}
+
+picture img {
+    width: 100%;
+    height: auto;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.nav-item {
+    width: calc( 100%/3);
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 5px 5px;
+}
+
+td, th {
+    border-radius: 5px;
+}
+
+.first-row-title {
+    background-color: #7cb0c8;
+    color: white;
+    font-size: 20px;
+}
+
+.second-row-title {
+    background-color: #E5AF6E;
+    color: white;
+    font-size: 16px;
+    font-weight: 400;
+}
+.column-first-row {
+    background-color: #7cb0c8;
+    font-size: 13px;
+    font-weight: 400;
+    color: white;
+    padding: 15px 0px 15px;
+}
+
+.column-second-row {
+    background-color: #E5AF6E;
+    font-size: 13px;
+    font-weight: 400;
+    color: white;
+    padding: 15px 0px 15px;
+}
+
+.package {
+    background-color: #84AF6E;
+    color: white;
+    padding-bottom: 30px;
+    padding-top: 30px;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.package-value {
+    background-color: #E8EDED;
+    color: #7CB0C8;
+}
+
+@media only screen and (max-width: 991px) {
+    .title-page {
+        font-size: 25px;
+    }
+    .card-title {
+        height: 40px;
+        font-size: 18px;
+    }
+    .payment-explain {
+        font-size: 12px;
+    }
+    .info-pill {
+        font-size: 12px;
+        width: 200px;
+    }
+}
+
+@media only screen and (max-width: 975px) {
+    picture img {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .package {
+        font-size: 12px;
+        padding: 20px 10px;
+    }
+
+    .column-first-row {
+        font-size: 12px;
+        padding: 15px 0px;
+    }
+
+    .first-row-title {
+        font-size: 16px;
+        padding: 0px 10px;
+    }
+
+    .second-row-title {
+        font-size: 16px;
+        font-weight: 400;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .title-page {
+        font-size: 20px;
+    }
+    .card-title {
+        height: 30px;
+        font-size: 16px;
+    }
+    .payment-explain {
+        font-size: 10px;
+    }
+    .info-pill {
+        font-size: 10px;
+        width: 150px;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .title-page {
+        font-size: 25px;
+    }
+    .card-title {
+        height: 40px;
+        font-size: 18px;
+    }
+    .payment-explain {
+        font-size: 12px;
+    }
+    .info-pill {
+        font-size: 12px;
+        width: 200px;
+    }
+}
+
+@media only screen and (max-width: 750px) {
+    .package {
+        font-size: 12px;
+        padding: 10px 5px;
+    }
+
+    .column-first-row {
+        font-size: 12px;
+        padding: 5px 5px;
+    }
+
+    .first-row-title {
+        font-size: 10px;
+        // padding: 0px 20px;
+    }
+
+    .second-row-title {
+        font-size: 10px;
+    }
+}
