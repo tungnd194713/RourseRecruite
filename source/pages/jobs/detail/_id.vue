@@ -236,6 +236,11 @@
 
                               </span>
                             </li>
+                            <li v-for="(test, index) in data.tests" :key="index" class="d-flex justify-content-between align-items-center" @click="showPreviewTest(test)">
+                              <div>
+                                <div>Bài test {{ index + 1 }}: {{ test.name }} ({{ test.questions.length }} câu hỏi)</div>
+                              </div>
+                            </li>
                           </ul>
                         </div>
                       </div>
@@ -602,6 +607,9 @@
     <el-dialog :visible.sync="previewDialog" :title="moduleName">
       <PreviewModule :source="videoSource" />
     </el-dialog>
+    <el-dialog :visible.sync="previewTest" :title="testName">
+      <TestDetail :test="test" />
+    </el-dialog>
   </main>
 </template>
 
@@ -614,6 +622,7 @@
   } from 'vuelidate/lib/validators'
   import Pagination from "~/components/Pagination"
   import PreviewModule from "~/components/PreviewModule"
+  import TestDetail from "~/components/TestDetail"
   import defaultCareers from '~/constants/careers'
   import defaultInCvUser from "~/constants/defaultInCvUser"
   import theStatusStay from "~/constants/statusStay"
@@ -630,6 +639,7 @@
       Pagination,
 			VRuntimeTemplate,
       PreviewModule,
+      TestDetail,
     },
     mixins: [validationMixin],
     layout: 'auth',
@@ -646,9 +656,12 @@
         loadingListCv: '',
         loadingJobDetail: '',
         datas: [],
+        test: {},
         videoSource: '',
         moduleName: '',
         previewDialog: false,
+        testName: '',
+        previewTest: false,
         statusStays: theStatusStay,
         provincesList: theProvinces,
         confirmOpenEducation: false,
@@ -915,6 +928,12 @@
         this.videoSource = module.video;
         this.moduleName = module.name
         this.previewDialog = true;
+      },
+
+      showPreviewTest(test) {
+        this.testName = test.name
+        this.test = test
+        this.previewTest = true;
       },
 
       async getJobFromApi() {
