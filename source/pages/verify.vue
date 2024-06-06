@@ -119,6 +119,6 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   @import '../styles/pages/auth/forgot-password.scss';
 </style>

@@ -602,6 +602,6 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   @import '../../styles/pages/jobs/cv_user.scss';
 </style>

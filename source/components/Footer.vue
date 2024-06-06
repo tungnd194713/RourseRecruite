@@ -88,6 +88,6 @@
   }
 </script>
 
-<style>
+<style lang="scss">
   @import '../styles/layout/_footer.scss';
 </style>

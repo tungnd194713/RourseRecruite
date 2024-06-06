@@ -143,6 +143,6 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     @import '../styles/pages/auth/verify-mail-facebook.scss';
 </style>

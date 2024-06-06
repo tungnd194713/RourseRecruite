@@ -191,7 +191,7 @@
                 </div>
               </div>
             </el-tab-pane>
-            <el-tab-pane :disabled="job.education_status === 1" :label="`Lộ trình dự kiến (${job.education_status ? jobEducationStatus[job.education_status - 1] : 'Đang xử lí'})`" name="second">
+            <el-tab-pane :disabled="job.education_status === 1 || !job.accept_education" :label="`Lộ trình dự kiến (${job.accept_education ? (job.education_status ? jobEducationStatus[job.education_status - 1] : 'Đang xử lí') : 'Không đăng kí'})`" name="second">
               <div class="learning-route">
                 <div class="container text-center faq-con">
                   <div

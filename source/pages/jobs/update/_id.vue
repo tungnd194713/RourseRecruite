@@ -1348,8 +1348,8 @@ export default {
       },
 
       previewJob() {
-        this.$v.job.$touch()
-        if (!this.$v.job.$invalid) {
+        // this.$v.job.$touch()
+        // if (!this.$v.job.$invalid) {
           this.job.beginnerSkills = this.beginnerSkills
 					this.job.intermediateSkills = this.intermediateSkills
 					this.job.advancedSkills = this.advancedSkills
@@ -1358,43 +1358,43 @@ export default {
           this.dispatchSetJobUpdate(this.job)
           this.dispatchSetOldImageJobUpdate(this.oldImageJob)
           this.$router.push('/jobs/update/preview/' + this.$route.params.id)
-        } else if (this.$v.job.title.$error) {
-          this.$nextTick(() => {
-            this.$refs.titleTextBox.focus()
-          })
-        } else if (this.$v.job.number_recruitments.$error) {
-          this.$nextTick(() => {
-            this.$refs.numberRecruitmentsTextBox.focus()
-          })
-        } else if (this.$v.job.salary_min.$error) {
-          this.$nextTick(() => {
-            this.$refs.salaryMinTextBox.focus()
-          })
-        } else if (this.$v.job.salary_max.$error) {
-          this.$nextTick(() => {
-            this.$refs.salaryMaxTextBox.focus()
-          })
-        } else if (this.$v.job.content_work.$error) {
-          this.$nextTick(() => {
-            this.$refs.contentWorkTextBox.focus()
-          })
-        } else if (this.$v.job.conditions_apply.$error) {
-          this.$nextTick(() => {
-            this.$refs.conditionsApplyTextBox.focus()
-          })
-        } else if (this.$v.job.address_work.$error) {
-          this.$nextTick(() => {
-            this.$refs.addressWorkTextBox.focus()
-          })
-        } else if (this.$v.job.time_work.$error) {
-          this.$nextTick(() => {
-            this.$refs.timeWorkTextBox.focus()
-          })
-        } else if (this.$v.job.welfare_regime.$error) {
-          this.$nextTick(() => {
-            this.$refs.welfareRegimeTextBox.focus()
-          })
-        }
+        // } else if (this.$v.job.title.$error) {
+        //   this.$nextTick(() => {
+        //     this.$refs.titleTextBox.focus()
+        //   })
+        // } else if (this.$v.job.number_recruitments.$error) {
+        //   this.$nextTick(() => {
+        //     this.$refs.numberRecruitmentsTextBox.focus()
+        //   })
+        // } else if (this.$v.job.salary_min.$error) {
+        //   this.$nextTick(() => {
+        //     this.$refs.salaryMinTextBox.focus()
+        //   })
+        // } else if (this.$v.job.salary_max.$error) {
+        //   this.$nextTick(() => {
+        //     this.$refs.salaryMaxTextBox.focus()
+        //   })
+        // } else if (this.$v.job.content_work.$error) {
+        //   this.$nextTick(() => {
+        //     this.$refs.contentWorkTextBox.focus()
+        //   })
+        // } else if (this.$v.job.conditions_apply.$error) {
+        //   this.$nextTick(() => {
+        //     this.$refs.conditionsApplyTextBox.focus()
+        //   })
+        // } else if (this.$v.job.address_work.$error) {
+        //   this.$nextTick(() => {
+        //     this.$refs.addressWorkTextBox.focus()
+        //   })
+        // } else if (this.$v.job.time_work.$error) {
+        //   this.$nextTick(() => {
+        //     this.$refs.timeWorkTextBox.focus()
+        //   })
+        // } else if (this.$v.job.welfare_regime.$error) {
+        //   this.$nextTick(() => {
+        //     this.$refs.welfareRegimeTextBox.focus()
+        //   })
+        // }
       },
 
       resetFormToStart() {

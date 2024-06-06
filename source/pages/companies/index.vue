@@ -118,8 +118,8 @@
         class="swiper-slide"
         ><img :src="url_api_file + image.image_url" alt=""
       /></swiper-slide>
-      <div v-if="images.length > 3" slot="button-prev" class="swiper-button-prev" @click="prev()"></div>
-      <div v-if="images.length > 3" slot="button-next" class="swiper-button-next" @click="next()"></div>
+      <!-- <div v-if="images.length > 3" slot="button-prev" class="swiper-button-prev" @click="prev()"></div>
+      <div v-if="images.length > 3" slot="button-next" class="swiper-button-next" @click="next()"></div> -->
     </swiper>
   </main>
 </template>
