@@ -94,14 +94,12 @@
                 {{ ( perPage * (currentPage - 1)) + (index + 1) }}
               </td>
               <td class="align-middle py-4">
-                <a
-                  href="#"
-                  data-bs-toggle="modal"
-                  data-bs-target="#staticBackdrop"
+                <span
+                  style="cursor: pointer"
                   @click="popupCvUser(item)"
                 >
                   {{ item.user.name }}
-                </a>
+                </span>
               </td>
               <td class="align-middle py-3 col-text">{{ item.job.title }}</td>
               <td class="align-middle py-3">
@@ -195,29 +193,25 @@
           </div>
           <div class="d-flex justify-content-center align-items-center">
             <h5 id="popUpCheckLabel" class="modal-title check-title">
-              応募者の応募状態更新
+              Thay đổi trạng thái ứng viên
             </h5>
           </div>
-          <h5 class="d-flex justify-content-center align-items-center">氏名:
-            <strong>{{ name }}</strong>
+          <h5 class="d-flex justify-content-center align-items-center">
+            Tên ứng viên: <strong>{{ name }}</strong>
           </h5>
           <div class="modal-body pop-check-input">
-            <label for="confirmation">在留資格確認</label>
-            <label for="status">ステータス</label>
+            <label for="status">Trạng thái</label>
             <select
               id="status"
               v-model="dataUpdateStatus.status"
               class="form-select rounded-pill pop-check-select"
               aria-label="Status"
             >
-              <option value="1" selected>未対応</option>
-              <option value="2">折り返し待ち</option>
-              <option value="3">面接待ち</option>
-              <option value="4">採用</option>
-              <option value="5">不採用（連絡取れず）</option>
-              <option value="6">不採用</option>
+              <option v-for="(option, index) in jobStatus" :key="index" :value="index + 1" :selected="index === 0">
+                {{ option }}
+              </option>
             </select>
-            <label for="remarks">備考</label>
+            <label for="remarks">Nội dung thay đổi</label>
             <textarea
               id="remarks"
               v-model="$v.dataUpdateStatus.note.$model"
@@ -225,7 +219,7 @@
             ></textarea>
             <div v-if="$v.dataUpdateStatus.note.$error">
               <div v-if="!$v.dataUpdateStatus.note.maxLength" class="error">
-                500文字以下で入力してください
+                Vui lòng nhập dưới 500 ký tự
               </div>
             </div>
             <div class="submit-btn">
@@ -235,25 +229,13 @@
                 data-bs-target="#popUpSuccess"
                 @click="updateStatus()"
               >
-                更新
+                Cập nhật
               </button>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <CvUserModal
-      :candidate="candidate"
-      :language="language"
-      :educations-of-candidate="educationsOfCandidate"
-      :jobs-of-candidate="jobsOfCandidate"
-      :id-row="idRow"
-      :cv-type="cvType"
-      :message="message"
-      @changeLanguageEvent="changeLanguage($event)"
-    />
-
   </main>
 </template>
 
@@ -265,7 +247,6 @@ import DatePicker from 'vue2-datepicker'
 import 'vue2-datepicker/index.css'
 import 'vue2-datepicker/locale/ja'
 import Pagination from '../../components/Pagination'
-import CvUserModal from '~/components/modal/CvUserModal'
 import defaultInCvUser from '~/constants/defaultInCvUser'
 import jobStatus from '~/constants/jobStatus'
 
@@ -274,7 +255,6 @@ export default {
   components: {
     Pagination,
     DatePicker,
-    CvUserModal,
   },
   mixins: [validationMixin],
   layout: 'auth',
@@ -418,7 +398,7 @@ export default {
   },
 
   head() {
-    return { title: 'Danh sách ứng viên | 求人' }
+    return { title: 'Danh sách ứng viên' }
   },
 
   computed: {
@@ -493,16 +473,20 @@ export default {
           .then((res) => {
             this.idRow = -1
             if (res.status === 200) {
-              this.$toast.success('応募者の応募状態・更新が完了しました')
+              this.$toast.success('Cập nhật trạng thái ứng viên thành công!')
               this.getListCV(this.currentPage)
             } else {
               this.$toast.error(
-                '候補者の申請状況と候補者名の更新は完了していません。'
+                'Something wrong'
               )
             }
           })
         this.$refs.closeCheckModal.click()
       }
+    },
+
+    async updateReadStatus(id) {
+      await this.$repositories.candidatesApply.updateStatus(id, { read: 1 });
     },
 
     async changeLanguage(newLanguage) {
@@ -528,24 +512,9 @@ export default {
       }
     },
 
-    async popupCvUser(candidateApply) {
-      this.language = this.lang_vi
-      this.$i18n.locale = this.language
-      this.idRow = candidateApply.id
-      this.defaultCandidate = Object.assign({}, candidateApply.candidate)
-      this.candidate = Object.assign({}, this.defaultCandidate)
-      this.cvType = candidateApply.cv_type
-      this.message_vi = candidateApply.message ? candidateApply.message : ''
-      this.message_ja = candidateApply.message_jp ? candidateApply.message_jp : ''
-      this.initJobsAndEducationsOfCandidate()
-      this.changeLanguage(this.lang_ja)
-      if (candidateApply.read === 0) {
-        await this.$repositories.candidatesApply.updateStatus(this.idRow, { read: 1}).then(res => {
-          if (res.status === 200) {
-            this.getListCV(this.currentPage);
-          }
-        })
-      }
+    popupCvUser(candidateApply) {
+      this.updateReadStatus(candidateApply.id);
+      this.$router.push('/candidates_apply/' + candidateApply.id + '/cv')
     },
 
     initJobsAndEducationsOfCandidate() {

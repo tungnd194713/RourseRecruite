@@ -188,58 +188,108 @@
                 </div>
               </div>
             </div>
-            <h3 class="mb-2 mt-4 fw-bold">Lộ trình của hiện tại: </h3>
-            <div class="learning-route">
-              <div class="container text-center faq-con">
-                <div
-                  v-for="data in datas"
-                  :key="data.value"
-                  class="row m-4 question-button"
-                >
-                  <div class="p-con">
-                    <p>
-                      <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
-                        :data-bs-target="'#' + data.class"
-                        aria-expanded="false"
-                        :aria-controls="data.class"
-                        :class="{'shown': data.isShown, 'font-vi': $i18n.locale === 'vi', 'font-ja': $i18n.locale === 'ja'}"
-                        @click="shownClass(data)">
-                        <div class="row">
-                            <div
-                                    class="col-10 button-title fw-bold"
-                                    style="text-align: start; padding-left: 30px"
-                            >
-                                {{ data.course.title }} ({{data.done_modules.length / data.course.modules.length * 100}}%)
+            <el-tabs v-model="progressTab" stretch>
+              <el-tab-pane label="Lộ trình học" name="first">
+                <h3 class="mb-2 mt-4 fw-bold">Lộ trình của hiện tại </h3>
+                <div class="learning-route">
+                  <div class="container text-center faq-con">
+                    <div
+                      v-for="data in datas"
+                      :key="data.value"
+                      class="row m-4 question-button"
+                    >
+                      <div class="p-con">
+                        <p>
+                          <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                            :data-bs-target="'#' + data.class"
+                            aria-expanded="false"
+                            :aria-controls="data.class"
+                            :class="{'shown': data.isShown, 'font-vi': $i18n.locale === 'vi', 'font-ja': $i18n.locale === 'ja'}"
+                            @click="shownClass(data)">
+                            <div class="row">
+                                <div
+                                        class="col-10 button-title fw-bold"
+                                        style="text-align: start; padding-left: 30px"
+                                >
+                                    {{ data.course.title }} ({{data.done_modules.length / data.course.modules.length * 100}}%)
+                                </div>
+                                <div
+                                        class="col-2 mid"
+                                        style="text-align: end; padding-right: 30px"
+                                >
+                                    <img
+                                            src="../../../assets/images/plus.svg"
+                                            alt=""
+                                            :class="{ rotated: data.isShown }"
+                                    />
+                                </div>
                             </div>
-                            <div
-                                    class="col-2 mid"
-                                    style="text-align: end; padding-right: 30px"
-                            >
-                                <img
-                                        src="../../../assets/images/plus.svg"
-                                        alt=""
-                                        :class="{ rotated: data.isShown }"
-                                />
-                            </div>
+                          </button>
+                        </p>
+                        <div :id="data.class" class="collapse">
+                          <div class="card card-body text-start">
+                            <ul class="course-module">
+                              <li v-for="(content, index) in data.course.modules" :key="index" class="d-flex justify-content-between">
+                                <span>{{ content.name }}</span>
+                                <span>
+                                  <img v-if="isModuleFinish(content.id || content._id, data)" src="../../../assets/images/checked-icon.png" alt="" width="18" height="18">
+                                </span>
+                              </li>
+                            </ul>
+                          </div>
                         </div>
-                      </button>
-                    </p>
-                    <div :id="data.class" class="collapse">
-                      <div class="card card-body text-start">
-                        <ul class="course-module">
-                          <li v-for="(content, index) in data.course.modules" :key="index" class="d-flex justify-content-between">
-                            <span>{{ content.name }}</span>
-                            <span>
-                              <img v-if="isModuleFinish(content.id || content._id, data)" src="../../../assets/images/checked-icon.png" alt="" width="18" height="18">
-                            </span>
-                          </li>
-                        </ul>
                       </div>
                     </div>
                   </div>
-                </div>
               </div>
-
+              </el-tab-pane>
+              <el-tab-pane label="Thông kê" name="second">
+                <h3 class="mb-4 mt-4 fw-bold">Thống kê thời gian học </h3>
+                <h4 class="mb-3 mx-4 fw-bold">Thời gian xem video (tính theo phút): </h4>
+                <div>
+                  <el-row :gutter="20">
+                    <el-col :span="6">
+                      <div>
+                        <el-statistic title="Tổng thời gian xem">
+                          <template slot="formatter">
+                            3600 phút
+                          </template>
+                        </el-statistic>
+                      </div>
+                    </el-col>
+                    <el-col :span="6">
+                      <div>
+                        <el-statistic title="Thời gian học trung bình">
+                          <template slot="formatter">
+                            120 phút
+                          </template>
+                        </el-statistic>
+                      </div>
+                    </el-col>
+                    <el-col :span="6">
+                      <div>
+                        <el-statistic title="Số ngày tham gia học">
+                          <template slot="formatter">
+                            30 ngày
+                          </template>
+                        </el-statistic>
+                      </div>
+                    </el-col>
+                    <el-col :span="6">
+                      <div>
+                        <el-statistic title="Ngày học nhiều nhất">
+                          <template slot="formatter">
+                            150 phút
+                          </template>
+                        </el-statistic>
+                      </div>
+                    </el-col>
+                  </el-row>
+                </div>
+                <bar-chart :data-bar="videoWatchedLength" :labels="labels"></bar-chart>
+              </el-tab-pane>
+            </el-tabs>
+            <div>
             </div>
           </div>
         </div>
@@ -251,13 +301,18 @@
 <script>
 import { mapGetters } from 'vuex'
 import 'bootstrap/dist/css/bootstrap.css'
+import BarChart from '~/components/BarChart.vue';
 import theHomeCareers from '~/constants/careerImages'
 
 export default {
   name: 'EducationProgress',
+  components: {
+    BarChart
+  },
   layout: 'auth',
   data() {
     return {
+      progressTab: 'first',
       datas: [{
         course: {
           modules: [],
@@ -286,7 +341,43 @@ export default {
       isEnableLikeOrUnlikeClick: true,
       regionId: 0,
       totalProgress: 0,
-      user: {}
+      user: {},
+      moduleProgressLogs: [
+        {
+          logId: "60cfc083b8565b25e472579f",
+          user: "64c9fd43cf106733388fd35f",
+          module: "661cced0b3bcda1f4044ff53",
+          video_start_time: 0,
+          video_update_time: 150,
+          created_at: new Date("2024-05-20T10:00:00Z"),
+        },
+        {
+          logId: "60cfc083b8565b25e472579e",
+          user: "64c9fd43cf106733388fd35f",
+          module: "661cced0b3bcda1f4044ff58",
+          video_start_time: 120,
+          video_update_time: 350,
+          created_at: new Date("2024-05-21T15:30:00Z"),
+        },
+        {
+          logId: "60cfc083b8565b25e472579d",
+          user: "64c9fd43cf106733388fd35f",
+          module: "661cced0b3bcda1f4044ff5d",
+          video_start_time: 100,
+          video_update_time: 550,
+          created_at: new Date("2024-05-22T08:45:00Z"),
+        },
+        {
+          logId: "60cfc083b8565b25e472579c",
+          user: "64c9fd43cf106733388fd35f",
+          module: "661cced0b3bcda1f4044ff62",
+          video_start_time: 200,
+          video_update_time: 750,
+          created_at: new Date("2024-05-23T20:20:00Z"),
+        },
+      ],
+      videoWatchedLength: [],
+      labels: [],
     }
   },
 
@@ -309,6 +400,7 @@ export default {
   created() {
     if (this.isAuthenticated) {
       this.getCandidateEducationProgress()
+      this.processData()
       this.hidePage = false
     }
     else {
@@ -317,6 +409,22 @@ export default {
   },
 
   methods: {
+    processData() {
+      this.videoWatchedLength = this.moduleProgressLogs.map(log => log.video_update_time - log.video_start_time);
+
+      this.labels = [
+        {
+          labels: this.moduleProgressLogs.map(log => {
+            const date = new Date(log.created_at);
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}-${month}-${year}`;
+          }), // Module names
+          labelData1: 'Video Watched Length' // Legend label for video watched length
+        }
+      ];
+    },
     userPointColor(job) {
       const point = job.user_job_point / job.job_point;
       if (point >= 0.75) {

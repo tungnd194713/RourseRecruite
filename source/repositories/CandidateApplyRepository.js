@@ -10,7 +10,7 @@ export default ($axios) => ({
     },
 
     updateStatus(id, data) {
-        return $axios.post(`${resource}/update/${id}`, data)
+        return $axios.post(`${resource}/update-status/${id}`, data)
     },
 
     exportCvPdf(candidateApplyId, payload, responseType) {

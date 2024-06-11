@@ -102,15 +102,15 @@
 								<div class="item">
 									<div class="d-flex align-items-start">
 										<img class="cv-icon icon-sm" src="https://itviec.com/assets/cv_templates/icons/birthday-31b2f78f09966779fa4b2c97f58e40bf544fc7fe8dbcd65fa5a685d33b58825e.svg" />
-										<p class="name text-break">{{ candidate.user.birthday }}</p>
+										<p class="name text-break">{{ candidate.user.birthday ? candidate.user.birthday.split('T')[0] : '' }}</p>
 									</div>
 								</div>
-								<div class="item">
+								<!-- <div class="item">
 									<div class="d-flex align-items-start">
 										<img class="cv-icon icon-sm imt-1" src="https://itviec.com/assets/cv_templates/icons/map-pin-66af2cc50e27eaf5f46598ebfe716d81326c8f40cd36986111adc1df933a39a4.svg" />
 										<p class="name text-dark-grey">Add your current location</p>
 									</div>
-								</div>
+								</div> -->
 							</div>
 						</div>
 					</div>
@@ -408,8 +408,8 @@ export default {
 
 		drawProgressBar() {
 			const value = this.candidate.matching_point;
-			const left = this.$el.querySelector('.progress-left .progress-bar');
-			const right = this.$el.querySelector('.progress-right .progress-bar');
+			const left = this?.$el?.querySelector('.progress-left .progress-bar');
+			const right = this?.$el?.querySelector('.progress-right .progress-bar');
 
 			if (value > 0) {
 				if (value <= 50) {
@@ -494,25 +494,6 @@ export default {
         this.matchingPointData = data?.job_matching_data
         this.jobPoint = data?.job_point
         this.previewDialog = true;
-      }
-    },
-
-    async popupCvUser(candidateApply) {
-      this.language = this.lang_vi
-      this.$i18n.locale = this.language
-      this.idRow = candidateApply.id
-      this.defaultCandidate = Object.assign({}, candidateApply.candidate)
-      this.candidate = Object.assign({}, this.defaultCandidate)
-      this.cvType = candidateApply.cv_type
-      this.message_vi = candidateApply.message ? candidateApply.message : ''
-      this.message_ja = candidateApply.message_jp ? candidateApply.message_jp : ''
-      this.initJobsAndEducationsOfCandidate()
-      if (candidateApply.read === 0) {
-        await this.$repositories.candidatesApply.updateStatus(this.idRow, { read: 1}).then(res => {
-          if (res.status === 200) {
-            this.getListCV(this.currentPage);
-          }
-        })
       }
     },
 
