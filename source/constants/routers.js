@@ -17,6 +17,12 @@ export default [
     name: 'Danh sách ứng viên',
     path: '/candidates_apply',
   },
+  {
+    tab: 'candidate',
+    srcImage: '/icon_gr_users.svg',
+    name: 'Danh sách chương trình đào tạo',
+    path: '/educations',
+  },
   // {
   //   tab: 'invoice',
   //   srcImage: '/icon_order.svg',

@@ -11,25 +11,10 @@
         />
         </a>
         <div class="bg-white box-form-login">
-          <h1 class="mb-3 mb-lg-4 fw-bold">ログイン</h1>
+          <h1 class="mb-3 mb-lg-4 fw-bold">Đăng nhập</h1>
 
           <div v-if="error" class="alert alert-danger" role="alert">
-            ログインできませんでした。後ほどもう一度お試しください。
-          </div>
-
-          <div class="btn-facebook m-4 m-lg-4">
-            <a
-              class="text-decoration-none cursor-pointer login-btn"
-              @click="loginWithFacebook"
-            >
-              <span>
-                <img
-                  src="../assets/images/icon_fb.svg"
-                  alt="Facebookでログイン"
-                />
-                Facebookでログイン
-              </span>
-            </a>
+            Không thể đăng nhập, hãy thử lại sau vài phút nữa.
           </div>
 
           <div
@@ -41,7 +26,7 @@
           </div>
 
           <div class="form-group">
-            <label for="email">メールアドレス <span>*</span></label>
+            <label for="email">Email <span>*</span></label>
             <div class="input-group has-validation">
               <span class="input-group-text input-group-text-pre"
                 ><img src="../assets/images/icon_user.svg" alt=""
@@ -59,15 +44,15 @@
             </div>
             <div v-if="$v.data.email.$error">
               <div v-if="!$v.data.email.required" class="error">
-                これは必須項目なので、必ず入力してください
+                Vui lòng nhập trường này
               </div>
               <div v-if="!$v.data.email.email" class="error">
-                メールアドレスの形式で入力してください
+                Vui lòng nhập dưới dạng Email
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label for="password">パスワード <span>*</span></label>
+            <label for="password">Mật khẩu <span>*</span></label>
             <div
               class="input-group has-validation"
               :class="{ 'form-group--error': $v.data.password.$error }"
@@ -107,10 +92,10 @@
             </div>
             <div v-if="$v.data.password.$error">
               <div v-if="!$v.data.password.required" class="error">
-                これは必須項目なので、必ず入力してください
+                Vui lòng nhập trường này
               </div>
               <div v-if="!$v.data.password.minLength" class="error">
-                6文字以上32文字以下で入力してください
+                Nhập từ 6 đến 32 ký tự
               </div>
             </div>
           </div>
@@ -119,12 +104,12 @@
             <a
               class="text-decoration-none cursor-pointer link-forgot"
               @click="redirectToForgotPassword"
-              >パスワードをお忘れの方はこちら</a
+              >Quên mật khẩu</a
             >
           </p>
-          <button type="submit" class="btn fw-bold login-btn">ログイン</button>
+          <button type="submit" class="btn fw-bold login-btn">Đăng nhập</button>
 
-          <div class="justify-content-center mt-1 mt-lg-2 mb-0 mb-lg-1 p-0 link">
+          <!-- <div class="justify-content-center mt-1 mt-lg-2 mb-0 mb-lg-1 p-0 link">
             <ul class="d-flex list-link">
               <li>
                 <NuxtLink to="/verify" class="text-decoration-none link-forgot"
@@ -139,7 +124,7 @@
               </li>
             </ul>
 
-          </div>
+          </div> -->
         </div>
       </form>
     </main>
@@ -167,7 +152,7 @@ export default {
   },
 
   head() {
-    return { title: 'ログイン | 求人' }
+    return { title: 'RouteRecruite | Đăng nhập' }
   },
 
   validations: {

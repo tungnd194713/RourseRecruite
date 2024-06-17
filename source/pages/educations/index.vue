@@ -3,7 +3,7 @@
     <div class="nav-content container">
       <div class="row box-title mb-1 mb-lg-2">
         <div class="col-6">
-          <h4 class="page-header-title">Danh sách tuyển dụng</h4>
+          <h4 class="page-header-title">Danh sách chương trình đào tạo</h4>
         </div>
         <div class="col-6">
           <button
@@ -13,14 +13,14 @@
             @click="checkCreateJob"
           >
             <img class="" src="../../assets/images/icon_plus.svg" />
-            Tuyển dụng mới
+            Chương trình đào tạo mới
           </button>
         </div>
       </div>
 
       <form class="row box-search mt-2 px-3 pt-3 pb-2 rounded-pill">
         <div class="row col-12 col-xl-10 col-lg-10 flex-grow-1">
-<div class="col-12 col-lg-4 mb-2 form-group">
+        <div class="col-12 col-lg-4 mb-2 form-group">
           <input
             v-model="condition.title"
             type="text"
@@ -28,13 +28,7 @@
             placeholder="Vị trí công việc"
           />
         </div>
-        <div class="col-12 col-lg-4 mb-2 form-group">
-<!--          <input-->
-<!--            v-model="condition.date_start"-->
-<!--            type="text"-->
-<!--            class="form-control rounded-pill"-->
-<!--            placeholder="開始日"-->
-<!--          />-->
+        <!-- <div class="col-12 col-lg-4 mb-2 form-group">
           <date-picker
             id="date_start"
             v-model="condition.date_start"
@@ -46,7 +40,7 @@
           >
             <i slot="icon-calendar"></i>
           </date-picker>
-        </div>
+        </div> -->
         <div class="col-12 col-lg-4 mb-2 form-group">
           <select
             v-model="condition.status"
@@ -54,8 +48,8 @@
             aria-label="ステータス"
           >
             <option value="" selected>Trạng thái</option>
-            <option value="1">Hiện</option>
-            <option value="0">Ẩn</option>
+            <option value="1">Mở đào tạo</option>
+            <option value="0">Đóng</option>
           </select>
         </div>
         </div>
@@ -84,8 +78,6 @@
                 <th v-for="header in fields" :key="header.key">
                   {{ header.label }}
                 </th>
-                <th scope="col"></th>
-                <th scope="col"></th>
               </tr>
             </thead>
             <tbody v-if="!spinner">
@@ -112,87 +104,93 @@
                   <a
                     href=""
                     class="text-decoration-none"
-                    @click.prevent="$router.push('/jobs/detail/' + item.id)"
-                    >{{ item.title }}</a
+                    @click.prevent="toEducationDetail(item)"
+                    >{{ item.job.title }}</a
                   >
                 </td>
-                <td class="align-middle min-width-100px">{{ formatDate(item.date_start) }}</td>
-                <td class="align-middle min-width-100px">{{ item.date_end }}</td>
-                <td class="align-middle min-width-80px">
-                  <div v-if="item.accept_education">
-                    <div>
-                      Trực tiếp: {{ item.candidate_applies.filter((item) => item.education_applied === 0).length }}
-                    </div>
-                    <div>
-                      Đào tạo: {{ item.candidate_applies.filter((item) => item.education_applied === 1).length }}
-                    </div>
-                  </div>
-                  <div v-else>
-                    {{ item.candidate_applies ? item.candidate_applies.length : 0}}
-                  </div>
+                <td class="align-middle text-left max-width-200px">
+                  <div class="education-requirements">
+                    <ul v-if="item.requirements.majorColleges.length">
+                        <li v-for="(major, rindex) in item.requirements.majorColleges" :key="rindex">
+                            Tốt nghiệp đại học
+                            <span v-if="major.colleges.length">
+                                <span v-for="(college, cindex) in major.colleges" :key="cindex">
+                                    {{ college.name }}
+                                    <span v-if="cindex !== major.colleges.length - 1" class="fw-bold">hoặc</span>
+                                </span>
+                            </span>
+                            chuyên ngành
+                            <span v-for="(iitem, iindex) in major.majors" :key="iindex">
+                                {{ iitem.name }}
+                                <span v-if="iindex !== major.majors.length - 1">hoặc</span>
+                            </span>
+                        </li>
+                    </ul>
+                    <ul v-if="item.requirements.beginnerSkills.length">
+                        <li v-for="(skill, rindex) in item.requirements.beginnerSkills" :key="rindex">
+                            Đã có kinh nghiệm
+                            <span v-for="(iitem, iindex) in skill" :key="iindex">
+                                {{ iitem.name }}
+                                <span v-if="iindex !== skill.length - 1">hoặc</span>
+                            </span>
+                        </li>
+                    </ul>
+                    <ul v-if="item.requirements.intermediateSkills.length">
+                        <li v-for="(skill, rindex) in item.requirements.intermediateSkills" :key="rindex">
+                            Hiểu rõ về
+                            <span v-for="(iitem, iindex) in skill" :key="iindex">
+                                {{ iitem.name }}
+                                <span v-if="iindex !== skill.length - 1">hoặc</span>
+                            </span>
+                        </li>
+                    </ul>
+                    <ul v-if="item.requirements.advancedSkills.length">
+                        <li v-for="(skill, rindex) in item.requirements.advancedSkills" :key="rindex">
+                            Thành thạo
+                            <span v-for="(iitem, iindex) in skill" :key="iindex">
+                                {{ iitem.name }}
+                                <span v-if="iindex !== skill.length - 1">hoặc</span>
+                            </span>
+                        </li>
+                    </ul>
+                    <ul v-if="item.requirements.certificates.length">
+                        <li v-for="(certificate, rindex) in item.requirements.certificates" :key="rindex">
+                            Đạt được chứng chỉ
+                            <span v-for="(iitem, iindex) in certificate" :key="iindex">
+                                {{ iitem.name }}
+                                <span v-if="iindex !== certificate.length - 1">hoặc</span>
+                            </span>
+                            hoặc tương đương
+                        </li>
+                    </ul>
+                </div>
                 </td>
-                <td class="align-middle min-width-80px">{{ item.education_status ? jobEducationStatus[item.education_status - 1] : 'Không đăng kí' }}</td>
+                <td class="align-middle min-width-100px">{{ item.max_education_month + ' tháng' }}</td>
+                <td class="align-middle min-width-100px">
+                  {{ item.scholarship + '%' }}
+                </td>
+                <td class="align-middle min-width-80px">{{ item.userRoadmaps ? item.userRoadmaps.length : 0 }}/{{ item.number_trainings + ' người' }}</td>
+                <td class="align-middle min-width-80px">{{ item.status ? jobEducationStatus[item.status - 1] : 'Không đăng kí' }}</td>
                 <td class="align-middle">
                   <div class="btn-group btn-toggle rounded-pill btn-switch">
                     <button
                       :class="
                         'btn btn-sm btn-check-active rounded-pill ' +
-                        (item.status === 1 ? 'active' : '')
+                        (item.status === 3 ? 'active' : '')
                       "
                       @click="changeStatus(item.id, item.status, item.date_end)"
                     >
-                      Hiện
+                      Mở
                     </button>
                     <button
                       :class="
                         'btn btn-sm btn-check-unactive rounded-pill ' +
-                        (item.status === 0 ? 'unactive' : '')
+                        (item.status !== 3 ? 'unactive' : '')
                       "
                       @click="changeStatus(item.id, item.status, item.date_end)"
                     >
-                      Ẩn
+                      Đóng
                     </button>
-                  </div>
-                </td>
-                <td class="align-middle">
-                  <div class="tooltip-custom">
-                    <img
-                      class="btn"
-                      src="~/assets/images/ic_dup.svg"
-                      @click="checkDuplicateJob(item.id)"
-                    />
-                    <span class="tooltiptext">Sao chép</span>
-                    <!--<img
-                      v-else
-                      class="btn"
-                      src="../../assets/images/icon_trash.svg"
-                      data-bs-toggle="modal"
-                      data-bs-target="#confirmDeleteModal"
-                      @click="confirmDelete(item.id)"
-                      @mouseover="mouseOver($event, index)"
-                    />-->
-                  </div>
-                </td>
-                <td class="align-middle">
-                  <div>
-                    <img
-                      v-if="isHover && itemsIndex == index"
-                      class="btn"
-                      src="../../assets/images/icon_trash_active.svg"
-                      data-bs-toggle="modal"
-                      data-bs-target="#confirmDeleteModal"
-                      @click="confirmDelete(item.id)"
-                      @mouseleave="mouseLeave"
-                    />
-                    <img
-                      v-else
-                      class="btn"
-                      src="../../assets/images/icon_trash.svg"
-                      data-bs-toggle="modal"
-                      data-bs-target="#confirmDeleteModal"
-                      @click="confirmDelete(item.id)"
-                      @mouseover="mouseOver($event, index)"
-                    />
                   </div>
                 </td>
               </tr>
@@ -224,11 +222,20 @@
         </Pagination>
       </div>
       <!-- Modal -->
+      <button
+        ref="popupCheckBtn"
+        data-bs-toggle="modal"
+        data-bs-target="#popUpCheck"
+        style="display: none"
+      >
+      </button>
       <div
-        id="confirmDeleteModal"
+        id="popUpCheck"
         class="modal fade"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
         tabindex="-1"
-        aria-labelledby="exampleModalLabel"
+        aria-labelledby="popUpCheckLabel"
         aria-hidden="true"
       >
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -245,10 +252,10 @@
             </div>
             <div class="modal-body">
               <h3 class="text-center">
-                <img src="../../assets/images/ic_delete image.svg" alt="" />
+                <img src="../../assets/images/ic_mess.svg" alt="" />
               </h3>
               <h3 class="text-center modal-body-text">
-                Xác nhận xóa tuyển dụng?
+                Chương trình học đang được xây dựng!
               </h3>
             </div>
             <div
@@ -265,14 +272,7 @@
                 class="btn btn-secondary-custom rounded-pill w-20 mt-4 mb-4"
                 data-bs-dismiss="modal"
               >
-                Hủy bỏ
-              </button>
-              <button
-                type="button"
-                class="btn btn-custom btn-danger rounded-pill w-20"
-                @click="deleteItem"
-              >
-                Xác nhận
+                OK
               </button>
             </div>
           </div>
@@ -284,7 +284,7 @@
 
 <script>
 import 'bootstrap/dist/css/bootstrap.css'
-import DatePicker from 'vue2-datepicker'
+// import DatePicker from 'vue2-datepicker'
 import 'vue2-datepicker/index.css'
 import 'vue2-datepicker/locale/ja'
 import Pagination from '../../components/Pagination'
@@ -295,7 +295,7 @@ export default {
   name: 'ListJob',
   components: {
     Pagination,
-    DatePicker
+    // DatePicker
   },
   layout: 'auth',
 
@@ -313,24 +313,28 @@ export default {
           label: 'Vị trí công việc',
         },
         {
-          key: 'date_start',
-          label: 'Ngày bắt đầu',
+          key: 'requirement',
+          label: 'Yêu cầu',
         },
         {
-          key: 'date_end',
-          label: 'Ngày kết thúc',
+          key: 'max_education_month',
+          label: 'Thời gian đào tạo',
         },
         {
-          key: 'number_apply',
-          label: 'Đã ứng tuyển',
+          key: 'scholarship',
+          label: 'Học bổng cung cấp',
         },
         {
-          key: 'education_status',
-          label: 'Chương trình đào tạo',
+          key: 'number_trainings',
+          label: 'Số lượng',
+        },
+        {
+          key: 'status',
+          label: 'Trạng thái',
         },
         {
           key: 'actions',
-          label: 'Trạng thái',
+          label: 'Hành động',
           tdClass: 'action',
         },
       ],
@@ -370,7 +374,7 @@ export default {
 
   created() {
 		this.careerList = defaultCareers
-    this.getListJob(this.currentPage)
+    this.getEducationList(this.currentPage)
   },
 
   methods: {
@@ -385,6 +389,15 @@ export default {
     formatDate(date) {
       if (date) {
         return date.split('T')[0];
+      }
+    },
+
+    toEducationDetail(item) {
+      if (item.status !== 1) {
+        if (item._id) this.$router.push('/educations/detail/' + item._id)
+        else if (item.id) this.$router.push('/educations/detail/' + item.id)
+      } else {
+        this.$refs.popupCheckBtn.click();
       }
     },
 
@@ -408,22 +421,18 @@ export default {
 			this.$router.push(`/jobs/duplicate/${jobId}`)
     },
 
-    async getListJob(currentPage) {
-      const condition = { ...this.condition, currentPage }
+    async getEducationList(currentPage) {
       this.spinner = true
       this.totalItems = 0
-      const { data } = await this.$repositories.jobs.getJobs(condition)
+      const { data } = await this.$repositories.educations.getEducationList({}, {})
       this.spinner = false
 
-      this.items = data.data
-      this.totalItems = data.meta.total
-      this.currentPage = data.meta.current_page
-      this.perPage = data.meta.per_page
+      this.items = data.results
+      this.totalItems = data.totalResults
+      this.currentPage = data.page
+      this.perPage = data.limit
 
-      this.pageCount =
-        this.totalItems > 0
-          ? parseInt((data.meta.total - 1) / data.meta.per_page, 10) + 1
-          : 1
+      this.pageCount = data.totalPages
     },
 
     pageChangeHandle(value) {
@@ -437,12 +446,12 @@ export default {
         default:
           this.currentPage = value
       }
-      this.getListJob(this.currentPage)
+      this.getEducationList(this.currentPage)
     },
 
     search() {
       this.currentPage = 1
-      this.getListJob(this.currentPage)
+      this.getEducationList(this.currentPage)
     },
 
     isWarningUnRead(date) {
@@ -470,12 +479,12 @@ export default {
           if (res.status === 200) {
             document.getElementById('closeConfirmDeleteModal').click()
             this.$toast.success('Xóa tuyển dụng thành công!')
-            this.getListJob(this.currentPage)
+            this.getEducationList(this.currentPage)
           }
           if (res.response && res.response.status === 406) {
             document.getElementById('closeConfirmDeleteModal').click()
             this.$toast.error('Vẫn còn đơn ứng tuyển nên không thể xóa')
-            this.getListJob(this.currentPage)
+            this.getEducationList(this.currentPage)
           }
         })
     },
@@ -492,7 +501,7 @@ export default {
                   })
                   .then((res) => {
                       if (res.status === 200) {
-                          this.getListJob(this.currentPage)
+                          this.getEducationList(this.currentPage)
 
                           if (oldStatus === 1) {
                               this.$toast.success('Tuyển dụng đã bị ẩn!')
