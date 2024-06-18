@@ -244,49 +244,74 @@
               </div>
               </el-tab-pane>
               <el-tab-pane label="Thông kê" name="second">
-                <h3 class="mb-4 mt-4 fw-bold">Thống kê thời gian học </h3>
-                <h4 class="mb-3 mx-4 fw-bold">Thời gian xem video (tính theo phút): </h4>
+                <h2 class="mb-4 mt-4 fw-bold">Thống kê thời gian học </h2>
+                <div style="margin-bottom: 32px">
+                  <h3 class="mb-3 mx-4 fw-bold">Thời gian xem video (tính theo phút): </h3>
+                  <div>
+                    <el-row :gutter="20">
+                      <el-col :span="6">
+                        <div>
+                          <el-statistic title="Tổng thời gian xem">
+                            <template slot="formatter">
+                              3600 phút
+                            </template>
+                          </el-statistic>
+                        </div>
+                      </el-col>
+                      <el-col :span="6">
+                        <div>
+                          <el-statistic title="Thời gian học trung bình">
+                            <template slot="formatter">
+                              120 phút
+                            </template>
+                          </el-statistic>
+                        </div>
+                      </el-col>
+                      <el-col :span="6">
+                        <div>
+                          <el-statistic title="Số ngày tham gia học">
+                            <template slot="formatter">
+                              30 ngày
+                            </template>
+                          </el-statistic>
+                        </div>
+                      </el-col>
+                      <el-col :span="6">
+                        <div>
+                          <el-statistic title="Ngày học nhiều nhất">
+                            <template slot="formatter">
+                              150 phút
+                            </template>
+                          </el-statistic>
+                        </div>
+                      </el-col>
+                    </el-row>
+                  </div>
+                  <bar-chart :data-bar="videoWatchedLength" :labels="labels"></bar-chart>
+                </div>
                 <div>
-                  <el-row :gutter="20">
-                    <el-col :span="6">
-                      <div>
-                        <el-statistic title="Tổng thời gian xem">
-                          <template slot="formatter">
-                            3600 phút
-                          </template>
-                        </el-statistic>
-                      </div>
+                  <h3 class="mb-3 mx-4 fw-bold">Chi tiết tiến độ: </h3>
+                  <el-row v-for="(course, index) in courseProgress" :key="index" :gutter="20" class="pb-3 mb-3" style="border-bottom: 1px solid #D4D4D4">
+                    <el-col :span="10" style="padding-right: 12px;">
+                      <h4 class="fw-bold">{{ index + 1 }}. {{ course.name || course.courseName }}</h4>
+                      <h5 style="color: #6e6d6d">Thời điểm bắt đầu: <span>{{ course.started_at }}</span></h5>
+                      <h5 style="color: #6e6d6d">Thời điểm hoàn thành: <span>{{ course.finished_at }}</span></h5>
+                      <h5 style="color: #6e6d6d">Thời gian học: <span>{{ course.total_watch_time }} phút</span></h5>
+                      <h5 style="color: #6e6d6d">Kết quả test trung bình: <span>{{ course.average_test_result }}%</span></h5>
                     </el-col>
-                    <el-col :span="6">
-                      <div>
-                        <el-statistic title="Thời gian học trung bình">
-                          <template slot="formatter">
-                            120 phút
-                          </template>
-                        </el-statistic>
+                    <el-col :span="14" style="padding-left: 12px; border-left: 1px solid #D4D4D4">
+                      <div v-for="mod in course.modules" :key="mod.id || mod._id" class="mb-2">
+                        <h4 class="fw-bold" style="color: #3738E2">{{ mod.name }}</h4>
+                        <h5 style="color: #6e6d6d">Thời gian học: {{ mod.watch_time }} phút</h5>
                       </div>
-                    </el-col>
-                    <el-col :span="6">
-                      <div>
-                        <el-statistic title="Số ngày tham gia học">
-                          <template slot="formatter">
-                            30 ngày
-                          </template>
-                        </el-statistic>
-                      </div>
-                    </el-col>
-                    <el-col :span="6">
-                      <div>
-                        <el-statistic title="Ngày học nhiều nhất">
-                          <template slot="formatter">
-                            150 phút
-                          </template>
-                        </el-statistic>
+                      <div v-for="(test, tindex) in course.tests" :key="test.id || test._id" class="mb-2">
+                        <h4 class="fw-bold" style="color: #1aa912">Bài test #{{ tindex + 1 }}: {{ test.name }}</h4>
+                        <h5 style="color: #6e6d6d">Hoàn thành: {{ test.finished_at }}</h5>
+                        <h5 style="color: #6e6d6d">Kết quả: {{ test.mark }}/{{ test.max_mark }}</h5>
                       </div>
                     </el-col>
                   </el-row>
                 </div>
-                <bar-chart :data-bar="videoWatchedLength" :labels="labels"></bar-chart>
               </el-tab-pane>
             </el-tabs>
             <div>
@@ -348,6 +373,7 @@ export default {
           user: "64c9fd43cf106733388fd35f",
           module: "661cced0b3bcda1f4044ff53",
           video_start_time: 0,
+          total_video_update_time: 150,
           video_update_time: 150,
           created_at: new Date("2024-05-20T10:00:00Z"),
         },
@@ -356,6 +382,7 @@ export default {
           user: "64c9fd43cf106733388fd35f",
           module: "661cced0b3bcda1f4044ff58",
           video_start_time: 120,
+          total_video_update_time: 230,
           video_update_time: 350,
           created_at: new Date("2024-05-21T15:30:00Z"),
         },
@@ -364,6 +391,7 @@ export default {
           user: "64c9fd43cf106733388fd35f",
           module: "661cced0b3bcda1f4044ff5d",
           video_start_time: 100,
+          total_video_update_time: 450,
           video_update_time: 550,
           created_at: new Date("2024-05-22T08:45:00Z"),
         },
@@ -372,12 +400,158 @@ export default {
           user: "64c9fd43cf106733388fd35f",
           module: "661cced0b3bcda1f4044ff62",
           video_start_time: 200,
+          total_video_update_time: 550,
           video_update_time: 750,
           created_at: new Date("2024-05-23T20:20:00Z"),
         },
       ],
       videoWatchedLength: [],
       labels: [],
+      courseProgress: [
+  {
+    id: "60af924b4f1a4b1f8f3d5c5a",
+    courseName: "Introduction to JavaScript",
+    started_at: "15-01-2023",
+    finished_at: "20-02-2023",
+    total_watch_time: 1500,
+    average_test_result: 85,
+    modules: [
+      {
+        id: "60af924b4f1a4b1f8f3d5c5b",
+        name: "JavaScript Basics",
+        watch_time: 300
+      },
+      {
+        id: "60af924b4f1a4b1f8f3d5c5c",
+        name: "DOM Manipulation",
+        watch_time: 400
+      },
+      {
+        id: "60af924b4f1a4b1f8f3d5c5d",
+        name: "ES6 Features",
+        watch_time: 800
+      }
+    ],
+    tests: [
+      {
+        id: "test1_id_here",
+        name: "JavaScript Basics Test",
+        is_finished: true,
+        finished_at: "21-01-2023",
+        max_mark: 10,
+        mark: 8
+      },
+    ]
+  },
+  {
+    id: "60af924b4f1a4b1f8f3d5c5e",
+    courseName: "Advanced CSS Techniques",
+    started_at: "01-03-2023",
+    finished_at: "30-03-2023",
+    total_watch_time: 1200,
+    average_test_result: 90,
+    modules: [
+      {
+        id: "60af924b4f1a4b1f8f3d5c5f",
+        name: "Flexbox",
+        watch_time: 500
+      },
+      {
+        id: "60af924b4f1a4b1f8f3d5c60",
+        name: "Grid Layout",
+        watch_time: 700
+      }
+    ],
+    tests: [
+      {
+        id: "test3_id_here",
+        name: "Flexbox Test",
+        is_finished: true,
+        finished_at: "02-04-2023",
+        max_mark: 10,
+        mark: 9
+      }
+    ]
+  },
+  {
+    id: "60af924b4f1a4b1f8f3d5c61",
+    courseName: "React for Beginners",
+    started_at: "10-04-2023",
+    finished_at: "15-05-2023",
+    total_watch_time: 2000,
+    average_test_result: 92,
+    modules: [
+      {
+        id: "60af924b4f1a4b1f8f3d5c62",
+        name: "React Basics",
+        watch_time: 600
+      },
+      {
+        id: "60af924b4f1a4b1f8f3d5c63",
+        name: "State and Props",
+        watch_time: 800
+      },
+      {
+        id: "60af924b4f1a4b1f8f3d5c64",
+        name: "Component Lifecycle",
+        watch_time: 600
+      }
+    ],
+    tests: [
+      {
+        id: "test4_id_here",
+        name: "React Basics Test",
+        is_finished: true,
+        finished_at: "20-04-2023",
+        max_mark: 15,
+        mark: 13
+      },
+      {
+        id: "test5_id_here",
+        name: "State and Props Test",
+        is_finished: true,
+        finished_at: "25-04-2023",
+        max_mark: 20,
+        mark: 18
+      }
+    ]
+  },
+  {
+    id: "60af924b4f1a4b1f8f3d5c65",
+    courseName: "Node.js Essentials",
+    started_at: "01-06-2023",
+    finished_at: "30-06-2023",
+    total_watch_time: 1800,
+    average_test_result: 88,
+    modules: [
+      {
+        id: "60af924b4f1a4b1f8f3d5c66",
+        name: "Introduction to Node.js",
+        watch_time: 600
+      },
+      {
+        id: "60af924b4f1a4b1f8f3d5c67",
+        name: "Express.js Basics",
+        watch_time: 600
+      },
+      {
+        id: "60af924b4f1a4b1f8f3d5c68",
+        name: "Database Integration",
+        watch_time: 600
+      }
+    ],
+    tests: [
+      {
+        id: "test6_id_here",
+        name: "Introduction to Node.js Test",
+        is_finished: false,
+        finished_at: null,
+        max_mark: 12,
+        mark: 0
+      }
+    ]
+  }
+],
     }
   },
 
@@ -400,6 +574,7 @@ export default {
   created() {
     if (this.isAuthenticated) {
       this.getCandidateEducationProgress()
+      this.getCandidateEducationStatistic()
       this.processData()
       this.hidePage = false
     }
@@ -410,7 +585,7 @@ export default {
 
   methods: {
     processData() {
-      this.videoWatchedLength = this.moduleProgressLogs.map(log => log.video_update_time - log.video_start_time);
+      this.videoWatchedLength = this.moduleProgressLogs.map(log => log.total_video_update_time);
 
       this.labels = [
         {
@@ -436,6 +611,10 @@ export default {
       } else {
         return 'gray'
       }
+    },
+    async getCandidateEducationStatistic() {
+      const { data } = await this.$repositories.candidatesApply.getCandidateEducationStatistic(this.$route.params.candidateId)
+      console.log(data)
     },
     async getCandidateEducationProgress() {
       this.isShowAlertLogin = false
@@ -479,7 +658,7 @@ export default {
 
     shownClass(data) {
       data.isShown = !data.isShown
-    }
+    },
   },
 }
 </script>

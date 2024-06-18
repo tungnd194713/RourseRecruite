@@ -37,6 +37,10 @@ export default ($axios) => ({
       return $axios.get(`${resource}/education-progress/${candidateApplyId}`)
     },
 
+    getCandidateEducationStatistic(candidateApplyId) {
+      return $axios.get(`${resource}/education-statistic/${candidateApplyId}`)
+    },
+
     getCVMatchingPoint(candidateApplyId) {
       return $axios.get(`${resource}/matching-point/${candidateApplyId}`)
     },
