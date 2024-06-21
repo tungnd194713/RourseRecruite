@@ -421,6 +421,7 @@
         formData.append('max_education_month', this.job.max_education_month)
         formData.append('scholarship', this.job.scholarship)
         formData.append('number_trainings', this.job.number_trainings)
+        formData.append('custom_requirement', this.job.custom_requirement)
         // formData.append('overtime', this.job.overtime)
         formData.append('beginnerSkills', JSON.stringify(this.job.beginnerSkills))
         formData.append('intermediateSkills', JSON.stringify(this.job.intermediateSkills))
