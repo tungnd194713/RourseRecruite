@@ -1,6 +1,10 @@
 const resource = '/companies/jobs'
 
 export default ($axios) => ({
+	getAllJobs() {
+    return $axios.get(`${resource}/all`)
+  },
+
   getJobs(data) {
     return $axios.get(`${resource}?page=${data.currentPage}`, { params: data })
   },

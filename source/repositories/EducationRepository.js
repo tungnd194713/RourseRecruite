@@ -15,5 +15,9 @@ export default ($axios) => ({
 
   getEducationParticipant(id) {
     return $axios.get(`${resource}/participants/` + id);
+  },
+
+	requestEducationForJob(jobId, data) {
+    return $axios.post(`${resource}/create/` + jobId, data);
   }
 })

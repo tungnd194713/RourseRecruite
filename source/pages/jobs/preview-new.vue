@@ -328,10 +328,12 @@
         formData.append('address_work', this.job.address_work)
         formData.append('time_work', this.job.time_work)
         formData.append('welfare_regime', this.job.welfare_regime)
-        formData.append('accept_education', this.job.accept_education)
-        formData.append('max_education_month', this.job.max_education_month)
-        formData.append('scholarship', this.job.scholarship)
-        formData.append('number_trainings', this.job.number_trainings)
+        formData.append('accept_education', this.job.accept_education ? this.job.accept_education : false)
+        if (this.job.accept_education) {
+					formData.append('max_education_month', this.job.max_education_month)
+					formData.append('scholarship', this.job.scholarship)
+					formData.append('number_trainings', this.job.number_trainings)
+				}
         // formData.append('overtime', this.job.overtime)
         formData.append('beginnerSkills', JSON.stringify(this.job.beginnerSkills))
         formData.append('intermediateSkills', JSON.stringify(this.job.intermediateSkills))

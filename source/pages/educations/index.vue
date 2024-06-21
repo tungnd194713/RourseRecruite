@@ -402,7 +402,7 @@ export default {
     },
 
     checkCreateJob() {
-      this.$router.push('/jobs/create')
+      this.$router.push('/educations/create')
       // try {
       //   await this.$repositories.jobs.checkCreateJob().then((res) => {
       //     if (res.status === 200) {

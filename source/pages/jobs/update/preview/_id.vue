@@ -460,3 +460,14 @@
 <style lang="scss" scoped>
   @import '../../../../styles/pages/jobs/preview.scss';
 </style>
+<style lang="scss">
+.detail-job-content {
+	li {
+		min-height: 21px;
+	}
+	p {
+		margin: 0;
+	}
+}
+</style>
+
