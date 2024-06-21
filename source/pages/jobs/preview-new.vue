@@ -369,7 +369,7 @@
 <style lang="scss">
 .detail-job-content {
 	li {
-		height: 21px;
+		min-height: 21px;
 	}
 	p {
 		margin: 0;
