@@ -1,33 +1,10 @@
 <template>
   <main class="container my-3 my-lg-4">
     <div class="create_job pb-4 pb-lg-5">
-      <h4 class="pt-2 pb-4 pt-lg-3 pb-lg-5 text-center">Form tuyển dụng mới</h4>
+      <h4 class="pt-2 pb-4 pt-lg-3 pb-lg-5 text-center">Form chương trình đào tạo mới</h4>
       <form @submit.prevent="previewJob()">
         <div class="mx-3 mx-lg-5">
-          <div class="form-group mb-4 mb-lg-5">
-            <div
-              class="p-4 box-upload-file text-center rounded"
-              @click="onClickBoxUploadFile"
-              @drop.prevent="dropImage"
-              @dragover.prevent
-            >
-              <input
-                ref="imageJob"
-                type="file"
-                accept="image/jpeg,image/png,image/gif"
-                style="display: none"
-                @change="onChangeImageJob"
-              >
-              <img v-if="previewImageJobUrl" class="preview-image" :src="previewImageJobUrl" alt="">
-              <img v-else src="../../assets/images/icon_upload_file.svg" alt="">
-              <p class="m-0">Kéo thả hoặc click để tải ảnh lên</p>
-            </div>
 
-            <div v-if="$v.job.image_job.$error" class="text-center error-text">
-              <div v-if="!$v.job.image_job.name.imageRule">Vui lòng tải lên hình ảnh ở định dạng png/jpg/jpeg/gif</div>
-              <div v-if="!$v.job.image_job.size">Vui lòng tải lên ảnh có dung lượng dưới 2 MB</div>
-            </div>
-          </div>
           <div class="form-group mb-3 mb-lg-4 row">
             <label for="exampleInput1" class="col-sm-2 col-form-label">Vị trí công việc <span>*</span></label>
             <div class="col-sm-10 flex-column">
@@ -206,236 +183,6 @@
               </div>
             </div>
           </div>
-					<div class="form-group mb-3 mb-lg-4 row">
-            <label for="exampleInput5" class="col-sm-2 col-form-label">Chấp nhận đào tạo</label>
-            <div class="col-12 col-sm-4">
-              <div class="input-group input-group-icon">
-								<div class="form-check form-switch">
-	                <input id="flexSwitchCheckChecked" v-model="job.accept_education" class="form-check-input" type="checkbox" role="switch" @change="resetEducation">
-								</div>
-              </div>
-            </div>
-          </div>
-					<div v-if="job.accept_education" class="form-group mb-3 mb-lg-4 row">
-            <label for="exampleInput5" class="col-2 col-form-label"></label>
-            <div class="col-10">
-              <div class="row mb-3">
-								<div class="col-3">
-									Thời gian đào tạo tối đa (tháng)
-								</div>
-								<div class="col-4">
-									<div class="input-group input-group-icon">
-										<span class="input-group-text input-group-text-pre">
-												<img src="../../assets/images/icon_job_display_month.svg" alt="">
-										</span>
-										<input
-											id="exampleInput5"
-											ref="numberRecruitmentsTextBox"
-											v-model="job.max_education_month"
-											type="number"
-											class="form-control rounded-end"
-											min="1"
-											@input="$v.job.max_education_month.$touch()"
-                  		@blur="$v.job.max_education_month.$touch()"
-											@keypress="keyPressForNumberInput"
-										>
-									</div>
-									<div v-if="$v.job.max_education_month.$error">
-										<div v-if="!$v.job.max_education_month.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
-									</div>
-								</div>
-							</div>
-              <div class="row mb-3">
-                    <div class="col-3">
-                      Số người đào tạo dự kiến
-                    </div>
-                    <div class="col-4">
-                      <el-slider
-                          v-model="job.number_trainings"
-                          :step="1"
-                          :max="job.number_recruitments"
-                          show-stops>
-                        </el-slider>
-                      <!-- <div class="input-group input-group-icon">
-                        <span class="input-group-text input-group-text-pre">
-                            <img src="../../../assets/images/icon_two_user.svg" alt="">
-                        </span>
-                        <input
-                          id="exampleInput5"
-                          ref="numberRecruitmentsTextBox"
-                          v-model="job.number_trainings"
-                          type="number"
-                          class="form-control rounded-end"
-                          min="1"
-                          @input="$v.job.number_trainings.$touch()"
-                          @blur="$v.job.number_trainings.$touch()"
-                          @keypress="keyPressForNumberInput"
-                        >
-                      </div> -->
-                      <div v-if="$v.job.number_trainings.$error">
-                        <div v-if="!$v.job.number_trainings.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
-                      </div>
-                    </div>
-                  </div>
-							<div class="row mb-3">
-								<div class="col-3">
-									Học bổng (%)
-								</div>
-								<div class="col-4">
-									<div class="input-group input-group-icon">
-										<span class="input-group-text input-group-text-pre">
-												<img src="../../assets/images/icon_money_jp.svg" alt="">
-										</span>
-										<input
-											id="exampleInput5"
-											ref="numberRecruitmentsTextBox"
-											v-model="job.scholarship"
-											type="number"
-											class="form-control rounded-end"
-                  		min="1"
-											@input="$v.job.scholarship.$touch()"
-                  		@blur="$v.job.scholarship.$touch()"
-											@keypress="keyPressForNumberInput"
-										>
-									</div>
-									<div v-if="$v.job.scholarship.$error">
-										<div v-if="!$v.job.scholarship.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
-									</div>
-								</div>
-							</div>
-              <div class="row">
-								<div class="col-3">
-									Yêu cầu chương trình đào tạo
-								</div>
-								<div class="col-9">
-									<client-only>
-                    <VueEditor
-                      v-model="job.custom_requirement"/>
-                  </client-only>
-								</div>
-							</div>
-            </div>
-          </div>
-          <div class="form-group mb-1 row">
-            <label class="col-sm-2 col-form-label">Khoảng lương <span>*</span></label>
-            <div v-if="displaySalary === 'salary_range'" class="col-12 col-sm-4">
-              <div class="input-group input-group-icon">
-                <span class="input-group-text input-group-text-pre">
-                  <img src="../../assets/images/icon_money_jp.svg" alt="">
-                </span>
-                <input
-                  ref="salaryMinTextBox"
-                  v-model="job.salary_min"
-                  type="text"
-                  class="form-control rounded-end"
-                  @input="onInputOrBlurSalaryMin"
-                  @blur="onInputOrBlurSalaryMin"
-                  @keypress="keyPressForNumberInput"
-                >
-              </div>
-              <div v-if="$v.job.salary_min.$error">
-                <div v-if="!$v.job.salary_min.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
-                <div v-if="!$v.job.salary_min.maxLength" class="error-text">Vui lòng nhập dưới 10 ký tự</div>
-                <div v-if="!$v.job.salary_min.isLowerThanSalaryMax" class="error-text">Vui lòng nhập nhỏ hơn lương tối đa</div>
-              </div>
-            </div>
-            <div
-              v-if="displaySalary === 'salary_range'"
-              class="col-12 col-sm-1 range-salary-character text-center pt-1"
-            >
-              ～
-            </div>
-            <div v-if="displaySalary === 'salary_range'" class="col-12 col-sm-4">
-              <div class="input-group input-group-icon">
-                <span class="input-group-text input-group-text-pre">
-                  <img src="../../assets/images/icon_money_jp.svg" alt="">
-                </span>
-                <input
-                  ref="salaryMaxTextBox"
-                  v-model="job.salary_max"
-                  type="text"
-                  class="form-control rounded-end"
-                  @input="onInputOrBlurSalaryMax"
-                  @blur="onInputOrBlurSalaryMax"
-                  @keypress="keyPressForNumberInput"
-                >
-              </div>
-              <div v-if="$v.job.salary_max.$error">
-                <div v-if="!$v.job.salary_max.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
-                <div v-if="!$v.job.salary_max.maxLength" class="error-text">Vui lòng nhập dưới 10 ký tự</div>
-                <div v-if="!$v.job.salary_max.isGreaterThanSalaryMin" class="error-text">Vui lòng nhập lớn hơn lương tối thiểu</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group mb-3 mb-lg-3 row">
-            <label class="col-sm-2 col-form-label"></label>
-            <!--<div v-if="displaySalary === 'salary_max'" class="col-12 col-sm-4">
-              <div class="input-group input-group-icon">
-                <span class="input-group-text input-group-text-pre">
-                    <img src="../../assets/images/icon_money_jp.svg" alt="">
-                </span>
-                <input
-                  v-model="job.salary_max"
-                  type="text"
-                  class="form-control rounded-end"
-                  @input="$v.job.salary_max.$touch()"
-                  @blur="$v.job.salary_max.$touch()"
-                  @keypress="keyPressForNumberInput"
-                >
-              </div>
-              <div v-if="$v.job.salary_max.$error">
-                <div v-if="!$v.job.salary_max.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
-                <div v-if="!$v.job.salary_max.maxLength" class="error-text">Vui lòng nhập dưới 10 ký tự</div>
-              </div>
-            </div>-->
-
-
-          </div>
-
-          <div class="form-group mb-3 mb-lg-4 row">
-            <label for="example7" class="col-sm-2 col-form-label">Mô tả công việc <span>*</span></label>
-            <div class="col-12 col-sm-10">
-							<client-only>
-								<VueEditor
-                  v-model="job.content_work"
-                  @input="$v.job.content_work.$touch()"
-                  @blur="$v.job.content_work.$touch()"/>
-							</client-only>
-              <!-- <textarea
-                id="example7"
-                ref="contentWorkTextBox"
-                v-model="job.content_work"
-                type="text"
-                class="form-control rounded-end"
-                rows="3"
-                @input="$v.job.content_work.$touch()"
-                @blur="$v.job.content_work.$touch()"
-              /> -->
-              <div class="row">
-                <div v-if="$v.job.content_work.$error" class="col-6 align-items-start">
-                  <div v-if="!$v.job.content_work.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
-                  <div v-else-if="!$v.job.content_work.maxLength" class="error-text">Vui lòng nhập dưới 200 ký tự</div>
-                  <div v-else-if="!$v.job.content_work.minLength" class="error-text">Vui lòng nhập trên 30 ký tự</div>
-                </div>
-                <div
-                  class="col-6 text-right"
-                  :class="{
-                    'offset-6': !$v.job.content_work.$error
-                  }"
-                >
-                  <div
-                    v-if="job.content_work.length < 1000"
-                    class="error-text text-black"
-                  >
-                    Còn lại {{ 1000 - job.content_work.length }} ký tự
-                  </div>
-                  <div v-else class="error-text text-black">Còn lại 0 ký tự</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <div class="form-group mb-3 mb-lg-4 row">
             <label for="example8" class="col-sm-2 col-form-label">Yêu cầu công việc <span>*</span></label>
             <div class="col-12 col-sm-10">(Chọn nhiều lựa chọn ở 1 ô để thể hiện tính tương đương)</div>
@@ -687,138 +434,116 @@
               </div>
             </div>
           </div>
-
-          <div class="form-group mb-3 mb-lg-4 row">
-            <label for="example8" class="col-sm-2 col-form-label">Yêu cầu khác <span>*</span></label>
-            <div class="col-12 col-sm-10">
-							<client-only>
-								<VueEditor
-                  v-model="job.conditions_apply"
-                  @input="$v.job.conditions_apply.$touch()"
-                  @blur="$v.job.conditions_apply.$touch()"/>
-							</client-only>
-              <!-- <textarea
-                id="example8"
-                ref="conditionsApplyTextBox"
-                v-model="job.conditions_apply"
-                type="text"
-                class="form-control rounded-end"
-                rows="3"
-                @input="$v.job.conditions_apply.$touch()"
-                @blur="$v.job.conditions_apply.$touch()"
-              /> -->
-              <div v-if="$v.job.conditions_apply.$error">
-                <div v-if="!$v.job.conditions_apply.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
-                <div v-if="!$v.job.conditions_apply.maxLength" class="error-text">Vui lòng nhập dưới 1000 ký tự</div>
-              </div>
-            </div>
-          </div>
-
 					<div class="form-group mb-3 mb-lg-4 row">
-            <label for="example10" class="col-sm-2 col-form-label">Thời gian làm việc <span>*</span></label>
-            <div class="col-12 col-sm-10">
-							<client-only>
-								<VueEditor v-model="job.time_work"/>
-							</client-only>
-              <!-- <textarea
-                id="example10"
-                ref="timeWorkTextBox"
-                v-model="job.time_work"
-                type="text"
-                class="form-control rounded-end"
-                rows="3"
-                @input="$v.job.time_work.$touch()"
-                @blur="$v.job.time_work.$touch()"
-              />
-              <div v-if="$v.job.time_work.$error">
-                <div v-if="!$v.job.time_work.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
-                <div v-if="!$v.job.time_work.maxLength" class="error-text">Vui lòng nhập dưới 200 ký tự</div>
-              </div> -->
-            </div>
-          </div>
-
-					<div class="form-group mb-3 mb-lg-4 row">
-            <label for="example13" class="col-sm-2 col-form-label">Phúc lợi <span>*</span></label>
-            <div class="col-12 col-sm-10">
-							<client-only>
-								<VueEditor v-model="job.welfare_regime"/>
-							</client-only>
-              <!-- <textarea
-                id="example13"
-                ref="welfareRegimeTextBox"
-                v-model="job.welfare_regime"
-                type="text"
-                class="form-control rounded-end"
-                rows="3"
-                @input="$v.job.welfare_regime.$touch()"
-                @blur="$v.job.welfare_regime.$touch()"
-              />
-              <div v-if="$v.job.welfare_regime.$error">
-                <div v-if="!$v.job.welfare_regime.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
-                <div v-if="!$v.job.welfare_regime.maxLength" class="error-text">Vui lòng nhập dưới 500 ký tự</div>
-              </div> -->
-            </div>
-          </div>
-
-          <div class="form-group mb-3 mb-lg-4 row">
-            <label for="province" class="col-sm-2 col-form-label">Trụ sở làm việc (Tỉnh) <span>*</span></label>
+            <label for="exampleInput5" class="col-sm-2 col-form-label">Chấp nhận đào tạo</label>
             <div class="col-12 col-sm-4">
               <div class="input-group input-group-icon">
-                <span class="input-group-text input-group-text-pre">
-                    <img src="../../assets/images/icon_province.svg" alt="">
-                </span>
-                <select
-                  id="province"
-                  v-model="job.province_id"
-                  class="form-select rounded-end"
-                >
-                  <option
-                    v-for="(province, index) in provinceList.slice(1)"
-                    :key="index"
-                    :value="index + 1"
-                  >
-                    {{ $t(province) }}
-                  </option>
-                </select>
+								<div class="form-check form-switch">
+	                <input id="flexSwitchCheckChecked" v-model="job.accept_education" class="form-check-input" type="checkbox" role="switch" @change="resetEducation">
+								</div>
               </div>
             </div>
           </div>
-
-          <div class="form-group mb-3 mb-lg-4 row">
-            <label for="example9" class="col-sm-2 col-form-label">Địa chỉ cụ thể <span>*</span></label>
-            <div class="col-12 col-sm-10">
-              <input
-                id="example9"
-                ref="addressWorkTextBox"
-                v-model="job.address_work"
-                type="text"
-                class="form-control rounded-end"
-                rows="3"
-                @input="$v.job.address_work.$touch()"
-                @blur="$v.job.address_work.$touch()"
-              />
-              <div v-if="$v.job.address_work.$error">
-                <div v-if="!$v.job.address_work.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
-                <div v-if="!$v.job.address_work.maxLength" class="error-text">Vui lòng nhập dưới 200 ký tự</div>
-              </div>
+					<div v-if="job.accept_education" class="form-group mb-3 mb-lg-4 row">
+            <label for="exampleInput5" class="col-2 col-form-label"></label>
+            <div class="col-10">
+              <div class="row mb-3">
+								<div class="col-3">
+									Thời gian đào tạo tối đa (tháng)
+								</div>
+								<div class="col-4">
+									<div class="input-group input-group-icon">
+										<span class="input-group-text input-group-text-pre">
+												<img src="../../assets/images/icon_job_display_month.svg" alt="">
+										</span>
+										<input
+											id="exampleInput5"
+											ref="numberRecruitmentsTextBox"
+											v-model="job.max_education_month"
+											type="number"
+											class="form-control rounded-end"
+											min="1"
+											@input="$v.job.max_education_month.$touch()"
+                  		@blur="$v.job.max_education_month.$touch()"
+											@keypress="keyPressForNumberInput"
+										>
+									</div>
+									<div v-if="$v.job.max_education_month.$error">
+										<div v-if="!$v.job.max_education_month.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
+									</div>
+								</div>
+							</div>
+              <div class="row mb-3">
+                    <div class="col-3">
+                      Số người đào tạo dự kiến
+                    </div>
+                    <div class="col-4">
+                      <el-slider
+                          v-model="job.number_trainings"
+                          :step="1"
+                          :max="job.number_recruitments"
+                          show-stops>
+                        </el-slider>
+                      <!-- <div class="input-group input-group-icon">
+                        <span class="input-group-text input-group-text-pre">
+                            <img src="../../../assets/images/icon_two_user.svg" alt="">
+                        </span>
+                        <input
+                          id="exampleInput5"
+                          ref="numberRecruitmentsTextBox"
+                          v-model="job.number_trainings"
+                          type="number"
+                          class="form-control rounded-end"
+                          min="1"
+                          @input="$v.job.number_trainings.$touch()"
+                          @blur="$v.job.number_trainings.$touch()"
+                          @keypress="keyPressForNumberInput"
+                        >
+                      </div> -->
+                      <div v-if="$v.job.number_trainings.$error">
+                        <div v-if="!$v.job.number_trainings.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
+                      </div>
+                    </div>
+                  </div>
+							<div class="row mb-3">
+								<div class="col-3">
+									Học bổng (%)
+								</div>
+								<div class="col-4">
+									<div class="input-group input-group-icon">
+										<span class="input-group-text input-group-text-pre">
+												<img src="../../assets/images/icon_money_jp.svg" alt="">
+										</span>
+										<input
+											id="exampleInput5"
+											ref="numberRecruitmentsTextBox"
+											v-model="job.scholarship"
+											type="number"
+											class="form-control rounded-end"
+                  		min="1"
+											@input="$v.job.scholarship.$touch()"
+                  		@blur="$v.job.scholarship.$touch()"
+											@keypress="keyPressForNumberInput"
+										>
+									</div>
+									<div v-if="$v.job.scholarship.$error">
+										<div v-if="!$v.job.scholarship.required" class="error-text">Đây là trường bắt buộc nên vui lòng điền</div>
+									</div>
+								</div>
+							</div>
+              <div class="row">
+								<div class="col-3">
+									Yêu cầu chương trình đào tạo
+								</div>
+								<div class="col-9">
+									<client-only>
+                    <VueEditor
+                      v-model="job.custom_requirement"/>
+                  </client-only>
+								</div>
+							</div>
             </div>
           </div>
-
-          <!--<div class="form-group mb-3 mb-lg-4 row">
-            <label for="example15" class="col-sm-2 col-form-label">Làm thêm giờ</label>
-            <div class="col-12 col-sm-10">
-              <textarea
-                id="example15"
-                v-model="job.overtime"
-                type="text"
-                class="form-control rounded-end"
-                rows="3"
-              />
-              <div v-if="$v.job.overtime.$error">
-                <div v-if="!$v.job.overtime.maxLength" class="error-text">Vui lòng nhập dưới 1000 ký tự</div>
-              </div>
-            </div>
-          </div>-->
 
           <div class="text-end">
             <button
@@ -872,7 +597,6 @@
   import 'bootstrap/dist/css/bootstrap.css'
   import {validationMixin} from 'vuelidate'
   import {
-    minLength,
     maxLength,
     required,
     requiredIf,
@@ -944,29 +668,7 @@
           },
         ],
         provinceList: [],
-        job: {
-          image_job: null,
-          title: '',
-          career: 1,
-          date_start: this.$moment().add(1, 'day').format('YYYY-MM-DD'),
-          type_plan: '',
-          display_month: '',
-          number_recruitments: '',
-          salary_max: '',
-          salary_min: '',
-          content_work: '',
-          conditions_apply: '',
-          province_id: 1,
-          address_work: '',
-          time_work: '',
-          welfare_regime: '',
-          overtime: '',
-					accept_education: false,
-					max_education_month: 0,
-					scholarship: 0,
-          number_trainings: 0,
-          custom_requirement: '',
-        },
+        job: {},
         skillModel: [],
         skillArr: [
           {
@@ -1036,45 +738,6 @@
           },
           maxLength: maxLength(10)
         },
-        salary_max: {
-          required,
-          maxLength: maxLength(10),
-          isGreaterThanSalaryMin(value) {
-            if (value && this.job.salary_min) {
-              return parseInt(value) > parseInt(this.job.salary_min)
-            }
-            return true
-          }
-        },
-        salary_min: {
-          required: requiredIf(function () {
-            return this.displaySalary === 'salary_range'
-          }),
-          maxLength: maxLength(10),
-          isLowerThanSalaryMax(value) {
-            if (value && this.job.salary_max) {
-              return parseInt(value) < parseInt(this.job.salary_max)
-            }
-            return true
-          }
-        },
-        content_work: {
-          minLength: minLength(30),
-          required,
-        },
-        conditions_apply: {
-          required,
-        },
-        address_work: {
-          required,
-        },
-        time_work: {
-          required,
-        },
-        welfare_regime: {
-          required,
-        },
-				accept_education: {},
 				max_education_month: {
 					required: requiredIf(function() {
 						return this.job.accept_education;

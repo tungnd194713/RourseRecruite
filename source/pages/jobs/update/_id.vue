@@ -342,6 +342,17 @@
                       </div>
                     </div>
                   </div>
+                  <div class="row">
+                    <div class="col-3">
+                      Yêu cầu chương trình đào tạo
+                    </div>
+                    <div class="col-9">
+                      <client-only>
+                        <VueEditor
+                          v-model="job.custom_requirement"/>
+                      </client-only>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -988,6 +999,7 @@ export default {
             max_education_month: 0,
             scholarship: 0,
             number_trainings: 0,
+            custom_requirement: '',
           },
           skillModel: [],
           skillArr: [
