@@ -155,7 +155,7 @@
                       width="24px"
                       height="24px"
                     />
-                    Dự kiến hoàn thành-  <span class="fw-bold"> 16/07/2024</span>
+                    Yêu cầu hoàn thành -  <span class="fw-bold"> 16/07/2024</span>
                   </div>
                   <!-- <div v-if="language == 'vn'" class="time d-flex align-items-center">
                     <img
@@ -211,7 +211,8 @@
                                         class="col-10 button-title fw-bold"
                                         style="text-align: start; padding-left: 30px"
                                 >
-                                    {{ data.course.title }} ({{data.done_modules.length / data.course.modules.length * 100}}%)
+                                    {{ data.course.title }} - {{ data.done_modules.length }}/{{ data.course.modules.length }} video đã xem - {{ data.done_tests.length }}/{{ data.course.tests.length }} bài test đã làm
+                                     <!-- ({{data.is_finished ? 100 : (data.done_modules.length / (data.course.modules.length + data.course.tests.length) * 100)}}%) -->
                                 </div>
                                 <div
                                         class="col-2 mid"
@@ -235,6 +236,16 @@
                                   <img v-if="isModuleFinish(content.id || content._id, data)" src="../../../assets/images/checked-icon.png" alt="" width="18" height="18">
                                 </span>
                               </li>
+                              <li v-for="(test, index) in data.tests" :key="index" class="d-flex justify-content-between align-items-center">
+                                <div>
+                                  <div>Bài test {{ index + 1 }}: {{ test.test.name }} ({{ test.test.questions.length }} câu hỏi)</div>
+                                  <div v-if="test.isFinished">Hoàn thành lúc: {{ test.answerSheet.finishedAt.split('T')[0] }} {{ test.answerSheet.finishedAt.split('T')[1].substring(0, test.answerSheet.finishedAt.split('T')[1].length - 1)  }}</div>
+                                  <div v-if="test.isFinished">Điểm số: {{ test.answerSheet.mark / test.test.questions.length * 100 }}% - {{ test.answerSheet.mark }} / {{ test.test.questions.length }} câu trả lời đúng</div>
+                                </div>
+                                <span>
+                                  <img v-if="test.isFinished" src="../../../assets/images/checked-icon.png" alt="" width="18" height="18">
+                                </span>
+                              </li>
                             </ul>
                           </div>
                         </div>
@@ -243,7 +254,7 @@
                   </div>
               </div>
               </el-tab-pane>
-              <el-tab-pane label="Thông kê" name="second">
+              <el-tab-pane label="Thống kê" name="second">
                 <h2 class="mb-4 mt-4 fw-bold">Thống kê thời gian học </h2>
                 <div style="margin-bottom: 32px">
                   <h3 class="mb-3 mx-4 fw-bold">Thời gian xem video (tính theo phút): </h3>
@@ -341,8 +352,10 @@ export default {
       datas: [{
         course: {
           modules: [],
+          tests: [],
         },
         done_modules: [],
+        done_tests: [],
       }],
       isShowAlertLogin: true,
       url_api_file: process.env.URL_FILE,

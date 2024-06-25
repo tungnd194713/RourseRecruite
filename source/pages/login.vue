@@ -109,22 +109,22 @@
           </p>
           <button type="submit" class="btn fw-bold login-btn">Đăng nhập</button>
 
-          <!-- <div class="justify-content-center mt-1 mt-lg-2 mb-0 mb-lg-1 p-0 link">
+          <div class="justify-content-center mt-1 mt-lg-2 mb-0 mb-lg-1 p-0 link">
             <ul class="d-flex list-link">
-              <li>
+              <!-- <li>
                 <NuxtLink to="/verify" class="text-decoration-none link-forgot"
                 >ログインできませんか？</NuxtLink
                 >
-              </li>
-              <div class="dot-link">•</div>
+              </li> -->
+              <!-- <div class="dot-link">•</div> -->
               <li>
                 <NuxtLink to="/register" class="text-decoration-none link-forgot"
-                >まだ会員登録がお済みでない方</NuxtLink
+                >Đăng ký</NuxtLink
                 >
               </li>
             </ul>
 
-          </div> -->
+          </div>
         </div>
       </form>
     </main>

@@ -54,7 +54,7 @@
         <div class="row">
           <div class="col-12 col-lg-6">
             <h2 class="title">
-              <span>会社について</span>
+              <span>Về chúng tôi</span>
             </h2>
             <div class="d-block my-4 ps-0 ps-sm-3 ps-lg-5">
               <!-- <small>
@@ -87,9 +87,9 @@
       <div class="card-body">
         <div class="row">
           <div class="col-12 col-lg-6">
-            <h2 class="title">住所</h2>
+            <h2 class="title">Địa chỉ</h2>
             <div class="mt-4 fw-bold">
-              〒 {{ postal_code }} {{ $t(province) }}
+              {{ $t(province) }}
               {{ address }}
             </div>
           </div>
@@ -199,7 +199,7 @@ export default {
   },
 
   head() {
-    return { title: 'プロフィール | 求人' }
+    return { title: 'Hồ sơ công ty' }
   },
 
   computed: {},

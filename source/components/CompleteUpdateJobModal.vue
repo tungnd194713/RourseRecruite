@@ -19,7 +19,7 @@
           <h3 class="text-center">
             <img src="../assets/images/ic_done.svg" alt="">
           </h3>
-          <h3 class="text-center modal-body-text">求人情報の更新は完了しました</h3>
+          <h3 class="text-center modal-body-text">Đã thay đổi thông tin tin tuyển dụng</h3>
         </div>
         <div class="modal-footer align-items-center d-flex justify-content-center flex-row">
 

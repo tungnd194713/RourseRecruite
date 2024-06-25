@@ -14,7 +14,7 @@ export default ($axios) => ({
   },
 
   changeStatus(id, data) {
-    return $axios.post(`${resource}/change-status/${id}`, data)
+    return $axios.post(`${resource}/${id}/change-status`, data)
   },
 
   createJob(payload, header) {
@@ -27,6 +27,10 @@ export default ($axios) => ({
 
   openJobEducation(id) {
     return $axios.get(`${resource}/${id}/education-open`)
+  },
+
+  closeJobEducation(id) {
+    return $axios.get(`${resource}/${id}/education-close`)
   },
 
   toggleJobEducation(id) {

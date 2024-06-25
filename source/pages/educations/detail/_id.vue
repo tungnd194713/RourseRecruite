@@ -238,6 +238,7 @@
                   "
                 >
                   <button
+                    v-if="job.education_status !== 3"
                     type="button"
                     class="btn btn-secondary rounded-pill w-20 mt-4 mb-4 mx-4 more-btn"
                     data-bs-toggle="modal"
@@ -246,11 +247,20 @@
                     Yêu cầu thay đổi
                   </button>
                   <button
+                    v-if="job.education_status !== 3"
                     type="button"
                     class="btn btn-custom btn-primary rounded-pill w-20 more-btn"
                     @click="confirmOpenEducation = true"
                   >
                     Mở đào tạo
+                  </button>
+                  <button
+                    v-else
+                    type="button"
+                    class="btn btn-custom btn-primary rounded-pill mt-4 mb-4 w-20 more-btn"
+                    @click="confirmCloseEducation = true"
+                  >
+                    Đóng đào tạo
                   </button>
                 </div>
               </div>
@@ -531,6 +541,39 @@
         </div>
       </div>
     </el-dialog>
+    <el-dialog :visible.sync="confirmCloseEducation" title="Đóng đào tạo">
+      <div>
+        <div>
+          <h3 class="text-center modal-body-text">
+            Xác nhận đóng đào tạo?
+          </h3>
+        </div>
+        <div
+          class="
+            align-items-center
+            d-flex
+            justify-content-center
+            flex-row
+          "
+        >
+          <button
+            type="button"
+            class="btn btn-secondary rounded-pill w-20 mt-4 mb-4"
+            data-bs-dismiss="modal"
+          >
+            Hủy bỏ
+          </button>
+          <div style="width: 20px"></div>
+          <button
+            type="button"
+            class="btn btn-primary rounded-pill w-20"
+            @click="closeEducation()"
+          >
+            Xác nhận
+          </button>
+        </div>
+      </div>
+    </el-dialog>
     <el-dialog :visible.sync="previewDialog" :title="moduleName">
       <PreviewModule :source="videoSource" />
     </el-dialog>
@@ -588,6 +631,7 @@
         moduleName: '',
         previewDialog: false,
         testName: '',
+        confirmCloseEducation: false,
         previewTest: false,
         statusStays: theStatusStay,
         provincesList: theProvinces,
@@ -890,12 +934,21 @@
       },
 
       async toggleEducation() {
-        const { data } = await this.$repositories.jobs.toggleJobEducation(this.$route.params.id)
+        const { data } = await this.$repositories.jobs.toggleJobEducation(this.job.id || this.job._id)
         if (data) {
           this.$toast.success('Đã mở đào tạo')
           location.reload()
         }
       },
+
+      async closeEducation() {
+        const { data } = await this.$repositories.jobs.closeJobEducation(this.job.id || this.job._id)
+        if (data) {
+          this.$toast.success('Đã đóng đào tạo')
+          location.reload()
+        }
+      },
+
 
       async sendChangeRequest() {
         const { data } = await this.$repositories.jobs.sendChangeRequest(this.$route.params.id, { change_request: { content: this.changeRequest } })
@@ -953,11 +1006,11 @@
             this.idRow = -1;
             if (res.status === 200) {
               this.$refs.closePopUpUpdateStatusBtnRef.click()
-              this.$toast.success('応募者の応募状態・' + this.user_name + 'の更新が完了しました')
+              this.$toast.success('Cập nhật trạng thái ứng tuyển của ' + this.user_name + ' thành công')
               this.getListCV(this.currentPage);
             }
             if (res.response && res.response.status === 500) {
-              this.$toast.error('候補者の申請状況と候補者名の更新は完了していません。')
+              this.$toast.error('Không hoàn thành cập nhật tình trạng ứng tuyển và tên ứng viên.')
             }
           })
         }

@@ -120,7 +120,7 @@
             })
               .then((res) => {
                   if (res.status === 200) {
-                      this.$toast.success('パスワードの変更に成功しました')
+                      this.$toast.success('Thay đổi mật khẩu thành công')
                       this.$router.push({ path: '/login' });
                   }
               });

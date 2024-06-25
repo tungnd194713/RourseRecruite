@@ -3,7 +3,7 @@
   <div class="container tab-content mb-5">
     <!--<div class="container tab-content">-->
       <div class="row">
-        <h3 class="title-page">決済履歴</h3>
+        <h3 class="title-page">Danh sách thanh toán học bổng</h3>
       </div>
       <div class="row table-responsive box-table">
         <table class="table table-list-cv">
@@ -15,39 +15,16 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in items" :key="item.id" class="active">
-              <td class="align-middle">{{ item.invoice_code }}</td>
-              <td v-if="item.paid_at" class="align-middle py-3">{{ item.paid_at.split(' ')[0] }}</td>
-              <td v-else class="align-middle py-3"></td>
-              <td class="align-middle link-invoice" @click="$router.push('/invoices/detail?year_month=' + item.year_month)">{{ item.year_month }}</td>
+            <tr v-for="(item, index) in items" :key="item.id" class="active">
+              <td class="align-middle">{{ index + 1 }}</td>
+              <td class="align-middle">{{ item.userName }}</td>
+              <td class="align-middle">{{ item.courseName }}</td>
+              <td class="align-middle">{{ item.position }}</td>
+              <td class="align-middle">{{ item.scholarship }}%</td>
+              <td class="align-middle">{{ item.course_cost }}</td>
+              <td class="align-middle">{{ item.unlocked_at ? item.unlocked_at.split('T')[0] : '' }}</td>
               <td class="align-middle">
-                ¥{{ item.cost_job ? Math.ceil(item.cost_job).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0 }}
-              </td>
-              <td class="align-middle">
-                ¥{{ item.cost_apply ? Math.ceil(item.cost_apply).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0 }}
-              </td>
-              <td v-if="item.transaction && item.transaction.payment_method === 1" class="align-middle">
-                クレジットカード
-              </td>
-              <td v-if="item.transaction && item.transaction.payment_method === 2" class="align-middle">
-                振込
-              </td>
-              <td v-if="item.transaction === null || (item.transaction && item.transaction.payment_method === null)" class="align-middle"></td>
-              <td class="align-middle">{{ theStatus[item.status] }}</td>
-              <td class="align-middle">
-                ¥{{ item.total ? Math.ceil(item.total).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : null }}
-              </td>
-              <td class="align-middle">
-                <div v-if="item.status === 2 && item.total >= 50 && item.total <= 9999999" class="btn-payment">
-                  <img
-                    class="text-center btn btn-inside"
-                    src="../../assets/images/icon_money_jp.svg"
-                    alt=""
-                    data-bs-toggle="modal"
-                    data-bs-target="#checkoutPayjpModal"
-                    @click="saveSelectedItemId(item.id)"
-                  />
-                </div>
+                <span :style="{ color: item.scholarship_paid ? '#67C23A' : '#E6A23C', cursor: !item.scholarship_paid ? 'pointer' : 'unset' }" @click="showPaymentModal(item)">{{ item.scholarship_paid ? 'Đã thanh toán' : 'Chưa thanh toán' }}</span>
               </td>
             </tr>
           </tbody>
@@ -68,133 +45,88 @@
         @previousPage="pageChangeHandle('previous')"
         @customPage="pageChangeHandle"
       >
-        <p>
-          * クレジットカードでの決済可能な金額は50円〜9,999,999円までです。<br />
-        </p>
       </Pagination>
     <!--</div>-->
-    <!-- Modal -->
+    <button
+      ref="showCheckoutPayjpModal"
+      class="d-none"
+      data-bs-toggle="modal"
+      data-bs-target="#checkoutPayjpModal"
+    />
     <div id="checkoutPayjpModal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 id="exampleModalLabel" class="modal-title"><strong>支払い情報</strong></h5>
+            <h5 id="exampleModalLabel" class="modal-title"><strong>Thanh toán học bổng</strong></h5>
             <button ref="closeCheckoutPayjpModal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
           </div>
           <div class="modal-body">
-            <div class="card_block__body">
-              <div id="payjp_spinner" class="spinner" style="display: none;"><img src="https://checkout.pay.jp/images/loading.gif" alt=""></div>
-              <div class="modal-body-content">
-                <div id="payjp_supportedBrands d-flex" class="mod--cardlist">
-                  <ul class="row">
-                    <li class="img-supported-brands col-2"><img src="https://checkout.pay.jp/images/creditcard/visa.png"></li>
-                    <li class="img-supported-brands col-2"><img src="https://checkout.pay.jp/images/creditcard/mastercard.png"></li>
-                    <li class="img-supported-brands col-2"><img src="https://checkout.pay.jp/images/creditcard/jcb.png"></li>
-                    <li class="img-supported-brands col-2"><img src="https://checkout.pay.jp/images/creditcard/americanExpress.png"></li>
-                    <li class="img-supported-brands col-2"><img src="https://checkout.pay.jp/images/creditcard/discover.png"></li>
-                    <li class="img-supported-brands col-2"><img src="https://checkout.pay.jp/images/creditcard/dinersClub.png"></li>
-                  </ul>
+            <div>
+              <div class="row form-group mb-3">
+                <div class="col-sm-4 col-lg-4 col-xl-3 text-left label-form-group">
+                  <h5 class="fw-bold">
+                    Ứng viên:
+                  </h5>
                 </div>
-                <div id="account_card" role="tabpanel" class="tab-pane active">
-                  <form>
-                    <div class="mod--form">
-                      <div class="form_control">
-                        <div class="inner">
-                          <label for="payjp_cardNumber">カード</label>
-                          <input id="payjp_cardNumber"
-                                 v-model="formatCardNumber"
-                                 name="cardnumber"
-                                 class="payjp_simple-input-text"
-                                 type="tel"
-                                 placeholder="1234 5678 9012 3456"
-                                 maxlength="19"
-                                 pattern="([0-9]| )*"
-                                 @input="updateValue"
-                          >
-                          <hr class="payjp_border" :style="$v.card.number.$error ? 'border: 1px solid red;' : ''">
-                          <hr class="payjp_hiddenborder">
-<!--                          <div id="payjp_cardImage" class="card"></div>-->
-                        </div>
-                      </div>
-                      <div class="form_control form_control--half d-flex">
-                        <div class="inner col-6">
-                          <label for="payjp_cardExpiresMonth">有効期限</label>
-                          <input id="payjp_cardExpiresMonth"
-                                 v-model="card.exp_month"
-                                 name="ccmonth"
-                                 class="payjp_simple-input-text"
-                                 autocomplete="off"
-                                 inputtype="number"
-                                 placeholder="月"
-                                 type="tel"
-                                 maxlength="2"
-                          >
-                          <input id="payjp_cardExpiresYear"
-                                 v-model="card.exp_year"
-                                 name="ccyear"
-                                 class="payjp_simple-input-text"
-                                 autocomplete="off"
-                                 inputtype="number"
-                                 placeholder="年"
-                                 type="tel"
-                                 maxlength="2">
-                          <input id="payjp_cardExpiresSeparator"
-                                 class="payjp_simple-input-separator"
-                                 placeholder="/"
-                                 type="text" disabled="">
-                          <hr class="payjp_border" :style="($v.card.exp_year.$error || $v.card.exp_month.$error) ? 'border: 1px solid red;' : ''">
-                          <hr class="payjp_hiddenborder">
-                        </div>
-                        <span id="payjp_partition-border"/>
-                        <div class="inner col-5">
-                          <label for="payjp_cardCvc">CVC番号</label>
-                          <input id="payjp_cardCvc"
-                                 v-model="card.cvc"
-                                 name="cvc"
-                                 class="payjp_simple-input-text"
-                                 autocomplete="off" type="tel"
-                                 maxlength="4"
-                                 placeholder="CVC">
-                          <hr class="payjp_border" :style="$v.card.cvc.$error ? 'border: 1px solid red;' : ''">
-                          <hr class="payjp_hiddenborder">
-                          <div id="payjp_cvcTip" class="help_tip"
-                               :style="'display: ' + (isShow ? 'block;' : 'none;')">
-                            <img src="https://checkout.pay.jp/images/cvc_tip/type_01.png">
-                          </div>
-                          <button id="payjp_cvcTipButton"
-                                  class="help_tip_button"
-                                  type="button"
-                                  tabindex="-1"
-                                  @click="showTip"
-                          />
-                        </div>
-                      </div>
-                      <div class="form_control">
-                        <div class="inner">
-                          <label for="payjp_cardName">名前</label>
-                          <input id="payjp_cardName"
-                                 v-model="card.name"
-                                 name="ccname"
-                                 class="payjp_simple-input-text"
-                                 type="text" inputtype="email"
-                                 placeholder="TARO YAMADA"
-                                 maxlength="255"
-                          >
-                          <hr class="payjp_border" :style="$v.card.name.$error ? 'border: 1px solid red;' : ''">
-                          <hr class="payjp_hiddenborder">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="bottom_block">
-                      <button id="payjp_cardSubmit"
-                              type="button"
-                             class="btn btn-primary"
-                              @click="createTokenCard">トークンを作成する</button>
-                    </div>
-                  </form>
+                <div class="col-sm-8 col-lg-8 col-xl-9 text-left label-form-group">
+                  <h5>
+                    {{ unlockingCourse.userName }}
+                  </h5>
+                </div>
+              </div>
+              <div class="row form-group mb-3">
+                <div class="col-sm-4 col-lg-4 col-xl-3 text-left label-form-group">
+                  <h5 class="fw-bold">
+                    Lộ trình học:
+                  </h5>
+                </div>
+                <div class="col-sm-8 col-lg-8 col-xl-9 text-left label-form-group">
+                  <h5>
+                    {{ unlockingCourse.position }}
+                  </h5>
+                </div>
+              </div>
+              <div class="row form-group mb-3">
+                <div class="col-sm-4 col-lg-4 col-xl-3 text-left label-form-group">
+                  <h5 class="fw-bold">
+                    Tên khóa học:
+                  </h5>
+                </div>
+                <div class="col-sm-8 col-lg-8 col-xl-9 text-left label-form-group">
+                  <h5>
+                    {{ unlockingCourse.courseName }}
+                  </h5>
+                </div>
+              </div>
+              <div class="row form-group mb-3">
+                <div class="col-sm-4 col-lg-4 col-xl-3 text-left label-form-group">
+                  <h5 class="fw-bold">
+                    Point thanh toán:
+                  </h5>
+                </div>
+                <div class="col-sm-8 col-lg-8 col-xl-9 text-left label-form-group">
+                  <h5>
+                    {{ unlockingCourse.course_cost }} (Học bổng {{ unlockingCourse.scholarship }}%)
+                  </h5>
+                </div>
+              </div>
+              <div class="row form-group mb-3">
+                <div class="col-sm-4 col-lg-4 col-xl-3 text-left label-form-group">
+                  <h5 class="fw-bold">
+                    Point đang sở hữu:
+                  </h5>
+                </div>
+                <div class="col-sm-8 col-lg-8 col-xl-9 text-left label-form-group">
+                  <h5>
+                    {{ companyPoint }}
+                  </h5>
                 </div>
               </div>
             </div>
+          </div>
+          <div class="modal-footer align-items-center d-flex justify-content-center flex-row">
+            <button type="button" class="btn btn-danger rounded-pill w-20 mt-4 mb-4" data-bs-dismiss="modal">Hủy</button>
+            <button type="button" class="btn btn-success rounded-pill w-20 btn-p" data-bs-dismiss="modal" @click="unlockCourse()">Thanh toán</button>
           </div>
         </div>
       </div>
@@ -203,6 +135,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
 import 'bootstrap/dist/css/bootstrap.css'
 import {validationMixin} from 'vuelidate'
 import {
@@ -223,45 +156,40 @@ export default {
       items: [],
       fields: [
         {
-          key: 'payment_code',
-          label: '決済番号',
+          key: 'no',
+          label: 'No.',
         },
         {
-          key: 'payment_date',
-          label: '決済日',
+          key: 'userName',
+          label: 'Ứng viên',
         },
         {
-          key: 'year_month',
-          label: '月',
+          key: 'position',
+          label: 'Lộ trình',
         },
         {
-          key: 'cost_job',
-          label: '投稿費用合計',
+          key: 'courseName',
+          label: 'Khóa học',
         },
         {
-          key: 'cost_apply',
-          label: '応募合計',
+          key: 'scholarship',
+          label: 'Học bổng',
         },
         {
-          key: 'payment_method',
-          label: '決済方法',
+          key: 'course_cost',
+          label: 'Point phải trả',
+        },
+        {
+          key: 'unlocked_at',
+          label: 'Ngày mở khóa',
         },
         {
           key: 'status',
-          label: 'ステータス',
-        },
-        {
-          key: 'total',
-          label: '合計費用',
-        },
-        {
-          key: 'action',
-          label: 'アクション',
-          tdClass: 'action',
+          label: 'Trạng thái',
         },
       ],
       theStatus,
-
+      unlockingCourse: {},
       // Paginate
       currentPage: 1,
       perPage: 10,
@@ -280,7 +208,8 @@ export default {
         cvc: '',
         name: ''
       },
-      payjpToken: ''
+      payjpToken: '',
+      companyPoint: 0,
     }
   },
 
@@ -309,10 +238,11 @@ export default {
   },
 
   head() {
-    return { title: '決済履歴 | 求人' }
+    return { title: 'Thanh toán học bổng' }
   },
 
   computed: {
+    ...mapGetters(['loggedInUser']),
     next() {
       return this.currentPage < this.pageCount
         ? this.currentPage + 1
@@ -328,20 +258,18 @@ export default {
 
   created() {
     this.getInvoices(this.currentPage)
+    this.companyPoint = this.loggedInUser.point_owned
   },
 
   methods: {
     async getInvoices(currentPage) {
-      const { data } = await this.$repositories.profiles.getInvoices(
-        currentPage
-      )
+      const { data } = await this.$repositories.invoices.getCourseUnlockHistory({ page: currentPage })
 
-      this.items = data.data
-      this.totalItems = data.total
-      this.currentPage = data.current_page
-      this.perPage = data.per_page
-      this.pageCount =
-        this.totalItems > 0 ? parseInt(data.total / data.per_page, 10) + 1 : 1
+      this.items = data.results
+      this.totalItems = data.totalResults
+      this.currentPage = data.page
+      this.perPage = data.limit
+      this.pageCount = data.totalPages
     },
 
     pageChangeHandle(value) {
@@ -362,63 +290,37 @@ export default {
       this.selectedItemId = invoiceId;
     },
 
-    async submitPayment() {
-      const dataForm = new FormData();
-      dataForm.append('payjp-token', this.payjpToken);
-
-      await this.$repositories.payments.chargeInvoice(this.selectedItemId, dataForm).then(res => {
-        if (res.status === 200) {
-          this.$toast.success('決済に成功しました')
-          this.$refs.closeCheckoutPayjpModal.click()
-
+    async unlockCourse() {
+      if (this.unlockingCourse.course_cost <= this.loggedInUser?.point_owned) {
+        const { data} = await this.$repositories.invoices.payCourse(this.unlockingCourse.id);
+        if (data) {
+          this.$toast.success('Thanh toán thành công')
+          this.$refs.closeCheckoutPayjpModal.click();
+          this.companyPoint -= this.unlockingCourse.course_cost
           this.getInvoices(this.currentPage)
-        } else {
-          this.$toast.error("決済が失敗しました")
         }
-      }).catch((error) => {
-        this.$toast.error(error)
-      });
-    },
-
-    showTip() {
-      this.isShow = !this.isShow;
-    },
-
-    async createTokenCard() {
-      const dataForm = new FormData();
-      dataForm.append('card[number]', this.card.number.replace(/\s+/g, ''));
-      dataForm.append('card[cvc]', this.card.cvc);
-      dataForm.append('card[exp_month]', this.card.exp_month);
-      dataForm.append('card[exp_year]', '20' + this.card.exp_year);
-      dataForm.append('card[name]', this.card.name);
-
-      this.$v.card.$touch()
-      if (!this.$v.card.$invalid) {
-        await this.$repositories.payments.createToken(dataForm, {
-          header: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }).then(res => {
-          if (res.status === 200) {
-            this.payjpToken = res.data;
-
-            this.submitPayment();
-          } else {
-            this.$toast.error('有効期限が無効です')
-          }
-        }).catch((error) => {
-          this.$toast.error(error)
-        });
+      } else {
+        this.$toast.error('Không đủ point thanh toán, hãy nạp thêm point!')
       }
     },
 
-    updateValue(e){
-      this.card.number = e.target.value.replace(/ /g,'');
-    }
+    showPaymentModal(item) {
+      if (!item.scholarship_paid) {
+        this.$refs.showCheckoutPayjpModal.click();
+        this.unlockingCourse = {...item}
+      }
+    },
   }
 }
 </script>
 
 <style lang="scss" scoped>
 @import '../../styles/pages/companies/invoices.scss';
+</style>
+<style lang="scss">
+#checkoutPayjpModal {
+  .modal-dialog {
+    max-width: 800px !important;
+  }
+}
 </style>

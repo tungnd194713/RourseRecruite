@@ -3,14 +3,14 @@
         <div class="p-2 p-lg-0 form-register">
             <!--<form>-->
             <div class="bg-white box-form-register">
-                <h1 class="mb-3 mb-lg-4 fw-bold">会員登録フォーム</h1>
+                <h1 class="mb-3 mb-lg-4 fw-bold">Form đăng ký công ty</h1>
                 <!--<form>-->
 <!--                <div v-if="message === 200" class="valid-feedback error">-->
 <!--                    ご登録ありがとうございます。<br />-->
 <!--                    登録されたメールアドレスに確認用のリンクをお送りしました。-->
 <!--                </div>-->
                 <div class="form-group">
-                    <label for="company-name">会社名 <span>*</span></label>
+                    <label for="company-name">Tên công ty <span>*</span></label>
                     <input
                         id="company-name"
                         ref="companyNameTextBox"
@@ -25,20 +25,20 @@
                             v-if="!$v.user.company_name.required"
                             class="invalid-feedback error"
                         >
-                            これは必須項目なので、必ず入力してください
+                            Vui lòng nhập tên công ty
                         </div>
 
                         <div
                             v-if="!$v.user.company_name.maxLength"
                             class="invalid-feedback error"
                         >
-                            100文字以下で入力してください
+                            Vui lòng nhập dưới 100 ký tự
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="manager-name">担当者名 <span>*</span></label>
+                    <label for="manager-name">Tên người phụ trách <span>*</span></label>
                     <input
                         id="manager-name"
                         ref="managerNameTextBox"
@@ -53,20 +53,20 @@
                             v-if="!$v.user.manager_name.required"
                             class="invalid-feedback error"
                         >
-                            これは必須項目なので、必ず入力してください
+                            Vui lòng nhập tên người phụ trách
                         </div>
 
                         <div
                             v-if="!$v.user.manager_name.maxLength"
                             class="invalid-feedback error"
                         >
-                            50文字以下で入力してください
+                            Vui lòng nhập dưới 50 ký tự
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="mail">メールアドレス <span>*</span></label>
+                    <label for="mail">Email <span>*</span></label>
                     <input
                         id="mail"
                         ref="emailTextBox"
@@ -82,14 +82,14 @@
                             v-if="!$v.user.email.required"
                             class="invalid-feedback error"
                         >
-                            これは必須項目なので、必ず入力してくださいd
+                            Vui lòng nhập email
                         </div>
 
                         <div
                             v-if="!$v.user.email.email"
                             class="invalid-feedback error"
                         >
-                            メールアドレスの形式で入力してください
+                            Vui lòng nhập dưới dạng email
                         </div>
                     </div>
 
@@ -97,12 +97,12 @@
                         v-if="errors.email && user.email === user.confirm_email"
                         class="invalid-feedback error"
                     >
-                        このメールアドレスは既に存在しています
+                        Email đã được đăng ký
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="phone">電話番号 <span>*</span></label>
+                    <label for="phone">Số điện thoại <span>*</span></label>
                     <input
                         id="phone"
                         ref="phoneTextBox"
@@ -118,7 +118,7 @@
                             v-if="!$v.user.phone.required"
                             class="invalid-feedback error"
                         >
-                            これは必須項目なので、必ず入力してください
+                            Vui lòng nhập số điện thoại
                         </div>
 
                         <div
@@ -128,29 +128,19 @@
                             "
                             class="invalid-feedback error"
                         >
-                            9数字以上13数字以下で入力してください
+                            Vui lòng nhập từ 9 đến 13 ký tự
                         </div>
 
                         <div
                             v-else-if="!$v.user.phone.number && $v.user.phone.required"
                             class="invalid-feedback error"
                         >
-                            整数を入力してください
+                            Vui lòng nhập dưới dạng số
                         </div>
-                    </div>
-
-                    <div
-                        v-if="
-                            errors.phone &&
-                            user.phone === user.confirm_phone
-                        "
-                        class="invalid-feedback error"
-                    >
-                        この電話番号は既に存在しています
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="password">パスワード <span>*</span></label>
+                    <label for="password">Mật khẩu <span>*</span></label>
                     <div class="input-group">
                       <input
                         id="password"
@@ -184,7 +174,7 @@
                             v-if="!$v.user.password.required"
                             class="invalid-feedback error"
                         >
-                            これは必須項目なので、必ず入力してください
+                            Vui lòng nhập mật khẩu
                         </div>
 
                         <div
@@ -194,13 +184,13 @@
                             "
                             class="invalid-feedback error"
                         >
-                            6文字以上32文字以下で入力してください
+                            Vui lòng nhập từ 6 đến 32 ký tự
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="confirm-password"
-                        >パスワード（確認) <span>*</span></label
+                        >Xác nhận mật khẩu <span>*</span></label
                     >
                     <div class="input-group">
                       <input
@@ -235,7 +225,7 @@
                             v-if="!$v.user.confirm_password.required"
                             class="invalid-feedback error"
                         >
-                            これは必須項目なので、必ず入力してください
+                            Vui lòng nhập lại mật khẩu
                         </div>
 
                         <div
@@ -245,7 +235,7 @@
                             "
                             class="invalid-feedback error"
                         >
-                            入力したパスワードが一致しません
+                            Mật khẩu không giống nhau
                         </div>
                     </div>
                 </div>
@@ -276,56 +266,11 @@
                 </div>-->
               <br>
                 <div class="form-group my-2">
-                    <label id="title-address">住所 </label>
+                    <label id="title-address">Địa chỉ </label>
                 </div>
 
                 <div class="form-group">
-                    <label for="postal-code-1">郵便番号</label>
-                  <div class="d-flex">
-                    <input
-                      id="postal-code-1"
-                      ref="firstPostalCodeTextBox"
-                      v-model.trim="user.postal_code_1"
-                      type="text"
-                      class="form-control form-control-lg rounded-pill w-25 pr-1"
-                      placeholder="xxx"
-                      maxlength="3"
-                      @input="$v.user.postal_code_1.$touch()"
-                      @blur="$v.user.postal_code_1.$touch()"
-                    />
-                    <p class="mx-3 mt-2">ー</p>
-                    <input
-                      id="postal-code-2"
-                      ref="secondPostalCodeTextBox"
-                      v-model.trim="user.postal_code_2"
-                      type="text"
-                      class="form-control form-control-lg rounded-pill w-50"
-                      placeholder="xxxx"
-                      maxlength="4"
-                      @input="$v.user.postal_code_2.$touch()"
-                      @blur="$v.user.postal_code_2.$touch()"
-                    />
-                  </div>
-                  <div v-if="$v.user.postal_code_1.$error">
-                    <div
-                      v-if="!$v.user.postal_code_1.numeric"
-                      class="invalid-feedback error"
-                    >
-                      郵便番号の形式で入力してください
-                    </div>
-                  </div>
-                  <div v-if="$v.user.postal_code_2.$error">
-                    <div
-                      v-if="!$v.user.postal_code_2.numeric"
-                      class="invalid-feedback error"
-                    >
-                      郵便番号の形式で入力してください
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="provinces">都道府県<span>*</span></label>
+                    <label for="provinces">Tỉnh<span>*</span></label>
 <!--                    <select-->
 <!--                        id="provinces"-->
 <!--                        v-model="user.province_id"-->
@@ -348,7 +293,7 @@
                     >
                       <template #no-options="{ searching }">
                         <template v-if="searching">
-                          データがありません。
+                          Không có dữ liệu
                         </template>
                       </template>
                     </v-select>
@@ -357,13 +302,13 @@
                             v-if="!$v.user.province_id.required"
                             class="invalid-feedback error"
                         >
-                            これは必須項目なので、必ず選択してください
+                            Vui lòng chọn tỉnh
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="address">番地<span>*</span></label>
+                    <label for="address">Địa chỉ <span>*</span></label>
                     <input
                         id="address"
                         ref="addressTextBox"
@@ -376,19 +321,19 @@
                             v-if="!$v.user.address.required"
                             class="invalid-feedback error"
                         >
-                            これは必須項目なので、必ず入力してください
+                            Vui lòng nhập địa chỉ
                         </div>
                         <div
                             v-if="!$v.user.address.maxLength"
                             class="invalid-feedback error"
                         >
-                            200文字以下で入力してください
+                            Vui lòng nhập dưới 200 ký tự
                         </div>
                     </div>
                 </div>
 
-                <div class="form-check">
-                    <input
+                <!-- <div class="form-check"> -->
+                    <!-- <input
                         id="flexCheckDefault"
                         ref="acceptTermsCheckbox"
                         v-model="acceptTerms"
@@ -396,8 +341,8 @@
                         type="checkbox"
                         @change="$v.acceptTerms.$touch()"
                         @blur="$v.acceptTerms.$touch()"
-                    />
-                    <label class="form-check-label" for="flexCheckDefault">
+                    /> -->
+                    <!-- <label class="form-check-label" for="flexCheckDefault">
                       <a class="text-decoration-underline term-use" @click="$route.push('term-use')">利用規約</a>
                       と
                       <a class="text-decoration-underline term-use" @click="$route.push('privacy-policy')">プライバシーポリシー</a>
@@ -410,8 +355,8 @@
                         >
                             これは必須項目なので、必ずチェックしてください
                         </div>
-                    </div>
-                </div>
+                    </div> -->
+                <!-- </div> -->
                 <div>
                     <NuxtLink to="/login">
                         <button
@@ -424,7 +369,7 @@
                                 color: black;
                             "
                         >
-                            キャンセル
+                            Hủy
                         </button>
                     </NuxtLink>
                     <button
@@ -432,7 +377,7 @@
                         type="submit"
                         class="btn fw-bold my-3 my-lg-4 rounded-pill cancel"
                     >
-                        登録
+                        Đăng ký
                     </button>
                 </div>
                 <!--</form>-->
@@ -458,15 +403,12 @@ import {
     minLength,
     maxLength,
     helpers,
-    numeric,
 } from 'vuelidate/lib/validators'
 
-import postalCode from 'jp-postalcode-lookup'
 import theCareers from '~/constants/careers'
 import theProvinces from '~/constants/provinces'
 import provincesInRegisterPage from '~/constants/provincesInRegisterPage'
 
-// const postalCode = helpers.regex('postalCode', /\d{3}-\d{4}/g)
 // const phone = helpers.regex(
 //     'phone',
 //     /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/
@@ -486,13 +428,10 @@ export default {
                 password: '',
                 confirm_password: '',
                 career: '',
-                postal_code: '',
-                postal_code_1: '',
-                postal_code_2: '',
                 province_id: '',
                 address: '',
             },
-            acceptTerms: false,
+            acceptTerms: true,
             errors: [],
             message: '',
             theCareers,
@@ -507,33 +446,6 @@ export default {
 
     head() {
         return { title: '会員登録 | 求人' }
-    },
-
-    watch: {
-        'user.postal_code_1': {
-          handler(newVal) {
-            if (this.user.postal_code_1.length === 3 && this.user.postal_code_2.length === 4) {
-            this.user.postal_code = this.user.postal_code_1 + this.user.postal_code_2
-            }
-          },
-          deep: true
-        },
-        'user.postal_code_2': {
-          handler(newVal) {
-            if (this.user.postal_code_2.length === 4 && this.user.postal_code_1.length === 3) {
-              this.user.postal_code = this.user.postal_code_1 + this.user.postal_code_2
-            }
-          },
-          deep:true
-        },
-        'user.postal_code': {
-          handler(newVal) {
-            if (this.user.postal_code > 0) {
-              this.getDetailAddress();
-            }
-          },
-          deep:true
-        },
     },
 
     validations: {
@@ -568,12 +480,6 @@ export default {
             // career: {
             //     required,
             // },
-            postal_code_1: {
-                numeric,
-            },
-            postal_code_2: {
-                numeric,
-            },
             province_id: {
                 required,
             },
@@ -605,9 +511,6 @@ export default {
             password: '',
             confirm_password: '',
             // career: '',
-            postal_code: '',
-            postal_code_1: '',
-            postal_code_2: '',
             province_id: '',
             address: '',
           })
@@ -629,28 +532,22 @@ export default {
                   await this.$repositories.accounts
                     .registerAccount(this.user)
                     .then((response) => {
-                      const data = this.$handleResponse(response)
+                      // const data = this.$handleResponse(response)
                       this.message = response.status
-                      this.errors = data.errors
-                      if (response.status === 200) {
-                        this.$toast.success('ご登録ありがとうございます。登録されたメールアドレスに確認用のリンクをお送りしました。')
-                        this.resetData()
+                      // this.errors = data.errors
+                      if (response.status === 201) {
+                        this.$toast.success('Tạo tài khoản thành công. Hãy đăng nhập.')
+                        this.$router.push('/login')
                       }
-                      if (response.response && response.response.status === 422) {
-                        if (response.response.data.errors.email) {
-                          this.$nextTick(() => {
-                            this.$refs.emailTextBox.focus()
-                          })
-                        } else if (response.response.data.errors.phone) {
-                          this.$nextTick(() => {
-                            this.$refs.phoneTextBox.focus()
-                          })
-                        }
+                      if (response.response && response.response.status === 400) {
+                        this.$nextTick(() => {
+                          this.$refs.emailTextBox.focus()
+                        })
                       }
                     })
                 } catch (error) {
-                  const data = this.$handleResponse(error)
-                  this.errors = data.errors
+                  // const data = this.$handleResponse(error)
+                  // this.errors = data.errors
                 }
                 this.isLoading = false
               } else {
@@ -688,15 +585,7 @@ export default {
             //     this.$refs.careerSelectBox.focus()
             //   })
             // }
-            else if (this.$v.user.postal_code_1.$error) {
-              this.$nextTick(() => {
-                this.$refs.firstPostalCodeTextBox.focus()
-              })
-            } else if (this.$v.user.postal_code_2.$error) {
-              this.$nextTick(() => {
-                this.$refs.secondPostalCodeTextBox.focus()
-              })
-            } else if (this.$v.user.province_id.$error) {
+            else if (this.$v.user.province_id.$error) {
               this.$nextTick(() => {
                 document.getElementsByClassName('vs__search')[0].focus()
               })
@@ -706,23 +595,6 @@ export default {
               })
             }
         },
-
-      getDetailAddress() {
-          if (this.user.postal_code) {
-            const self = this;
-            postalCode.get(this.user.postal_code, function(address) {
-              if(address) {
-                self.provinces.forEach((item) => {
-                  if (item.label === address.prefecture) {
-                    self.user.province_id = item.value;
-                  }
-                });
-                self.user.address = address.prefecture + address.city + address.area;
-              }
-
-            });
-          }
-        }
     },
 }
 </script>

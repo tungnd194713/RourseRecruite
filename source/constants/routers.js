@@ -2,7 +2,7 @@ export default [
   {
     tab: 'profile',
     srcImage: '/icon_building.svg',
-    name: 'Profile',
+    name: 'Hồ sơ công ty',
     path: '/companies',
   },
   {

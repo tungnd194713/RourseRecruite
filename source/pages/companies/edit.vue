@@ -697,7 +697,7 @@ export default {
 
     head() {
         return {
-            title: '会社情報編集 | 求人',
+            title: 'Chỉnh sửa thông tin công ty',
         }
     },
 
@@ -893,7 +893,7 @@ export default {
                 }
                 if (res.status === 200) {
                   this.$auth.fetchUser()
-                  this.$toast.success('会社情報の更新に成功しました。')
+                  this.$toast.success('Đã thay đổi thông tin công ty')
                   setTimeout(this.$router.push('/companies'), 2000)
                 }
               })

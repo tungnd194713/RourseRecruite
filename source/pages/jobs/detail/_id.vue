@@ -1032,11 +1032,11 @@
             this.idRow = -1;
             if (res.status === 200) {
               this.$refs.closePopUpUpdateStatusBtnRef.click()
-              this.$toast.success('応募者の応募状態・' + this.user_name + 'の更新が完了しました')
+              this.$toast.success('Cập nhật trạng thái ứng tuyển của ' + this.user_name + ' thành công')
               this.getListCV(this.currentPage);
             }
             if (res.response && res.response.status === 500) {
-              this.$toast.error('候補者の申請状況と候補者名の更新は完了していません。')
+              this.$toast.error('Không hoàn thành cập nhật tình trạng ứng tuyển và tên ứng viên.')
             }
           })
         }

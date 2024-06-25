@@ -73,10 +73,8 @@
 			<div id="elegant-cv" class="cv-template-min-height d-flex flex-column" data-theme="charcoal-gray" >
 				<header class="contact-wrapper d-pdf-flex bg-main">
 					<div
-						class="avatar"
-						style="
-							background-image: url(/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBeWtxUVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--91c6d10346d0b0f395db3a8b795c31bd4c370f56/ACg8ocKZceX38keureYmKW5jKBqjDkMFxUK380wj9dqsUoWE=s96-c.jpg);
-						"
+						class="avatar mx-4"
+						:style="{ 'background-image': `url(${candidate.user.profile_image})` }"
 					></div>
 					<div class="user-contact ims-4">
 						<div class="user-position">
@@ -474,11 +472,11 @@ export default {
           .then((res) => {
             this.idRow = -1
             if (res.status === 200) {
-              this.$toast.success('応募者の応募状態・更新が完了しました')
+              this.$toast.success('Cập nhật trạng thái ứng tuyển của ứng viên thành công')
               this.getListCV(this.currentPage)
             } else {
               this.$toast.error(
-                '候補者の申請状況と候補者名の更新は完了していません。'
+                'Không hoàn thành cập nhật tình trạng ứng tuyển và tên ứng viên.'
               )
             }
           })

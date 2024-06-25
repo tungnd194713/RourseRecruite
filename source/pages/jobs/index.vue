@@ -85,7 +85,6 @@
                   {{ header.label }}
                 </th>
                 <th scope="col"></th>
-                <th scope="col"></th>
               </tr>
             </thead>
             <tbody v-if="!spinner">
@@ -152,25 +151,6 @@
                     >
                       Ẩn
                     </button>
-                  </div>
-                </td>
-                <td class="align-middle">
-                  <div class="tooltip-custom">
-                    <img
-                      class="btn"
-                      src="~/assets/images/ic_dup.svg"
-                      @click="checkDuplicateJob(item.id)"
-                    />
-                    <span class="tooltiptext">Sao chép</span>
-                    <!--<img
-                      v-else
-                      class="btn"
-                      src="../../assets/images/icon_trash.svg"
-                      data-bs-toggle="modal"
-                      data-bs-target="#confirmDeleteModal"
-                      @click="confirmDelete(item.id)"
-                      @mouseover="mouseOver($event, index)"
-                    />-->
                   </div>
                 </td>
                 <td class="align-middle">
@@ -402,10 +382,6 @@ export default {
       //   this.message = ''
       //   this.error = e.response.data.message
       // }
-    },
-
-    checkDuplicateJob(jobId) {
-			this.$router.push(`/jobs/duplicate/${jobId}`)
     },
 
     async getListJob(currentPage) {

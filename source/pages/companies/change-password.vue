@@ -6,20 +6,20 @@
           <li class="nav-item rounded mb-2">
             <a class="nav-link" @click="$router.push('/companies/edit')">
               <img class="" src="../../assets/images/icon_building.svg"/>
-              会社情報
+              Thông tin công ty
             </a>
           </li>
           <li class="nav-item rounded">
             <a class="nav-link active" @click="$router.push('/companies/change-password')">
               <img class="" src="../../assets/images/icon_user_rounded.svg"/>
-              パスワード変更
+              Đổi mật khẩu
             </a>
           </li>
         </ul>
       </div>
       <div class="col-12 col-lg-9">
         <div class="box-form-account pb-5">
-          <h3 class="container">パスワード変更</h3>
+          <h3 class="container">Đổi mật khẩu</h3>
           <div class="mt-3 mb-3 mt-lg-4  mb-lg-4 line"></div>
           <div class="container pb-5 row">
             <div class="form-change">
@@ -51,7 +51,7 @@
                   <span class="px-4">
                     <img src="../../assets/images/icon_upload_change_password.svg" alt="">
                     &nbsp;
-                    PCからアップロードする
+                    Tải lên từ máy tính
                   </span>
                 </button>
               </div>
@@ -60,14 +60,14 @@
             <div class="form-change">
               <form @submit.prevent="submitChangePassword">
                 <div class="form-group mb-2 mb-lg-3">
-                  <label for="exampleInput1c">現在のパスワード <span>*</span></label>
+                  <label for="exampleInput1c">Mật khẩu hiện tại <span>*</span></label>
                   <div class="input-group">
                     <input
                       id="exampleInput1c"
                       v-model="company.old_password"
                       :type="isHideOldPassword ? 'password' : 'text'"
                       class="form-control"
-                      placeholder="現在のパスワードを入力してください"
+                      placeholder="Vui lòng nhập mật khẩu hiện tại"
                       @input="onInputOldPassword"
                       @blur="$v.company.old_password.$touch()"
                     >
@@ -94,14 +94,14 @@
                   <div class="error-text">{{ wrongOldPasswordText}}</div>
                 </div>
                 <div class="form-group mb-2 mb-lg-3">
-                  <label for="exampleInput2c">新しいパスワード <span>*</span></label>
+                  <label for="exampleInput2c">Mật khẩu mới <span>*</span></label>
                   <div class="input-group">
                     <input
                       id="exampleInput2c"
                       v-model="company.new_password"
                       :type="isHideNewPassword ? 'password' : 'text'"
                       class="form-control"
-                      placeholder="新しいパスワードを入力してください"
+                      placeholder="Vui lòng nhập mật khẩu mới"
                       @input="$v.company.new_password.$touch()"
                       @blur="$v.company.new_password.$touch()"
                     >
@@ -127,14 +127,14 @@
                   <div class="error-text">{{ newPasswordErrors[0]}}</div>
                 </div>
                 <div class="form-group mb-2 mb-lg-3">
-                  <label for="exampleInput3c">新しいパスワード（確認）<span>*</span></label>
+                  <label for="exampleInput3c">Xác nhận mật khẩu mới<span>*</span></label>
                   <div class="input-group">
                     <input
                       id="exampleInput3c"
                       v-model="company.confirm_password"
                       :type="isHideConfirmNewPassword ? 'password' : 'text'"
                       class="form-control"
-                      placeholder="新しいパスワードを改めて入力してください"
+                      placeholder="Vui lòng nhập lại mật khẩu mới"
                       @input="$v.company.confirm_password.$touch()"
                       @blur="$v.company.confirm_password.$touch()"
                     >
@@ -161,18 +161,17 @@
                 </div>
                 <div class="text-end">
                   <button
-                          id="btn_cancel"
+                    id="btn_cancel"
                     type="button"
                     class="btn btn-sm border rounded-pill ms-2 ms-lg-3 btn-cancel-account"
                     data-bs-toggle="modal"
                     data-bs-target="#confirmCancelModal"
                   >
-                    <span class="px-4">キャンセル</span>
+                    <span class="px-4">Huỷ bỏ</span>
                   </button>
-                  <button  id="btn_change_pw" type="submit" class="btn btn-sm border rounded-pill btn-edit-account">
-                    <span class="px-4">保存</span>
+                  <button id="btn_change_pw" type="submit" class="btn btn-sm border rounded-pill btn-edit-account">
+                    <span class="px-4">Lưu</span>
                   </button>
-
                 </div>
               </form>
             </div>
@@ -196,17 +195,18 @@
             >
           </div>
           <div class="modal-body">
-            <h3 class="text-center modal-body-text">Are you sure?</h3>
+            <h3 class="text-center modal-body-text">Bạn có chắc chắn không?</h3>
           </div>
           <div class="modal-footer align-items-center d-flex justify-content-center flex-row">
-            <button type="button" class="btn btn-secondary-custom rounded-pill w-20 mt-4 mb-4" data-bs-dismiss="modal">いいえ</button>
-            <button type="button" class="btn btn-danger rounded-pill w-20" @click="cancelChangePassword">はい</button>
+            <button type="button" class="btn btn-secondary-custom rounded-pill w-20 mt-4 mb-4" data-bs-dismiss="modal">Không</button>
+            <button type="button" class="btn btn-danger rounded-pill w-20" @click="cancelChangePassword">Có</button>
           </div>
         </div>
       </div>
     </div>
   </main>
 </template>
+
 
 <script>
   import 'bootstrap/dist/css/bootstrap.css'
@@ -282,38 +282,38 @@
       profileImageErrors () {
         const errors = []
         if (!this.$v.profile_image.$dirty) return errors
-        !this.$v.profile_image.name.imageRule && errors.push('画像はpng / jpg / jpeg / gifの形式でアプロードしてください')
-        !this.$v.profile_image.size.imageSize && errors.push('2MB以下の写真をアップロードしてください')
+        !this.$v.profile_image.name.imageRule && errors.push('Hãy tải ảnh lên dưới định dạng png / jpg / jpeg / gif')
+        !this.$v.profile_image.size.imageSize && errors.push('Hãy tải lên ảnh có kích thước dưới 2MB')
         return errors
       },
 
       oldPasswordErrors () {
         const errors = []
         if (!this.$v.company.old_password.$dirty) return errors
-        !this.$v.company.old_password.required && errors.push('これは必須項目なので、必ず入力してください')
-        !this.$v.company.old_password.minLength && errors.push('6文字以上32文字以下で入力してください')
-        !this.$v.company.old_password.maxLength && errors.push('6文字以上32文字以下で入力してください')
+        !this.$v.company.old_password.required && errors.push('Đây là mục bắt buộc, vui lòng nhập vào')
+        !this.$v.company.old_password.minLength && errors.push('Vui lòng nhập từ 6 đến 32 ký tự')
+        !this.$v.company.old_password.maxLength && errors.push('Vui lòng nhập từ 6 đến 32 ký tự')
         return errors
       },
 
       newPasswordErrors () {
         const errors = []
         if (!this.$v.company.new_password.$dirty) return errors
-        !this.$v.company.new_password.required && errors.push('これは必須項目なので、必ず入力してください')
-        !this.$v.company.new_password.minLength && errors.push('6文字以上32文字以下で入力してください')
-        !this.$v.company.new_password.maxLength && errors.push('6文字以上32文字以下で入力してください')
+        !this.$v.company.new_password.required && errors.push('Đây là mục bắt buộc, vui lòng nhập vào')
+        !this.$v.company.new_password.minLength && errors.push('Vui lòng nhập từ 6 đến 32 ký tự')
+        !this.$v.company.new_password.maxLength && errors.push('Vui lòng nhập từ 6 đến 32 ký tự')
         return errors
       },
 
       confirmPasswordErrors () {
         const errors = []
         if (!this.$v.company.confirm_password.$dirty) return errors
-        !this.$v.company.confirm_password.required && errors.push('これは必須項目なので、必ず入力してください')
-        !this.$v.company.confirm_password.isSameNewPassWord && errors.push('入力したパスワードが一致しません')
+        !this.$v.company.confirm_password.required && errors.push('Đây là mục bắt buộc, vui lòng nhập vào')
+        !this.$v.company.confirm_password.isSameNewPassWord && errors.push('Mật khẩu bạn nhập không khớp')
         return errors
       },
-
     },
+
 
     created() {
       this.initData()
@@ -352,10 +352,10 @@
           return await this.$repositories.profiles.updateCompanyPassword(this.company).then(res => {
             if (res.status === 200) {
               this.$router.push('/login')
-              this.$toast.success('パスワードが変更されました。再度ログインしてください')
+              this.$toast.success('Mật khẩu đã được thay đổi. Xin vui lòng đăng nhập lại')
             }
             if (res.response.status === 406) {
-              this.wrongOldPasswordText = 'パスワードが正しくありません'
+              this.wrongOldPasswordText = 'Mật khẩu không đúng'
             }
           })
         }
@@ -377,7 +377,7 @@
             if (res.status === 200) {
               this.previewProfileImageUrl = this.url_file + res.data
               this.$auth.fetchUser()
-              this.$toast.success('画像アップロードに成功しました')
+              this.$toast.success('Tải hình ảnh lên thành công')
             }
           })
         }

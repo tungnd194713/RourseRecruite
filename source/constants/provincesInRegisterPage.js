@@ -1,190 +1,254 @@
 export default [
   {
-    label: "北海道",
+    label: "An Giang",
     value: 1
   },
   {
-    label: "青森県",
+    label: "Bà Rịa - Vũng Tàu",
     value: 2
   },
   {
-    label: "岩手県",
+    label: "Bắc Giang",
     value: 3
   },
   {
-    label: "宮城県",
+    label: "Bắc Kạn",
     value: 4
   },
   {
-    label: "秋田県",
+    label: "Bạc Liêu",
     value: 5
   },
   {
-    label: "山形県",
+    label: "Bắc Ninh",
     value: 6
   },
   {
-    label: "福島県",
+    label: "Bến Tre",
     value: 7
   },
   {
-    label: "茨城県",
+    label: "Bình Định",
     value: 8
   },
   {
-    label: "栃木県",
+    label: "Bình Dương",
     value: 9
   },
   {
-    label: "群馬県",
+    label: "Bình Phước",
     value: 10
   },
   {
-    label: "埼玉県",
+    label: "Bình Thuận",
     value: 11
   },
   {
-    label: "千葉県",
+    label: "Cà Mau",
     value: 12
   },
   {
-    label: "東京都",
+    label: "Cần Thơ",
     value: 13
   },
   {
-    label: "神奈川県",
+    label: "Cao Bằng",
     value: 14
   },
   {
-    label: "新潟県",
+    label: "Đà Nẵng",
     value: 15
   },
   {
-    label: "富山県",
+    label: "Đắk Lắk",
     value: 16
   },
   {
-    label: "石川県",
+    label: "Đắk Nông",
     value: 17
   },
   {
-    label: "福井県",
+    label: "Điện Biên",
     value: 18
   },
   {
-    label: "山梨県",
+    label: "Đồng Nai",
     value: 19
   },
   {
-    label: "長野県",
+    label: "Đồng Tháp",
     value: 20
   },
   {
-    label: "岐阜県",
+    label: "Gia Lai",
     value: 21
   },
   {
-    label: "静岡県",
+    label: "Hà Giang",
     value: 22
   },
   {
-    label: "愛知県",
+    label: "Hà Nam",
     value: 23
   },
   {
-    label: "三重県",
+    label: "Hà Nội",
     value: 24
   },
   {
-    label: "滋賀県",
+    label: "Hà Tĩnh",
     value: 25
   },
   {
-    label: "京都府",
+    label: "Hải Dương",
     value: 26
   },
   {
-    label: "大阪府",
+    label: "Hải Phòng",
     value: 27
   },
   {
-    label: "兵庫県",
+    label: "Hậu Giang",
     value: 28
   },
   {
-    label: "奈良県",
+    label: "Hòa Bình",
     value: 29
   },
   {
-    label: "和歌山県",
+    label: "Hưng Yên",
     value: 30
   },
   {
-    label: "鳥取県",
+    label: "Khánh Hòa",
     value: 31
   },
   {
-    label: "島根県",
+    label: "Kiên Giang",
     value: 32
   },
   {
-    label: "岡山県",
+    label: "Kon Tum",
     value: 33
   },
   {
-    label: "広島県",
+    label: "Lai Châu",
     value: 34
   },
   {
-    label: "山口県",
+    label: "Lâm Đồng",
     value: 35
   },
   {
-    label: "徳島県",
+    label: "Lạng Sơn",
     value: 36
   },
   {
-    label: "香川県",
+    label: "Lào Cai",
     value: 37
   },
   {
-    label: "愛媛県",
+    label: "Long An",
     value: 38
   },
   {
-    label: "高知県",
+    label: "Nam Định",
     value: 39
   },
   {
-    label: "福岡県",
+    label: "Nghệ An",
     value: 40
   },
   {
-    label: "佐賀県",
+    label: "Ninh Bình",
     value: 41
   },
   {
-    label: "長崎県",
+    label: "Ninh Thuận",
     value: 42
   },
   {
-    label: "熊本県",
+    label: "Phú Thọ",
     value: 43
   },
   {
-    label: "大分県",
+    label: "Phú Yên",
     value: 44
   },
   {
-    label: "宮崎県",
+    label: "Quảng Bình",
     value: 45
   },
   {
-    label: "鹿児島県",
+    label: "Quảng Nam",
     value: 46
   },
   {
-    label: "沖縄県",
+    label: "Quảng Ngãi",
     value: 47
   },
+  {
+    label: "Quảng Ninh",
+    value: 48
+  },
+  {
+    label: "Quảng Trị",
+    value: 49
+  },
+  {
+    label: "Sóc Trăng",
+    value: 50
+  },
+  {
+    label: "Sơn La",
+    value: 51
+  },
+  {
+    label: "Tây Ninh",
+    value: 52
+  },
+  {
+    label: "Thái Bình",
+    value: 53
+  },
+  {
+    label: "Thái Nguyên",
+    value: 54
+  },
+  {
+    label: "Thanh Hóa",
+    value: 55
+  },
+  {
+    label: "Thừa Thiên Huế",
+    value: 56
+  },
+  {
+    label: "Tiền Giang",
+    value: 57
+  },
+  {
+    label: "TP Hồ Chí Minh",
+    value: 58
+  },
+  {
+    label: "Trà Vinh",
+    value: 59
+  },
+  {
+    label: "Tuyên Quang",
+    value: 60
+  },
+  {
+    label: "Vĩnh Long",
+    value: 61
+  },
+  {
+    label: "Vĩnh Phúc",
+    value: 62
+  },
+  {
+    label: "Yên Bái",
+    value: 63
+  }
 ]

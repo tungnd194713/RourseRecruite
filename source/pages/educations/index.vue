@@ -156,9 +156,9 @@
                     <ul v-if="item.requirements.certificates.length">
                         <li v-for="(certificate, rindex) in item.requirements.certificates" :key="rindex">
                             Đạt được chứng chỉ
-                            <span v-for="(iitem, iindex) in certificate" :key="iindex">
+                            <span v-for="(iitem, iindex) in certificate.certificates" :key="iindex">
                                 {{ iitem.name }}
-                                <span v-if="iindex !== certificate.length - 1">hoặc</span>
+                                <span v-if="iindex !== certificate.certificates.length - 1">hoặc</span>
                             </span>
                             hoặc tương đương
                         </li>

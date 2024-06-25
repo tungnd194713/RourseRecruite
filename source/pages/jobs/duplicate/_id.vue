@@ -1209,7 +1209,7 @@ export default {
                   this.$store.dispatch('job/setJob', this.job)
                   this.$router.push('/jobs/preview-new')
                 } else {
-                  this.$toast.error('プランAの求人件数は上限に達しましたので、他のプランを選択してください')
+                  this.$toast.error('Something wrongg')
                 }
               }
             })

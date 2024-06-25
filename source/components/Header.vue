@@ -27,14 +27,21 @@
                     {{router.name}}
                   </a>
                 </li>
+                <li class="border-bottom">
+                  <a class="dropdown-item cursor-pointer" @click="$router.push('/companies/invoices')">
+                    <img class="" src="../assets/images/icon_order.svg"/>
+                    Danh sách thanh toán học bổng
+                  </a>
+                </li>
                 <li>
                   <a class="dropdown-item cursor-pointer" @click="$auth.logout()">
                     <img class="" src="../assets/images/icon_logout.svg"/>
-                    ログアウト
+                    Đăng xuất
                   </a>
                 </li>
               </ul>
             </div>
+            <div class="point-owned" style="margin-right: 16px">{{ loggedInUser.point_owned || 0 }} points</div>
             <img
               v-if="loggedInUser.logo"
               :src="url_file + loggedInUser.logo"
