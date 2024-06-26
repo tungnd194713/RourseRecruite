@@ -316,7 +316,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row">
+                  <div class="row mb-4">
                     <div class="col-3">
                       Học bổng (%)
                     </div>
