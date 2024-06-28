@@ -67,7 +67,7 @@
               Xem hồ sơ ứng viên
             </div>
           </div>
-          <div class="preview">
+          <div class="preview mb-4">
             <div class="name-company">Tiến độ</div>
             <div
               class="logo-company"
@@ -85,6 +85,14 @@
             >
               Tiếp tục học >>
             </div> -->
+          </div>
+          <div class="preview">
+            <div class="name-company">Kết quả test trung bình</div>
+            <div
+              class="logo-company"
+            >
+              <el-progress type="circle" :percentage="totalAvgTest || 0" :color="userPointColor"></el-progress>
+            </div>
           </div>
         </div>
 
@@ -211,7 +219,9 @@
                                         class="col-10 button-title fw-bold"
                                         style="text-align: start; padding-left: 30px"
                                 >
-                                    {{ data.course.title }} - {{ data.done_modules.length }}/{{ data.course.modules.length }} video đã xem - {{ data.done_tests.length }}/{{ data.course.tests.length }} bài test đã làm
+                                    {{ data.course.title }} -
+                                    <span v-if="data.is_unlocked">{{ data.done_modules.length }}/{{ data.course.modules.length }} video đã xem - {{ data.done_tests.length }}/{{ data.course.tests.length }} bài test đã làm</span>
+                                    <span v-else>Chưa mở khóa</span>
                                      <!-- ({{data.is_finished ? 100 : (data.done_modules.length / (data.course.modules.length + data.course.tests.length) * 100)}}%) -->
                                 </div>
                                 <div
@@ -298,7 +308,7 @@
                       </el-col>
                     </el-row>
                   </div>
-                  <bar-chart :data-bar="videoWatchedLength" :labels="labels"></bar-chart>
+                  <bar-chart v-if="videoWatchedLength && videoWatchedLength.length" :data-bar="videoWatchedLength" :labels="labels"></bar-chart>
                 </div>
                 <div>
                   <h3 class="mb-3 mx-4 fw-bold">Chi tiết tiến độ: </h3>
@@ -421,150 +431,150 @@ export default {
       videoWatchedLength: [],
       labels: [],
       courseProgress: [
-  {
-    id: "60af924b4f1a4b1f8f3d5c5a",
-    courseName: "Introduction to JavaScript",
-    started_at: "15-01-2023",
-    finished_at: "20-02-2023",
-    total_watch_time: 1500,
-    average_test_result: 85,
-    modules: [
-      {
-        id: "60af924b4f1a4b1f8f3d5c5b",
-        name: "JavaScript Basics",
-        watch_time: 300
-      },
-      {
-        id: "60af924b4f1a4b1f8f3d5c5c",
-        name: "DOM Manipulation",
-        watch_time: 400
-      },
-      {
-        id: "60af924b4f1a4b1f8f3d5c5d",
-        name: "ES6 Features",
-        watch_time: 800
-      }
-    ],
-    tests: [
-      {
-        id: "test1_id_here",
-        name: "JavaScript Basics Test",
-        is_finished: true,
-        finished_at: "21-01-2023",
-        max_mark: 10,
-        mark: 8
-      },
-    ]
-  },
-  {
-    id: "60af924b4f1a4b1f8f3d5c5e",
-    courseName: "Advanced CSS Techniques",
-    started_at: "01-03-2023",
-    finished_at: "30-03-2023",
-    total_watch_time: 1200,
-    average_test_result: 90,
-    modules: [
-      {
-        id: "60af924b4f1a4b1f8f3d5c5f",
-        name: "Flexbox",
-        watch_time: 500
-      },
-      {
-        id: "60af924b4f1a4b1f8f3d5c60",
-        name: "Grid Layout",
-        watch_time: 700
-      }
-    ],
-    tests: [
-      {
-        id: "test3_id_here",
-        name: "Flexbox Test",
-        is_finished: true,
-        finished_at: "02-04-2023",
-        max_mark: 10,
-        mark: 9
-      }
-    ]
-  },
-  {
-    id: "60af924b4f1a4b1f8f3d5c61",
-    courseName: "React for Beginners",
-    started_at: "10-04-2023",
-    finished_at: "15-05-2023",
-    total_watch_time: 2000,
-    average_test_result: 92,
-    modules: [
-      {
-        id: "60af924b4f1a4b1f8f3d5c62",
-        name: "React Basics",
-        watch_time: 600
-      },
-      {
-        id: "60af924b4f1a4b1f8f3d5c63",
-        name: "State and Props",
-        watch_time: 800
-      },
-      {
-        id: "60af924b4f1a4b1f8f3d5c64",
-        name: "Component Lifecycle",
-        watch_time: 600
-      }
-    ],
-    tests: [
-      {
-        id: "test4_id_here",
-        name: "React Basics Test",
-        is_finished: true,
-        finished_at: "20-04-2023",
-        max_mark: 15,
-        mark: 13
-      },
-      {
-        id: "test5_id_here",
-        name: "State and Props Test",
-        is_finished: true,
-        finished_at: "25-04-2023",
-        max_mark: 20,
-        mark: 18
-      }
-    ]
-  },
-  {
-    id: "60af924b4f1a4b1f8f3d5c65",
-    courseName: "Node.js Essentials",
-    started_at: "01-06-2023",
-    finished_at: "30-06-2023",
-    total_watch_time: 1800,
-    average_test_result: 88,
-    modules: [
-      {
-        id: "60af924b4f1a4b1f8f3d5c66",
-        name: "Introduction to Node.js",
-        watch_time: 600
-      },
-      {
-        id: "60af924b4f1a4b1f8f3d5c67",
-        name: "Express.js Basics",
-        watch_time: 600
-      },
-      {
-        id: "60af924b4f1a4b1f8f3d5c68",
-        name: "Database Integration",
-        watch_time: 600
-      }
-    ],
-    tests: [
-      {
-        id: "test6_id_here",
-        name: "Introduction to Node.js Test",
-        is_finished: false,
-        finished_at: null,
-        max_mark: 12,
-        mark: 0
-      }
-    ]
-  }
-],
+        {
+          id: "60af924b4f1a4b1f8f3d5c5a",
+          courseName: "Introduction to JavaScript",
+          started_at: "15-01-2023",
+          finished_at: "20-02-2023",
+          total_watch_time: 1500,
+          average_test_result: 85,
+          modules: [
+            {
+              id: "60af924b4f1a4b1f8f3d5c5b",
+              name: "JavaScript Basics",
+              watch_time: 300
+            },
+            {
+              id: "60af924b4f1a4b1f8f3d5c5c",
+              name: "DOM Manipulation",
+              watch_time: 400
+            },
+            {
+              id: "60af924b4f1a4b1f8f3d5c5d",
+              name: "ES6 Features",
+              watch_time: 800
+            }
+          ],
+          tests: [
+            {
+              id: "test1_id_here",
+              name: "JavaScript Basics Test",
+              is_finished: true,
+              finished_at: "21-01-2023",
+              max_mark: 10,
+              mark: 8
+            },
+          ]
+        },
+        {
+          id: "60af924b4f1a4b1f8f3d5c5e",
+          courseName: "Advanced CSS Techniques",
+          started_at: "01-03-2023",
+          finished_at: "30-03-2023",
+          total_watch_time: 1200,
+          average_test_result: 90,
+          modules: [
+            {
+              id: "60af924b4f1a4b1f8f3d5c5f",
+              name: "Flexbox",
+              watch_time: 500
+            },
+            {
+              id: "60af924b4f1a4b1f8f3d5c60",
+              name: "Grid Layout",
+              watch_time: 700
+            }
+          ],
+          tests: [
+            {
+              id: "test3_id_here",
+              name: "Flexbox Test",
+              is_finished: true,
+              finished_at: "02-04-2023",
+              max_mark: 10,
+              mark: 9
+            }
+          ]
+        },
+        {
+          id: "60af924b4f1a4b1f8f3d5c61",
+          courseName: "React for Beginners",
+          started_at: "10-04-2023",
+          finished_at: "15-05-2023",
+          total_watch_time: 2000,
+          average_test_result: 92,
+          modules: [
+            {
+              id: "60af924b4f1a4b1f8f3d5c62",
+              name: "React Basics",
+              watch_time: 600
+            },
+            {
+              id: "60af924b4f1a4b1f8f3d5c63",
+              name: "State and Props",
+              watch_time: 800
+            },
+            {
+              id: "60af924b4f1a4b1f8f3d5c64",
+              name: "Component Lifecycle",
+              watch_time: 600
+            }
+          ],
+          tests: [
+            {
+              id: "test4_id_here",
+              name: "React Basics Test",
+              is_finished: true,
+              finished_at: "20-04-2023",
+              max_mark: 15,
+              mark: 13
+            },
+            {
+              id: "test5_id_here",
+              name: "State and Props Test",
+              is_finished: true,
+              finished_at: "25-04-2023",
+              max_mark: 20,
+              mark: 18
+            }
+          ]
+        },
+        {
+          id: "60af924b4f1a4b1f8f3d5c65",
+          courseName: "Node.js Essentials",
+          started_at: "01-06-2023",
+          finished_at: "30-06-2023",
+          total_watch_time: 1800,
+          average_test_result: 88,
+          modules: [
+            {
+              id: "60af924b4f1a4b1f8f3d5c66",
+              name: "Introduction to Node.js",
+              watch_time: 600
+            },
+            {
+              id: "60af924b4f1a4b1f8f3d5c67",
+              name: "Express.js Basics",
+              watch_time: 600
+            },
+            {
+              id: "60af924b4f1a4b1f8f3d5c68",
+              name: "Database Integration",
+              watch_time: 600
+            }
+          ],
+          tests: [
+            {
+              id: "test6_id_here",
+              name: "Introduction to Node.js Test",
+              is_finished: false,
+              finished_at: null,
+              max_mark: 12,
+              mark: 0
+            }
+          ]
+        }
+      ],
     }
   },
 
@@ -576,6 +586,12 @@ export default {
 
   computed: {
     ...mapGetters(['loggedInUser', 'isAuthenticated']),
+    totalAvgTest() {
+      if (this.courseProgress.length) {
+        return this.courseProgress.reduce((sum, test) => sum + test.average_test_result, 0) / this.courseProgress.reduce((sum, test) => sum + test.tests?.length, 0)
+      }
+      return 0
+    }
   },
 
   mounted() {
@@ -588,7 +604,6 @@ export default {
     if (this.isAuthenticated) {
       this.getCandidateEducationProgress()
       this.getCandidateEducationStatistic()
-      this.processData()
       this.hidePage = false
     }
     else {
@@ -598,7 +613,7 @@ export default {
 
   methods: {
     processData() {
-      this.videoWatchedLength = this.moduleProgressLogs.map(log => log.total_video_update_time);
+      this.videoWatchedLength = this.moduleProgressLogs.map(log => Math.ceil(log.total_video_update_time));
 
       this.labels = [
         {
@@ -613,14 +628,13 @@ export default {
         }
       ];
     },
-    userPointColor(job) {
-      const point = job.user_job_point / job.job_point;
-      if (point >= 0.75) {
+    userPointColor(percentage) {
+      if (percentage >= 75) {
         return 'green'
-      } else if (point >= 0.5) {
-        return '#67c8ed'
-      } else if (point >= 0.25) {
-        return 'color: rgb(188, 40, 45)'
+      } else if (percentage >= 50) {
+        return 'orange'
+      } else if (percentage >= 25) {
+        return 'red'
       } else {
         return 'gray'
       }
@@ -628,6 +642,11 @@ export default {
     async getCandidateEducationStatistic() {
       const { data } = await this.$repositories.candidatesApply.getCandidateEducationStatistic(this.$route.params.candidateId)
       console.log(data)
+      if (data) {
+        this.moduleProgressLogs = data.moduleProgressLogs
+        this.processData()
+        this.courseProgress = data.courseProgressData
+      }
     },
     async getCandidateEducationProgress() {
       this.isShowAlertLogin = false

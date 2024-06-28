@@ -89,7 +89,7 @@ export default {
               weight: "bold"
             },
             callback(value, index, ticks) {
-              return Math.round(value / 60) + 'm';
+              return Math.ceil(value / 60) + 'm';
             }
           }
         }
@@ -129,7 +129,7 @@ export default {
             label(tooltipItem) {
               const dataColumn = tooltipItem.dataset.data;
               const dataIndex = tooltipItem.dataIndex;
-              return Math.round(dataColumn[dataIndex] / 60) + ' phút đã xem';
+              return Math.ceil(dataColumn[dataIndex] / 60) + ' phút đã xem';
             }
           }
         }
