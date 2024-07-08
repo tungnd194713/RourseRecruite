@@ -697,7 +697,7 @@ export default {
 
     head() {
         return {
-            title: 'Chỉnh sửa thông tin công ty',
+            title: 'RouteRecruite | Chỉnh sửa thông tin công ty',
         }
     },
 

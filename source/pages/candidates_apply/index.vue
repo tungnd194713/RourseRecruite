@@ -398,7 +398,7 @@ export default {
   },
 
   head() {
-    return { title: 'Danh sách ứng viên' }
+    return { title: 'RouteRecruite | Danh sách ứng viên' }
   },
 
   computed: {

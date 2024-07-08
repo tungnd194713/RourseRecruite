@@ -888,7 +888,7 @@
     },
 
     head () {
-      return {title: '求人詳細 | 求人'}
+      return {title: 'RouteRecruite | Chi tiết công việc'}
     },
 
     computed: {
