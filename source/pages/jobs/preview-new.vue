@@ -79,16 +79,16 @@
                   <ul v-if="job.collegeMajors.length">
                     <li v-for="(major, index) in job.collegeMajors" :key="index">
                       Tốt nghiệp đại học
-                      <span v-if="major.colleges.length">
+                      <span v-if="major.colleges && major.colleges.length">
                         <span v-for="(college, cindex) in major.colleges" :key="cindex">
                           {{ college.name }}
-                          <span v-if="cindex !== major.colleges.length - 1" class="fw-bold">hoặc</span>
+                          <span v-if="major.colleges && cindex !== major.colleges.length - 1" class="fw-bold">hoặc</span>
                         </span>
                       </span>
                         chuyên ngành
                       <span v-for="(iitem, iindex) in major.majors" :key="iindex">
                         {{ iitem.name }}
-                        <span v-if="iindex !== major.majors.length - 1">hoặc</span>
+                        <span v-if="major.majors && iindex !== major.majors.length - 1">hoặc</span>
                       </span>
                     </li>
                   </ul>
@@ -97,7 +97,7 @@
                       Đã có kinh nghiệm
                       <span v-for="(iitem, iindex) in skill" :key="iindex">
                         {{ iitem.name }}
-                        <span v-if="iindex !== skill.length - 1">hoặc</span>
+                        <span v-if="skill && iindex !== skill.length - 1">hoặc</span>
                       </span>
                     </li>
                   </ul>
@@ -106,7 +106,7 @@
                       Hiểu rõ về
                       <span v-for="(iitem, iindex) in skill" :key="iindex">
                         {{ iitem.name }}
-                        <span v-if="iindex !== skill.length - 1">hoặc</span>
+                        <span v-if="skill && iindex !== skill.length - 1">hoặc</span>
                       </span>
                     </li>
                   </ul>
@@ -115,7 +115,7 @@
                       Thành thạo
                       <span v-for="(iitem, iindex) in skill" :key="iindex">
                         {{ iitem.name }}
-                        <span v-if="iindex !== skill.length - 1">hoặc</span>
+                        <span v-if="skill && iindex !== skill.length - 1">hoặc</span>
                       </span>
                     </li>
                   </ul>
@@ -124,7 +124,7 @@
                       Đạt được chứng chỉ
                       <span v-for="(iitem, iindex) in certificate" :key="iindex">
                         {{ iitem.name }}
-                        <span v-if="iindex !== certificate.length - 1">hoặc</span>
+                        <span v-if="certificate && iindex !== certificate.length - 1">hoặc</span>
                       </span>
                         hoặc tương đương
                     </li>
