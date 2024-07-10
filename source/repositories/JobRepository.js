@@ -21,6 +21,10 @@ export default ($axios) => ({
     return $axios.post(`${resource}/create`, payload, header)
   },
 
+	sendChangeRequest(id, data, header) {
+    return $axios.post(`${resource}/${id}/change-request`, data, header)
+  },
+
   getJob(id) {
     return $axios.get(`${resource}/${id}`)
   },
@@ -35,10 +39,6 @@ export default ($axios) => ({
 
   toggleJobEducation(id) {
     return $axios.get(`${resource}/${id}/education-toggle`)
-  },
-
-  sendChangeRequest(id, data) {
-    return $axios.post(`${resource}/${id}/change-request`, data)
   },
 
   updateJob(id, data) {

@@ -194,7 +194,7 @@
                                       class="col-10 button-title fw-bold"
                                       style="text-align: start; padding-left: 30px"
                               >
-                                  {{ data.title }} - {{ data.point_cost }} point
+                                  {{ data.title }} - {{ data.point_cost }} point - {{ data.estimated_time }} tiếng dự kiến
                               </div>
                               <div
                                       class="col-2 mid"
@@ -238,11 +238,9 @@
                   "
                 >
                   <button
-                    v-if="job.education_status !== 3"
                     type="button"
                     class="btn btn-secondary rounded-pill w-20 mt-4 mb-4 mx-4 more-btn"
-                    data-bs-toggle="modal"
-                    data-bs-target="#popUpChange"
+                    @click="openDrawer"
                   >
                     Yêu cầu thay đổi
                   </button>
@@ -285,6 +283,69 @@
         />
       </button>
     </div>
+
+		<el-dialog
+      title="Yêu cầu thay đổi mới"
+      :visible.sync="dialogVisible"
+      width="40%"
+      :before-close="handleClose"
+    >
+      <el-form ref="changeForm" :model="changeForm" label-position="top">
+        <el-form-item label="Tiêu đề">
+          <el-input v-model="changeForm.title" class="full-width-input"></el-input>
+        </el-form-item>
+        <el-form-item label="Nội dung">
+          <!-- <el-input v-model="changeForm.content" type="textarea" class="full-width-input"></el-input> -->
+					<VueEditor v-model="changeForm.content" :editor-toolbar="customToolbar" class="full-width-input"/>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleClose">Hủy</el-button>
+        <el-button type="primary" @click="handleSubmit">Tạo yêu cầu</el-button>
+      </span>
+    </el-dialog>
+
+    <el-drawer
+      title="Yêu cầu thay đổi"
+      :visible.sync="drawerVisible"
+      direction="rtl"
+      size="30%"
+      :before-close="handleDrawerClose"
+    >
+      <el-button type="primary" style="margin-bottom: 20px; margin-left: 20px" @click="openModal">Tạo yêu cầu mới</el-button>
+      
+      <el-collapse v-model="activeNames" style="margin: 0 20px">
+        <el-collapse-item
+          v-for="blog in changeRequests"
+          :key="blog.id"
+          :name="blog.id"
+        >
+          <template slot="title">
+						{{ blog.title }}
+						<i v-if="blog.status === 2" class="el-icon-error" style="color: red; font-size: 20px; margin-left: 8px"></i>
+						<i v-else-if="blog.status === 1" class="el-icon-success" style="color: green; font-size: 20px; margin-left: 8px"></i>
+						<i v-else class="el-icon-info" style="font-size: 20px; margin-left: 8px"></i>
+					</template>
+          <el-card class="blog-card">
+            <div class="blog-content">
+							<v-runtime-template :template="`<div>${blog.content}</div>`"></v-runtime-template>
+						</div>
+						<div v-if="blog.status === 2" class="blog-content" style="color: red">
+							<div>Lý do từ chối: </div>
+							<div>{{ blog.reject_reason }}</div>
+						</div>
+            <div class="blog-dates">
+              <el-tag type="info">Ngày tạo: {{ formatDate(blog.requested_date) }}</el-tag>
+              <el-tag v-if="blog.replied_date" :type="blog.status === 1 ? 'success' : 'danger'">Ngày xử lý: {{ formatDate(blog.replied_date) }}</el-tag>
+            </div>
+          </el-card>
+        </el-collapse-item>
+      </el-collapse>
+      
+      <span slot="footer" class="drawer-footer">
+        <el-button @click="handleDrawerClose">Close</el-button>
+      </span>
+    </el-drawer>
 
     <div class="container mt-3 mt-lg-4 list-user">
       <div class="d-flex align-items-end title mb-1">
@@ -353,48 +414,6 @@
         @customPage="pageChangeHandle"
       >
       </Pagination>
-    </div>
-
-    <div
-      id="popUpChange"
-      class="modal fade"
-      data-bs-backdrop="static"
-      data-bs-keyboard="false"
-      tabindex="-1"
-      aria-labelledby="popUpChangeLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content success-content">
-          <div class="modal-header">
-            <a data-bs-dismiss="modal" class="btn-close" aria-label="Close">
-              <img src="../../../assets/images/icon_modal_close.svg" alt="" />
-            </a>
-          </div>
-          <div class="d-flex justify-content-center align-items-center">
-            <h5 id="popUpChangeLabel" class="modal-title check-title">
-              Yêu cầu thay đổi nội dung lộ trình học
-            </h5>
-          </div>
-          <div class="modal-body pop-check-input">
-            <!-- <label for="remarks"></label> -->
-            <textarea
-              id="remarks"
-              v-model="changeRequest"
-              class="form-control"
-            />
-            <div class="submit-btn">
-              <button
-                id="apply-btn"
-                class="btn btn-primary mt-4 rounded-pill"
-                @click="sendChangeRequest"
-              >
-                Gửi yêu cầu
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div
@@ -539,6 +558,16 @@
 
     data() {
       return {
+				customToolbar: [
+					["bold", "italic", "underline"],
+					[{ list: "ordered" }, { list: "bullet" }],
+					[
+							{ align: "" },
+							{ align: "center" },
+							{ align: "right" },
+							{ align: "justify" }
+					],
+				],
         jobTab: 'second',
         jobEducationStatus,
         jobStatus,
@@ -771,6 +800,18 @@
         majorColleges: [],
         previewSkills: [],
         changeRequest: '',
+				dialogVisible: false,
+				drawerVisible: false,
+				activeNames: [],
+				changeRequests: [
+					{ id: '1', title: 'First Blog', content: 'Content of the first blog', requested_date: new Date(), replied_date: new Date() },
+					{ id: '2', title: 'Second Blog', content: 'Content of the second blog', requested_date: new Date(), replied_date: new Date() },
+					// Add more blog objects here
+				],
+				changeForm: {
+					title: '',
+					content: '',
+				},
       }
     },
 
@@ -850,6 +891,7 @@
               class: 'about-' + index,
             }
           })
+					this.changeRequests = data.job?.education ? [...data.job.education.change_requests] : []
         } else {
           this.$router.push('/jobs')
         }
@@ -868,15 +910,6 @@
         const { data } = await this.$repositories.jobs.closeJobEducation(this.job.id || this.job._id)
         if (data) {
           this.$toast.success('Đã đóng đào tạo')
-          location.reload()
-        }
-      },
-
-
-      async sendChangeRequest() {
-        const { data } = await this.$repositories.jobs.sendChangeRequest(this.$route.params.id, { change_request: { content: this.changeRequest } })
-        if (data) {
-          this.$toast.success('Đã gửi yêu cầu thay đổi chương trình học')
           location.reload()
         }
       },
@@ -1007,7 +1040,51 @@
     },
     shownClass(data) {
       data.isShown = !data.isShown
-    }
+    },
+		openModal() {
+      this.dialogVisible = true;
+    },
+    handleClose() {
+      this.dialogVisible = false;
+    },
+    async handleSubmit() {
+      // Add your submission logic here
+      if (!this.changeForm.title || !this.changeForm.content) {
+				this.$toast.error('Vui lòng nhập đầy đủ tiêu đề và nội dung yêu cầu thay đổi!')
+			} else {
+				const newBlog = {
+					title: this.changeForm.title,
+					content: this.changeForm.content,
+					requested_date: new Date(),
+				};
+				this.handleClose();
+        const formData = new FormData()
+        formData.append('title', newBlog.title)
+        formData.append('content', newBlog.content)
+        formData.append('requested_date', new Date())
+				const { data } = await this.$repositories.jobs.sendChangeRequest(this.$route.params.id, formData, {
+          header: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+				if (data) {
+					this.$toast.success('Đã gửi yêu cầu thay đổi chương trình học.')
+					this.changeRequests.push(newBlog);
+					this.changeForm.title = '';
+					this.changeForm.content = '';
+					this.job.education_status = 4
+				}
+			}
+    },
+    openDrawer() {
+      this.drawerVisible = true;
+    },
+    handleDrawerClose() {
+      this.drawerVisible = false;
+    },
+    formatDate(date) {
+      return date ? new Date(date).toLocaleString() : '';
+    },
   },
 }
 </script>

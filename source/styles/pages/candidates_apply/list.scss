@@ -514,3 +514,7 @@ textarea {
 * {
   font-family: 'M PLUS 1p', sans-serif !important;
 }
+
+[class*=" el-icon-"], [class^=el-icon-] {
+	font-family: element-icons !important;
+}

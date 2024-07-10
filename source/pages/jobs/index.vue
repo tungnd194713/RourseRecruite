@@ -123,7 +123,7 @@
                       Trực tiếp: {{ item.candidate_applies.filter((item) => item.education_applied === 0).length }}
                     </div>
                     <div>
-                      Đào tạo: {{ item.candidate_applies.filter((item) => item.education_applied === 1).length }}
+                      Đào tạo: {{ item.candidate_applies.filter((item) => item.education_applied === 1 && item.status !== 8).length }}
                     </div>
                   </div>
                   <div v-else>
