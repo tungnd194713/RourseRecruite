@@ -43,9 +43,13 @@
 							<div>Thời gian dự kiến:</div>
 							<div class="fw-bold">2 tháng</div>
 						</div>
-						<div v-if="candidate.education_applied" class="d-flex justify-content-between mb-4 fs-5">
+						<div v-if="candidate.education_applied" class="d-flex justify-content-between fs-5">
 							<div>Học bổng:</div>
 							<div class="fw-bold"> {{candidate.jobEducation.scholarship}} %</div>
+						</div>
+            <div v-if="candidate.education_applied && candidate.jobEducation" class="d-flex justify-content-between mb-4 fs-5">
+							<div>Khóa học đăng ký:</div>
+							<div class="fw-bold" style="cursor: pointer; color: #34bbfb; text-decoration: underline" @click="listCourseDialog = true"> {{candidate.education_courses.length}}/{{candidate.jobEducation.courses.length}} khóa học</div>
 						</div>
 						<div class="d-flex justify-content-between">
 							<button v-if="candidate.status == 1" class="btn btn-secondary">
@@ -54,6 +58,9 @@
               <div v-if="candidate.education_applied">
                 <button v-if="candidate.status === 4" class="btn btn-success" @click="$router.push('/candidates_apply/' + candidate.id + '/education-progress')">
                   Đang đào tạo
+                </button>
+                <button v-else-if="candidate.status === 8" class="btn btn-secondary">
+                  Ứng viên từ chối tham gia đào tạo
                 </button>
                 <button v-else class="btn btn-primary" :class="{ 'btn-secondary': candidate.status == 3 }" @click="acceptEducation()">
                   {{ candidate.status == 3 ? 'Đã duyệt đào tạo' : 'Duyệt đào tạo' }}
@@ -238,12 +245,12 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column prop="userProfile" label="Profile của bạn" :min-width="40">
+        <el-table-column prop="userProfile" label="Profile ứng viên" :min-width="40">
           <template v-if="scope.row" slot-scope="scope">
             <div v-if="scope.row.userProfile.length">
               <div v-for="(profile, index) in scope.row.userProfile" :key="index">
                 <span v-if="profile.type === 'Certificate'">
-                  Đạt chứng chỉ {{ scope.row.userProfile.certificate.name }}
+                  Đạt chứng chỉ {{ profile.name }}
                 </span>
                 <span v-if="profile.type === 'Major'">
                   Tốt nghiệp đại học chuyên ngành {{ profile.name }}
@@ -274,6 +281,64 @@
         </el-table-column>
       </el-table>
     </el-dialog>
+    <el-dialog v-if="candidate.education_courses && candidate.jobEducation" :visible.sync="listCourseDialog" :title="`Danh sách khóa học đăng ký - ${candidate.education_courses.length}/${candidate.jobEducation.courses.length} khóa học`">
+      <div class="learning-route">
+        <div class="container text-center faq-con">
+          <div
+            v-for="data in datas"
+            :key="data.value"
+            class="row m-4 question-button"
+          >
+            <div class="p-con">
+              <p>
+                <button class="btn btn-primary btn-module" type="button" data-bs-toggle="collapse"
+                  :data-bs-target="'#' + data.class"
+                  aria-expanded="false"
+                  :aria-controls="data.class"
+                  :class="{'shown': data.isShown, 'unregistered-module': !data.isRegistered}"
+                  @click="shownClass(data)">
+                  <div class="row">
+                      <div
+                              class="col-10 button-title fw-bold"
+                              style="text-align: start; padding-left: 30px"
+                      >
+                          {{ data.title }} - {{ data.point_cost }} point
+                      </div>
+                      <div
+                              class="col-2 mid"
+                              style="text-align: end; padding-right: 30px"
+                      >
+                          <img
+                                  src="../../../assets/images/icon_arrow_down.svg"
+                                  alt=""
+                                  :class="{ rotated: data.isShown }"
+                          />
+                      </div>
+                  </div>
+                </button>
+              </p>
+              <div :id="data.class" class="collapse">
+                <div class="card card-body text-start">
+                  <ul class="course-module">
+                    <li v-for="(content, index) in data.modules" :key="index" class="d-flex justify-content-between">
+                      <span>{{ content.name }}</span>
+                      <span>
+
+                      </span>
+                    </li>
+                    <li v-for="(test, index) in data.tests" :key="index" class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <div>Bài test {{ index + 1 }}: {{ test.name }}</div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
   </main>
 </template>
 
@@ -290,6 +355,7 @@ export default {
       url_file: process.env.URL_FILE,
       items: [],
       previewDialog: false,
+      listCourseDialog: false,
       fields: [
         {
           key: 'id',
@@ -345,11 +411,12 @@ export default {
       name: '',
       matchingPointData: [],
       jobPoint: 0,
+      datas: [],
     }
   },
 
   head() {
-    return { title: 'CV ứng viên' }
+    return { title: 'RouteRecruite | CV ứng viên' }
   },
 
   computed: {
@@ -374,6 +441,22 @@ export default {
   methods: {
 		async getUserCv() {
 			const { data } = await this.$repositories.candidatesApply.getUserCv(this.$route.params.candidateId);
+      this.datas = data.jobEducation?.courses.map((item, index) => {
+        if (data.education_courses.includes(item.id) || data.education_courses.includes(item._id)) {
+          return {
+            ...item,
+            isShown: false,
+            class: 'about-' + index,
+            isRegistered: true,
+          }
+        }
+        return {
+          ...item,
+          isShown: false,
+          class: 'about-' + index,
+          isRegistered: false,
+        }
+      })
 			this.candidate = data
 			this.candidate.beginnerSkills = data.skills.filter((item) => item.level === 'Beginner')
 																								 .map((item) => item.skill.name);
@@ -506,6 +589,9 @@ export default {
         }
       )
     },
+    shownClass(data) {
+      data.isShown = !data.isShown
+    }
   },
 }
 </script>
@@ -513,6 +599,86 @@ export default {
 <style lang="scss" scoped>
 @import '../../../styles/pages/candidates_apply/list.scss';
 @import '../../../styles/pages/jobs/cv_user.scss';
+.learning-route {
+  .course-module {
+    list-style-type: none;
+    padding-left: 0;
+    li {
+      padding: 16px;
+      cursor: pointer;
+    }
+    li:hover {
+      background: #bababa;
+    }
+  }
+  p {
+    margin-bottom: 0;
+  }
+  .btn-module {
+      background-color: white !important;
+      color: #00756A !important;
+      font-size: 20px !important;
+      border-color: #B2B2B2 !important;
+      width: 100%;
+      border: none !important;
+      border-top: 2px solid rgba(0, 0, 0, 0.125) !important;
+  }
+
+  .unregistered-module {
+    color: gray !important;
+  }
+
+  .more-btn {
+    width: unset;
+  }
+
+  .card-body {
+      background-color: #F1F1F1;
+      padding: 0 !important;
+      color: #606060;
+      font-size: 16px;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      border: none !important
+  }
+
+  button:hover {
+    box-shadow: none !important;
+  }
+
+  .about-visa {
+      padding-bottom: 50px;
+  }
+
+  .row {
+    margin: 0 !important;
+  }
+  .mid {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .mid img {
+    width: 18px;
+    transition: 0.2s;
+  }
+
+  .rotated {
+    transform: rotate(-90deg);
+  }
+
+  .p-con {
+    margin: 0 auto;
+    margin-top: 1.5rem;
+    border: 2px solid rgba(0, 0, 0, 0.125);
+    padding: 0 !important;
+    border-top: none;
+    background-color: #F1F1F1;
+  }
+  .shown {
+    border-bottom: 2px solid rgba(0, 0, 0, 0.125) !important;
+  }
+}
 </style>
 
 <style lang="scss">

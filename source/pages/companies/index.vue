@@ -199,7 +199,7 @@ export default {
   },
 
   head() {
-    return { title: 'Hồ sơ công ty' }
+    return { title: 'RouteRecruite | Hồ sơ công ty' }
   },
 
   computed: {},

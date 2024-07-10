@@ -1137,7 +1137,7 @@ export default {
     },
 
     head() {
-        return { title: 'Sửa công việc | Tuyển dụng' }
+        return { title: 'RouteRecruite | Sửa công việc' }
     },
     //
     // watch: {

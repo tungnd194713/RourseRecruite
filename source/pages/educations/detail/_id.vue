@@ -194,7 +194,7 @@
                                       class="col-10 button-title fw-bold"
                                       style="text-align: start; padding-left: 30px"
                               >
-                                  {{ data.title }}
+                                  {{ data.title }} - {{ data.point_cost }} point
                               </div>
                               <div
                                       class="col-2 mid"
@@ -353,83 +353,6 @@
         @customPage="pageChangeHandle"
       >
       </Pagination>
-    </div>
-
-    <div
-      id="popUpCheck"
-      class="modal fade"
-      data-bs-backdrop="static"
-      data-bs-keyboard="false"
-      tabindex="-1"
-      aria-labelledby="popUpCheckLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content check-content">
-          <div class="modal-header">
-            <a
-              ref="closePopUpUpdateStatusBtnRef"
-              data-bs-dismiss="modal"
-              class="btn-close"
-              aria-label="Close">
-              <img src="../../../assets/images/icon_modal_close.svg" alt="" />
-            </a>
-          </div>
-          <div class="d-flex justify-content-center align-items-center">
-            <h5 id="popUpCheckLabel" class="modal-title check-title">
-              応募者の応募状態更新
-            </h5>
-          </div>
-          <h5 class="d-flex justify-content-center align-items-center">氏名:
-            <strong>{{ user_name }}</strong>
-          </h5>
-          <div class="modal-body pop-check-input">
-            <label for="confirmation">在留資格確認</label>
-            <select
-              id="confirmation"
-              v-model="dataUpdateStatus.residence_card_confirm"
-              class="form-select rounded-pill pop-check-select"
-              aria-label="Confirmation"
-            >
-              <option value="0" disabled>未選択</option>
-              <option value="1">承認</option>
-              <option value="2">非承認</option>
-            </select>
-            <label for="status">ステータス</label>
-            <select
-              id="status"
-              v-model="dataUpdateStatus.status"
-              class="form-select rounded-pill pop-check-select"
-              aria-label="Status"
-            >
-              <option value="1">未対応</option>
-              <option value="2">折り返し待ち</option>
-              <option value="3">面接待ち</option>
-              <option value="4">採用</option>
-              <option value="5">不採用（連絡取れず）</option>
-              <option value="6">不採用</option>
-            </select>
-            <label for="remarks">備考</label>
-            <textarea
-              id="remarks"
-              v-model="dataUpdateStatus.note"
-              class="form-control"
-              @input="$v.dataUpdateStatus.note.$touch()"
-              @blur="$v.dataUpdateStatus.note.$touch()"
-            />
-            <div class="error-text">{{ dataUpdateStatusNoteErrors[0]}}</div>
-            <div class="submit-btn">
-              <button
-                id="apply-btn"
-                class="btn btn-primary mt-4 rounded-pill"
-                @click="updateStatus()"
-              >
-                更新
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div
@@ -860,7 +783,7 @@
     },
 
     head () {
-      return {title: '求人詳細 | 求人'}
+      return {title: 'RouteRecruite | Chi tiết chương trình'}
     },
 
     computed: {

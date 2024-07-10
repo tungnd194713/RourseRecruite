@@ -238,7 +238,7 @@ export default {
   },
 
   head() {
-    return { title: 'Thanh toán học bổng' }
+    return { title: 'RouteRecruite | Thanh toán học bổng' }
   },
 
   computed: {

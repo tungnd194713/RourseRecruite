@@ -111,7 +111,7 @@
                 </div>
                 <div class="col-9">
                   <div class="row mb-2">
-                    
+
                   </div>
                   <div class="row mb-2">
                     <div>
@@ -183,7 +183,7 @@
                 </div>
                 <div class="col-9">
                   <div class="row mb-2">
-                    
+
                   </div>
                   <div class="mb-2 px-3">
                     <div v-if="!certificates.length" class="">Chưa thêm chứng chỉ</div>
@@ -208,7 +208,7 @@
                 </div>
                 <div class="col-9">
                   <div class="row mb-2">
-                    
+
                   </div>
                   <div class="mb-2 px-3">
                     <div v-if="!collegeMajors.length" class="">Chưa thêm bằng đại học</div>
@@ -519,7 +519,7 @@
     },
 
     head() {
-      return { title: 'Tạo yêu cầu chương trình đào tạo'}
+      return { title: 'RouteRecruite | Tạo yêu cầu chương trình đào tạo'}
     },
 
     computed: {

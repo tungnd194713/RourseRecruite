@@ -1094,7 +1094,7 @@
     },
 
     head() {
-      return { title: 'Tạo tuyển dụng mới'}
+      return { title: 'RouteRecruite | Tạo tuyển dụng mới'}
     },
 
     computed: {

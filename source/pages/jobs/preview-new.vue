@@ -260,7 +260,7 @@
     },
 
     head() {
-      return { title: 'Preview tuyển dụng'}
+      return { title: 'RouteRecruite | Preview tuyển dụng'}
     },
 
     computed: {

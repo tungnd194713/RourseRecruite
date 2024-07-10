@@ -306,7 +306,7 @@
     },
 
     head() {
-      return { title: 'ジョブプレビュー'}
+      return { title: 'RouteRecruite | Preview'}
     },
 
     computed: {

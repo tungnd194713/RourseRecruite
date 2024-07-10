@@ -358,7 +358,7 @@ export default {
   },
 
   head() {
-    return { title: 'Danh sách tuyển dụng | 求人' }
+    return { title: 'RouteRecruite | Danh sách tuyển dụng' }
   },
 
   computed: {

@@ -262,7 +262,7 @@
                       </div>
                     </div>
                   </div>
-              </div>
+                </div>
               </el-tab-pane>
               <el-tab-pane label="Thống kê" name="second">
                 <h2 class="mb-4 mt-4 fw-bold">Thống kê thời gian học </h2>
@@ -580,7 +580,7 @@ export default {
 
   head() {
       return {
-        title: `CV`,
+        title: `RouteRecruite | Tiến độ học tập`,
       }
   },
 
