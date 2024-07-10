@@ -198,6 +198,22 @@
 								</div>
 							</div>
 						</div>
+						<div class="cv-card d-pdf-flex">
+							<div class="title ifs-16 normal-text fw-700 lh-15 text-it-black">
+								Giới thiệu bản thân
+							</div>
+							<div class="content ifs-16 normal-text fw-400 lh-18 text-it-black">
+								<v-runtime-template :template="`<div>${candidate.strength}</div>`"></v-runtime-template>
+							</div>
+						</div>
+						<div class="cv-card d-pdf-flex">
+							<div class="title ifs-16 normal-text fw-700 lh-15 text-it-black">
+								Nguyện vọng
+							</div>
+							<div class="content ifs-16 normal-text fw-400 lh-18 text-it-black">
+								<v-runtime-template :template="`<div>${candidate.reason_apply}</div>`"></v-runtime-template>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -344,9 +360,13 @@
 
 <script>
 import 'bootstrap/dist/css/bootstrap.css'
+import VRuntimeTemplate from "v-runtime-template";
 
 export default {
   name: 'CVUser',
+	components: {
+		VRuntimeTemplate,
+	},
   layout: 'auth',
 
   data() {
