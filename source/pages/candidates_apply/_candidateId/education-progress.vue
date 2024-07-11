@@ -274,7 +274,7 @@
                         <div>
                           <el-statistic title="Tổng thời gian xem">
                             <template slot="formatter">
-                              3600 phút
+                              {{ Math.round(totalWatchTime / 60) }} phút
                             </template>
                           </el-statistic>
                         </div>
@@ -283,7 +283,7 @@
                         <div>
                           <el-statistic title="Thời gian học trung bình">
                             <template slot="formatter">
-                              120 phút
+                              {{ Math.round(averageWatchTime / 60) }} phút
                             </template>
                           </el-statistic>
                         </div>
@@ -292,7 +292,7 @@
                         <div>
                           <el-statistic title="Số ngày tham gia học">
                             <template slot="formatter">
-                              30 ngày
+                              {{ learnDays.length }} ngày
                             </template>
                           </el-statistic>
                         </div>
@@ -301,7 +301,7 @@
                         <div>
                           <el-statistic title="Ngày học nhiều nhất">
                             <template slot="formatter">
-                              150 phút
+                              {{ Math.round(longestVideoDay / 60) }} phút
                             </template>
                           </el-statistic>
                         </div>
@@ -398,7 +398,7 @@ export default {
           video_start_time: 0,
           total_video_update_time: 150,
           video_update_time: 150,
-          created_at: new Date("2024-05-20T10:00:00Z"),
+          created_at: "2024-05-21T10:00:00Z",
         },
         {
           logId: "60cfc083b8565b25e472579e",
@@ -407,7 +407,7 @@ export default {
           video_start_time: 120,
           total_video_update_time: 230,
           video_update_time: 350,
-          created_at: new Date("2024-05-21T15:30:00Z"),
+          created_at: "2024-05-21T15:30:00Z",
         },
         {
           logId: "60cfc083b8565b25e472579d",
@@ -416,7 +416,7 @@ export default {
           video_start_time: 100,
           total_video_update_time: 450,
           video_update_time: 550,
-          created_at: new Date("2024-05-22T08:45:00Z"),
+          created_at: "2024-05-22T08:45:00Z",
         },
         {
           logId: "60cfc083b8565b25e472579c",
@@ -425,7 +425,7 @@ export default {
           video_start_time: 200,
           total_video_update_time: 550,
           video_update_time: 750,
-          created_at: new Date("2024-05-23T20:20:00Z"),
+          created_at: "2024-05-23T20:20:00Z",
         },
       ],
       videoWatchedLength: [],
@@ -591,7 +591,53 @@ export default {
         return this.courseProgress.reduce((sum, test) => sum + test.average_test_result, 0) / this.courseProgress.reduce((sum, test) => sum + test.tests?.length, 0)
       }
       return 0
-    }
+    },
+		learnDays() {
+			return this.moduleProgressLogs.reduce((acc, current) => {
+				const currentDate = current.created_at.split('T')[0];
+				if (!acc.some(item => item.created_at.split('T')[0] === currentDate)) {
+					acc.push(current);
+				}
+				return acc;
+			}, []);
+		},
+		longestVideoDay() {
+			const totalVideoUpdateTimeByDay = this.moduleProgressLogs.reduce((acc, current) => {
+				const currentDate = current.created_at.split('T')[0];
+				if (!acc[currentDate]) {
+					acc[currentDate] = 0;
+				}
+				acc[currentDate] += current.total_video_update_time;
+				return acc;
+			}, {});
+			const dayWithLongestTotalVideoUpdateTime = Object.keys(totalVideoUpdateTimeByDay).reduce((a, b) => 
+				totalVideoUpdateTimeByDay[a] > totalVideoUpdateTimeByDay[b] ? a : b
+			);
+			return totalVideoUpdateTimeByDay[dayWithLongestTotalVideoUpdateTime]
+		},
+		averageWatchTime() {
+			const groupedByDay = this.moduleProgressLogs.reduce((acc, current) => {
+				const currentDate = current.created_at.split('T')[0];
+				if (!acc[currentDate]) {
+					acc[currentDate] = [];
+				}
+				acc[currentDate].push(current);
+				return acc;
+			}, {});
+			const totalVideoUpdateTimeByDay = Object.keys(groupedByDay).reduce((acc, date) => {
+				const totalVideoUpdateTime = groupedByDay[date].reduce((sum, log) => sum + log.total_video_update_time, 0);
+				acc.total += totalVideoUpdateTime;
+				acc.count += 1;
+				return acc;
+			}, { total: 0, count: 0 });
+			const averageTotalVideoUpdateTime = totalVideoUpdateTimeByDay.total / totalVideoUpdateTimeByDay.count;
+			return averageTotalVideoUpdateTime
+		},
+		totalWatchTime() {
+			return this.moduleProgressLogs.reduce((acc, current) => {
+				return acc + current.total_video_update_time
+			}, 0)
+		}
   },
 
   mounted() {
@@ -641,7 +687,6 @@ export default {
     },
     async getCandidateEducationStatistic() {
       const { data } = await this.$repositories.candidatesApply.getCandidateEducationStatistic(this.$route.params.candidateId)
-      console.log(data)
       if (data) {
         this.moduleProgressLogs = data.moduleProgressLogs
         this.processData()
