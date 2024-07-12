@@ -52,17 +52,20 @@
 							<div class="fw-bold" style="cursor: pointer; color: #34bbfb; text-decoration: underline" @click="listCourseDialog = true"> {{candidate.education_courses.length}}/{{candidate.jobEducation.courses.length}} khóa học</div>
 						</div>
 						<div class="d-flex justify-content-between">
-							<button v-if="candidate.status == 1" class="btn btn-secondary">
+							<!-- <button v-if="candidate.status == 8 || candidate.status == 7 || candidate.status == 9" class="btn btn-secondary">
 								Từ chối
-							</button>
+							</button> -->
               <div v-if="candidate.education_applied">
-                <button v-if="candidate.status === 4" class="btn btn-success" @click="$router.push('/candidates_apply/' + candidate.id + '/education-progress')">
+                <button v-if="candidate.status === 1" class="btn btn-success" @click="acceptInterview()">
+                  Duyệt phỏng vấn
+                </button>
+                <button v-else-if="candidate.status === 4" class="btn btn-success" @click="$router.push('/candidates_apply/' + candidate.id + '/education-progress')">
                   Đang đào tạo
                 </button>
                 <button v-else-if="candidate.status === 8" class="btn btn-secondary">
                   Ứng viên từ chối tham gia đào tạo
                 </button>
-                <button v-else class="btn btn-primary" :class="{ 'btn-secondary': candidate.status == 3 }" @click="acceptEducation()">
+                <button v-else-if="candidate.status !== 8 && candidate.status !== 7 && candidate.status !== 9" class="btn btn-primary" :class="{ 'btn-secondary': candidate.status == 3 }" @click="acceptEducation()">
                   {{ candidate.status == 3 ? 'Đã duyệt đào tạo' : 'Duyệt đào tạo' }}
                 </button>
               </div>
@@ -81,7 +84,7 @@
 				<header class="contact-wrapper d-pdf-flex bg-main">
 					<div
 						class="avatar mx-4"
-						:style="{ 'background-image': `url(${candidate.user.profile_image})` }"
+						:style="{ 'background-image': `url(${candidate.user.profile_image || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbaJBuUM3ZBM8whxMTTwQRPePVY4-JT9zxHQ&s'})` }"
 					></div>
 					<div class="user-contact ims-4">
 						<div class="user-position">
