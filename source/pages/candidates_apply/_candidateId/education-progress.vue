@@ -610,7 +610,7 @@ export default {
 				acc[currentDate] += current.total_video_update_time;
 				return acc;
 			}, {});
-			const dayWithLongestTotalVideoUpdateTime = Object.keys(totalVideoUpdateTimeByDay).reduce((a, b) => 
+			const dayWithLongestTotalVideoUpdateTime = Object.keys(totalVideoUpdateTimeByDay).reduce((a, b) =>
 				totalVideoUpdateTimeByDay[a] > totalVideoUpdateTimeByDay[b] ? a : b
 			);
 			return totalVideoUpdateTimeByDay[dayWithLongestTotalVideoUpdateTime]
@@ -647,14 +647,9 @@ export default {
   },
 
   created() {
-    if (this.isAuthenticated) {
-      this.getCandidateEducationProgress()
-      this.getCandidateEducationStatistic()
-      this.hidePage = false
-    }
-    else {
-      this.hidePage = false
-    }
+    this.getCandidateEducationProgress()
+    this.getCandidateEducationStatistic()
+    this.hidePage = false
   },
 
   methods: {

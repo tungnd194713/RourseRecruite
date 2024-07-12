@@ -395,6 +395,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import 'bootstrap/dist/css/bootstrap.css'
 import {
     required,
@@ -445,7 +446,7 @@ export default {
     },
 
     head() {
-        return { title: '会員登録 | 求人' }
+        return { title: 'RouteRecruite | Đăng ký' }
     },
 
     validations: {
@@ -495,9 +496,15 @@ export default {
         },
     },
 
+    computed: {
+      ...mapGetters(['loggedInUser', 'isAuthenticated']),
+    },
+
     created() {
-        this.careers = theCareers
-        // this.provinces = theProvinces
+      this.careers = theCareers
+      if (this.isAuthenticated) {
+        this.$router.push('/')
+      }
     },
 
     methods: {

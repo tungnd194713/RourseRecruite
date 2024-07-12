@@ -132,6 +132,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { validationMixin } from 'vuelidate'
 import { required, email, minLength } from 'vuelidate/lib/validators'
 
@@ -166,6 +167,16 @@ export default {
         minLength: minLength(6),
       },
     },
+  },
+
+  computed: {
+    ...mapGetters(['loggedInUser', 'isAuthenticated']),
+  },
+
+  created() {
+    if (this.isAuthenticated) {
+      this.$router.push('/')
+    }
   },
 
   methods: {
