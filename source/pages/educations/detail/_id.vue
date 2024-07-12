@@ -313,7 +313,7 @@
       :before-close="handleDrawerClose"
     >
       <el-button type="primary" style="margin-bottom: 20px; margin-left: 20px" @click="openModal">Tạo yêu cầu mới</el-button>
-      
+
       <el-collapse v-model="activeNames" style="margin: 0 20px">
         <el-collapse-item
           v-for="blog in changeRequests"
@@ -341,7 +341,7 @@
           </el-card>
         </el-collapse-item>
       </el-collapse>
-      
+
       <span slot="footer" class="drawer-footer">
         <el-button @click="handleDrawerClose">Close</el-button>
       </span>
@@ -383,7 +383,7 @@
               {{ item.watchedModules }}
             </td>
             <td class="align-middle text-center py-3">
-              {{item.watchedTime}} phút
+              {{Math.ceil(item.watchedTime / 60)}} phút
             </td>
             <td class="align-middle text-center py-3">
               {{ item.doneCourses }}

@@ -491,7 +491,7 @@ export default {
 		},
 
     async acceptEducation() {
-      if (this.candidate.status === 1) {
+      if (this.candidate.status === 1 || this.candidate.status === 2) {
         const { data } = await this.$repositories.candidatesApply.acceptEducation(this.$route.params.candidateId);
         if (data) {
           this.$toast.success('Đã đồng ý đào tạo')
