@@ -91,7 +91,7 @@
             <div
               class="logo-company"
             >
-              <el-progress type="circle" :percentage="totalAvgTest || 0" :color="userPointColor"></el-progress>
+              <el-progress type="circle" :percentage="Math.round(totalAvgTest) || 0" :color="userPointColor"></el-progress>
             </div>
           </div>
         </div>
